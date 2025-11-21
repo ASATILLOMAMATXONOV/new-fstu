@@ -1,0 +1,142 @@
+/* ============================
+   SLIDER QUTILARI
+   ============================ */
+.banner-slider {
+  position: relative;
+  width: 100%;
+  height: 33vw;
+  max-height: 650px;
+  overflow: hidden;
+  background: #000;
+}
+
+/* =============================
+        DOUBLE STRIPE SWIPE
+   ============================= */
+
+
+/* =============================
+      FIXED DIAGONAL STRIPES
+   ============================= */
+
+.stripes {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 30;
+}
+
+.stripeA,
+.stripeB {
+  position: absolute;
+  top: 0;
+  left: -160%;
+  width: 140%;
+  height: 100%;
+
+  /* BU YER — TO‘G‘RI JOY */
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% 100%,
+    15% 100%
+  );
+
+  transform: translateX(0);
+}
+
+/* Stripe ranglari */
+.stripeA {
+  background: rgba(0, 0, 0, 0.151);
+}
+
+.stripeB {
+  background: rgba(5, 99, 240, 0.575);
+}
+
+/* Animatsiya faollashishi */
+.stripes-active .stripeA {
+  animation: stripeMove 2.4s ease forwards;
+}
+
+.stripes-active .stripeB {
+  animation: stripeMove 2.9s ease 1.9s forwards;
+}
+
+/* 🔥 Stripe to‘liq o‘ngga chiqib ketadi */
+@keyframes stripeMove {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(280%);
+  }
+}
+
+
+/* ============================
+          IMAGES
+   ============================ */
+.banner-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: translateX(20px);
+  transition: opacity 1s ease, transform 1s ease;
+}
+
+.banner-img.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.banner-img.slide-out {
+  opacity: 0;
+  transform: translateX(-40px); /* eski rasm chetga ketadi */
+}
+
+/* ============================
+       NAV BUTTONS
+   ============================ */
+.banner-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 30;
+  background: rgba(0, 46, 96, 0.7);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: .3s ease;
+}
+
+.banner-nav-btn:hover {
+  background: rgb(0, 46, 96);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.banner-prev-btn { left: 20px; }
+.banner-next-btn { right: 20px; }
+
+/* mobile */
+@media (max-width: 768px) {
+  .banner-nav-btn {
+    width: 40px;
+    height: 40px;
+  }
+  .banner-prev-btn { left: 10px; }
+  .banner-next-btn { right: 10px; }
+}

@@ -7,14 +7,15 @@ import NotFound from "../pages/NotFound/NotFound";
 
 
 import Navbar from "../components/layout/Navbar";
+import Banner from "../components/layout/Banner";
 
 export default function AppRouter() {
   return (
     <BrowserRouter>
-     
-
-     
+ 
         <Navbar />
+        <Banner />
+        
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/programs" element={<Programs />} />
