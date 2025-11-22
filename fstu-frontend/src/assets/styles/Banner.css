@@ -50,20 +50,22 @@
 
 /* Stripe ranglari */
 .stripeA {
-  background: rgba(0, 0, 0, 0.151);
+  background: rgba(0, 0, 0, 0.349);
 }
 
 .stripeB {
-  background: rgba(5, 99, 240, 0.575);
+  background: rgba(5, 99, 240, 0.719);
 }
 
 /* Animatsiya faollashishi */
 .stripes-active .stripeA {
-  animation: stripeMove 2.4s ease forwards;
+  /* Animatsiya: [nomi] [davomiyligi] [egri chizig'i] [boshlanish vaqti] [tola] */
+  animation: stripeMove 1.4s ease 0s forwards; /* 0s boshlanish vaqti */
 }
 
 .stripes-active .stripeB {
-  animation: stripeMove 2.9s ease 1.9s forwards;
+  /* stripeB 1.4s dan keyin boshlanishi kerak (stripeA tugashi) */
+  animation: stripeMove 2s ease 1.4s forwards; 
 }
 
 /* 🔥 Stripe to‘liq o‘ngga chiqib ketadi */

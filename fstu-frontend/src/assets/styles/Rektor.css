@@ -1,0 +1,96 @@
+/* ===============================
+    REKTOR BO‘LIMI
+=============================== */
+.rektor-section {
+    width: 100%;
+    padding: 50px 0;
+    display: flex;
+    justify-content: center;
+}
+
+/* Asosiy container */
+.rektor-container {
+    max-width: 1200px;
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    padding: 20px;
+}
+
+/* Surat bloki */
+.rektor-image img {
+    width: 320px;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    transition: transform 0.4s ease;
+}
+
+.rektor-image img:hover {
+    transform: scale(1.03);
+}
+
+/* Matn qismi */
+.rektor-content {
+    flex: 1;
+    position: relative;
+}
+
+.rektor-name {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #3f68a5;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.rektor-text {
+    font-size: 1rem;
+    line-height: 1.6;
+    max-width: 650px;
+    color: #333;
+}
+
+
+/* Quote ikonkasi konteyneri */
+.rektor-quote {
+    position: absolute;
+    top: 20px;
+    right: -40px;  /* Yaxshi joylashishi uchun */
+    opacity: 0.08; /* Juda chiroyli yumshoq ko‘rinish uchun */
+    transform: scale(1);
+}
+
+/* Ikonka o'lchami */
+.quote-icon {
+    font-size: 170px !important;
+    color: #4a7fd1;
+}
+
+
+
+/* ===============================
+    ANIMATSIYALAR
+=============================== */
+.fade-in {
+    animation: fadeIn 0.9s ease forwards;
+    opacity: 0;
+}
+
+@keyframes fadeIn {
+    to { opacity: 1; }
+}
+
+.slide-up {
+    animation: slideUp 0.9s ease forwards;
+    transform: translateY(30px);
+    opacity: 0;
+}
+
+@keyframes slideUp {
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}

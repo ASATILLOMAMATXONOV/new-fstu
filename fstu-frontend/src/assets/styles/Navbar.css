@@ -154,7 +154,7 @@ flex-shrink: 0;
  --shadow-color-a: rgb(51, 255, 0);
 }
 .sdg-btn {
- color: #0c2e54 !important; font-weight: 600 !important; letter-spacing: 2px !important; filter: brightness(110%);
+ color: rgb(0, 67, 143) !important; font-weight: 600 !important; letter-spacing: 2px !important; filter: brightness(110%);
  text-shadow: var(--shadow-color-a) 0px 0px 40px, var(--shadow-color-a) 0px 0px 20px;
  transition: all 0.3s ease; box-shadow: none !important; 
 }
