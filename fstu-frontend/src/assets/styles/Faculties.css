@@ -1,58 +1,25 @@
-/* =======================================================
-   UMUMIY O'ZGARUVCHILAR (ROOT VARIABLES)
-   ======================================================= */
 :root {
-    --primary-blue: #3f68a5; 
-    --light-blue: #8c88e7;   
-    --light-gray: #e0e0e0;
-    --dark-text: #ffffff;    
-    --card-bg: #ffffff; 
-    --accent-btn-1: #8c88e7; 
-    --accent-btn-2: #5d59a7; 
-    --card-content-bg: rgba(0, 0, 0, 0.4);
-    --card-bottom-bg: #4a7fd1;
+    --primary-blue: #3f68a5;
+    --light-blue: #8c88e7;
+    --light-gray: #e6e6e6;
+    --card-bg: #ffffff;
+    --card-bottom-bg: #3f68a5;
 }
 
-
-
-/* =======================================================
-   HEADER — "Qabul 2025-yil uchun ochiq"
-   ======================================================= */
 /* HEADER */
 .faculties-header {
-    /* max-width: 1200px;
-    margin: 40px auto 0; */
-    padding: 1px 40px;
+    padding: 12px 40px;
     color: white;
-    /* border-radius: 6px; */
     display: flex;
-    justify-content: space-between;  /* 🔥 Tugma o‘ng tomonga chiqadi */
+    justify-content: space-between;
     align-items: center;
-    overflow: hidden; /* Animatsiya chiqib ketmasligi uchun */
-
-    /* Diagonal fon */
-  background: linear-gradient(
-    -45deg,
-    #6ea0f0 0%,
-    #6ea0f0 55%,
-    #4a7fd1 55%,
-    #4a7fd1 100%
-);
+    background: linear-gradient(-45deg,#6ea0f0,#6ea0f0 55%,#4a7fd1 55%,#4a7fd1);
     background-size: 192% 100%;
     transition: background-position 1s ease;
 }
+.faculties-header:hover { background-position: right; }
 
-/* 🔥 Hover – diagonal chapdan o‘ngga oqib o‘tadi */
-.faculties-header:hover {
-    background-position: right;
-}
-
-
-
-
-/* =======================================================
-   FAKULTET KARTALARI — GRID JOYLASHUV
-   ======================================================= */
+/* GRID */
 .faculties-section {
     max-width: 1200px;
     margin: 0 auto;
@@ -61,227 +28,191 @@
 
 .faculties-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4,1fr);
     gap: 20px;
 }
 
+/* CARD *//* CARD CONTAINER */
 .faculty-card {
-    background-color: var(--card-bg);
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    background: var(--card-bg);
+    border-radius: 10px;
+    overflow:hidden;
+    transition: 
+        transform 0.35s cubic-bezier(.17,.67,.48,1.28),
+        box-shadow 0.35s ease,
+        border-radius 0.35s ease;
+    
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
 }
 
-
-
-/* =======================================================
-   KARTA ICHIDAGI TASVIR VA PASTKI QISM
-   ======================================================= */
+/* IMAGE AREA */
 .card-image-placeholder {
-    background-color: var(--light-gray);
-    height: 250px;
-    border-radius: 5px;
-    position: relative;
-    overflow: hidden;
-}
-
-.card-content {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: var(--card-bottom-bg);
-    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f5f7fa;
     padding: 10px;
+}
+
+.faculty-img {
+    width: 170px;
+    height: 170px;
+    object-fit: contain;
+    transition: transform .4s ease;
+}
+
+
+/* HOVER EFFECT – Super modern UI style */
+.faculty-card:hover {
+    transform: translateY(-6px) scale(1.03);
+    border-radius: 14px;
+    box-shadow: 
+        0 20px 40px rgba(0,0,0,0.18), 
+        0 8px 20px rgba(63,104,165,0.15); /* blue glow touch */
+
+}
+
+/* Slight inner shine on hover */
+.faculty-card:hover .card-image-placeholder {
+    background: linear-gradient(
+        180deg,
+        #ffffff,
+        #f2f6ff
+    );
+}
+
+/* IMAGE hover zoom */
+.faculty-card:hover .faculty-img {
+    transform: scale(1.12);
+}
+
+/* TEXT AREA (ALWAYS AT BOTTOM) */
+.card-content {
+    background: var(--card-bottom-bg);
+    padding: 15px;
+    text-align: center;
+    height: 50px;
     display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-}
-
-.card-actions {
-    display: flex;
-    gap: 5px;
-    margin-bottom: 5px;
-}
-
-
-
-/* =======================================================
-   KARTADAGI TUGMALAR (BATAFSIL / BAKALAVR KURSI)
-   ======================================================= */
-.action-btn-1,
-.action-btn-2 {
-    text-decoration: none;
-    font-size: 0.7rem;
-    padding: 3px 6px;
-    border-radius: 3px;
-    font-weight: 500;
-    white-space: nowrap;
-    text-transform: uppercase;
-}
-
-.action-btn-1 {
-    background-color: var(--accent-btn-1);
-    color: white;
-}
-
-.action-btn-2 {
-    background-color: var(--accent-btn-2);
-    color: white;
+    align-items: center;
+    justify-content: center;
 }
 
 .card-name {
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: var(--dark-text);
-    margin: 0;
-    line-height: 1.2;
-}
-
-
-
-/* =======================================================
-   ANIMATSIYALAR — FADE IN / SLIDE UP
-   ======================================================= */
-    .faculties-title{
-      padding: 8px;
-      margin: 0;
-      font-size: 18px;
-      font-family: 'Arial', 'Helvetica', sans-serif;
-    }
-.fade-in {
-    animation: fadeIn 0.8s ease forwards;
-    opacity: 0;
-}
-
-@keyframes fadeIn {
-    to { opacity: 1; }
-}
-
-.slide-up {
-    animation: slideUp 0.8s ease forwards;
-    transform: translateY(20px);
-    opacity: 0;
-}
-
-@keyframes slideUp {
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-
-
-/* =======================================================
-   HOVER EFFEKT — KARTA + TUGMALAR + HEADER TUGMASI
-   ======================================================= */
-.faculty-card {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.faculty-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-}
-
-.action-btn-1,
-.action-btn-2 {
-    transition: background 0.3s ease, transform 0.2s ease;
-}
-
-.action-btn-1:hover,
-.action-btn-2:hover {
-    transform: scale(1.05);
-}
-/* ----------------------------------------
-   BATAFSIL — Asosiy tugma
----------------------------------------- */
-.btn-more {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
     color: white;
-    background: #1976d2;
-    padding: 8px 18px;
-    border-radius: 6px;
+    font-size: .95rem;
     font-weight: 600;
-    text-decoration: none;
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.3s ease, background 0.3s ease;
-}
-
-/* Yorug‘lik chizig‘i */
-.btn-more::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -120%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-        90deg,
-        rgba(255,255,255,0.15),
-        rgba(255,255,255,0.45),
-        rgba(255,255,255,0.15)
-    );
-    transition: left 0.5s ease;
-}
-
-.btn-more:hover::before {
-    left: 120%;
-}
-
-/* Icon animatsiyasi */
-.btn-more-icon {
-    transition: transform 0.3s ease;
-}
-
-.btn-more:hover .btn-more-icon {
-    transform: translateX(7px);
-}
-
-/* Tugma biroz o‘ngga siljiydi */
-.btn-more:hover {
-    transform: translateX(5px);
-    background: #5a8fee;
-}
-
-
-
-/* ============================
-   REKTOR MUROJAATI - FOOTER
-   ============================ */
-.pagination-footer {
-    background: linear-gradient(90deg, #4a7fd1, #6ea0f0);
-    color: white;
-    padding: 40px 20px;
-    margin-top: 60px;
-    border-radius: 8px;
-    overflow: hidden;
-    position: relative;
-}
-
-/* Fade + slide animatsiya */
-.footer-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    animation: slideFade 0.8s ease forwards;
-    opacity: 0;
-    transform: translateY(20px);
-}
-
-@keyframes slideFade {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Title style */
-.footer-title {
-    font-size: 2rem;
-    font-weight: 700;
     margin: 0;
-    letter-spacing: 1px;
+    opacity: 0;
+    transform: translateY(6px);
+    animation: fadeInText .7s forwards;
 }
+
+/* TEXT FADE ANIMATION */
+@keyframes fadeInText {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* RESPONSIVE */
+@media (max-width: 1100px) {
+    .faculties-grid { grid-template-columns: repeat(3,1fr); }
+    .card-image-placeholder { height: 230px; }
+}
+@media (max-width: 900px) {
+    .faculties-grid { grid-template-columns: repeat(2,1fr); }
+    .faculties-header { flex-direction: column; text-align: center; }
+}
+@media (max-width: 600px) {
+    .faculties-grid { grid-template-columns: 1fr; }
+    .card-image-placeholder { height: 200px; }
+    .card-content { height: 88px; }
+}
+
+
+
+
+
+
+
+
+
+
+
+/* === TABS WRAPPER === */
+.tabs-container {
+  display: flex;
+  gap: 18px;
+  padding: 20px 40px;
+  margin-top: 20px;
+}
+
+/* === TAB BUTTON === */
+.tab-btn {
+  position: relative;
+  padding: 12px 26px;
+  font-size: 15px;
+  font-weight: 600;
+  background: #eef2ff;
+  color: #1f1f1f;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: .3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ICON STYLE */
+.tab-icon {
+  font-size: 18px;
+}
+
+/* Hover */
+.tab-btn:hover {
+  background: #dfe6ff;
+}
+
+/* === ACTIVE TAB === */
+.tab-btn.active {
+  background: #0652a8;
+  color: white;
+  box-shadow: 0 6px 18px rgba(6, 82, 168, 0.35);
+}
+
+/* === ANIMATSIYALI PASTKI CHIZIQ === */
+.tab-underline {
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  height: 3px;
+  width: 0%;
+  background: #0652a8;
+  border-radius: 4px;
+  transition: width .35s ease;
+}
+
+.tab-btn.active .tab-underline {
+  width: 100%;
+}
+
+/* TAB BOX CONTENT */
+.tab-box {
+  max-width: 1200px;
+  margin: 30px auto;
+  padding: 25px;
+  background: #f7faff;
+  border-radius: 12px;
+  box-shadow: 0 5px 18px rgba(0,0,0,0.08);
+}
+
+
+
+
+
+
+
+
+
+
+
