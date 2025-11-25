@@ -1,251 +1,149 @@
-import React, { useState } from "react";
-import {
-  AppBar,
-  Box,
-  Toolbar,
-  Typography,
-  Button,
-  IconButton,
-  Drawer,
-  List,
-  ListItemButton,
-  Container,
-  Collapse,
-  Divider,
-} from "@mui/material";
-
-import MenuIcon from "@mui/icons-material/Menu";
-import MenuBookIcon from "@mui/icons-material/MenuBook";
-import ExpandLess from "@mui/icons-material/ExpandLess";
-import ExpandMore from "@mui/icons-material/ExpandMore";
-import CloseIcon from "@mui/icons-material/Close";
-
+import React, { useState, useEffect } from "react";
 import "../../assets/styles/Navbar.css";
-import { useLocation } from "react-router-dom";
-import logoImage from "../../assets/images/logo.png";
+import { FaFacebookF, FaLinkedinIn, FaTwitter } from "react-icons/fa";
+import logo from "../../assets/images/logo.png";
 
-/* MENU DATA */
-const menuData = [
-  {
-    label: "UNIVERSITET",
-    key: "universitet",
-    columns: [
-      { title: "ASOSIY", items: ["Rektor murojaati", "Fakultetlar", "Kafedralar"] },
-      { title: "XODIMLAR", items: ["Universitet haqida", "Maʼmuriyat", "Bitiruvchilar"] },
-      { title: "HAMKORLIK", items: ["Xalqaro bo'lim", "Almashinuv dasturi"] }
-    ],
-  },
-  {
-    label: "QABUL 2025",
-    key: "qabul",
-    columns: [
-      { title: "INFRATUZILMA", items: ["Yotoqxona", "Sport majmuasi"] },
-      { title: "ABITURIYENTLAR", items: ["Xalqaro almashinuv dasturlari to'g'risida batafsil ma'lumot", "Imtihonlar", "Grantlar"] },
-      { title: "INFRAbTUZILMA", items: ["Yobtoqxona", "Sport majmuasi"] },
-      { title: "INFRATUZILMA", items: ["Yotoqxona", "Sport majmuasi"] },
-      { title: "ABITURIYENTLAR", items: ["Xalqaro almashinuv dasturlari to'g'risida batafsil ma'lumot", "Imtihonlar", "Grantlar"] },
-      { title: "INFRAbTUZILMA", items: ["Yobtoqxona", "Sport majmuasi"] },
-      { title: "INFRATUZILMA", items: ["Yotoqxona", "Sport majmuasi"] },
-      { title: "ABITURIYENTLAR", items: ["Xalqaro almashinuv dasturlari to'g'risida batafsil ma'lumot", "Imtihonlar", "Grantlar"] },
-      { title: "INFRAbTUZILMA", items: ["Yobtoqxona", "Sport majmuasi"] },
-    ]
-  },
-  {
-    label: "KAMPUS",
-    key: "kampus",
-    columns: [
-      { title: "INFRATUZILMA", items: ["Yotoqxona", "Sport majmuasi"] },
-      { title: "XIZMATLAR", items: ["Wi-Fi zonalar", "Oshxona"] },
-      { title: "XAVFSIZLIK", items: ["Qo'riqlash", "Tez yordam"] }
-    ]
-  },
-  {
-    label: "faoliyat",
-    key: "faoliyat",
-    columns: [
-      { title: "INFRATUZILMA", items: ["Yotoqxona", "Sport majmuasi"] },
-    ]
-  }
-];
 
-const menuIcons = {
-  talim: <MenuBookIcon fontSize="small" className="link-icon" />,
-};
 
-// 🌟 Mobile Menu Element
-const MobileMenuItem = ({ menu, menuIcons, setDrawerOpen }) => {
-  const [open, setOpen] = useState(false);
+const Navbar = () => {
+  const [openDropdown, setOpenDropdown] = useState(null);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 900);
 
-  const handleClick = () => {
-    setOpen(!open);
+  // Responsive listener
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 900);
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handleClick = () => setOpenDropdown(null);
+    window.addEventListener("click", handleClick);
+
+    return () => window.removeEventListener("click", handleClick);
+  }, []);
+
+  // Prevent closing when clicking inside dropdown
+  const stopPropagation = (e) => e.stopPropagation();
+
+  // Dropdown toggle
+  const handleDropdownToggle = (name) => {
+    if (isMobile) {
+      setOpenDropdown(openDropdown === name ? null : name);
+    }
   };
-  
-  const handleLinkClick = () => {
-      setDrawerOpen(false);
-  }
 
   return (
-    <React.Fragment>
-      <ListItemButton onClick={handleClick} className="mobile-menu-item">
-        <Typography variant="body1" component="span" className="mobile-menu-label">
-          {menu.label}
-        </Typography>
-        {open ? <ExpandLess sx={{ color: "#0652a8" }} /> : <ExpandMore sx={{ color: "#0652a8" }} />}
-      </ListItemButton>
-      <Collapse in={open} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding className="mobile-sub-menu">
-          {menu.columns.map((col, idx) => (
-            <Box key={idx}>
-              <ListItemButton sx={{ pl: 4, pt: 1, pb: 0, '&:hover': { background: 'transparent' } }}>
-                <Typography className="mobile-column-title">| {col.title}</Typography>
-              </ListItemButton>
-              {col.items.map((item, j) => (
-                <ListItemButton 
-                  key={j} 
-                  sx={{ pl: 6 }} 
-                  className="mobile-link-item" 
-                  onClick={handleLinkClick}
-                >
-                  {menuIcons[menu.key] ?? <MenuBookIcon fontSize="small" className="mobile-link-icon" />}
-                  <Typography variant="body2" component="span">{item}</Typography>
-                </ListItemButton>
-              ))}
-              {idx < menu.columns.length - 1 && <Divider component="li" sx={{ ml: 6, mr: 2 }} />}
-            </Box>
-          ))}
-        </List>
-      </Collapse>
-    </React.Fragment>
+    <nav className="xtra-navbar" onClick={stopPropagation}>
+
+      {/* ===== TOP HEADER ===== */}
+     <div className="top-header">
+  <div className="logo-section">
+
+    {/* LOGO IMG */}
+    <img 
+      src={logo}
+      alt="XTRA Elderly Care Services Logo"
+      className="logo-img"
+    />
+
+
+  </div>
+
+  {/* Contact Info */}
+  <div className="contact-info">
+    <div className="contact-item">
+      <div className="icon-circle"><i className="contact-icon phone-icon"></i></div>
+      <div className="info-text">
+        <span className="label">Phone:</span>
+        <span className="value"><strong>+1 (800) 333 445</strong></span>
+      </div>
+    </div>
+
+    <div className="contact-item">
+      <div className="icon-circle"><i className="contact-icon address-icon"></i></div>
+      <div className="info-text">
+        <span className="label">Address:</span>
+        <span className="value"><strong>1738, King Street, LA</strong></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+      {/* ===== NAVIGATION ===== */}
+      <div className="bottom-nav">
+        <hr className="nav-divider" />
+
+        <ul className="nav-links">
+
+          <li className="nav-item active">
+            <a href="#">Home</a>
+          </li>
+
+          <li className="nav-item">
+            <a href="#">About Us</a>
+          </li>
+
+{/* --- SERVICES DROPDOWN --- */}
+<li
+  className={`nav-item dropdown ${openDropdown === "services" ? "open" : ""}`}
+  onClick={() => handleDropdownToggle("services")}
+>
+  <a href="#">Services <span className="arrow">▼</span></a>
+
+  <ul className="dropdown-menu">
+    <li><a href="#"><span className="drop-icon">›</span> Home Care</a></li>
+    <li><a href="#"><span className="drop-icon">›</span> Nursing Care</a></li>
+    <li><a href="#"><span className="drop-icon">›</span> Rehabilitation</a></li>
+
+    {/* SUB-DROPDOWN (2-level) */}
+    <li className="sub-dropdown">
+      <a href="#"><span className="drop-icon">›</span> Personal Support</a>
+
+      <ul className="sub-dropdown-menu">
+        <li><a href="#"><span className="drop-icon">›</span> Live-in Care</a></li>
+        <li><a href="#"><span className="drop-icon">›</span> Disability Support</a></li>
+      </ul>
+    </li>
+  </ul>
+</li>
+
+
+
+{/* --- SHOP DROPDOWN --- */}
+<li
+  className={`nav-item dropdown ${openDropdown === "shop" ? "open" : ""}`}
+  onClick={() => handleDropdownToggle("shop")}
+>
+  <a href="#">Shop <span className="arrow">▼</span></a>
+
+  <ul className="dropdown-menu">
+    <li><a href="#"><span className="drop-icon">›</span> Medical Equipment</a></li>
+    <li><a href="#"><span className="drop-icon">›</span> Senior Products</a></li>
+    <li><a href="#"><span className="drop-icon">›</span> Gift Cards</a></li>
+  </ul>
+</li>
+
+
+
+          <li className="nav-item">
+            <a href="#">Contact Us</a>
+          </li>
+        </ul>
+
+        {/* Social Icons */}
+        <div className="social-links">
+          <a href="#"><FaFacebookF /></a>
+          <a href="#"><FaLinkedinIn /></a>
+          <a href="#"><FaTwitter /></a>
+        </div>
+      </div>
+
+    </nav>
   );
 };
 
-export default function Navbar() {
-  const [openMenu, setOpenMenu] = useState(null);
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const location = useLocation();
-
-  const handleOpen = (key) => setOpenMenu(key);
-  const handleClose = () => setOpenMenu(null);
-
-  return (
-    <AppBar position="sticky" sx={{ background: "#fff", boxShadow: "0 2px 12px rgba(0,0,0,0.06)" }}>
-      {/* Container to'liq kenglikda va skrolni hisobga oladi */}
-      <Container maxWidth="xl" disableGutters={false}>
-        <Toolbar sx={{ height: "80px", display: "flex", justifyContent: "space-between" }} disableGutters>
-
-          {/* LOGO */}
-          <Box sx={{ display: "flex", alignItems: "center", gap: 2, cursor: "pointer" }}>
-            <img src={logoImage} alt="Logo" style={{ width: "150px", objectFit: "contain" }} />
-          </Box>
-
-          {/* DESKTOP MENU */}
-          <Box sx={{ display: { xs: "none", md: "flex" }, height: "100%" }}>
-            {menuData.map((menu) => {
-              // Bitta ustunli menyu bo'lsa ham, uni Mega Menu sifatida render qilish uchun
-              const isSimpleDropdown = menu.columns.length === 1 && false; // Har doim Mega Menu uslubini ishlatish
-
-              return (
-                <Box
-                  key={menu.key}
-                  sx={{ 
-                    position: isSimpleDropdown ? "relative" : "static",
-                    height: "100%",
-                    display: "flex",
-                    alignItems: "center"
-                  }}
-                  onMouseEnter={() => handleOpen(menu.key)}
-                  onMouseLeave={handleClose}
-                >
-                  <Button
-                    className={`nav-btn ${openMenu === menu.key ? "active-nav" : ""}`}
-                    disableRipple
-                  >
-                    {menu.label}
-                  </Button>
-
-                  {/* DROPDOWN (Barcha menyular mega-menu sifatida ko'rsatiladi) */}
-                  <Box
-                    className={`
-                      dropdown-wrapper
-                      mega-menu 
-                      ${openMenu === menu.key ? "open" : ""}
-                    `}
-                  >
-                    <div className="mega-container">
-                      {menu.columns.map((col, idx) => (
-                        <Box key={idx} className="menu-column">
-                          <Typography className="column-title">| {col.title}</Typography>
-                          {col.items.map((item, j) => (
-                            <Box key={j} className="menu-link">
-                              {menuIcons[menu.key] ?? (
-                                <MenuBookIcon fontSize="small" className="link-icon" />
-                              )}
-                              <span>{item}</span>
-                            </Box>
-                          ))}
-                        </Box>
-                      ))}
-                    </div>
-                  </Box>
-                </Box>
-              );
-            })}
-
-            {/* SDGs BUTTON */}
-            <Button className="sdg-btn" disableRipple>SDGs</Button>
-          </Box>
-
-          {/* MOBILE BUTTON */}
-          <IconButton 
-             sx={{ display: { xs: "flex", md: "none" }, color: '#0652a8' }} 
-             onClick={() => setDrawerOpen(true)}
-          >
-            <MenuIcon sx={{ fontSize: 30 }}/>
-          </IconButton>
-        </Toolbar>
-      </Container>
-
-      {/* MOBIL DRAWER */}
-      <Drawer
-        anchor="right"
-        open={drawerOpen}
-        onClose={() => setDrawerOpen(false)}
-        PaperProps={{
-          sx: { 
-            width: 300, 
-            background: '#ffffff',
-            boxShadow: '-4px 0 10px rgba(0,0,0,0.1)' 
-          } 
-        }}
-      >
-        <List className="mobile-drawer-list">
-          {/* LOGO va Yopish Tugmasi (Drawer ichidagi) */}
-          <Box className="mobile-drawer-header">
-            <img src={logoImage} alt="Logo" style={{ width: "120px", objectFit: "contain" }} />
-            <IconButton onClick={() => setDrawerOpen(false)} sx={{ color: '#0652a8' }}>
-                <CloseIcon />
-            </IconButton>
-          </Box>
-          <Divider sx={{ mb: 1 }} />
-          
-          {/* Menu Elementlari */}
-          {menuData.map((menu) => (
-            <MobileMenuItem 
-                key={menu.key} 
-                menu={menu} 
-                menuIcons={menuIcons} 
-                setDrawerOpen={setDrawerOpen}
-            />
-          ))}
-
-          <Divider sx={{ mt: 1, mb: 2 }} />
-
-          {/* SDGs Button mobil menyuda */}
-          <ListItemButton sx={{ mt: 1, justifyContent: 'center' }}>
-             <Button className="sdg-btn mobile-sdg-btn" disableRipple>SDGs</Button>
-          </ListItemButton>
-        </List>
-      </Drawer>
-    </AppBar>
-  );
-}
+export default Navbar;

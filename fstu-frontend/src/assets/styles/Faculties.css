@@ -319,7 +319,7 @@ text-transform: uppercase;
 .info-title {
   font-size: 14px;
   margin-top: 8px;
-  font-weight: 700;
+  font-weight: 500;
   color: #555;
   transition: .25s ease;
 }
@@ -331,15 +331,15 @@ text-transform: uppercase;
 }
 
 .info-card:hover .info-icon {
-  color: #1a73e8;
+  color: rgb(0, 67, 143);  /* icon */
 }
 
 .info-card:hover .info-line {
-  background:#1a73e8;
+  background:rgb(0, 67, 143); /* ______ */
 }
 
 .info-card:hover .info-title {
-  color: #1a73e8;
+  color: rgb(0, 67, 143);  /* text */
 }
 
 /* ACTIVE CARD (if needed highlight) */
