@@ -1,147 +1,213 @@
 import React, { useState, useEffect } from "react";
 import "../../assets/styles/Navbar.css";
-import { FaFacebookF, FaLinkedinIn, FaTwitter } from "react-icons/fa";
+import { FaFacebookF, FaInstagram, FaLinkedinIn, FaTelegram, FaTwitter, FaYoutube, FaYoutubeSquare } from "react-icons/fa";
+import {
+  Box,
+  Drawer,
+  Typography,
+  Link,
+  IconButton,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+import CloseIcon from "@mui/icons-material/Close";
 import logo from "../../assets/images/logo.png";
 
+/* ================= CONSTANT ================= */
+const PRIMARY_COLOR = "#00438f";
 
+/* ================= CONTACT ================= */
+const ContactInfo = () => (
+  <Box className="contact-wrapper">
+    <Box className="contact-info">
+      <Box className="contact-item">
+        <Box className="icon-circle">
+          <i className="contact-icon phone-icon" />
+        </Box>
+        <Typography color={PRIMARY_COLOR}>73 241 12 06</Typography>
+      </Box>
 
-const Navbar = () => {
-  const [openDropdown, setOpenDropdown] = useState(null);
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 900);
+      <Box className="contact-item">
+        <Box className="icon-circle">
+          <i className="contact-icon address-icon" />
+        </Box>
+        <Typography color={PRIMARY_COLOR}>
+          Farg‘ona shahar, Farg‘ona ko‘chasi 86-uy
+        </Typography>
+      </Box>
+    </Box>
 
-  // Responsive listener
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth <= 900);
-    window.addEventListener("resize", handleResize);
+    <hr className="contact-divider" />
 
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+    <Box className="contact-bottom">
+      <Box className="contact-links">
+        {["@SDGS", "✉ Hujjat almashinuvi", "📩Korporativ pochta", "HEMIS"].map((t) => (
+          <Link key={t} href="#" underline="none">
+            {t}
+          </Link>
+        ))}
+      </Box>
 
-  // Close dropdown on outside click
-  useEffect(() => {
-    const handleClick = () => setOpenDropdown(null);
-    window.addEventListener("click", handleClick);
+      <Box className="lang-switch">
+        {["UZ", "RU", "EN"].map((l, i) => (
+          <button key={l} className={i === 0 ? "active" : ""}>
+            {l}
+          </button>
+        ))}
+      </Box>
+    </Box>
+  </Box>
+);
 
-    return () => window.removeEventListener("click", handleClick);
-  }, []);
+/* ================= NAV LINKS ================= */
+const NavLinks = ({
+  openMenu,
+  setOpenMenu,
+  openSubMenu,
+  setOpenSubMenu,
+  isMobile,
+}) => {
+  const toggleMenu = (name, e) => {
+    if (!isMobile) return;
+    e.stopPropagation();
+    setOpenMenu(openMenu === name ? null : name);
+    setOpenSubMenu(null);
+  };
 
-  // Prevent closing when clicking inside dropdown
-  const stopPropagation = (e) => e.stopPropagation();
-
-  // Dropdown toggle
-  const handleDropdownToggle = (name) => {
-    if (isMobile) {
-      setOpenDropdown(openDropdown === name ? null : name);
-    }
+  const toggleSub = (e) => {
+    if (!isMobile) return;
+    e.stopPropagation();
+    setOpenSubMenu(openSubMenu ? null : "sub");
   };
 
   return (
-    <nav className="xtra-navbar" onClick={stopPropagation}>
+    <ul className="nav-links">
+      <li className="nav-item active"><a href="#">Home</a></li>
+      <li className="nav-item"><a href="#">About Us</a></li>
 
-      {/* ===== TOP HEADER ===== */}
-     <div className="top-header">
-  <div className="logo-section">
+      <li
+        className={`nav-item dropdown ${openMenu === "services" ? "open" : ""}`}
+        onClick={(e) => toggleMenu("services", e)}
+      >
+        <a href="#">Services <span className="arrow">▼</span></a>
 
-    {/* LOGO IMG */}
-    <img 
-      src={logo}
-      alt="XTRA Elderly Care Services Logo"
-      className="logo-img"
-    />
+        <ul className="dropdown-menu">
+          <li><a href="#"><span className="menu-text">Home Care</span></a></li>
+          <li><a href="#"><span className="menu-text">Nursing Care</span></a></li>
+          <li><a href="#"><span className="menu-text">Rehabilitation</span></a></li>
 
+          <li
+            className={`sub-dropdown ${openSubMenu ? "open" : ""}`}
+            onClick={toggleSub}
+          >
+            <a href="#">
+              <span className="menu-text">Personal Support</span>
+              <span className="sub-arrow">▼</span>
+            </a>
 
-  </div>
-
-  {/* Contact Info */}
-  <div className="contact-info">
-    <div className="contact-item">
-      <div className="icon-circle"><i className="contact-icon phone-icon"></i></div>
-      <div className="info-text">
-        <span className="label">Phone:</span>
-        <span className="value"><strong>+1 (800) 333 445</strong></span>
-      </div>
-    </div>
-
-    <div className="contact-item">
-      <div className="icon-circle"><i className="contact-icon address-icon"></i></div>
-      <div className="info-text">
-        <span className="label">Address:</span>
-        <span className="value"><strong>1738, King Street, LA</strong></span>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-      {/* ===== NAVIGATION ===== */}
-      <div className="bottom-nav">
-        <hr className="nav-divider" />
-
-        <ul className="nav-links">
-
-          <li className="nav-item active">
-            <a href="#">Home</a>
+            <ul className="sub-dropdown-menu">
+              <li><a href="#"><span className="menu-text">Live-in Care</span></a></li>
+              <li><a href="#"><span className="menu-text">Disability Support</span></a></li>
+            </ul>
           </li>
+        </ul>
+      </li>
 
-          <li className="nav-item">
-            <a href="#">About Us</a>
-          </li>
-
-{/* --- SERVICES DROPDOWN --- */}
-<li
-  className={`nav-item dropdown ${openDropdown === "services" ? "open" : ""}`}
-  onClick={() => handleDropdownToggle("services")}
+    <li
+  className={`nav-item dropdown ${openMenu === "shop" ? "open" : ""}`}
+  onClick={(e) => toggleMenu("shop", e)}
 >
-  <a href="#">Services <span className="arrow">▼</span></a>
+  <a href="#">
+    Shop <span className="arrow">▼</span>
+  </a>
 
   <ul className="dropdown-menu">
-    <li><a href="#"><span className="drop-icon">›</span> Home Care</a></li>
-    <li><a href="#"><span className="drop-icon">›</span> Nursing Care</a></li>
-    <li><a href="#"><span className="drop-icon">›</span> Rehabilitation</a></li>
+    <li>
+      <a href="#">
+        <span className="menu-text">Medical Equipment</span>
+      </a>
+    </li>
 
-    {/* SUB-DROPDOWN (2-level) */}
-    <li className="sub-dropdown">
-      <a href="#"><span className="drop-icon">›</span> Personal Support</a>
-
-      <ul className="sub-dropdown-menu">
-        <li><a href="#"><span className="drop-icon">›</span> Live-in Care</a></li>
-        <li><a href="#"><span className="drop-icon">›</span> Disability Support</a></li>
-      </ul>
+    <li>
+      <a href="#">
+        <span className="menu-text">Senior Products</span>
+      </a>
     </li>
   </ul>
 </li>
 
+      <li className="nav-item"><a href="#">Contact Us</a></li>
+    </ul>
+  );
+};
 
+/* ================= NAVBAR ================= */
+const Navbar = () => {
+  const [openMenu, setOpenMenu] = useState(null);
+  const [openSubMenu, setOpenSubMenu] = useState(null);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
-{/* --- SHOP DROPDOWN --- */}
-<li
-  className={`nav-item dropdown ${openDropdown === "shop" ? "open" : ""}`}
-  onClick={() => handleDropdownToggle("shop")}
->
-  <a href="#">Shop <span className="arrow">▼</span></a>
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
 
-  <ul className="dropdown-menu">
-    <li><a href="#"><span className="drop-icon">›</span> Medical Equipment</a></li>
-    <li><a href="#"><span className="drop-icon">›</span> Senior Products</a></li>
-    <li><a href="#"><span className="drop-icon">›</span> Gift Cards</a></li>
-  </ul>
-</li>
+  useEffect(() => {
+    if (!isDesktop) return;
+    const closeAll = () => {
+      setOpenMenu(null);
+      setOpenSubMenu(null);
+    };
+    window.addEventListener("click", closeAll);
+    return () => window.removeEventListener("click", closeAll);
+  }, [isDesktop]);
 
+  return (
+    <nav className="xtra-navbar">
+      <div className="top-header">
+        <img src={logo} className="logo-img" alt="Logo" />
 
+        {isDesktop && <ContactInfo />}
 
-          <li className="nav-item">
-            <a href="#">Contact Us</a>
-          </li>
-        </ul>
-
-        {/* Social Icons */}
-        <div className="social-links">
-          <a href="#"><FaFacebookF /></a>
-          <a href="#"><FaLinkedinIn /></a>
-          <a href="#"><FaTwitter /></a>
-        </div>
+        {!isDesktop && (
+          <IconButton onClick={() => setMobileOpen(true)}>
+            <MenuIcon />
+          </IconButton>
+        )}
       </div>
 
+      {isDesktop && (
+        <div className="bottom-nav">
+          <div className="nav-divider" />
+          <NavLinks
+            openMenu={openMenu}
+            setOpenMenu={setOpenMenu}
+            openSubMenu={openSubMenu}
+            setOpenSubMenu={setOpenSubMenu}
+          />
+          <div className="social-links">
+            <FaFacebookF />
+            <FaInstagram />
+            <FaYoutube />
+            <FaTelegram />
+          </div>
+        </div>
+      )}
+
+      <Drawer anchor="right" open={mobileOpen} onClose={() => setMobileOpen(false)}>
+        <Box sx={{ width: 320, p: 2 }}>
+          <IconButton onClick={() => setMobileOpen(false)}>
+            <CloseIcon />
+          </IconButton>
+          <ContactInfo />
+          <NavLinks
+            isMobile
+            openMenu={openMenu}
+            setOpenMenu={setOpenMenu}
+            openSubMenu={openSubMenu}
+            setOpenSubMenu={setOpenSubMenu}
+          />
+        </Box>
+      </Drawer>
     </nav>
   );
 };

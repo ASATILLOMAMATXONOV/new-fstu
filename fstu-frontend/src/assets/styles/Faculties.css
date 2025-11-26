@@ -241,7 +241,7 @@
 =========================== */
 .tabs-rounded {
   display: flex;
-  gap: 28px;
+  gap: 1px 28px;
   margin-left: 25px;
   padding-bottom: 12px;
   position: relative;
