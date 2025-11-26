@@ -1,144 +1,198 @@
-/* ============================
-   SLIDER QUTILARI
-   ============================ */
-.banner-slider {
+/* MAIN */
+.banner {
   position: relative;
   width: 100%;
-  height: 33vw;
-  max-height: 650px;
-  overflow: hidden;
-  background: #000;
 }
 
-/* =============================
-        DOUBLE STRIPE SWIPE
-   ============================= */
-
-
-/* =============================
-      FIXED DIAGONAL STRIPES
-   ============================= */
-
-.stripes {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  pointer-events: none;
-  z-index: 30;
-}
-
-.stripeA,
-.stripeB {
-  position: absolute;
-  top: 0;
-  left: -160%;
-  width: 140%;
-  height: 100%;
-
-  /* BU YER — TO‘G‘RI JOY */
-  clip-path: polygon(
-    0 0,
-    100% 0,
-    100% 100%,
-    15% 100%
-  );
-
-  transform: translateX(0);
-}
-
-/* Stripe ranglari */
-.stripeA {
-  background: rgba(0, 0, 0, 0.349);
-}
-
-.stripeB {
-  background: rgba(5, 99, 240, 0.719);
-}
-
-/* Animatsiya faollashishi */
-.stripes-active .stripeA {
-  /* Animatsiya: [nomi] [davomiyligi] [egri chizig'i] [boshlanish vaqti] [tola] */
-  animation: stripeMove 1.4s ease 0s forwards; /* 0s boshlanish vaqti */
-}
-
-.stripes-active .stripeB {
-  /* stripeB 1.4s dan keyin boshlanishi kerak (stripeA tugashi) */
-  animation: stripeMove 2s ease 1.4s forwards; 
-}
-
-/* 🔥 Stripe to‘liq o‘ngga chiqib ketadi */
-@keyframes stripeMove {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(280%);
-  }
-}
-
-
-/* ============================
-          IMAGES
-   ============================ */
+/* IMAGE */
 .banner-img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;   /* ✅ MUHIM */
+  object-position: center;
+  display: block;
+  transition: transform 0.8s ease;
+}
+
+/* ZOOM */
+.banner-img.zoom {
+  transform:rotateX('angle');
+}
+
+/* OVERLAY */
+.banner-overlay {
   position: absolute;
   inset: 0;
-  opacity: 0;
-  transform: translateX(20px);
-  transition: opacity 1s ease, transform 1s ease;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.55),
+    rgba(0, 0, 0, 0.15)
+  );
+  z-index: 1;
 }
 
-.banner-img.active {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-.banner-img.slide-out {
-  opacity: 0;
-  transform: translateX(-40px); /* eski rasm chetga ketadi */
-}
-
-/* ============================
-       NAV BUTTONS
-   ============================ */
-.banner-nav-btn {
+/* TEXT */
+.banner-text {
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 30;
-  background: rgba(0, 46, 96, 0.7);
+  left: 28px;
+  bottom: 30px;
+  z-index: 2;
   color: #fff;
+  max-width: 520px;
+  animation: fadeUp 0.9s ease;
+}
+
+.banner-text h1 {
+  font-size: clamp(26px, 4vw, 42px);
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.banner-text p {
+  font-size: 15px;
+  opacity: 0.85;
+}
+
+/* NAV */
+.banner-nav {
+  position: absolute;
+  right: 22px;
+  bottom: 22px;
+  z-index: 2;
+  display: flex;
+  gap: 12px;
+}
+
+.banner-nav button {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
   border: none;
   cursor: pointer;
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  backdrop-filter: blur(6px);
+  transition: 0.3s;
+}
 
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
+.banner-nav button:hover {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+/* DOTS */
+.banner-dots {
+  position: absolute;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: .3s ease;
+  gap: 10px;
 }
 
-.banner-nav-btn:hover {
-  background: rgb(0, 46, 96);
-  transform: translateY(-50%) scale(1.1);
+.banner-dots span {
+  width: 8px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  cursor: pointer;
 }
 
-.banner-prev-btn { left: 20px; }
-.banner-next-btn { right: 20px; }
+.banner-dots span.active {
+  background: #fff;
+  transform: scale(1.3);
+}
 
-/* mobile */
-@media (max-width: 768px) {
-  .banner-nav-btn {
-    width: 40px;
-    height: 40px;
+/* ANIMATION */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
   }
-  .banner-prev-btn { left: 10px; }
-  .banner-next-btn { right: 10px; }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .banner-text {
+    left: 18px;
+    bottom: 22px;
+  }
+
+  .banner-nav {
+    right: 16px;
+    bottom: 16px;
+  }
+}
+/* ================= MOBILE RESPONSIVE ================= */
+@media (max-width: 768px) {
+
+
+
+  /* TEXT */
+  .banner-text {
+    left: 14px;
+    bottom: 16px;
+    max-width: 85%;
+  }
+
+  .banner-text h1 {
+    font-size: clamp(18px, 6vw, 26px);
+    line-height: 1.2;
+  }
+
+  .banner-text p {
+    font-size: 12px;
+  }
+
+  /* NAV BUTTONS */
+  .banner-nav {
+    right: 14px;
+    bottom: 14px;
+    gap: 8px;
+  }
+
+  .banner-nav button {
+    width: 34px;
+    height: 34px;
+  }
+
+  .banner-nav svg {
+    font-size: 18px;
+  }
+
+  /* DOTS */
+  .banner-dots {
+    bottom: 10px;
+    gap: 6px;
+  }
+
+  .banner-dots span {
+    width: 6px;
+    height: 6px;
+  }
+}
+
+/* ================= SMALL MOBILE ================= */
+@media (max-width: 480px) {
+
+  .banner-text h1 {
+    font-size: 16px;
+  }
+
+  .banner-text p {
+    font-size: 11px;
+  }
+
+  .banner-nav button {
+    width: 30px;
+    height: 30px;
+  }
+
+  .banner-nav svg {
+    font-size: 16px;
+  }
 }

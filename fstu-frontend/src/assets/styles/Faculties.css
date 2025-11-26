@@ -1,21 +1,22 @@
-:root {
-    --primary-blue: #3f68a5;
-    --light-blue: #8c88e7;
-    --light-gray: #e6e6e6;
-    --card-bg: #ffffff;
-    --card-bottom-bg: #1a73e8;
-}
 
 /* HEADER */
 .faculties-header {
-    padding: 12px 40px;
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: linear-gradient(-45deg,#6ea0f0,#6ea0f0 55%,#4a7fd1 55%,#4a7fd1);
-    background-size: 192% 100%;
-    transition: background-position 1s ease;
+  padding: 12px 40px;
+  color: var(--text-light);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  background: linear-gradient(
+    -45deg,
+    var(--light-blue),
+    var(--light-blue) 55%,
+    var(--primary-blue) 55%,
+    var(--primary-blue)
+  );
+
+  background-size: 192% 100%;
+  transition: background-position 1s ease;
 }
 .faculties-header:hover { background-position: right; }
 

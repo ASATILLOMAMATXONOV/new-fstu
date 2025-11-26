@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import "../../assets/styles/Faculties.css";
+import "../../assets/styles/style.css";
 import {
   faNewspaper,
   faUniversity,
