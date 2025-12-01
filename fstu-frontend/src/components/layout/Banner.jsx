@@ -4,16 +4,12 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import "../../assets/styles/Banner.css";
 
-import img1 from "../../assets/images/21.jpg";
-import img2 from "../../assets/images/en_reyting_new.png";
-import img3 from "../../assets/images/new_ru_rr.png";
+
+import img2 from "../../assets/images/Saty.png";
+import img3 from "../../assets/images/Saty.png";
 
 const slides = [
-  {
-    img: img1,
-    title: "University Life",
-    desc: "Modern • Innovative • Trusted Education",
-  },
+
   {
     img: img2,
     title: "Top Rating",
@@ -62,10 +58,13 @@ const Banner = () => {
       <div className="banner-overlay" />
 
       {/* TEXT – BOTTOM LEFT */}
-      <div className="banner-text">
-        <h1 key={slides[index].title}>{slides[index].title}</h1>
-        <p key={slides[index].desc}>{slides[index].desc}</p>
-      </div>
+<div className="banner-text" key={index}>
+  <h1 className="text-line title">{slides[index].title}</h1>
+  <p className="text-line desc">{slides[index].desc}</p>
+</div>
+
+
+
 
       {/* NAV BUTTONS – BOTTOM RIGHT */}
       <div className="banner-nav">

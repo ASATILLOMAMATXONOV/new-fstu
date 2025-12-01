@@ -2,7 +2,7 @@
 /* HEADER */
 .faculties-header {
   padding: 12px 40px;
-  color: var(--text-light);
+  color: #fff;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -35,25 +35,25 @@
 
 /* CARD *//* CARD CONTAINER */
 .faculty-card {
-    cursor: pointer;
-    background: var(--card-bg);
-    border-radius: 10px;
-    overflow:hidden;
-    transition: 
-        transform 0.35s cubic-bezier(.17,.67,.48,1.28),
-        box-shadow 0.35s ease,
-        border-radius 0.35s ease;
-    
-    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+  cursor: pointer;
+  background: var(--card-bg);
+  border-radius: 10px;
+  overflow: hidden;
+  transition:
+    transform .35s cubic-bezier(.17,.67,.48,1.28),
+    box-shadow .35s ease,
+    border-radius .35s ease;
+
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
 }
 
 /* IMAGE AREA */
 .card-image-placeholder {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #ededed;
-    padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--light-gray);
+  padding: 10px;
 }
 
 .faculty-img {
@@ -90,15 +90,14 @@
 
 /* TEXT AREA (ALWAYS AT BOTTOM) */
 .card-content {
-    background: var(--card-bottom-bg);
-    padding: 15px;
-    text-align: center;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  background: var(--primary-blue);
+  padding: 15px;
+  text-align: center;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-
 .card-name {
     color: white;
     font-size: .95rem;
@@ -139,30 +138,26 @@
   text-transform: uppercase;
   font-weight: 700;
   margin: 20px 0 10px;
-  color: #1f1f1f;
+  color: var(--text-dark);
   position: relative;
-  display: inline-block; /* ❗ MATN o‘lchamiga bo‘ysunsin */
-  font-family: 'Arial', 'Helvetica', sans-serif;
+  display: inline-block;
+  font-family: Arial, Helvetica, sans-serif;
   opacity: 0;
   transform: translateY(12px) scale(0.97);
-  animation: titleAnim .55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: titleAnim .55s cubic-bezier(0.22,1,0.36,1) forwards;
 }
 
-/* PASTKI CHIZIQ — matnning o‘zida */
 .tab-title::after {
   content: "";
   position: absolute;
   left: 0;
   bottom: -4px;
-
-  width: 0%;               /* boshlanish holati */
+  width: 0%;
   height: 3px;
-  background: #1a73e8;
+  background: var(--primary-blue);
   border-radius: 3px;
-
   transition: width .35s ease;
 }
-
 /* HOVER QILINGANDA — chiziq faqat MATN uzunligi bo‘yicha o‘sadi */
 .tab-title:hover::after {
   width: 100%;
@@ -220,9 +215,29 @@
 .line {
   flex: 1;
   height: 2px;
-  background: #1a73e8;
-  transform-origin: left;
-  transition: transform .45s ease, opacity .45s ease;
+  background: var(--primary-blue);
+}
+
+.round-tab {
+  text-transform: uppercase;
+  padding: 8px 0;
+  font-size: 15px;
+  font-weight: 600;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+}
+
+.round-tab.active {
+  color: var(--primary-blue);
+}
+
+.tab-indicator {
+  position: absolute;
+  bottom: -2px;
+  height: 2px;
+  background: var(--primary-blue);
 }
 
 /* ANIMATSION HOLAT */
@@ -249,36 +264,6 @@
   flex-wrap: wrap; /* 🔥 tabs mobilga moslashadi */
 }
 
-/* TAB item */
-.round-tab {
-text-transform: uppercase;
-  padding: 8px 0;
-  font-size: 15px;
-  font-weight: 600;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: #444;
-  position: relative;
-  white-space: nowrap;
-  transition: color .25s ease;
-}
-
-.round-tab.active {
-  color: #1a73e8;
-}
-
-/* ANIMATED INDICATOR */
-.tab-indicator {
-  position: absolute;
-  bottom: -2px;
-  height: 2px;
-  background: #1a73e8;
-  border-radius: 4px;
-  transition: transform .28s ease, width .28s ease;
-}
-
-
 
 
 /* GRID LAYOUT */
@@ -287,48 +272,49 @@ text-transform: uppercase;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 22px;
   margin-top: 35px;
+
+  justify-items: center;
+}
+
+.info-card {
+  width: 240px;
 }
 
 /* CARD */
 .info-card {
-  border: 2px solid #e6e6e6;
+  border: 2px solid var(--border-light);
   border-radius: 6px;
   padding: 30px 20px;
   text-align: center;
-  background: #fff;
+  background: var(--card-bg);
   transition: .25s ease;
   cursor: pointer;
 }
 
-/* ICON */
 .info-icon {
   font-size: 45px;
-  color: #bbbbbb;
+  color: var(--icon-muted);
   transition: .25s ease;
 }
 
-/* LINE UNDER ICON */
 .info-line {
   width: 40px;
   height: 3px;
-  background: #bdbdbd;
+  background: var(--icon-muted);
   margin: 14px auto;
-  transition: .25s ease;
 }
 
-/* TITLE */
 .info-title {
   font-size: 14px;
   margin-top: 8px;
   font-weight: 500;
-  color: #555;
-  transition: .25s ease;
+  color: var(--text-muted);
 }
 
 /* HOVER — EXACT SAME AS SCREENSHOT */
 .info-card:hover {
-  border-color: #1a73e8;
-  box-shadow: 0px 0px 25px rgba(0, 127, 245, 0.185);
+  border-color: var(--primary-blue);
+  box-shadow: 0 0 25px rgba(63,104,165,.25);
 }
 
 .info-card:hover .info-icon {
@@ -345,8 +331,8 @@ text-transform: uppercase;
 
 /* ACTIVE CARD (if needed highlight) */
 .active-card {
-  border-color: #1a73e8;
-box-shadow: 0px 0px 25px rgba(0, 86, 245, 0.116);
+  border-color: var(--primary-blue);
+  box-shadow: 0 0 25px rgba(63,104,165,.25);
 }
 
 .active-card .info-icon,
@@ -355,3 +341,6 @@ box-shadow: 0px 0px 25px rgba(0, 86, 245, 0.116);
   color: #1a73e8;
   background: #1a73e8;
 }
+
+
+

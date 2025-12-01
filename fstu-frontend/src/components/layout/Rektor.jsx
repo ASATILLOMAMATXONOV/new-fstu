@@ -1,5 +1,6 @@
 import React from "react";
 import "../../assets/styles/Rektor.css";
+import "../../assets/styles/style.css";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import rektorImg from "../../assets/images/rector.jpg";
 

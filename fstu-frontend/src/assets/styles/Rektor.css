@@ -2,7 +2,7 @@
    FOOTER
    ======================================================= */
 .pagination-section {
-    background: linear-gradient(90deg, #4a7fd1, #6ea0f0);
+    background: var(--primary-blue);
     color: white;
     padding: 25px 20px;
     margin-top: 60px;

@@ -10,8 +10,11 @@ import {
   faBookOpen,
   faUsers,
   faUserTie,
-  faLaptopCode
+  faLaptopCode,
+  faEye,
+  faUserGraduate
 } from "@fortawesome/free-solid-svg-icons";
+
 // Rasmlar
 import atImage from "../../assets/images/fakultet-logo/Axborot texnologiyalari va telekommunikatsiya.png";
 import boshqaruvImage from "../../assets/images/fakultet-logo/ICH.png";
@@ -20,13 +23,30 @@ import kimyoImage from "../../assets/images/fakultet-logo/kimyo.png";
 import energetikaImage from "../../assets/images/fakultet-logo/ee.png";
 import yengilImage from "../../assets/images/fakultet-logo/yst.png";
 import mexanikaImage from "../../assets/images/fakultet-logo/mmf.png";
+
+import reting1  from "../../assets/images/reyting-logo/Emblem_of_Uzbekistan.svg.png";
+import reting2  from "../../assets/images/reyting-logo/impackt renking.png";
+import reting3  from "../../assets/images/reyting-logo/the world universty reanking.png";
+import reting4  from "../../assets/images/reyting-logo/Emblem_of_Uzbekistan.svg.png";
+import reting5  from "../../assets/images/reyting-logo/asia qs ranking.png";
+import reting6  from "../../assets/images/reyting-logo/QS centreal asian ranking 2024.png";
+
+
+
+
+
+
+
+
+
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 
 const tabs = [
   { id: "hammasi", label: "Hammasi" },
-  { id: "fakultet", label: "FAKULTETLAR" },
   { id: "reyting", label: "REYTING KO'RSATKICHLAR" },
+  { id: "fakultet", label: "FAKULTETLAR" },
   { id: "axborot", label: "AXBOROT TIZIMLARI" }
 ];
 
@@ -39,6 +59,20 @@ const facultyData = [
   { name: "Yengil sanoat va to'qimachilik fakulteti", img: yengilImage },
   { name: "Mexanika-mashinasozlik fakulteti", img: mexanikaImage }
 ];
+const Reyting = [
+  { name: "O'zbekiston milliy reytingi", img: reting1  },
+  { name: "THE Impact Rankings", img: reting2 },
+  { name: "THE World University Rankings 2023", img: reting3 },
+  { name: "Texnika sohasi bo'yicha milliy reyting", img: reting4 },
+  { name: "QS Asian University Rankings 2024", img: reting5 },
+  { name: "QS Ranking Central Asia", img: reting6 },
+];
+const Axborot = [
+  { name: "HEMIS axborot tizimi", icon: faUserGraduate },
+  { name: "FSTU LIVE", icon: faEye },
+  { name: "HEMIS student axborot tizimi", icon: faUserGraduate },
+];
+
 const Hammasi = [
   { name: "BO'SH ISH O'RINLARI", icon: faNewspaper },
   { name: "FAKULTETLAR", icon: faUniversity },
@@ -61,7 +95,8 @@ const FacultyCard = ({ name, img }) => (
     </div>
   </div>
 );
-const HammasiCard = ({ name, img }) => (
+
+const ReytingCard = ({ name, img }) => (
   <div className="faculty-card fade-in">
     <div className="card-image-placeholder">
       <img src={img} alt={name} className="faculty-img" />
@@ -72,7 +107,23 @@ const HammasiCard = ({ name, img }) => (
   </div>
 );
 
+const AxborotCard = ({ name, icon }) => (
+  <div className="info-card">
+    <FontAwesomeIcon icon={icon} className="info-icon" />
+    <p className="info-title">{name}</p>
+  </div>
+);
 
+const HammasiCard = ({ name, img }) => (
+  <div className="faculty-card fade-in">
+    <div className="card-image-placeholder">
+      <img src={img} alt={name} className="faculty-img" />
+    </div>
+    <div className="card-content slide-up">
+      <h3 className="card-name">{name}</h3>
+    </div>
+  </div>
+);
 
 const InfoCard = ({ name, icon, active }) => (
   <div className={`info-card ${active ? "active-card" : ""}`}>
@@ -151,19 +202,19 @@ const Faculties = () => {
 
       {/* CONTENT ----------------------------------------- */}
 
- {activeTab === "hammasi" && (
-  <section className="faculties-section">
-    <div className="info-grid">
-      {Hammasi.map((item, i) => (
-        <InfoCard 
-          key={i}
-          name={item.name}
-          icon={item.icon}
-        />
-      ))}
-    </div>
-  </section>
-)}
+      {activeTab === "hammasi" && (
+        <section className="faculties-section">
+          <div className="info-grid">
+            {Hammasi.map((item, i) => (
+              <InfoCard 
+                key={i}
+                name={item.name}
+                icon={item.icon}
+              />
+            ))}
+          </div>
+        </section>
+      )}
 
 
       {activeTab === "fakultet" && (
@@ -180,15 +231,27 @@ const Faculties = () => {
       )}
 
       {activeTab === "reyting" && (
-        <div className="tab-box">
-          <h2>Reyting ma’lumotlari...</h2>
-        </div>
+        <>
+          <section className="faculties-section">
+            <div className="faculties-grid">
+              {Reyting.map((f, i) => (
+                <ReytingCard key={i} name={f.name} img={f.img} />
+              ))}
+            </div>
+          </section>
+        </>
       )}
 
       {activeTab === "axborot" && (
-        <div className="tab-box">
-          <h2>AXBOROT TIZIMLARI...</h2>
-        </div>
+          <>
+          <section className="faculties-section">
+          <div className="info-grid">
+              {Axborot.map((f, i) => (
+                <AxborotCard key={i} name={f.name} icon={f.icon} />
+              ))}
+            </div>
+          </section>
+        </>
       )}
 
     </div>

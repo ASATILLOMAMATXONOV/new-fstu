@@ -13,11 +13,17 @@
    NAVBAR WRAPPER
    ============================================================ */
 .xtra-navbar {
+  position: sticky;   /* ✅ MUHIM */
+  top: 0;
+  width: 90%;
+
   background: var(--bg-color);
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
   padding: 10px 5%;
   font-family: Arial, sans-serif;
+  z-index: 1000;
 }
+
 
 /* ============================================================
    TOP HEADER
@@ -125,7 +131,7 @@ width: 15px;
   justify-content: space-between;
   align-items: center;
   width: 100%;              /* ✅ full ekran emas */
-  background: #0b2e6b;
+  background: var(--primary-color);
   padding: 6px 14px;
   border-radius: 4px;
 }
@@ -285,7 +291,7 @@ width: 15px;
     position: relative;
     display: flex;
     align-items: center;
-            padding: 12px 5px 5px 35px; /* ✅ keng joy */
+            padding: 12px 5px 10px 35px; /* ✅ keng joy */
     overflow: visible;
   }
 
@@ -448,7 +454,7 @@ width: 15px;
 }
 
 .nav-item a {
-  color: var(--text-dark);
+  color: var(--primary-color);
   text-decoration: none;
   font-size: 15px;
   font-weight: 600;
@@ -457,12 +463,12 @@ width: 15px;
 
 /* ACTIVE STATE */
 .nav-item.active {
-  background: #fbe7df;
+  background: var(--border-light);
   border-radius: 4px;
 }
 
 .nav-item.active a {
-  color: var(--text-dark);
+  color: var(--primary-color);
 }
 
 .nav-item a:hover {

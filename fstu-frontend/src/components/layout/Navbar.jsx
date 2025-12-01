@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../../assets/styles/Navbar.css";
+import "../../assets/styles/style.css";
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaTelegram, FaTwitter, FaYoutube, FaYoutubeSquare } from "react-icons/fa";
 import {
   Box,
@@ -83,7 +84,7 @@ const NavLinks = ({
 
   return (
     <ul className="nav-links">
-      <li className="nav-item active"><a href="#">Home</a></li>
+      <li className="nav-item active"><a href="#">Universitet</a></li>
       <li className="nav-item"><a href="#">About Us</a></li>
 
       <li

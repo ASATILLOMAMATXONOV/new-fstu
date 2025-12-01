@@ -25,23 +25,59 @@
   inset: 0;
   background: linear-gradient(
     to top,
-    rgba(0, 0, 0, 0.55),
-    rgba(0, 0, 0, 0.15)
+    rgba(0, 0, 0, 0.336),
+    rgba(0, 0, 0, 0)
   );
   z-index: 1;
 }
 
 /* TEXT */
+/* ================= BANNER TEXT ================= */
 .banner-text {
   position: absolute;
   left: 28px;
   bottom: 30px;
   z-index: 2;
-  color: #fff;
   max-width: 520px;
-  animation: fadeUp 0.9s ease;
+  color: #fff;
+  padding: 18px 22px;
+  border-radius: 12px;
+
+  /* ✅ O‘NGGA QARAB XIRALASHIB YO‘QOLADIGAN BACKGROUND */
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.65) 0%,
+    rgba(0, 0, 0, 0.55) 55%,
+    rgba(0, 0, 0, 0.2) 80%,
+    rgba(0, 0, 0, 0) 100%
+  );
+
+  /* backdrop-filter: blur(6px); */
+
+  /* ✅ BACKGROUND CHAPDAN KENGAYADI */
+  transform-origin: left;
+  animation: bgReveal 0.9s ease forwards;
+  overflow: hidden;
 }
 
+/* ================= TEXT ANIMATION ================= */
+/* ================= TEXT WRITE EFFECT ================= */
+.text-line {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 0;
+
+  animation: textReveal 0.9s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+}
+
+.text-line.desc {
+  animation-delay: 0.25s;
+}
+
+
+/* ================= TEXT STYLE ================= */
 .banner-text h1 {
   font-size: clamp(26px, 4vw, 42px);
   font-weight: 800;
@@ -50,7 +86,58 @@
 
 .banner-text p {
   font-size: 15px;
-  opacity: 0.85;
+  opacity: 0.9;
+}
+
+
+.text-line.desc::after {
+  display: none;
+}
+
+@keyframes cursorBlink {
+  50% { opacity: 0; }
+}
+
+/* ================= KEYFRAMES ================= */
+@keyframes bgReveal {
+  from {
+    clip-path: inset(0 100% 0 0);
+    opacity: 0;
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+  }
+}
+
+@keyframes textReveal {
+  from {
+    width: 0;
+    opacity: 0;
+  }
+  to {
+    width: 100%;
+    opacity: 1;
+  }
+}
+
+
+/* ================= MOBILE ================= */
+@media (max-width: 768px) {
+  .banner-text {
+    left: 16px;
+    bottom: 18px;
+    max-width: 85%;
+    padding: 14px 16px;
+  }
+
+  .banner-text h1 {
+    font-size: 20px;
+  }
+
+  .banner-text p {
+    font-size: 12px;
+  }
 }
 
 /* NAV */

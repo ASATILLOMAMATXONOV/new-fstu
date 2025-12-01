@@ -1,11 +1,10 @@
 :root {
   --primary-blue: #3f68a5;
   --light-blue: #6edbfc;
-  --light-gray: #dbdbdb;
+  --light-gray: #ffffffe0;
   --card-bg: #ffffff;
   --card-bottom-bg: #0359ca;
 
-  /* qo‘shimcha yordamchi */
   --text-dark: #1f1f1f;
   --text-muted: #555;
   --border-light: #e6e6e6;
