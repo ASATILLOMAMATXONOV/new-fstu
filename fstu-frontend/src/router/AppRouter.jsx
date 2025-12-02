@@ -11,6 +11,7 @@ import Banner from "../components/layout/Banner";
 import Faculties from "../components/layout/Faculties"
 import Rektor from "../components/layout/Rektor";
 import Niewss from "../components/layout/Niews";
+import Announces from "../components/layout/Announces"; 
 
 export default function AppRouter() {
   return (
@@ -21,6 +22,7 @@ export default function AppRouter() {
         <Faculties />
         <Rektor />
         <Niewss />
+        <Announces />
         
       <Routes>
         <Route path="/" element={<Home />} />
