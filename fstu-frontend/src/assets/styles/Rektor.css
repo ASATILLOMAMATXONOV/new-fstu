@@ -14,7 +14,7 @@
 }
 
 .section-title {
-    font-size: 2rem;
+    font-size: 25px;
     font-weight: 700;
     margin: 0;
 }
@@ -121,7 +121,7 @@
 
 /* NAME */
 .rektor-name {
-    font-size: 2.1rem;
+    font-size: 25px;
     font-weight: 900;
     color: #3f68a5;
     font-family: 'Arial', 'Helvetica', sans-serif;
