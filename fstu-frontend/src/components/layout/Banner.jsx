@@ -58,10 +58,11 @@ const Banner = () => {
       <div className="banner-overlay" />
 
       {/* TEXT – BOTTOM LEFT */}
-<div className="banner-text" key={index}>
-  <h1 className="text-line title">{slides[index].title}</h1>
-  <p className="text-line desc">{slides[index].desc}</p>
-</div>
+      
+      <div className="banner-text" key={index}>
+        <h1 className="text-line title">{slides[index].title}</h1>
+        <p className="text-line desc">{slides[index].desc}</p>
+      </div>
 
 
 
