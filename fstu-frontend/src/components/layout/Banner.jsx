@@ -1,78 +1,89 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { Box } from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import "../../assets/styles/Banner.css";
 
-
-import img2 from "../../assets/images/Saty.png";
-import img3 from "../../assets/images/Saty.png";
+// Rasm importlarini haqiqiy rasm fayllari bilan almashtiring
+import img1 from "../../assets/images/Saty.jpg"; // Yana bir rasm qo'shildi
+import img2 from "../../assets/images/Saty.jpg";
+import img3 from "../../assets/images/Saty.jpg";
 
 const slides = [
-
   {
-    img: img2,
-    title: "Top Rating",
-    desc: "National ranking • TOP-5 University",
+    id: 1,
+    img: img1,
+    title: "Yangi Rating",
+    desc: "Milliy reyting • TOP-5 Universitet",
   },
   {
+    id: 2,
+    img: img2,
+    title: "Xalqaro Qarash",
+    desc: "Global standartlar • Kelajak yetakchilari",
+  },
+  {
+    id: 3,
     img: img3,
-    title: "International Vision",
-    desc: "Global standards • Future leaders",
+    title: "Innovatsion Ta'lim",
+    desc: "Zamonaviy texnologiyalar • Keng imkoniyatlar",
   },
 ];
 
 const Banner = () => {
   const [index, setIndex] = useState(0);
-  const [animating, setAnimating] = useState(false);
 
-  const changeSlide = useCallback(
-    (next) => {
-      if (animating) return;
-      setAnimating(true);
-      setIndex(next);
-      setTimeout(() => setAnimating(false), 700);
-    },
-    [animating]
-  );
+  const slideLength = slides.length;
 
-  const next = () => changeSlide((index + 1) % slides.length);
-  const prev = () =>
-    changeSlide((index - 1 + slides.length) % slides.length);
+  // Keyingi slayddan oldin/keyin indexni hisoblash funksiyasi
+  const next = () => {
+    setIndex((prevIndex) => (prevIndex + 1) % slideLength);
+  };
 
+  const prev = () => {
+    setIndex((prevIndex) => (prevIndex - 1 + slideLength) % slideLength);
+  };
+
+  const changeSlide = (newIndex) => {
+    setIndex(newIndex);
+  };
+
+  // Avtomatik almashtirish
   useEffect(() => {
-    const timer = setInterval(next, 6000);
+    const timer = setInterval(next, 6000); // 6 sekund
     return () => clearInterval(timer);
-  }, [next]);
+  }, [slideLength]); // slideLength o'zgarmas ekan, bu yerda [next] shart emas
+
+  // Joriy slayd ma'lumotlari
+  const currentSlide = slides[index];
 
   return (
     <Box className="banner">
-      {/* IMAGE */}
-      <img
-        src={slides[index].img}
-        alt="banner"
-        className={`banner-img ${animating ? "zoom" : ""}`}
-      />
-
-      {/* DARK OVERLAY */}
-      <div className="banner-overlay" />
-
-      {/* TEXT – BOTTOM LEFT */}
-      
-      <div className="banner-text" key={index}>
-        <h1 className="text-line title">{slides[index].title}</h1>
-        <p className="text-line desc">{slides[index].desc}</p>
+      {/* Rasm va Kontentni o'z ichiga oluvchi konteyner - Silliq o'tish uchun */}
+      <div
+        className="banner-slider"
+        style={{ transform: `translateX(-${index * 100}%)` }}
+      >
+        {slides.map((slide, i) => (
+          <div key={slide.id} className="banner-slide-item">
+            <img src={slide.img} alt={slide.title} className="banner-img" />
+            <div className="banner-overlay" />
+            
+            {/* TEXT – BOTTOM LEFT */}
+            <div className="banner-text">
+              <h1 className="title">{slide.title}</h1>
+              <p className="desc">{slide.desc}</p>
+            </div>
+          </div>
+        ))}
       </div>
-
-
-
 
       {/* NAV BUTTONS – BOTTOM RIGHT */}
       <div className="banner-nav">
-        <button onClick={prev}>
+        <button onClick={prev} aria-label="Oldingi slayd">
           <ArrowBackIosNewIcon />
         </button>
-        <button onClick={next}>
+        <button onClick={next} aria-label="Keyingi slayd">
           <ArrowForwardIosIcon />
         </button>
       </div>
@@ -82,7 +93,7 @@ const Banner = () => {
         {slides.map((_, i) => (
           <span
             key={i}
-            className={i === index ? "active" : ""}
+            className={`dot ${i === index ? "active" : ""}`}
             onClick={() => changeSlide(i)}
           />
         ))}

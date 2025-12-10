@@ -1,285 +1,198 @@
-/* MAIN */
+/* ==================================== */
+/* Asosiy Konteyner */
+/* ==================================== */
 .banner {
-  position: relative;
   width: 100%;
+  /* Banner balandligini ham responsiv qilish uchun 'vh' dan foydalanish tavsiya etiladi. */
+  /* Misol uchun: height: 60vh; */
+  position: relative;
+  overflow: hidden; 
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* IMAGE */
+/* ==================================== */
+/* Slider Konteyneri */
+/* ==================================== */
+.banner-slider {
+  display: flex;
+  width: 100%;
+  /* height: 100%; Balandlikni to'ldirish uchun qo'shildi */
+  transition: transform 0.7s ease-in-out;
+}
+
+.banner-slide-item {
+  min-width: 100%;
+  /* height: 100%; Balandlikni to'ldirish uchun qo'shildi */
+  position: relative;
+}
+
+/* ==================================== */
+/* Rasm */
+/* ==================================== */
 .banner-img {
   width: 100%;
-  height: 100%;
-  object-fit: contain;   /* ✅ MUHIM */
-  object-position: center;
+  /* height: 100%; Konteynerga moslashish uchun qo'shildi */
+  object-fit: contain;
   display: block;
-  transition: transform 0.8s ease;
+  /* background-color o'rniga rgba(0,0,0,0.4) overlaydan foydalanilgani sababli, background-color ni ehtiyojga qarab qo'shing/olib tashlang */
+}
+.banner-media {
+  width: 100%;
+  height: 100%;
 }
 
-/* ZOOM */
-.banner-img.zoom {
-  transform:rotateX('angle');
+.banner-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
-/* OVERLAY */
+/* ==================================== */
+/* Overlay */
+/* ==================================== */
 .banner-overlay {
   position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.336),
-    rgba(0, 0, 0, 0)
-  );
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
   z-index: 1;
 }
 
-/* TEXT */
-/* ================= BANNER TEXT ================= */
+/* ==================================== */
+/* Matn - RESPONSIV O'ZGARTIRILDI */
+/* ==================================== */
 .banner-text {
   position: absolute;
-  left: 28px;
-  bottom: 30px;
+  bottom: 15%; /* Joylashuvni biroz yuqoriga ko'tardim */
+  left: 5%;
+  color: white;
   z-index: 2;
-  max-width: 520px;
-  color: #fff;
-  padding: 18px 22px;
-  border-radius: 12px;
-
-  /* ✅ O‘NGGA QARAB XIRALASHIB YO‘QOLADIGAN BACKGROUND */
-  background: linear-gradient(
-    to right,
-    rgba(0, 0, 0, 0.65) 0%,
-    rgba(0, 0, 0, 0.55) 55%,
-    rgba(0, 0, 0, 0.2) 80%,
-    rgba(0, 0, 0, 0) 100%
-  );
-
-  /* backdrop-filter: blur(6px); */
-
-  /* ✅ BACKGROUND CHAPDAN KENGAYADI */
-  transform-origin: left;
-  animation: bgReveal 0.9s ease forwards;
-  overflow: hidden;
+  max-width: 60%; /* Katta ekranlarda matn kengligi */
 }
 
-/* ================= TEXT ANIMATION ================= */
-/* ================= TEXT WRITE EFFECT ================= */
-.text-line {
-  position: relative;
-  display: inline-block;
-  white-space: nowrap;
-  overflow: hidden;
-  width: 0;
-
-  animation: textReveal 0.9s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+.banner-text .title {
+  /* RESPONSIV FONT: Ekranning 100 birligi uchun 3.5% */
+  font-size: 3.5vw;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.1; /* Qatorlar orasidagi masofa */
+  animation: slideIn 0.8s ease-out forwards;
 }
 
-.text-line.desc {
-  animation-delay: 0.25s;
+.banner-text .desc {
+  /* RESPONSIV FONT: Ekranning 100 birligi uchun 1.5% */
+  font-size: 1.5vw;
+  margin-top: 10px;
+  opacity: 0;
+  animation: fadeIn 1s ease-out 0.3s forwards;
 }
 
-
-/* ================= TEXT STYLE ================= */
-.banner-text h1 {
-  font-size: clamp(26px, 4vw, 42px);
-  font-weight: 800;
-  margin-bottom: 6px;
-}
-
-.banner-text p {
-  font-size: 15px;
-  opacity: 0.9;
-}
-
-
-.text-line.desc::after {
-  display: none;
-}
-
-@keyframes cursorBlink {
-  50% { opacity: 0; }
-}
-
-/* ================= KEYFRAMES ================= */
-@keyframes bgReveal {
-  from {
-    clip-path: inset(0 100% 0 0);
-    opacity: 0;
-  }
-  to {
-    clip-path: inset(0 0 0 0);
-    opacity: 1;
-  }
-}
-
-@keyframes textReveal {
-  from {
-    width: 0;
-    opacity: 0;
-  }
-  to {
-    width: 100%;
-    opacity: 1;
-  }
-}
-
-
-/* ================= MOBILE ================= */
-@media (max-width: 768px) {
-  .banner-text {
-    left: 16px;
-    bottom: 18px;
-    max-width: 85%;
-    padding: 14px 16px;
-  }
-
-  .banner-text h1 {
-    font-size: 20px;
-  }
-
-  .banner-text p {
-    font-size: 12px;
-  }
-}
-
-/* NAV */
+/* ==================================== */
+/* Navigatsiya Tugmalari */
+/* ==================================== */
+/* ... (Bu qism o'zgarishsiz qoldi) ... */
 .banner-nav {
   position: absolute;
-  right: 22px;
-  bottom: 22px;
-  z-index: 2;
-  display: flex;
-  gap: 12px;
+  bottom: 5%;
+  right: 5%;
+  z-index: 3;
 }
 
 .banner-nav button {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
   border: none;
+  color: white;
+  padding: 10px;
+  margin-left: 10px;
+  border-radius: 50%;
   cursor: pointer;
-  background: rgba(255, 255, 255, 0.15);
-  color: #fff;
-  backdrop-filter: blur(6px);
-  transition: 0.3s;
+  transition: background 0.3s;
 }
 
 .banner-nav button:hover {
-  background: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.4);
 }
 
-/* DOTS */
+/* ==================================== */
+/* Nuqtalar (Dots) */
+/* ==================================== */
+/* ... (Bu qism o'zgarishsiz qoldi) ... */
 .banner-dots {
   position: absolute;
-  bottom: 18px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 2;
+  bottom: 5%;
+  left: 5%;
+  z-index: 3;
   display: flex;
-  gap: 10px;
 }
 
-.banner-dots span {
-  width: 8px;
-  height: 8px;
-  background: rgba(255, 255, 255, 0.4);
+.banner-dots .dot {
+  display: block;
+  width: 10px;
+  height: 10px;
+  margin-right: 8px;
+  background: rgba(255, 255, 255, 0.5);
   border-radius: 50%;
   cursor: pointer;
+  transition: background 0.3s, width 0.3s;
 }
 
-.banner-dots span.active {
-  background: #fff;
-  transform: scale(1.3);
+.banner-dots .dot.active {
+  background: white;
+  width: 25px;
+  border-radius: 5px;
 }
 
-/* ANIMATION */
-@keyframes fadeUp {
+/* ==================================== */
+/* MEDIA QUERIES (Mobil qurilmalar uchun) */
+/* ==================================== */
+
+@media (max-width: 768px) {
+  .banner-text {
+    bottom: 10%; /* Pastroq joylashuv */
+    max-width: 80%; /* Mobil ekranlarda matn kengroq maydonni egallasin */
+  }
+
+  .banner-text .title {
+    font-size: 6vw; /* Kichik ekranlarda shrift hajmini kattalashtirish */
+  }
+
+  .banner-text .desc {
+    font-size: 3vw; /* Kichik ekranlarda shrift hajmini kattalashtirish */
+  }
+
+  /* Navigatsiya tugmalari va nuqtalarni joylashuvini o'zgartirish */
+  .banner-nav {
+    bottom: 1%;
+  }
+
+  .banner-dots {
+    bottom: 1%;
+  }
+}
+
+
+/* ==================================== */
+/* YANGI Animatsiyalar (o'zgarishsiz) */
+/* ==================================== */
+@keyframes slideIn {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(18px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 
-/* MOBILE */
-@media (max-width: 768px) {
-  .banner-text {
-    left: 18px;
-    bottom: 22px;
-  }
-
-  .banner-nav {
-    right: 16px;
-    bottom: 16px;
-  }
-}
-/* ================= MOBILE RESPONSIVE ================= */
-@media (max-width: 768px) {
-
-
-
-  /* TEXT */
-  .banner-text {
-    left: 14px;
-    bottom: 16px;
-    max-width: 85%;
-  }
-
-  .banner-text h1 {
-    font-size: clamp(18px, 6vw, 26px);
-    line-height: 1.2;
-  }
-
-  .banner-text p {
-    font-size: 12px;
-  }
-
-  /* NAV BUTTONS */
-  .banner-nav {
-    right: 14px;
-    bottom: 14px;
-    gap: 8px;
-  }
-
-  .banner-nav button {
-    width: 34px;
-    height: 34px;
-  }
-
-  .banner-nav svg {
-    font-size: 18px;
-  }
-
-  /* DOTS */
-  .banner-dots {
-    bottom: 10px;
-    gap: 6px;
-  }
-
-  .banner-dots span {
-    width: 6px;
-    height: 6px;
-  }
-}
-
-/* ================= SMALL MOBILE ================= */
-@media (max-width: 480px) {
-
-  .banner-text h1 {
-    font-size: 16px;
-  }
-
-  .banner-text p {
-    font-size: 11px;
-  }
-
-  .banner-nav button {
-    width: 30px;
-    height: 30px;
-  }
-
-  .banner-nav svg {
-    font-size: 16px;
-  }
-}
