@@ -38,22 +38,24 @@ export default function HeroVideo() {
             zIndex: 2,
           }}
         >
-          <IconButton
-            onClick={() => setOpen(true)}
-            sx={{
-              width: 90,
-              height: 90,
-              bgcolor: "#fff",
-              boxShadow: "0 10px 30px rgba(0,0,0,0.4)",
-              transition: "all 0.3s ease",
-              "&:hover": {
-                transform: "scale(1.15)",
-                bgcolor: "#f5f5f5",
-              },
-            }}
-          >
-            <PlayArrowIcon sx={{ fontSize: 46, color: "#1f3c88" }} />
-          </IconButton>
+        <IconButton
+  aria-label="Videoni ijro etish"     // <-- ACCESSIBLE NAME QO‘SHILDI
+  onClick={() => setOpen(true)}
+  sx={{
+    width: 90,
+    height: 90,
+    bgcolor: "#fff",
+    boxShadow: "0 10px 30px rgba(0,0,0,0.4)",
+    transition: "all 0.3s ease",
+    "&:hover": {
+      transform: "scale(1.15)",
+      bgcolor: "#f5f5f5",
+    },
+  }}
+>
+  <PlayArrowIcon sx={{ fontSize: 46, color: "#1f3c88" }} />
+</IconButton>
+
         </Box>
       </Box>
 
