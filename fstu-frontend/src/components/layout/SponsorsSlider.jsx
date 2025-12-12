@@ -75,60 +75,60 @@ export default function SponsorsSlider() {
 
 
         {/* 🔵 SLIDER WRAPPER - Gradient Edges Qo'shilgan */}
-        <Box
-          sx={{
-            overflow: "hidden",
-            width: "100%",
-            position: "relative",
-            // Gradient qatlamlar - Logotiplarning silliq yo'qolish effekti
-            maskImage: `linear-gradient(to right, 
-              rgba(0,0,0,0) 0%, 
-              rgba(0,0,0,1) 15%, 
-              rgba(0,0,0,1) 85%, 
-              rgba(0,0,0,0) 100%
-            )`,
-            // Hover bo'lganda animatsiyani to'xtatish
-            "&:hover .moving-track": {
-                animationPlayState: 'paused',
-            }
-          }}
-        >
-          {/* 🔵 MOVING TRACK */}
-          <Box
-            className="moving-track"
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: { xs: 5, md: 8 },
-              width: "max-content",
-              animation: `${infiniteScroll} ${animationDuration} linear infinite`,
-              // Boshlang'ich animatsiya holati
-              animationPlayState: 'running', 
-            }}
-          >
-            {loopList.map((src, index) => (
-              <Box
-                key={index}
-                component="img"
-                src={src}
-                alt="sponsor-logo"
-                sx={{
-                  height: { xs: 40, sm: 55, md: 70 }, // Balandlikni biroz kamaytirdik
-                  minWidth: { xs: 120, md: 180 }, // Har bir logotip uchun minimal joy ajratish
-                  opacity: 0.7,
-                  transition: "0.4s",
-                  // Hover effekti
-                  "&:hover": {
-                    opacity: 1,
-                    transform: "scale(1.05)",
-                    filter: 'grayscale(0%)', // Rangini qaytarish
-                    cursor: 'pointer',
-                  },
-                }}
-              />
-            ))}
-          </Box>
-        </Box>
+      <Box
+  sx={{
+    overflow: "hidden",
+    width: "100%",
+    position: "relative",
+    maskImage: `linear-gradient(to right, 
+      rgba(0,0,0,0) 0%, 
+      rgba(0,0,0,1) 15%, 
+      rgba(0,0,0,1) 85%, 
+      rgba(0,0,0,0) 100%
+    )`,
+    "&:hover .moving-track": {
+      animationPlayState: "paused",
+    },
+  }}
+>
+  {/* Moving Track */}
+  <Box
+    className="moving-track"
+    sx={{
+      display: "flex",
+      alignItems: "center",
+      gap: { xs: 5, md: 8 },
+      width: "max-content",
+      animation: `${infiniteScroll} ${animationDuration} linear infinite`,
+      animationPlayState: "running",
+    }}
+  >
+    {loopList.map((src, index) => (
+      <Box
+        key={index}
+        component="img"
+        src={src}
+        alt="sponsor-logo"
+        sx={{
+          height: { xs: 40, sm: 55, md: 70 },   // Logo heights
+          width: "auto",                        // ❗ Aspect ratio to‘g‘ri bo‘lishi uchun
+          aspectRatio: "auto",                  // Chrome xatosini oldini oladi
+          objectFit: "contain",                 // Rasmni buzmaslik uchun
+          opacity: 0.7,
+          mx: { xs: 2, md: 3 },                 // gap o‘rniga ideal spacing
+          transition: "0.4s",
+          "&:hover": {
+            opacity: 1,
+            transform: "scale(1.05)",
+            filter: "grayscale(0%)",
+            cursor: "pointer",
+          },
+        }}
+      />
+    ))}
+  </Box>
+</Box>
+
       </Container>
     </Box>
   );

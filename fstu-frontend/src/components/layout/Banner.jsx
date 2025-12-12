@@ -13,7 +13,7 @@ const slides = [
   {
     id: 1,
     img: img1,
-    title: "Yangi Rating",
+    title: "Farg'ona Davlat texnika Universiteti",
     desc: "Milliy reyting • TOP-5 Universitet",
   },
   {
