@@ -69,7 +69,7 @@ export default function SponsorsSlider() {
     }
   }}
 >
-  Bizning Homiylarimiz
+  Foydali havolalar
 </Typography>
 
 

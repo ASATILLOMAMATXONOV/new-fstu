@@ -11,6 +11,9 @@ import StatsSection from "../components/layout/StatsSection";
 import SponsorsSlider from "../components/layout/SponsorsSlider";
 import Footer from "../components/layout/Footer";
 
+
+import Courses from "../pages/Home/Courses";
+
 export default function AppRouter() {
   return (
     <BrowserRouter>
@@ -35,6 +38,7 @@ export default function AppRouter() {
       {/* ROUTES */}
       <Routes>
         {/* future routes */}
+        <Route path="/courses" element={<Courses />} />
       </Routes>
 
     </BrowserRouter>
