@@ -1,33 +1,47 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Box } from "@mui/material";
 
 // layout
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
 import ScrollToTop from "../components/layout/ScrollToTop";
 
-
 // pages
 import Home from "../pages/Home/Home";
 import Courses from "../pages/Home/Courses";
 import Faculties from "../pages/Faculties/Faculties";
+import PagesBanner from "../components/layout/pagesBanner";
+import DepartmentsPage from "../pages/Faculties/Departments";
 
 export default function AppRouter() {
   return (
     <BrowserRouter>
-    <ScrollToTop />
-    
-      {/* HEADER */}
-      <Navbar />
+      <Box
+        sx={{
+          minHeight: "100vh",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        <ScrollToTop />
 
-      {/* ROUTES */}
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/courses" element={<Courses />} />
-        <Route path="/faculties" element={<Faculties />} />
-      </Routes>
+        {/* HEADER */}
+        <Navbar />
 
-      {/* FOOTER */}
-      <Footer />
+        {/* CONTENT (MUHIM QISM) */}
+        <Box sx={{ flex: 1 }}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/courses" element={<Courses />} />
+            <Route path="/faculties" element={<Faculties />} />
+            <Route path="/departments" element={<DepartmentsPage />} />
+            <Route path="/pages" element={<PagesBanner />} />
+          </Routes>
+        </Box>
+
+        {/* FOOTER */}
+        <Footer />
+      </Box>
     </BrowserRouter>
   );
 }

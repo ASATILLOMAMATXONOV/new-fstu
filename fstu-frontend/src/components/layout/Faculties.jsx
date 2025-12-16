@@ -34,12 +34,6 @@ import reting6  from "../../assets/images/reyting-logo/QS centreal asian ranking
 
 
 
-
-
-
-
-
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 
@@ -81,7 +75,7 @@ const Hammasi = [
   { name: "KAFEDRALAR", icon: faBriefcase, href: "/departments" },
   { name: "MARKAZLAR VA BO‘LIMLAR", icon: faBuilding, href: "/centers" },
   { name: "ALOQA", icon: faPhone, href: "/contact" },
-  { name: "UNLIBRARY", icon: faBookOpen, href: "/library" },
+  { name: "UNLIBRARY", icon: faBookOpen, href: "https://unilibrary.uz/" },
   { name: "JAPANESE TRAINING PROGRAM", icon: faUsers, href: "/japan-program" },
   { name: "MA’MURIYAT", icon: faUserTie, href: "/courses" },
   { name: "AXBOROT TIZIMLARI", icon: faLaptopCode, href: "/systems" },
