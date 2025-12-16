@@ -41,6 +41,8 @@ import reting6  from "../../assets/images/reyting-logo/QS centreal asian ranking
 
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Link } from "react-router-dom";
+
 
 
 const tabs = [
@@ -74,15 +76,15 @@ const Axborot = [
 ];
 
 const Hammasi = [
-  { name: "BO'SH ISH O'RINLARI", icon: faNewspaper },
-  { name: "FAKULTETLAR", icon: faUniversity },
-  { name: "KAFEDRALAR", icon: faBriefcase },
-  { name: "MARKAZLAR VA BO‘LIMLAR", icon: faBuilding },
-  { name: "ALOQA", icon: faPhone },
-  { name: "UNLIBRARY", icon: faBookOpen },
-  { name: "JAPANESE TRAINING PROGRAM", icon: faUsers },
-  { name: "MA’MURIYAT", icon: faUserTie },
-  { name: "AXBOROT TIZIMLARI", icon: faLaptopCode }
+  { name: "BO'SH ISH O'RINLARI", icon: faNewspaper, href: "/jobs" },
+  { name: "FAKULTETLAR", icon: faUniversity, href: "/faculties" },
+  { name: "KAFEDRALAR", icon: faBriefcase, href: "/departments" },
+  { name: "MARKAZLAR VA BO‘LIMLAR", icon: faBuilding, href: "/centers" },
+  { name: "ALOQA", icon: faPhone, href: "/contact" },
+  { name: "UNLIBRARY", icon: faBookOpen, href: "/library" },
+  { name: "JAPANESE TRAINING PROGRAM", icon: faUsers, href: "/japan-program" },
+  { name: "MA’MURIYAT", icon: faUserTie, href: "/courses" },
+  { name: "AXBOROT TIZIMLARI", icon: faLaptopCode, href: "/systems" },
 ];
 
 const FacultyCard = ({ name, img }) => (
@@ -125,14 +127,16 @@ const HammasiCard = ({ name, img }) => (
   </div>
 );
 
-const InfoCard = ({ name, icon, active }) => (
-  <div className={`info-card ${active ? "active-card" : ""}`}>
-    <FontAwesomeIcon icon={icon} className="info-icon" />
-
-    <div className="info-line"></div>
-    <p className="info-title">{name}</p>
-  </div>
+const InfoCard = ({ name, icon, href }) => (
+  <Link to={href} className="info-card-link">
+    <div className="info-card">
+      <FontAwesomeIcon icon={icon} className="info-icon" />
+      <div className="info-line"></div>
+      <p className="info-title">{name}</p>
+    </div>
+  </Link>
 );
+
 
 const Faculties = () => {
   const [activeTab, setActiveTab] = useState("hammasi");
@@ -206,12 +210,14 @@ const Faculties = () => {
         <section className="faculties-section">
           <div className="info-grid">
             {Hammasi.map((item, i) => (
-              <InfoCard 
-                key={i}
-                name={item.name}
-                icon={item.icon}
-              />
-            ))}
+  <InfoCard 
+    key={i}
+    name={item.name}
+    icon={item.icon}
+    href={item.href}
+  />
+))}
+
           </div>
         </section>
       )}

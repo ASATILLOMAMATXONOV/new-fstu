@@ -63,6 +63,11 @@
     transition: transform .4s ease;
 }
 
+.info-card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
 
 /* HOVER EFFECT – Super modern UI style */
 .faculty-card:hover {
