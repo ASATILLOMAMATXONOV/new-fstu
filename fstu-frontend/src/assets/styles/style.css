@@ -9,5 +9,7 @@
   --text-muted: #555;
   --border-light: #e6e6e6;
   --icon-muted: #bbbbbb;
+  --box-grid: rgba(63,104,165,.25);
 }
 
+/* bgcolor: "var(--light-blue)", */

@@ -1,5 +1,5 @@
 import Banner from "../../components/layout/Banner";
-import Faculties from "../../components/layout/Faculties";
+import All from "../../components/layout/All";
 import Rektor from "../../components/layout/Rektor";
 import Announces from "../../components/layout/Announces";
 import HeroVideo from "../../components/layout/HeroVideo";
@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <main id="main-content" role="main">
       <Banner />
-      <Faculties />
+      <All />
       <Rektor />
       <Announces />
       <StatsSection />

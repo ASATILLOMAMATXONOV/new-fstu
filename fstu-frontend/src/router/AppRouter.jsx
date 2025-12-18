@@ -11,7 +11,9 @@ import Home from "../pages/Home/Home";
 import Courses from "../pages/Home/Courses";
 import Faculties from "../pages/Faculties/Faculties";
 import PagesBanner from "../components/layout/pagesBanner";
+import SideMenu from "../components/layout/SideMenu";
 import DepartmentsPage from "../pages/Faculties/Departments";
+import Centers from "../pages/Home/Centers";
 
 export default function AppRouter() {
   return (
@@ -36,6 +38,10 @@ export default function AppRouter() {
             <Route path="/faculties" element={<Faculties />} />
             <Route path="/departments" element={<DepartmentsPage />} />
             <Route path="/pages" element={<PagesBanner />} />
+            <Route path="/sede" element={<SideMenu />} />
+            <Route path="/centers" element={<Centers />} />
+
+
           </Routes>
         </Box>
 

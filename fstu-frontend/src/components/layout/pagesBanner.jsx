@@ -99,7 +99,7 @@ export default function pagesBanner() {
                 left: "18%",
                 width: 90,
                 height: 90,
-                bgcolor: "#fff",
+                bgcolor: "var(--light-gray)",
                 opacity: 0.12,
                 borderRadius: "50%",
               }}

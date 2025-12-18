@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import "../../assets/styles/Faculties.css";
+import "../../assets/styles/All.css";
 import "../../assets/styles/style.css";
 import {
   faNewspaper,
@@ -31,12 +31,8 @@ import reting4  from "../../assets/images/reyting-logo/Emblem_of_Uzbekistan.svg.
 import reting5  from "../../assets/images/reyting-logo/asia qs ranking.png";
 import reting6  from "../../assets/images/reyting-logo/QS centreal asian ranking 2024.png";
 
-
-
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
-
 
 
 const tabs = [
@@ -45,7 +41,6 @@ const tabs = [
   { id: "fakultet", label: "FAKULTETLAR" },
   { id: "axborot", label: "AXBOROT TIZIMLARI" }
 ];
-
 const facultyData = [
   { name: "Axborot texnologiyalari va telekommunikatsiya", img: atImage },
   { name: "Ishlab chiqarishda boshqaruv fakulteti", img: boshqaruvImage },
@@ -68,7 +63,6 @@ const Axborot = [
   { name: "FSTU LIVE", icon: faEye },
   { name: "HEMIS student axborot tizimi", icon: faUserGraduate },
 ];
-
 const Hammasi = [
   { name: "BO'SH ISH O'RINLARI", icon: faNewspaper, href: "/jobs" },
   { name: "FAKULTETLAR", icon: faUniversity, href: "/faculties" },
@@ -80,7 +74,6 @@ const Hammasi = [
   { name: "MA’MURIYAT", icon: faUserTie, href: "/courses" },
   { name: "AXBOROT TIZIMLARI", icon: faLaptopCode, href: "/systems" },
 ];
-
 const FacultyCard = ({ name, img }) => (
   <div className="faculty-card fade-in">
     <div className="card-image-placeholder">
@@ -91,7 +84,6 @@ const FacultyCard = ({ name, img }) => (
     </div>
   </div>
 );
-
 const ReytingCard = ({ name, img }) => (
   <div className="faculty-card fade-in">
     <div className="card-image-placeholder">
@@ -102,14 +94,12 @@ const ReytingCard = ({ name, img }) => (
     </div>
   </div>
 );
-
 const AxborotCard = ({ name, icon }) => (
   <div className="info-card">
     <FontAwesomeIcon icon={icon} className="info-icon" />
     <p className="info-title">{name}</p>
   </div>
 );
-
 const HammasiCard = ({ name, img }) => (
   <div className="faculty-card fade-in">
     <div className="card-image-placeholder">
@@ -120,7 +110,6 @@ const HammasiCard = ({ name, img }) => (
     </div>
   </div>
 );
-
 const InfoCard = ({ name, icon, href }) => (
   <Link to={href} className="info-card-link">
     <div className="info-card">
@@ -130,8 +119,6 @@ const InfoCard = ({ name, icon, href }) => (
     </div>
   </Link>
 );
-
-
 const Faculties = () => {
   const [activeTab, setActiveTab] = useState("hammasi");
   const [indicatorStyle, setIndicatorStyle] = useState({});
