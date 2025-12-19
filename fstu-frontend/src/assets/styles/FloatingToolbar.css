@@ -1,0 +1,61 @@
+.floating-toolbar {
+  position: fixed;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #fff;
+  border-radius: 12px;
+  padding: 8px 6px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.toolbar-item {
+  position: relative;
+  width: 42px;
+  height: 42px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: #555;
+  transition: background 0.2s ease;
+}
+
+.toolbar-item:hover {
+  background: #f2f4f7;
+}
+
+/* ICON */
+.icon {
+  font-size: 18px;
+  z-index: 2;
+}
+
+/* LABEL (Documentation) */
+.label {
+  position: absolute;
+  right: 52px;
+  background: #fff;
+  padding: 8px 12px;
+  border-radius: 8px;
+  white-space: nowrap;
+  font-size: 14px;
+  color: #333;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+
+  opacity: 0;
+  transform: translateX(10px);
+  pointer-events: none;
+  transition: all 0.25s ease;
+}
+
+/* HOVER → LABEL CHIQADI */
+.toolbar-item:hover .label {
+  opacity: 1;
+  transform: translateX(0);
+}

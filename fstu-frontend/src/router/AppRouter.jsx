@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Box } from "@mui/material";
 
 // layout
-import Navbar from "../components/layout/Navbar";
+
 import Footer from "../components/layout/Footer";
 import ScrollToTop from "../components/layout/ScrollToTop";
 
@@ -14,6 +14,7 @@ import PagesBanner from "../components/layout/pagesBanner";
 import SideMenu from "../components/layout/SideMenu";
 import DepartmentsPage from "../pages/Faculties/Departments";
 import Centers from "../pages/Home/Centers";
+import TwoPages from "../pages/TwoHome/TwoPages";
 
 export default function AppRouter() {
   return (
@@ -27,9 +28,6 @@ export default function AppRouter() {
       >
         <ScrollToTop />
 
-        {/* HEADER */}
-        <Navbar />
-
         {/* CONTENT (MUHIM QISM) */}
         <Box sx={{ flex: 1 }}>
           <Routes>
@@ -40,6 +38,9 @@ export default function AppRouter() {
             <Route path="/pages" element={<PagesBanner />} />
             <Route path="/sede" element={<SideMenu />} />
             <Route path="/centers" element={<Centers />} />
+
+            {/* Two home */}
+            <Route path="/twopages" element={<TwoPages />} />
 
 
           </Routes>

@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Typography, Button, Container, Card, Stack } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay, Pagination } from "swiper/modules";
+import "../../assets/styles/style.css";
 
 // Swiper stillari
 import "swiper/css";
@@ -15,7 +16,7 @@ import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined
 
 const EVENT_DATA = [
   {
-    title: "Web Design and Modern User Interfaces in 2025: Future Trends and AI Integration", 
+    title: "Web Design and Modern User Interfaces in 2025: Future Trends and AI IntegrationWeb Design and Modern User Interfaces in 2025: Future Trends and AI Integration", 
     date: "December 20, 2025",
     img: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800"
   },
@@ -43,11 +44,9 @@ export default function EventsSlider() {
         
         {/* HEADER */}
         <Box sx={{ textAlign: "center", mb: 6 }}>
-          <Typography variant="overline" sx={{ color: "#4d76fd", fontWeight: 800, letterSpacing: 2 }}>
-            UPCOMING SCHEDULE
-          </Typography>
-          <Typography variant="h3" sx={{ fontWeight: 900, color: "#001233", mt: 1 }}>
-            Our Events
+          
+          <Typography variant="h3" sx={{ fontWeight: 800,fontSize: '2rem', color: "var(--primary-blue)", mt: 1 }}>
+            So'ngi yangliklar
           </Typography>
         </Box>
 
@@ -76,10 +75,9 @@ export default function EventsSlider() {
             {EVENT_DATA.map((event, index) => (
               <SwiperSlide key={index} style={{ height: 'auto' }}>
                 <Card sx={{ 
-                  borderRadius: "24px", 
+                  // borderRadius: "24px", 
                   boxShadow: "0 15px 40px rgba(0,0,0,0.06)",
                   bgcolor: "#fff",
-                  height: '100%',
                   transition: 'transform 0.3s ease',
                   '&:hover': { transform: 'translateY(-10px)' }
                 }}>
@@ -90,14 +88,17 @@ export default function EventsSlider() {
 
                   <Box sx={{ p: 4 }}>
                     {/* SANA */}
-                    <Stack direction="row" spacing={1} alignItems="center" sx={{ color: "#4d76fd", mb: 2 }}>
+                    <Stack direction="row" spacing={1} alignItems="center" sx={{ color: "var(--primary-blue)", mb: 2 }}>
                       <CalendarMonthOutlinedIcon sx={{ fontSize: 20 }} />
                       <Typography sx={{ fontSize: '0.9rem', fontWeight: 700 }}>{event.date}</Typography>
                     </Stack>
 
                     {/* TITLE - DINAMIK BALANDLIK */}
-                    <Typography variant="h5" sx={{ 
-                      fontWeight: 800, 
+                    <Typography variant="h5" 
+                    sx={{ 
+                      fontWeight: 600, 
+                     
+                      fontSize: '1rem',
                       color: "#001233", 
                       mb: 4, 
                       lineHeight: 1.4,
@@ -111,7 +112,7 @@ export default function EventsSlider() {
                       fullWidth
                       endIcon={<ArrowForwardIcon />}
                       sx={{ 
-                        bgcolor: "#1a66ff", 
+                        bgcolor: "var(--primary-blue)", 
                         borderRadius: "12px",
                         py: 1.5,
                         fontWeight: 800,
@@ -129,10 +130,10 @@ export default function EventsSlider() {
           </Swiper>
 
           {/* NAVIGATSIYA TUGMALARI (< >) */}
-          <Button className="event-prev" sx={{ ...navStyle, left: { xs: -10, md: -60 } }}>
+          <Button className="event-prev" sx={{ ...navStyle, left: { xs: -10, md: -60,color: "var(--primary-blue)", } }}>
             <ArrowBackIcon fontSize="medium" />
           </Button>
-          <Button className="event-next" sx={{ ...navStyle, right: { xs: -10, md: -60 } }}>
+          <Button className="event-next" sx={{ ...navStyle, right: { xs: -10, md: -60, color: "var(--primary-blue)", } }}>
             <ArrowForwardIcon fontSize="medium" />
           </Button>
         </Box>

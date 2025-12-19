@@ -1,0 +1,153 @@
+import React from 'react';
+import { 
+  Box, Container, Typography, Grid, Stack, 
+  Paper, Divider
+} from '@mui/material';
+import { motion } from 'framer-motion';
+import { 
+  School, AccountBalance, LibraryBooks, WorkOutline, 
+  Settings, Apartment, PhoneInTalk, 
+  AutoGraph, Dashboard, Person, ArrowForward, 
+} from '@mui/icons-material';
+
+const digitalServices = [
+  { name: "FSTU LIVE", icon: <AutoGraph />, url: "https://live.fstu.uz" },
+  { name: "HEMIS OTM", icon: <Dashboard />, url: "https://hemis.fstu.uz" },
+  { name: "HEMIS Student", icon: <Person />, url: "https://student.fstu.uz" },
+  { name: "Unilibrary", icon: <LibraryBooks />, url: "https://lib.fstu.uz" },
+  { name: "Bo'sh ish o'rinlari", icon: <WorkOutline />, url: "/vacancies" },
+];
+
+const universityStructure = [
+  { title: "Fakultetlar", desc: "O'quv-metodik bo'linmalar", icon: <School />, path: "/faculties" },
+  { title: "Kafedralar", desc: "Ilmiy-nazariy markazlar", icon: <Apartment />, path: "/departments" },
+  { title: "Markazlar", desc: "Ma'muriy boshqaruv", icon: <Settings />, path: "/centers" },
+  { title: "Ma'muriyat", desc: "Rektorat va Kengash", icon: <AccountBalance />, path: "/administration" },
+  { title: "Aloqa", desc: "+998 71 200 00 00", icon: <PhoneInTalk />, path: "/contact" },
+];
+
+const TwoAbout = () => {
+  const handleNavigation = (url) => {
+    if (url.startsWith('http')) {
+      window.open(url, '_blank');
+    } else {
+      console.log(`Navigating to: ${url}`);
+    }
+  };
+
+  return (
+    <Box sx={{ bgcolor: '#0a0a0a', py: { xs: 4, md: 8 } }}>
+      <Container maxWidth="xl">
+      <Grid
+  container
+  spacing={4}
+  alignItems="stretch"
+  justifyContent="center"
+//   width={"100%"}
+>
+
+          
+          {/* CHAP TOMON: 30% */}
+          <Grid item xs={12} md={4} lg={3.6} width={"25%"}>
+            <Typography variant="h6" sx={{ color: 'white', mb: 3, fontWeight: 700, borderLeft: '4px solid #ff7a00', pl: 2 }}>
+              Axborot Tizimlari
+            </Typography>
+            <Stack spacing={1.5}>
+              {digitalServices.map((service, index) => (
+                <Paper 
+                  key={index}
+                  component={motion.div}
+                  whileHover={{ x: 8, borderColor: '#ff7a00' }}
+                  onClick={() => handleNavigation(service.url)}
+                  sx={{ 
+                    p: 2, bgcolor: '#111', border: '1px solid #222', borderRadius: 0,
+                    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                    cursor: 'pointer', transition: '0.3s'
+                  }}
+                >
+                  <Stack direction="row" spacing={2} alignItems="center">
+                    <Box sx={{ color: '#ff7a00', display: 'flex' }}>{service.icon}</Box>
+                    <Typography sx={{ color: 'white', fontWeight: 600, fontSize: '0.85rem' }}>{service.name}</Typography>
+                  </Stack>
+                  <ArrowForward sx={{ color: '#333', fontSize: 16 }} />
+                </Paper>
+              ))}
+            </Stack>
+          </Grid>
+
+          {/* O'NG TOMON: 70% */}
+          <Grid item xs={12} md={8} lg={8.4}width={"65%"}>
+            <Typography variant="h6" sx={{ color: 'white', mb: 3, fontWeight: 700, borderLeft: '4px solid #ff7a00', pl: 2 }}>
+              Universitet Bo'linmalari
+            </Typography>
+
+            {/* Gridni 2 qator qilish uchun spacing va o'lchamlarni to'g'irlaymiz */}
+           <Grid container spacing={2}>
+            {universityStructure.map((item, index) => (
+                <Grid 
+                item 
+                xs={12}      // Mobil qurilmada 1 qator
+                sm={6}       // Planshetda 2 tadan
+                md={4}       // Katta ekranda 3 tadan (HAMMASI BIR XIL)
+                key={index}
+                sx={{ display: 'flex' }} // 1-muhim qadam: Grid item flex bo'lsa, ichidagi Paper balandligi tenglashadi
+                >
+                <Paper
+                    component={motion.div}
+                    whileHover={{ y: -5, borderColor: '#ff7a00' }}
+                    onClick={() => handleNavigation(item.path)}
+                    sx={{
+                    p: 3,
+                    bgcolor: '#111',
+                    border: '1px solid #222',
+                    borderRadius: 0,
+                    cursor: 'pointer',
+                    transition: '0.3s',
+                    display: 'flex',           // 2-muhim qadam: Ichki elementlarni vertikal tekislash
+                    flexDirection: 'column',
+                    width: '160px',             // Grid katakchasini to'liq egallash
+                    minHeight: '150px',        // Barcha kartalar uchun minimal bir xil balandlik
+                    }}
+                >
+                    {/* ICON */}
+                    <Box sx={{ color: '#ff7a00', mb: 1.5 }}>
+                    {item.icon}
+                    </Box>
+
+                    {/* TITLE */}
+                    <Typography sx={{ color: 'white', fontWeight: 800, fontSize: '1rem', mb: 0.5 }}>
+                    {item.title}
+                    </Typography>
+
+                    {/* DESC - flexGrow orqali matn kam bo'lsa ham pastki qismni surib turadi */}
+                    <Typography 
+                    sx={{ 
+                        color: '#666', 
+                        fontSize: '0.75rem', 
+                        flexGrow: 1,  // 3-muhim qadam: Bo'sh joyni to'ldirib, Dividerni pastga suradi
+                        mb: 2 
+                    }}
+                    >
+                    {item.desc}
+                    </Typography>
+
+                    <Divider sx={{ bgcolor: '#222', mb: 1.5 }} />
+
+                    {/* LINK */}
+                    <Stack direction="row" alignItems="center" spacing={1} sx={{ color: '#ff7a00' }}>
+                    <Typography sx={{ fontSize: '0.7rem', fontWeight: 700 }}>BATAFSIL</Typography>
+                    <ArrowForward sx={{ fontSize: 14 }} />
+                    </Stack>
+                </Paper>
+                </Grid>
+            ))}
+            </Grid>
+          </Grid>
+
+        </Grid>
+      </Container>
+    </Box>
+  );
+};
+
+export default TwoAbout;
