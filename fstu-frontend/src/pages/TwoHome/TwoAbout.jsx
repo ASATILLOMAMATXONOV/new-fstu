@@ -9,6 +9,7 @@ import {
   Settings, Apartment, PhoneInTalk, 
   AutoGraph, Dashboard, Person, ArrowForward, 
 } from '@mui/icons-material';
+import { useTheme } from "@mui/material/styles";
 
 const digitalServices = [
   { name: "FSTU LIVE", icon: <AutoGraph />, url: "https://live.fstu.uz" },
@@ -27,6 +28,8 @@ const universityStructure = [
 ];
 
 const TwoAbout = () => {
+  const theme = useTheme();
+
   const handleNavigation = (url) => {
     if (url.startsWith('http')) {
       window.open(url, '_blank');
@@ -36,111 +39,171 @@ const TwoAbout = () => {
   };
 
   return (
-    <Box sx={{ bgcolor: '#0a0a0a', py: { xs: 4, md: 8 } }}>
+    <Box
+      sx={{
+        bgcolor: theme.palette.background.default, // 🔑 FAQAT RANG O‘ZGARDI
+        py: { xs: 4, md: 8 },
+      }}
+    >
       <Container maxWidth="xl">
-      <Grid
-  container
-  spacing={4}
-  alignItems="stretch"
-  justifyContent="center"
-//   width={"100%"}
->
+        <Grid
+          container
+          spacing={4}
+          alignItems="stretch"
+          justifyContent="center"
+        >
 
-          
-          {/* CHAP TOMON: 30% */}
+          {/* CHAP TOMON: O‘LCHAMI O‘ZGARMAGAN */}
           <Grid item xs={12} md={4} lg={3.6} width={"25%"}>
-            <Typography variant="h6" sx={{ color: 'white', mb: 3, fontWeight: 700, borderLeft: '4px solid #ff7a00', pl: 2 }}>
+            <Typography
+              variant="h6"
+              sx={{
+                color: theme.palette.text.primary, // 🔑
+                mb: 3,
+                fontWeight: 700,
+                borderLeft: '4px solid #ff7a00',
+                pl: 2,
+              }}
+            >
               Axborot Tizimlari
             </Typography>
+
             <Stack spacing={1.5}>
               {digitalServices.map((service, index) => (
-                <Paper 
+                <Paper
                   key={index}
                   component={motion.div}
-                  whileHover={{ x: 8, borderColor: '#ff7a00' }}
+                  whileHover={{ x: 8 }}
                   onClick={() => handleNavigation(service.url)}
-                  sx={{ 
-                    p: 2, bgcolor: '#111', border: '1px solid #222', borderRadius: 0,
-                    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                    cursor: 'pointer', transition: '0.3s'
+                  sx={{
+                    p: 2,
+                    bgcolor: theme.palette.background.paper, // 🔑
+                    border: '1px solid',
+                    borderColor: 'divider',
+                    borderRadius: 0,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    cursor: 'pointer',
+                    transition: '0.3s',
+                    '&:hover': {
+                      borderColor: '#ff7a00',
+                    },
                   }}
                 >
                   <Stack direction="row" spacing={2} alignItems="center">
-                    <Box sx={{ color: '#ff7a00', display: 'flex' }}>{service.icon}</Box>
-                    <Typography sx={{ color: 'white', fontWeight: 600, fontSize: '0.85rem' }}>{service.name}</Typography>
+                    <Box sx={{ color: '#ff7a00', display: 'flex' }}>
+                      {service.icon}
+                    </Box>
+                    <Typography
+                      sx={{
+                        color: theme.palette.text.primary, // 🔑
+                        fontWeight: 600,
+                        fontSize: '0.85rem',
+                      }}
+                    >
+                      {service.name}
+                    </Typography>
                   </Stack>
-                  <ArrowForward sx={{ color: '#333', fontSize: 16 }} />
+                  <ArrowForward
+                    sx={{
+                      color: theme.palette.text.secondary, // 🔑
+                      fontSize: 16,
+                    }}
+                  />
                 </Paper>
               ))}
             </Stack>
           </Grid>
 
-          {/* O'NG TOMON: 70% */}
-          <Grid item xs={12} md={8} lg={8.4}width={"65%"}>
-            <Typography variant="h6" sx={{ color: 'white', mb: 3, fontWeight: 700, borderLeft: '4px solid #ff7a00', pl: 2 }}>
+          {/* O‘NG TOMON: O‘LCHAMI O‘ZGARMAGAN */}
+          <Grid item xs={12} md={8} lg={8.4} width={"65%"}>
+            <Typography
+              variant="h6"
+              sx={{
+                color: theme.palette.text.primary, // 🔑
+                mb: 3,
+                fontWeight: 700,
+                borderLeft: '4px solid #ff7a00',
+                pl: 2,
+              }}
+            >
               Universitet Bo'linmalari
             </Typography>
 
-            {/* Gridni 2 qator qilish uchun spacing va o'lchamlarni to'g'irlaymiz */}
-           <Grid container spacing={2}>
-            {universityStructure.map((item, index) => (
-                <Grid 
-                item 
-                xs={12}      // Mobil qurilmada 1 qator
-                sm={6}       // Planshetda 2 tadan
-                md={4}       // Katta ekranda 3 tadan (HAMMASI BIR XIL)
-                key={index}
-                sx={{ display: 'flex' }} // 1-muhim qadam: Grid item flex bo'lsa, ichidagi Paper balandligi tenglashadi
+            <Grid container spacing={2} sx={{ display: 'flex', justifyContent:'center' }}> 
+              {universityStructure.map((item, index) => (
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  md={4}
+                  key={index}
+                  sx={{ display: 'flex',}}
                 >
-                <Paper
+                  <Paper
                     component={motion.div}
-                    whileHover={{ y: -5, borderColor: '#ff7a00' }}
+                    whileHover={{ y: -5 }}
                     onClick={() => handleNavigation(item.path)}
                     sx={{
-                    p: 3,
-                    bgcolor: '#111',
-                    border: '1px solid #222',
-                    borderRadius: 0,
-                    cursor: 'pointer',
-                    transition: '0.3s',
-                    display: 'flex',           // 2-muhim qadam: Ichki elementlarni vertikal tekislash
-                    flexDirection: 'column',
-                    width: '160px',             // Grid katakchasini to'liq egallash
-                    minHeight: '150px',        // Barcha kartalar uchun minimal bir xil balandlik
+                      p: 3,
+                      bgcolor: theme.palette.background.paper, // 🔑
+                      border: '1px solid',
+                      borderColor: 'divider',
+                      borderRadius: 0,
+                      cursor: 'pointer',
+                      transition: '0.3s',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      width: '160px',     // ⛔ O‘ZGARMAGAN
+                      minHeight: '150px', // ⛔ O‘ZGARMAGAN
+                      '&:hover': {
+                        borderColor: '#ff7a00',
+                      },
                     }}
-                >
-                    {/* ICON */}
+                  >
                     <Box sx={{ color: '#ff7a00', mb: 1.5 }}>
-                    {item.icon}
+                      {item.icon}
                     </Box>
 
-                    {/* TITLE */}
-                    <Typography sx={{ color: 'white', fontWeight: 800, fontSize: '1rem', mb: 0.5 }}>
-                    {item.title}
-                    </Typography>
-
-                    {/* DESC - flexGrow orqali matn kam bo'lsa ham pastki qismni surib turadi */}
-                    <Typography 
-                    sx={{ 
-                        color: '#666', 
-                        fontSize: '0.75rem', 
-                        flexGrow: 1,  // 3-muhim qadam: Bo'sh joyni to'ldirib, Dividerni pastga suradi
-                        mb: 2 
-                    }}
+                    <Typography
+                      sx={{
+                        color: theme.palette.text.primary, // 🔑
+                        fontWeight: 800,
+                        fontSize: '1rem',
+                        mb: 0.5,
+                      }}
                     >
-                    {item.desc}
+                      {item.title}
                     </Typography>
 
-                    <Divider sx={{ bgcolor: '#222', mb: 1.5 }} />
+                    <Typography
+                      sx={{
+                        color: theme.palette.text.secondary, // 🔑
+                        fontSize: '0.75rem',
+                        flexGrow: 1,
+                        mb: 2,
+                      }}
+                    >
+                      {item.desc}
+                    </Typography>
 
-                    {/* LINK */}
-                    <Stack direction="row" alignItems="center" spacing={1} sx={{ color: '#ff7a00' }}>
-                    <Typography sx={{ fontSize: '0.7rem', fontWeight: 700 }}>BATAFSIL</Typography>
-                    <ArrowForward sx={{ fontSize: 14 }} />
+                    <Divider sx={{ mb: 1.5 }} />
+
+                    <Stack
+                      direction="row"
+                      alignItems="center"
+                      spacing={1}
+                      sx={{ color: '#ff7a00' }}
+                    >
+                      <Typography sx={{ fontSize: '0.7rem', fontWeight: 700 }}>
+                        BATAFSIL
+                      </Typography>
+                      <ArrowForward sx={{ fontSize: 14 }} />
                     </Stack>
-                </Paper>
+                  </Paper>
                 </Grid>
-            ))}
+              ))}
             </Grid>
           </Grid>
 

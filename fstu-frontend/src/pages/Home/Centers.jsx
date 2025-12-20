@@ -10,7 +10,7 @@ import {
   Avatar,
   Stack,
 } from "@mui/material";
-
+import Navbar from "../../components/layout/Navbar";
 import BusinessIcon from "@mui/icons-material/Business";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import PhoneIcon from "@mui/icons-material/Phone";
@@ -318,6 +318,7 @@ export default function Centers() {
 
   return (
     <>
+      <Navbar />
       <PagesBanner title="Markazlar va bo‘limlar" />
 
     

@@ -16,6 +16,7 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import PhoneIcon from "@mui/icons-material/Phone";
 import PagesBanner from "../../components/layout/pagesBanner";
 import SideMenu from "../../components/layout/SideMenu";
+import Navbar from "../../components/layout/Navbar";
 
 
 /* ================= DATA ================= */
@@ -159,6 +160,7 @@ const InfoRow = ({ icon, text }) => (
 export default function UniversityManagement() {
   return (
     <>
+    <Navbar />
     <PagesBanner />
     <Box bgcolor="var(--light-gray)">
 

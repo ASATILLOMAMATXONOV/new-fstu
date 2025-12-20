@@ -16,26 +16,31 @@ import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined
 
 const EVENT_DATA = [
   {
-    title: "Web Design and Modern User Interfaces in 2025: Future Trends and AI IntegrationWeb Design and Modern User Interfaces in 2025: Future Trends and AI Integration", 
+    title: "Web Design and Modern User Interfaces in 2025: Future Trends and AI Integration",
     date: "December 20, 2025",
-    img: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800"
+    img: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800",
+    alt: "Web dizayn va zamonaviy foydalanuvchi interfeyslari bo‘yicha seminar"
   },
   {
-    title: "The Future of Online Education", 
+    title: "The Future of Online Education",
     date: "January 15, 2026",
-    img: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800"
+    img: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800",
+    alt: "Onlayn ta’limning kelajagi mavzusidagi konferensiya"
   },
   {
-    title: "Global Tech Summit 2025: Innovation and Digital Literacy Beyond Limits", 
+    title: "Global Tech Summit 2025: Innovation and Digital Literacy Beyond Limits",
     date: "February 10, 2026",
-    img: "https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=800"
+    img: "https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=800",
+    alt: "Global texnologiyalar sammiti 2025"
   },
   {
-    title: "New Start of Creative Art", 
+    title: "New Start of Creative Art",
     date: "March 05, 2026",
-    img: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800"
+    img: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800",
+    alt: "Ijodiy san’at bo‘yicha yangi loyiha taqdimoti"
   }
 ];
+
 
 export default function EventsSlider() {
   return (
@@ -83,7 +88,18 @@ export default function EventsSlider() {
                 }}>
                   {/* RASM */}
                   <Box sx={{ width: '100%', height: 230, overflow: 'hidden' }}>
-                    <Box component="img" src={event.img} sx={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                   <Box
+  component="img"
+  src={event.img}
+  alt={event.alt || event.title}
+  loading="lazy"
+  sx={{
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover'
+  }}
+/>
+
                   </Box>
 
                   <Box sx={{ p: 4 }}>

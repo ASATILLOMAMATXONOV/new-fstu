@@ -10,7 +10,7 @@ import {
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import PagesBanner from "../../components/layout/pagesBanner";
-
+import Navbar from "../../components/layout/Navbar";
 import { motion } from "framer-motion";
 import logoAVaQ from "../../assets/images/fakultet-logo/A va Q.png";
 import logoATvaT from "../../assets/images/fakultet-logo/AT va T.png";
@@ -129,6 +129,7 @@ const SectionTitle = ({ title }) => (
 export default function FacultiesWithVideo() {
   return (
         <>
+        <Navbar />
             <PagesBanner />
             <Box sx={{ py: { xs: 6, md: 8 }, bgcolor: "#fff" }}>
             <Container maxWidth="lg">

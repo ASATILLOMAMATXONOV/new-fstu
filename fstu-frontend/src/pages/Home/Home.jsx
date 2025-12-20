@@ -12,6 +12,8 @@ import SponsorsSlider from "../../components/layout/SponsorsSlider";
 
 import FloatingToolbar from "../../components/layout/FloatingToolbar";
 
+import Footer from "../../components/layout/Footer";
+
 
 export default function Home() {
   return (
@@ -26,16 +28,9 @@ export default function Home() {
       <SponsorsSlider />
       <FloatingToolbar />
 
-      {/* FLOATING SWITCHER */}
-      <div className="floating-switcher">
-        <span className="main-icon">⚙️</span>
-
-        <div className="switcher-menu">
-          <Link to="/twopages">Ko‘rinish 1</Link>
-          <Link to="/twopages?view=2">Ko‘rinish 2</Link>
-          <Link to="/twopages?view=3">Ko‘rinish 3</Link>
-        </div>
-      </div>
+      {/* FOOTER */}
+       <Footer />
+      
     </main>
   );
 }

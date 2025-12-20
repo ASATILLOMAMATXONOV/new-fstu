@@ -14,6 +14,7 @@ import { hover, motion } from "framer-motion";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 
+
 import PagesBanner from "../../components/layout/pagesBanner";
 import SideMenu from "../../components/layout/SideMenu";
 import "../../assets/styles/style.css";
@@ -22,6 +23,7 @@ import "../../assets/styles/style.css";
 import atLogo from "../../assets/images/fakultet-logo/AT va T.png";
 import eeLogo from "../../assets/images/fakultet-logo/ee.png";
 import depLogo from "../../assets/images/fakultet-logo/A va Q.png";
+import Navbar from "../../components/layout/Navbar";
 
 /* ================= DATA ================= */
 const faculties = [
@@ -93,6 +95,7 @@ const FacultyHeader = ({ title }) => (
 export default function FacultiesPage() {
   return (
     <>
+   <Navbar />
     <PagesBanner />
     <Box sx={{ bgcolor: "#f4f7fa", py: 10 }}>
       <Container maxWidth="lg">

@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 
 // layout
 
-import Footer from "../components/layout/Footer";
+
 import ScrollToTop from "../components/layout/ScrollToTop";
 
 // pages
@@ -46,8 +46,7 @@ export default function AppRouter() {
           </Routes>
         </Box>
 
-        {/* FOOTER */}
-        <Footer />
+    
       </Box>
     </BrowserRouter>
   );
