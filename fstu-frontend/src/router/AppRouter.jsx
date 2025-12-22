@@ -15,6 +15,7 @@ import SideMenu from "../components/layout/SideMenu";
 import DepartmentsPage from "../pages/Faculties/Departments";
 import Centers from "../pages/Home/Centers";
 import TwoPages from "../pages/TwoHome/TwoPages";
+import TwoFaculties from "../pages/TwoHome/TwoFaculties";
 
 export default function AppRouter() {
   return (
@@ -41,6 +42,7 @@ export default function AppRouter() {
 
             {/* Two home */}
             <Route path="/twopages" element={<TwoPages />} />
+            <Route path="/twofaculties" element={<TwoFaculties />} />
 
 
           </Routes>

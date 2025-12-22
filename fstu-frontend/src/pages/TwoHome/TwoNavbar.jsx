@@ -84,8 +84,8 @@ const TwoNavbar = () => {
           }}
         >
           {/* LOGO */}
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
-            <Box sx={{ bgcolor: "#ff7a00", px: 1.5 }}>
+          <Box sx={{ display: "flex", alignItems: "center", }}>
+            <Box sx={{ bgcolor: "#ff7a00", px: 1 }}>
               <Typography fontWeight={900} color="#000">
                 F
               </Typography>

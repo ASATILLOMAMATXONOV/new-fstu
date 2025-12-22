@@ -1,12 +1,12 @@
-import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination, Autoplay } from 'swiper/modules';
+import { Navigation, Pagination, Autoplay, EffectCoverflow } from 'swiper/modules';
 import { useTheme } from '@mui/material/styles';
 
-// Swiper stillari
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import 'swiper/css/effect-coverflow';
+
 
 const TwoNews = () => {
   const theme = useTheme();
