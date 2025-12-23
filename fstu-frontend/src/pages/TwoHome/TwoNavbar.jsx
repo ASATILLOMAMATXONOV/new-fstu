@@ -28,10 +28,12 @@ import {
 } from "@mui/icons-material";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "@mui/material/styles";
+import { useNavigate, useLocation } from "react-router-dom";
 import { ColorModeContext } from "../../components/theme/ColorModeContext";
 
+/* ================= NAV LINKS ================= */
 const navLinks = [
-  { name: "ASOSIY", active: true, path: "/" },
+  { name: "ASOSIY", path: "/twopages" },
   {
     name: "UNIVERSITET",
     hasDropdown: true,
@@ -54,9 +56,12 @@ const navLinks = [
   { name: "ALOQA", path: "/contact" },
 ];
 
+/* ================= COMPONENT ================= */
 const TwoNavbar = () => {
   const theme = useTheme();
-  const colorMode = useContext(ColorModeContext);
+  const { toggleColorMode } = useContext(ColorModeContext);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const [activeMenu, setActiveMenu] = useState(null);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -64,167 +69,202 @@ const TwoNavbar = () => {
 
   const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
 
-  return (
-    <AppBar
-      position="sticky"
-      sx={{
-        bgcolor: theme.palette.background.paper,
-        boxShadow: "none",
-        borderBottom: "1px solid",
-        borderColor: "divider",
-      }}
-    >
-      <Toolbar disableGutters sx={{ minHeight: { xs: 70, md: 90 } }}>
-        <Container
-          maxWidth="xl"
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          {/* LOGO */}
-          <Box sx={{ display: "flex", alignItems: "center", }}>
-            <Box sx={{ bgcolor: "#ff7a00", px: 1 }}>
-              <Typography fontWeight={900} color="#000">
-                F
-              </Typography>
-            </Box>
-            <Typography fontWeight={900}>STU</Typography>
-          </Box>
+  const isActive = (path) => location.pathname === path;
 
-          {/* DESKTOP MENUS */}
-          <Stack
-            direction="row"
-            spacing={1}
-            sx={{ display: { xs: "none", md: "flex" }, height: "90px" }}
+  return (
+    <>
+      <AppBar
+        position="sticky"
+        sx={{
+          bgcolor: theme.palette.background.paper,
+          boxShadow: "none",
+          borderBottom: "1px solid",
+          borderColor: "divider",
+        }}
+      >
+        <Toolbar disableGutters sx={{ minHeight: { xs: 70, md: 90 } }}>
+          <Container
+            maxWidth="xl"
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
           >
-            {navLinks.map((link) => (
-              <Box
-                key={link.name}
-                onMouseEnter={() => link.hasDropdown && setActiveMenu(link.name)}
-                onMouseLeave={() => setActiveMenu(null)}
-                sx={{ position: "relative", display: "flex", alignItems: "center" }}
-              >
-                <Button
-                  endIcon={
-                    link.hasDropdown ? (
-                      <KeyboardArrowDown
-                        sx={{
-                          transition: "0.3s",
-                          transform:
-                            activeMenu === link.name
-                              ? "rotate(180deg)"
-                              : "none",
-                        }}
-                      />
-                    ) : null
+            {/* LOGO */}
+            <Box
+              sx={{ display: "flex", alignItems: "center", cursor: "pointer" }}
+              onClick={() => navigate("/twopages")}
+            >
+              <Box sx={{ bgcolor: "#ff7a00", px: 1 }}>
+                <Typography fontWeight={900} color="#000">
+                  F
+                </Typography>
+              </Box>
+              <Typography fontWeight={900}>STU</Typography>
+            </Box>
+
+            {/* DESKTOP MENU */}
+            <Stack
+              direction="row"
+              spacing={1}
+              sx={{ display: { xs: "none", md: "flex" }, height: "90px" }}
+            >
+              {navLinks.map((link) => (
+                <Box
+                  key={link.name}
+                  onMouseEnter={() =>
+                    link.hasDropdown && setActiveMenu(link.name)
                   }
+                  onMouseLeave={() => setActiveMenu(null)}
                   sx={{
-                    height: "100%",
-                    px: 2,
-                    fontWeight: 700,
-                    fontSize: "13px",
-                    color:
-                      link.active || activeMenu === link.name
-                        ? "#ff7a00"
-                        : "text.primary",
-                    "&:hover": { bgcolor: "transparent", color: "#ff7a00" },
+                    position: "relative",
+                    display: "flex",
+                    alignItems: "center",
                   }}
                 >
-                  {link.name}
-                </Button>
-
-                <AnimatePresence>
-                  {activeMenu === link.name && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 10 }}
-                      style={{
-                        position: "absolute",
-                        top: "90px",
-                        left: 0,
-                        background: theme.palette.background.paper,
-                        minWidth: "220px",
-                        borderTop: "4px solid #ff7a00",
-                        boxShadow: "0 15px 40px rgba(0,0,0,0.4)",
-                      }}
-                    >
-                      {link.sub.map((sub, i) => (
-                        <Button
-                          key={i}
-                          fullWidth
+                  <Button
+                    onClick={() => link.path && navigate(link.path)}
+                    endIcon={
+                      link.hasDropdown ? (
+                        <KeyboardArrowDown
                           sx={{
-                            justifyContent: "flex-start",
-                            color: "text.secondary",
-                            p: 2,
-                            "&:hover": {
-                              color: "#ff7a00",
-                              bgcolor: "action.hover",
-                              pl: 3,
-                            },
+                            transition: "0.3s",
+                            transform:
+                              activeMenu === link.name
+                                ? "rotate(180deg)"
+                                : "none",
                           }}
-                        >
-                          {sub.name || sub}
-                        </Button>
-                      ))}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                        />
+                      ) : null
+                    }
+                    sx={{
+                      height: "100%",
+                      px: 2,
+                      fontWeight: 700,
+                      fontSize: "13px",
+                      color: isActive(link.path)
+                        ? "#ff7a00"
+                        : "text.primary",
+                      "&:hover": {
+                        bgcolor: "transparent",
+                        color: "#ff7a00",
+                      },
+                    }}
+                  >
+                    {link.name}
+                  </Button>
+
+                  {/* DROPDOWN */}
+                  <AnimatePresence>
+                    {activeMenu === link.name && link.hasDropdown && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 10 }}
+                        style={{
+                          position: "absolute",
+                          top: "90px",
+                          left: 0,
+                          background: theme.palette.background.paper,
+                          minWidth: "220px",
+                          borderTop: "4px solid #ff7a00",
+                          boxShadow: "0 15px 40px rgba(0,0,0,0.4)",
+                          zIndex: 10,
+                        }}
+                      >
+                        {link.sub.map((sub, i) => (
+                          <Button
+                            key={i}
+                            fullWidth
+                            sx={{
+                              justifyContent: "flex-start",
+                              color: "text.secondary",
+                              p: 2,
+                              "&:hover": {
+                                color: "#ff7a00",
+                                bgcolor: "action.hover",
+                                pl: 3,
+                              },
+                            }}
+                          >
+                            {sub.name || sub}
+                          </Button>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </Box>
+              ))}
+            </Stack>
+
+            {/* ACTIONS */}
+            <Stack direction="row" alignItems="center" spacing={1}>
+              <Box sx={{ display: { xs: "none", lg: "flex" } }}>
+                <IconButton>
+                  <Facebook />
+                </IconButton>
+                <IconButton>
+                  <XIcon />
+                </IconButton>
+                <IconButton>
+                  <Instagram />
+                </IconButton>
               </Box>
-            ))}
-          </Stack>
 
-          {/* ACTIONS */}
-          <Stack direction="row" alignItems="center" spacing={1}>
-            <Box sx={{ display: { xs: "none", lg: "flex" } }}>
-              <IconButton><Facebook /></IconButton>
-              <IconButton><XIcon /></IconButton>
-              <IconButton><Instagram /></IconButton>
-            </Box>
+              {/* THEME TOGGLE */}
+              <IconButton onClick={toggleColorMode}>
+                {theme.palette.mode === "dark" ? (
+                  <Brightness7 />
+                ) : (
+                  <Brightness4 />
+                )}
+              </IconButton>
 
-            {/* THEME TOGGLE */}
-            <IconButton onClick={colorMode.toggleColorMode}>
-              {theme.palette.mode === "dark" ? (
-                <Brightness7 />
-              ) : (
-                <Brightness4 />
-              )}
-            </IconButton>
+              {/* MOBILE MENU BTN */}
+              <IconButton
+                onClick={handleDrawerToggle}
+                sx={{ display: { md: "none" } }}
+              >
+                <MenuIcon />
+              </IconButton>
+            </Stack>
+          </Container>
+        </Toolbar>
+      </AppBar>
 
-            <IconButton
-              onClick={handleDrawerToggle}
-              sx={{ display: { md: "none" } }}
-            >
-              <MenuIcon />
-            </IconButton>
-            
-          </Stack>
-        </Container>
-      </Toolbar>
-
-      {/* MOBILE DRAWER */}
+      {/* ================= MOBILE DRAWER ================= */}
       <Drawer open={mobileOpen} onClose={handleDrawerToggle}>
         <Box sx={{ width: 280 }}>
-          <Box sx={{ p: 2, display: "flex", justifyContent: "space-between" }}>
+          <Box
+            sx={{
+              p: 2,
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
             <Typography fontWeight={700}>MENU</Typography>
             <IconButton onClick={handleDrawerToggle}>
               <CloseIcon />
             </IconButton>
           </Box>
           <Divider />
+
           <List>
             {navLinks.map((link) => (
               <Box key={link.name}>
                 <ListItem
-                  onClick={() =>
-                    link.hasDropdown
-                      ? setMobileDropdown(
-                          mobileDropdown === link.name ? null : link.name
-                        )
-                      : null
-                  }
+                  button
+                  onClick={() => {
+                    if (link.path) {
+                      navigate(link.path);
+                      setMobileOpen(false);
+                    } else {
+                      setMobileDropdown(
+                        mobileDropdown === link.name ? null : link.name
+                      );
+                    }
+                  }}
                 >
                   <ListItemText primary={link.name} />
                   {link.hasDropdown &&
@@ -247,7 +287,7 @@ const TwoNavbar = () => {
           </List>
         </Box>
       </Drawer>
-    </AppBar>
+    </>
   );
 };
 

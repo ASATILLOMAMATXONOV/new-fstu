@@ -16,6 +16,7 @@ import DepartmentsPage from "../pages/Faculties/Departments";
 import Centers from "../pages/Home/Centers";
 import TwoPages from "../pages/TwoHome/TwoPages";
 import TwoFaculties from "../pages/TwoHome/TwoFaculties";
+import TwoAboutBanner from "../pages/TwoHome/TwoAboutBanner";
 
 export default function AppRouter() {
   return (
@@ -43,7 +44,7 @@ export default function AppRouter() {
             {/* Two home */}
             <Route path="/twopages" element={<TwoPages />} />
             <Route path="/twofaculties" element={<TwoFaculties />} />
-
+            <Route path="/twoaboutbaner" element={<TwoAboutBanner />} />
 
           </Routes>
         </Box>
