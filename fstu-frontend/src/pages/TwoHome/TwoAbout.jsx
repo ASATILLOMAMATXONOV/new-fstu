@@ -22,7 +22,7 @@ const digitalServices = [
 
 const universityStructure = [
   { title: "Fakultetlar", desc: "O'quv-metodik bo'linmalar", icon: <School />, path: "/twofaculties" },
-  { title: "Kafedralar", desc: "Ilmiy-nazariy markazlar", icon: <Apartment />, path: "/departments" },
+  { title: "Kafedralar", desc: "Ilmiy-nazariy markazlar", icon: <Apartment />, path: "/twodepartments" },
   { title: "Markazlar", desc: "Ma'muriy boshqaruv", icon: <Settings />, path: "/centers" },
   { title: "Ma'muriyat", desc: "Rektorat va Kengash", icon: <AccountBalance />, path: "/administration" },
   { title: "Aloqa", desc: "+998 71 200 00 00", icon: <PhoneInTalk />, path: "/contact" },

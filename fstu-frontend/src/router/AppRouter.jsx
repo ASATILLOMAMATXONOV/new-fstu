@@ -17,6 +17,7 @@ import Centers from "../pages/Home/Centers";
 import TwoPages from "../pages/TwoHome/TwoPages";
 import TwoFaculties from "../pages/TwoHome/TwoFaculties";
 import TwoAboutBanner from "../pages/TwoHome/TwoAboutBanner";
+import TwoDepartments from "../pages/TwoHome/TwoDepartments";
 
 export default function AppRouter() {
   return (
@@ -45,6 +46,7 @@ export default function AppRouter() {
             <Route path="/twopages" element={<TwoPages />} />
             <Route path="/twofaculties" element={<TwoFaculties />} />
             <Route path="/twoaboutbaner" element={<TwoAboutBanner />} />
+            <Route path="/twodepartments" element={<TwoDepartments />} />
 
           </Routes>
         </Box>
