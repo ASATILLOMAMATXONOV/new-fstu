@@ -5,7 +5,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 export const ColorModeContext = createContext({ toggleColorMode: () => {} });
 
 export default function ColorModeProvider({ children }) {
-  const [mode, setMode] = useState("dark");
+  const [mode, setMode] = useState("light");
 
   const colorMode = useMemo(
     () => ({

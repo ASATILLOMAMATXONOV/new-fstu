@@ -14,10 +14,14 @@ import PagesBanner from "../components/layout/pagesBanner";
 import SideMenu from "../components/layout/SideMenu";
 import DepartmentsPage from "../pages/Faculties/Departments";
 import Centers from "../pages/Home/Centers";
+
+
+// TwoPages
 import TwoPages from "../pages/TwoHome/TwoPages";
 import TwoFaculties from "../pages/TwoHome/TwoFaculties";
 import TwoAboutBanner from "../pages/TwoHome/TwoAboutBanner";
 import TwoDepartments from "../pages/TwoHome/TwoDepartments";
+import TwoCenters from "../pages/TwoHome/TwoCenters";
 
 export default function AppRouter() {
   return (
@@ -47,6 +51,7 @@ export default function AppRouter() {
             <Route path="/twofaculties" element={<TwoFaculties />} />
             <Route path="/twoaboutbaner" element={<TwoAboutBanner />} />
             <Route path="/twodepartments" element={<TwoDepartments />} />
+            <Route path="/twocentrs" element={<TwoCenters />} />
 
           </Routes>
         </Box>

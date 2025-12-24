@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Code2, Zap, ShieldCheck,Building2, Phone, Mail, ArrowLeft,
   ExternalLink, Info, GraduationCap, Users, Award, 
-  ChevronRight, ChevronDown, MapPin, Briefcase, Microscope
+  ChevronRight, ChevronLeft, ChevronDown, MapPin, Briefcase, Microscope
 } from "lucide-react";
 
 import ColorModeProvider from "../../components/theme/ColorModeContext";
@@ -134,7 +134,7 @@ const TwoDepartmentsContent = () => {
               const isOpen = openFacId === fac.id;
               return (
                 <Box key={fac.id} sx={{ 
-                  borderRadius: "24px", overflow: "hidden", 
+                  overflow: "hidden", 
                   border: `1px solid ${isOpen ? accentColor : theme.palette.divider}`,
                   bgcolor: isOpen ? (isDark ? "#111" : "#fcfcfc") : "transparent",
                   transition: "0.3s"
@@ -168,7 +168,7 @@ const TwoDepartmentsContent = () => {
                               key={dept.id}
                               onClick={() => setSelectedDept(dept)}
                               sx={{
-                                p: 2, borderRadius: "16px", cursor: "pointer", display: "flex", alignItems: "center", gap: 2,
+                                p: 2, borderRadius: "5px", cursor: "pointer", display: "flex", alignItems: "center", gap: 2,
                                 bgcolor: selectedDept?.id === dept.id ? accentColor : "transparent",
                                 color: selectedDept?.id === dept.id ? "#fff" : "inherit",
                                 "&:hover": { bgcolor: selectedDept?.id === dept.id ? accentColor : "action.selected" }
@@ -287,7 +287,7 @@ const TwoDepartmentsContent = () => {
             animate={{ x: [-5, 5, -5] }}
             transition={{ duration: 2, repeat: Infinity }}
           >
-            <ChevronRight size={18} color={accentColor} />
+            <ChevronLeft size={18} color={accentColor} />
           </Box>
           <Typography sx={{ fontWeight: 600, fontSize: "15px" }}>
             Ma'lumot ko'rish uchun chap menyudan tanlang
@@ -328,7 +328,7 @@ const TwoDepartmentsContent = () => {
                         <motion.div
                             whileHover={{ y: -10, rotateY: isMobile ? 0 : 8 }}
                             style={{
-                                perspective: "1000px", borderRadius: "32px", overflow: "hidden",
+                                perspective: "1000px",  overflow: "hidden",
                                 backgroundColor: isDark ? "#111" : "#fff",
                                 boxShadow: "0 30px 60px rgba(0,0,0,0.1)",
                                 border: `1px solid ${theme.palette.divider}`
