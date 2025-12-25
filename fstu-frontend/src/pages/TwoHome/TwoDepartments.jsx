@@ -399,6 +399,8 @@ const TwoDepartmentsContent = () => {
           </AnimatePresence>
         </Box>
       </Box>
+
+      
       <TwoFooter />
     </Box>
   );
