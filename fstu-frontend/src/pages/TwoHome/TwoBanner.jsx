@@ -51,10 +51,10 @@ const TwoBanner = () => {
               transition={{ duration: 0.8 }}
             >
               <Stack direction="row" alignItems="center" spacing={1} mb={2}>
-                <Box sx={{ width: 40, height: 2, bgcolor: "#ff7a00" }} />
+                <Box sx={{ width: 40, height: 2, bgcolor: "#02509eff" }} />
                 <Typography
                   sx={{
-                    color: "#ff7a00",
+                    color: "#0067ff",
                     fontWeight: 700,
                     letterSpacing: 2,
                     fontSize: 14,
@@ -75,7 +75,7 @@ const TwoBanner = () => {
                 }}
               >
                 BILIM BILAN <br />
-                <span style={{ color: "#ff7a00" }}>DUNYONI</span> O'ZGARTIR
+                <span style={{ color: "#0067ff" }}>DUNYONI</span> O'ZGARTIR
               </Typography>
 
               <Typography
@@ -136,7 +136,7 @@ const TwoBanner = () => {
                     left: 20,
                     width: "100%",
                     height: "100%",
-                    border: "2px solid #ff7a00",
+                    border: "2px solid #0067ff",
                     zIndex: -1,
                   },
                 }}
@@ -159,7 +159,7 @@ const TwoBanner = () => {
                     boxShadow: 10,
                   }}
                 >
-                  <School sx={{ color: "#ff7a00" }} />
+                  <School sx={{ color: "#02509eff" }} />
                   <Box>
                     <Typography fontWeight={700} fontSize={14}>
                       50+ Yo'nalishlar
@@ -182,15 +182,16 @@ const TwoBanner = () => {
               >
                 <Box
                   sx={{
-                    bgcolor: "#ff7a00",
+                     bgcolor: theme.palette.background.paper,
                     p: 2,
                     color: "#000",
                     display: "flex",
                     alignItems: "center",
                     gap: 2,
+                    boxShadow: 10,
                   }}
                 >
-                  <Public />
+                  <Public sx={{ color: "#02509eff" }} />
                   <Typography fontWeight={700} fontSize={14}>
                     Xalqaro Diplom
                   </Typography>

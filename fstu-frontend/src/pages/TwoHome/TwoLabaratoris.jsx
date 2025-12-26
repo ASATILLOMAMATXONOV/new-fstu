@@ -1,189 +1,210 @@
-// import React from "react";
-// import { 
-//   Box, Typography, Container, Grid, Card, CardMedia, 
-//   CardContent, Stack, Chip, Button, useTheme 
-// } from "@mui/material";
-// import { motion } from "framer-motion";
-// import { 
-//   Beaker, Cpu, Zap, Microscope, 
-//   ShieldCheck, ArrowRight, Binary 
-// } from "lucide-react";
+import React, { useState } from 'react';
+import { Box, Container, Typography, Stack, Button } from '@mui/material';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  Biotech, 
+  Engineering, 
+  Computer, 
+  SettingsSuggest,
+  ArrowForward
+} from '@mui/icons-material';
+import { useTheme, alpha } from "@mui/material/styles";
 
-// import TwoNavbar from "../../pages/TwoHome/TwoNavbar";
-// import TwoFooter from "../../pages/TwoHome/TwoFooter";
-// import ColorModeProvider from "../../components/theme/ColorModeContext";
+// Rasmlar/GIFlar yo'li
+import L1Img from "../../assets/videos/l1.gif";
+import L2Img from "../../assets/videos/l2.gif";
+import L3Img from "../../assets/videos/L3.gif";
 
-// // Laboratoriya ma'lumotlari
-// const laboratories = [
-//   {
-//     id: 1,
-//     title: "Robototexnika va Mexatronika",
-//     description: "Sanoat robotlari, sensorlar va avtomatlashtirilgan tizimlarni loyihalash laboratoriyasi.",
-//     image: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?q=80&w=2070",
-//     tools: ["Arduino", "KUKA Robots", "3D Printers"],
-//     color: "#3f51b5"
-//   },
-//   {
-//     id: 2,
-//     title: "Muqobil Energiya Manbalari",
-//     description: "Quyosh panellari va shamol energetikasi bo'yicha ilmiy-tadqiqot markazi.",
-//     image: "https://images.unsplash.com/photo-1509391366360-fe5bb58583bb?q=80&w=2070",
-//     tools: ["Solar Panels", "Inverters", "Energy Meters"],
-//     color: "#4caf50"
-//   },
-//   {
-//     id: 3,
-//     title: "IT va Kiberxavfsizlik",
-//     description: "Yuqori tezlikdagi serverlar va tarmoq xavfsizligini o'rganish xonasi.",
-//     image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070",
-//     tools: ["Cisco", "Kali Linux", "Cloud Servers"],
-//     color: "#2196f3"
-//   },
-//   {
-//     id: 4,
-//     title: "Kimyoviy Texnologiyalar",
-//     description: "Moddalarni analiz qilish va yangi polimer materiallar yaratish laboratoriyasi.",
-//     image: "https://images.unsplash.com/photo-1582719508461-905c673771fd?q=80&w=2074",
-//     tools: ["Spectrometers", "Centrifuges", "Distillation"],
-//     color: "#e91e63"
-//   }
-// ];
+const labData = [
+  { 
+    id: 1,
+    title: "Robototexnika Markazi", 
+    icon: <Engineering />, 
+    media: L1Img,
+    desc: "Sanoat robotlari va avtomatlashtirilgan o'quv stendlari to'plami."
+  },
+  { 
+    id: 2,
+    title: "IT-Akademiya", 
+    icon: <Computer />, 
+    media: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=80",
+    desc: "Yuqori quvvatli grafik stansiyalar va bulutli texnologiyalar laboratoriyasi."
+  },
+  { 
+    id: 3,
+    title: "Mexatronika Stendlari", 
+    icon: <SettingsSuggest />, 
+    media: L2Img,
+    desc: "Pnevmatika va gidravlika tizimlarini o'rganish uchun maxsus jihozlar."
+  },
+  { 
+    id: 4,
+    title: "Biotexnologiya", 
+    icon: <Biotech />, 
+    media: L3Img,
+    desc: "Zamonaviy mikroskoplar va DNK tahlili uchun innovatsion uskunalar."
+  },
+];
 
-// const LabCard = ({ lab }) => {
-//   const theme = useTheme();
-//   const isDark = theme.palette.mode === "dark";
+const TwoLabaratoris = () => {
+  const theme = useTheme();
+  const [activeTab, setActiveTab] = useState(labData[0]);
 
-//   return (
-//     <Grid item xs={12} md={6}>
-//       <motion.div
-//         whileHover={{ y: -10 }}
-//         initial={{ opacity: 0, scale: 0.9 }}
-//         whileInView={{ opacity: 1, scale: 1 }}
-//         viewport={{ once: true }}
-//       >
-//         <Card sx={{ 
-//           borderRadius: "30px", 
-//           overflow: "hidden", 
-//           bgcolor: isDark ? "rgba(255,255,255,0.03)" : "#fff",
-//           backdropFilter: "blur(10px)",
-//           border: "1px solid",
-//           borderColor: isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.05)",
-//           boxShadow: isDark ? "0 20px 40px rgba(0,0,0,0.4)" : "0 20px 40px rgba(0,0,0,0.05)"
-//         }}>
-//           <Box sx={{ position: "relative", height: "280px" }}>
-//             <CardMedia
-//               component="img"
-//               height="100%"
-//               image={lab.image}
-//               alt={lab.title}
-//               sx={{ transition: "0.5s", "&:hover": { transform: "scale(1.1)" } }}
-//             />
-//             <Box sx={{ 
-//               position: "absolute", top: 20, right: 20, 
-//               bgcolor: lab.color, p: 1.5, borderRadius: "15px", color: "#fff" 
-//             }}>
-//               <Microscope size={24} />
-//             </Box>
-//           </Box>
+  return (
+    <Box sx={{ bgcolor: theme.palette.background.default, py: { xs: 8, md: 12 } }}>
+      <Container maxWidth="xl">
+        {/* SARLAVHA */}
+        <Typography 
+          variant="h3" 
+          sx={{ 
+            fontWeight: 700, 
+            mb: 5, 
+            fontSize: '24px', 
+            fontFamily: 'Arial, sans-serif',
+            borderLeft: '4px solid #02509eff', 
+            pl: 2,
+            lineHeight: 1.2,
+            color: theme.palette.mode === 'dark' ? '#ffffff' : '#000000',
+          }}
+        >
+          O'quv Laboratoriyalari
+        </Typography>
 
-//           <CardContent sx={{ p: 4 }}>
-//             <Typography variant="h4" sx={{ fontWeight: 800, mb: 2, fontSize: "24px" }}>
-//               {lab.title}
-//             </Typography>
-//             <Typography variant="body1" sx={{ color: "text.secondary", mb: 3, lineHeight: 1.7 }}>
-//               {lab.description}
-//             </Typography>
-            
-//             <Stack direction="row" spacing={1} flexWrap="wrap" gap={1} sx={{ mb: 4 }}>
-//               {lab.tools.map((tool) => (
-//                 <Chip 
-//                   key={tool} 
-//                   label={tool} 
-//                   size="small" 
-//                   sx={{ borderRadius: "8px", fontWeight: 600, bgcolor: `${lab.color}15`, color: lab.color }} 
-//                 />
-//               ))}
-//             </Stack>
+        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 4, alignItems: 'flex-start' }}>
+          
+          {/* CHAP TOMON: RO'YXAT */}
+          <Box sx={{ flex: 1, width: '100%' }}>
+            <Stack spacing={1.5}>
+              {labData.map((item) => (
+                <Box
+                  key={item.id}
+                  component={motion.div}
+                  onClick={() => setActiveTab(item)}
+                  whileHover={{ x: 10 }}
+                  whileTap={{ scale: 0.98 }}
+                  sx={{
+                    p: 2,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    bgcolor: activeTab.id === item.id ? theme.palette.background.paper : 'transparent',
+                    border: '2px solid',
+                    // Faqat aktiv bo'lganda yoki hoverda border chiqadi
+                    borderColor: activeTab.id === item.id ? '#0067ff' : 'divider',
+                    borderRadius: 1,
+                    transition: '0.3s all ease',
+                    boxShadow: activeTab.id === item.id ? '0 10px 20px rgba(0,0,0,0.05)' : 'none',
+                    '&:hover': {
+                      borderColor: '#02509eff',
+                      bgcolor: theme.palette.background.paper,
+                    },
+                  }}
+                >
+                  <Stack direction="row" spacing={2} alignItems="center">
+                    <Box sx={{ 
+                      color: '#02509eff', 
+                      display: 'flex',
+                      bgcolor: activeTab.id === item.id ? alpha('#0067ff', 0.1) : 'transparent',
+                      p: 1,
+                      borderRadius: 1
+                    }}>
+                      {item.icon}
+                    </Box>
+                    <Typography
+                      sx={{
+                        color: activeTab.id === item.id ? theme.palette.text.primary : theme.palette.text.secondary,
+                        fontWeight: 700,
+                        fontSize: '0.85rem',
+                        textTransform: 'uppercase',
+                      }}
+                    >
+                      {item.title}
+                    </Typography>
+                  </Stack>
+                  <ArrowForward
+                    sx={{
+                      color: activeTab.id === item.id ? '#0067ff' : theme.palette.divider,
+                      fontSize: 18,
+                    }}
+                  />
+                </Box>
+              ))}
+            </Stack>
+          </Box>
 
-//             <Button 
-//               fullWidth 
-//               variant="outlined" 
-//               endIcon={<ArrowRight />}
-//               sx={{ 
-//                 borderRadius: "15px", 
-//                 py: 1.5, 
-//                 fontWeight: 700,
-//                 borderColor: lab.color,
-//                 color: lab.color,
-//                 "&:hover": { bgcolor: lab.color, color: "#fff", borderColor: lab.color }
-//               }}
-//             >
-//               Batafsil ma'lumot
-//             </Button>
-//           </CardContent>
-//         </Card>
-//       </motion.div>
-//     </Grid>
-//   );
-// };
+          {/* O'NG TOMON: MEDIA PLAYER */}
+          <Box sx={{ flex: 1.5, width: '100%', position: 'relative' }}>
+            <AnimatePresence mode="wait">
+              <Box
+                key={activeTab.id}
+                component={motion.div}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.5 }}
+                sx={{
+                  position: 'relative',
+                  width: '100%',
+                  height: { xs: 400, md: 550 },
+                  borderRadius: 3,
+                  overflow: 'hidden',
+                  bgcolor: '#000',
+                  boxShadow: '0 30px 60px rgba(0,0,0,0.15)'
+                }}
+              >
+                <img
+                  src={activeTab.media}
+                  alt={activeTab.title}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    opacity: 0.7
+                  }}
+                />
 
-// const LaboratoriesContent = () => {
-//   const theme = useTheme();
-//   const isDark = theme.palette.mode === "dark";
+                {/* MA'LUMOTLAR QISMI (OVERLAY) */}
+                <Box sx={{
+                  position: 'absolute',
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  p: { xs: 3, md: 5 },
+                  background: 'linear-gradient(to top, rgba(0,0,0,1) 0%, transparent 100%)',
+                }}>
+                  <Typography variant="h4" sx={{ color: 'white', fontWeight: 600, mb: 1, fontSize: '24px',  fontFamily: 'Arial, sans-serif', }}>
+                    {activeTab.title}
+                  </Typography>
+                  
+                  <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.7)', mb: 3, maxWidth: '90%' }}>
+                    {activeTab.desc}
+                  </Typography>
+                  
+                  <Button
+                    variant="contained"
+                    endIcon={<ArrowForward />}
+                    sx={{
+                      bgcolor: '#02509eff',
+                      color: 'white',
+                      px: 4,
+                      py: 1.2,
+                      borderRadius: 2,
+                      fontWeight: 700,
+                      '&:hover': { bgcolor: '#0067ff' }
+                    }}
+                  >
+                    Batafsil
+                  </Button>
+                </Box>
+              </Box>
+            </AnimatePresence>
+          </Box>
 
-//   const pageWrapper = {
-//     minHeight: "100vh",
-//     backgroundImage: `linear-gradient(${isDark ? 'rgba(10, 10, 30, 0.95)' : 'rgba(255, 255, 255, 0.95)'}, ${isDark ? 'rgba(10, 10, 30, 0.95)' : 'rgba(255, 255, 255, 0.95)'}), url('https://www.transparenttextures.com/patterns/cubes.png')`,
-//     backgroundAttachment: "fixed",
-//   };
+        </Box>
+      </Container>
+    </Box>
+  );
+};
 
-//   return (
-//     <Box sx={pageWrapper}>
-//       <TwoNavbar />
-      
-//       <Container maxWidth="lg" sx={{ py: 15 }}>
-//         {/* Header Section */}
-//         <Box sx={{ textAlign: "center", mb: 10 }}>
-//           <motion.div initial={{ y: -30, opacity: 0 }} animate={{ y: 0, opacity: 1 }}>
-//             <Typography variant="overline" sx={{ color: "primary.main", fontWeight: 900, letterSpacing: 4 }}>
-//               Innovatsion Markazlar
-//             </Typography>
-//             <Typography variant="h2" sx={{ fontWeight: 900, mt: 2, fontSize: { xs: "32px", md: "48px" } }}>
-//               Bizning Laboratoriyalar
-//             </Typography>
-//             <Box sx={{ width: "80px", height: "5px", bgcolor: "primary.main", mx: "auto", mt: 2, borderRadius: "10px" }} />
-//           </motion.div>
-//         </Box>
-
-//         {/* Grid System */}
-//         <Grid container spacing={4}>
-//           {laboratories.map((lab) => (
-//             <LabCard key={lab.id} lab={lab} />
-//           ))}
-//         </Grid>
-
-//         {/* Info Section */}
-//         <Box sx={{ mt: 15, p: 6, borderRadius: "40px", bgcolor: "primary.main", color: "#fff", textAlign: "center", position: "relative", overflow: "hidden" }}>
-//           <Zap size={100} style={{ position: "absolute", top: -20, left: -20, opacity: 0.1 }} />
-//           <Typography variant="h3" sx={{ fontWeight: 800, mb: 2 }}>Ilm-fan cho'qqilarini biz bilan zabt eting!</Typography>
-//           <Typography variant="h6" sx={{ opacity: 0.8, mb: 4, maxWidth: "700px", mx: "auto" }}>
-//             Laboratoriyalarimiz eng so'nggi texnologiyalar bilan jihozlangan bo'lib, talabalarning amaliy ko'nikmalarini oshirishga xizmat qiladi.
-//           </Typography>
-//           <Button variant="contained" sx={{ bgcolor: "#fff", color: "primary.main", px: 5, py: 2, borderRadius: "15px", fontWeight: 800, "&:hover": { bgcolor: "#f0f0f0" } }}>
-//             Hamkorlik qilish
-//           </Button>
-//         </Box>
-//       </Container>
-
-//       <TwoFooter />
-//     </Box>
-//   );
-// };
-
-// const TwoLaboratories = () => (
-//   <ColorModeProvider>
-//     <LaboratoriesContent />
-//   </ColorModeProvider>
-// );
-
-// export default TwoLaboratories;
+export default TwoLabaratoris;

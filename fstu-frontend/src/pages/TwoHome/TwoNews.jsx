@@ -10,7 +10,8 @@ import 'swiper/css/effect-coverflow';
 
 const TwoNews = () => {
   const theme = useTheme();
-  const accentColor = '#ff7a00';
+  const accentColor = '#0067ff';
+  const accentColors = '#02509eff';
 
   const newsData = [
     {
@@ -51,7 +52,7 @@ const TwoNews = () => {
         {/* HEADER */}
         <div style={headerRow}>
           <h2 style={sectionTitle}>
-            <span style={{ color: accentColor, marginRight: 10 }}>|</span>
+            <span style={{ color: accentColors, marginRight: 10 }}>|</span>
             So‘nggi yangiliklar
           </h2>
 

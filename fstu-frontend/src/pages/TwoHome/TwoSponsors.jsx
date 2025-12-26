@@ -9,7 +9,7 @@ import 'swiper/css/effect-coverflow';
 
 const TwoSponsors = () => {
   const theme = useTheme();
-  const accentColor = '#ff7a00';
+  const accentColor = '#02509eff';
 
   const sponsors = [
     { id: 1, name: "Artel", logo: "https://fstu.uz/uploads/links/Wg3EBm8fBP.png", link: "https://artelgroup.org" },

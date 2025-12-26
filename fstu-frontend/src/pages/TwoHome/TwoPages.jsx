@@ -6,7 +6,7 @@ import TwoNews from "../../pages/TwoHome/TwoNews";
 import TwoEvent from "../../pages/TwoHome/TwoEvent";
 import TwoSponsors from "../../pages/TwoHome/TwoSponsors";
 import TwoFooter from "../../pages/TwoHome/TwoFooter";
-// import TwoLabaratoris from "../../pages/TwoHome/TwoLabaratoris";
+import TwoLabaratoris from "../../pages/TwoHome/TwoLabaratoris";
 
 import ColorModeProvider from "../../components/theme/ColorModeContext";
 
@@ -18,7 +18,7 @@ export default function AlternativeHome() {
       <TwoAbout />
       <TwoAboutTo />
       <TwoNews />
-      {/* <TwoLabaratoris /> */}
+      <TwoLabaratoris />
       <TwoEvent />
       <TwoSponsors />
       <TwoFooter />

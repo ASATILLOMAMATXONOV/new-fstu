@@ -4,6 +4,9 @@ import { motion } from 'framer-motion';
 import { CheckCircleOutline } from '@mui/icons-material';
 import { useTheme } from "@mui/material/styles";
 
+import L3Img from "../../assets/videos/F1.gif";
+
+
 const admissionFeatures = [
   { title: "Bakalavriat ta’lim yo‘nalishlari", link: "https://fstu.uz/uz/page/bakalavriat" },
   { title: "Magistratura mutaxassisliklari", link: "https://fstu.uz/uz/page/magistratura" },
@@ -43,10 +46,10 @@ const TwoAboutTo = () => {
               transition={{ duration: 0.8 }}
             >
               <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 2 }}>
-                <Box sx={{ width: 35, height: 2, bgcolor: '#ff7a00' }} />
+                <Box sx={{ width: 35, height: 2, bgcolor: '#02509eff' }} />
                 <Typography
                   sx={{
-                    color: '#ff7a00',
+                    color: '#02509eff',
                     fontWeight: 800,
                     letterSpacing: 2,
                     fontSize: '0.75rem',
@@ -120,21 +123,21 @@ const TwoAboutTo = () => {
                       textDecoration: 'none',
                       cursor: 'pointer',
                       '&:hover .feature-text': {
-                        color: '#ff7a00',
+                        color: '#0067ff',
                         fontWeight: 600,
                       },
                       '&:hover .check-icon': {
                         transform: 'scale(1.2)',
-                        color: '#ff7a00',
+                        color: '#02509eff',
                       },
                     }}
                   >
                     <CheckCircleOutline
                       className="check-icon"
                       sx={{
-                        color: '#ff7a00',
+                        color: '#02509eff',
                         mr: 1.5,
-                        transition: 'all 0.3s ease',
+                        transition: 'all 0.2s ease',
                       }}
                     />
 
@@ -143,7 +146,7 @@ const TwoAboutTo = () => {
                       sx={{
                         color: theme.palette.text.primary, // 🔑
                         fontSize: '0.95rem',
-                        transition: 'all 0.3s ease',
+                        transition: 'all 0.2s ease',
                         lineHeight: 1.4,
                       }}
                     >
@@ -168,7 +171,7 @@ const TwoAboutTo = () => {
                 sx={{
                   position: 'absolute',
                   inset: { xs: '-3%', md: '-6%' },
-                  bgcolor: '#ff7a00',
+                  bgcolor: '#0067ff',
                   clipPath: 'polygon(20% 0%, 100% 0%, 100% 100%, 0% 100%)',
                   zIndex: 0,
                 }}
@@ -186,7 +189,7 @@ const TwoAboutTo = () => {
               >
                 <Box
                   component="img"
-                  src="https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1200&q=80"
+                  src={L3Img}
                   alt="University"
                   loading="lazy"
                   sx={{

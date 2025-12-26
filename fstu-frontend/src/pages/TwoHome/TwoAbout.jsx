@@ -64,7 +64,7 @@ const universityStructure = [
                   color: theme.palette.text.primary, // 🔑
                   mb: 3,
                   fontWeight: 700,
-                  borderLeft: '4px solid #ff7a00',
+                  borderLeft: '4px solid #02509eff',
                   pl: 2,
                 }}
               >
@@ -90,12 +90,12 @@ const universityStructure = [
                       cursor: 'pointer',
                       transition: '0.3s',
                       '&:hover': {
-                        borderColor: '#ff7a00',
+                        borderColor: '#0067ff',
                       },
                     }}
                   >
                     <Stack direction="row" spacing={2} alignItems="center">
-                      <Box sx={{ color: '#ff7a00', display: 'flex' }}>
+                      <Box sx={{ color: '#02509eff', display: 'flex' }}>
                         {service.icon}
                       </Box>
                       <Typography
@@ -127,7 +127,7 @@ const universityStructure = [
                   color: theme.palette.text.primary, // 🔑
                   mb: 3,
                   fontWeight: 700,
-                  borderLeft: '4px solid #ff7a00',
+                  borderLeft: '4px solid #02509eff',
                   pl: 2,
                 }}
               >
@@ -161,11 +161,11 @@ const universityStructure = [
                         width: '160px',     // ⛔ O‘ZGARMAGAN
                         minHeight: '150px', // ⛔ O‘ZGARMAGAN
                         '&:hover': {
-                          borderColor: '#ff7a00',
+                          borderColor: '#0067ff',
                         },
                       }}
                     >
-                      <Box sx={{ color: '#ff7a00', mb: 1.5 }}>
+                      <Box sx={{ color: '#02509eff', mb: 1.5 }}>
                         {item.icon}
                       </Box>
 
@@ -197,7 +197,7 @@ const universityStructure = [
                         direction="row"
                         alignItems="center"
                         spacing={1}
-                        sx={{ color: '#ff7a00' }}
+                        sx={{ color: '#0067ff' }}
                       >
                         <Typography sx={{ fontSize: '0.7rem', fontWeight: 700 }}>
                           BATAFSIL

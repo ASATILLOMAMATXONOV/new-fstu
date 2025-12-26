@@ -13,7 +13,8 @@ import { useTheme } from '@mui/material/styles';
 
 const TwoFooter = () => {
   const theme = useTheme();
-  const accentColor = '#ff7a00';
+  const accentColor = '#0067ff';
+  const accentColors = '#02509eff';
   const currentYear = new Date().getFullYear();
 
   return (
@@ -30,7 +31,7 @@ const TwoFooter = () => {
           {/* 1. Institut haqida */}
           <div style={section}>
             <h3 style={logoText}>
-              <span style={{ color: accentColor }}>FSTU</span>
+              <span style={{ color: accentColors }}>FSTU</span>
             </h3>
 
             <p

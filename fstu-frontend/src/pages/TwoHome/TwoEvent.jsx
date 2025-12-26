@@ -10,7 +10,8 @@ import { useTheme } from '@mui/material/styles';
 
 const TwoEvent = () => {
   const theme = useTheme();
-  const accentColor = '#ff7a00';
+  const accentColor = '#0067ff';
+  const accentColors = '#02509eff';
 
   const ads = [
     {
@@ -56,7 +57,7 @@ const TwoEvent = () => {
         {/* HEADER */}
         <div style={topHeader}>
           <h2 style={{ ...mainTitle, color: theme.palette.text.primary }}>
-            <span style={{ color: accentColor, marginRight: 10 }}>|</span>
+            <span style={{ color: accentColors, marginRight: 10 }}>|</span>
             FSTU <span style={{ fontWeight: 300 }}>E'lonlari</span>
           </h2>
 
@@ -99,7 +100,7 @@ const TwoEvent = () => {
             >
               <Megaphone
                 size={40}
-                color={accentColor}
+                color={accentColors}
                 strokeWidth={2.5}
                 style={{ transform: 'rotate(-20deg)' }}
               />
@@ -234,7 +235,7 @@ const TwoEvent = () => {
         }
 
         @keyframes pulse {
-          0% { box-shadow: 0 0 0 0 rgba(255,122,0,0.3); }
+          0% { box-shadow: 0 0 0 0 rgba(0, 126, 243, 0.72); }
           100% { box-shadow: 0 0 0 12px rgba(255,122,0,0); }
         }
 
@@ -364,7 +365,7 @@ const badgeStyle = {
   position: 'absolute',
   top: '15px',
   left: '15px',
-  backgroundColor: '#ff7a00',
+  backgroundColor: '#0067ff',
   color: '#fff',
   padding: '3px 10px',
   borderRadius: '5px',
