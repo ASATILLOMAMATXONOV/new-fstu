@@ -1,33 +1,13 @@
 import React, { useState, useContext } from "react";
 import {
-  AppBar,
-  Toolbar,
-  Box,
-  Container,
-  Stack,
-  Typography,
-  alpha,
-  useScrollTrigger,
-  Button,
-  IconButton,
-  Drawer,
-  List,
-  ListItem,
-  ListItemText,
-  Collapse,
-  Divider,
+  AppBar, Toolbar, Box, Container, Stack, Typography, alpha,
+  useScrollTrigger, Button, IconButton, Drawer, List, ListItem,
+  ListItemText, Collapse, Divider, Menu, MenuItem
 } from "@mui/material";
 import {
-  KeyboardArrowDown,
-  ChevronRight,
-  Language,
-  Search,
-  Brightness4,
-  Brightness7,
-  Menu as MenuIcon,
-  Close as CloseIcon,
-  ExpandLess,
-  ExpandMore,
+  KeyboardArrowDown, ChevronRight, Brightness4, Brightness7,
+  Menu as MenuIcon, Close as CloseIcon, ExpandLess, ExpandMore,
+  Translate, Check, Telegram, YouTube, Instagram
 } from "@mui/icons-material";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "@mui/material/styles";
@@ -35,41 +15,49 @@ import { ColorModeContext } from "../../components/theme/ColorModeContext";
 
 import LogoImg from "../../assets/images/logo.png";
 
+/* ===== DATA ===== */
 const megaMenuData = {
   "FAOLIYAT": [
     {
       category: "INNOVATSIYALAR",
-      links: ["Ilmiy tadqiqot faoliyati", "Startup va tadbirkorlik", "Yoshlar siyosati"]
+      links: [
+        { name: "Ilmiy tadqiqot faoliyati", url: "/scientific-research" },
+        { name: "Startup va tadbirkorlik", url: "/startup" },
+        { name: "Yoshlar siyosati", url: "/youth-policy" }
+      ]
     },
     {
       category: "ILMIY FAOLIYAT",
-      links: ["Ilmiy faoliyat", "Oliy ta'limdan keyingi ta'lim", "Ilm fan"]
-    },
-    {
-      category: "ERASMUS PLUS",
-      links: ["Erasmus+", "MechaUz", "Spacecom"]
-    }
-  ],
-  "TA'LIM": [
-    {
-      category: "O'QUV FAOLIYAT",
-      links: ["O'quv faoliyat", "Normativ hujjatlar", "Bakalavriat"]
-    },
-    {
-      category: "MASOFAVIY TA'LIM",
-      links: ["Moodle tizimi", "Video darslar"]
+      links: [
+        { name: "Ilmiy faoliyat", url: "/science" },
+        { name: "Oliy ta'limdan keyingi ta'lim", url: "/postgraduate" },
+        { name: "Ilm fan", url: "/research" }
+      ]
     }
   ]
 };
 
-const navItems = ["UNIVERSITET", "FAOLIYAT", "TA'LIM", "KAMPUS HAQUDA", "AXBOROT XIZMATI"];
+const navItems = [
+  { name: "UNIVERSITET", url: "/twopages" },
+  { name: "FAOLIYAT", url: "#" },
+  { name: "TA'LIM", url: "#" },
+  { name: "KAMPUS HAQUDA", url: "/campus" },
+  { name: "AXBOROT XIZMATI", url: "/news" }
+];
+
+const languages = [
+  { code: "UZ", label: "O'zbekcha" },
+  { code: "RU", label: "Русский" },
+  { code: "EN", label: "English" }
+];
 
 const TwoNavbar = () => {
   const theme = useTheme();
   const { toggleColorMode } = useContext(ColorModeContext);
   const [activeMenu, setActiveMenu] = useState(null);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [mobileSubMenu, setMobileSubMenu] = useState(null);
+  const [langAnchor, setLangAnchor] = useState(null);
+  const [currentLang, setCurrentLang] = useState(languages[0]);
 
   const trigger = useScrollTrigger({ disableHysteresis: true, threshold: 20 });
 
@@ -78,72 +66,82 @@ const TwoNavbar = () => {
       <AppBar
         position="fixed"
         sx={{
-          bgcolor: theme.palette.mode === "dark" ? "#121212" : "white",
+          bgcolor: theme.palette.background.paper,
           boxShadow: trigger ? "0 4px 20px rgba(0,0,0,0.1)" : "none",
           borderBottom: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
-          transition: "0.3s ease-in-out",
-          backgroundImage: "none",
+          transition: "0.3s",
         }}
       >
         <Container maxWidth="xl">
-          <Toolbar sx={{ height: { xs: 70, md: 90 }, justifyContent: "space-between", px: "0 !important" }}>
+          <Toolbar sx={{ height: { xs: 70, md: 90 }, justifyContent: "space-between", px: 0 }}>
             
-            {/* 1. LOGO */}
-            <Box sx={{ display: "flex", alignItems: "center", cursor: "pointer" }}>
-              <img src={LogoImg} alt="Logo" style={{ height: "50px", objectFit: "contain" }} />
+            {/* LOGO */}
+            <Box component="a" href="/" sx={{ display: "flex", alignItems: "center" }}>
+              <img src={LogoImg} alt="Logo" style={{ height: 50 }} />
             </Box>
 
-            {/* 2. DESKTOP NAV */}
-            <Box sx={{ display: { xs: "none", md: "flex" }, height: "100%", gap: 1 }}>
-              {navItems.map((item) => (
+            {/* DESKTOP MENU */}
+            <Box sx={{ display: { xs: "none", md: "flex" }, height: "100%", gap: 0.5 }}>
+              {navItems.map(item => (
                 <Box
-                  key={item}
-                  onMouseEnter={() => setActiveMenu(item)}
+                  key={item.name}
+                  onMouseEnter={() => setActiveMenu(item.name)}
                   onMouseLeave={() => setActiveMenu(null)}
-                  sx={{ position: "relative", display: "flex", alignItems: "center", height: "100%" }}
+                  sx={{ position: "relative", height: "100%", display: "flex", alignItems: "center" }}
                 >
                   <Button
-                    disableRipple
-                    endIcon={megaMenuData[item] && <KeyboardArrowDown sx={{ 
-                      fontSize: 18, transition: "0.3s", 
-                      transform: activeMenu === item ? "rotate(180deg)" : "none" 
-                    }} />}
+                    href={item.url}
+                    disableRipple // ✅ Bosganda silkinishni o'chiradi
+                    disableTouchRipple // ✅ Sensorli ekranlarda silkinishni o'chiradi
+                    endIcon={megaMenuData[item.name] && <KeyboardArrowDown sx={{ fontSize: "1rem" }} />}
                     sx={{
-                      color: activeMenu === item ? "#0067ff" : (theme.palette.mode === "dark" ? "white" : "#02509eff"),
-                      fontWeight: 700, px: 2, fontSize: "0.85rem", height: "100%", borderRadius: 0,
-                      "&:hover": { bgcolor: "transparent" } // HOVER BACKGROUND O'CHIRILDI
+                      color: activeMenu === item.name ? "primary.main" : "text.primary",
+                      fontWeight: 700,
+                      px: 2,
+                      height: "100%",
+                      borderRadius: 0,
+                      fontSize: "0.85rem",
+                      "&:hover": { bgcolor: "transparent" }, // Hoverda fon o'zgarmaydi
+                      "&:active": { transform: "none" } // Bosilganda siljimaydi
                     }}
                   >
-                    {item}
+                    {item.name}
                   </Button>
 
                   <AnimatePresence>
-                    {activeMenu === item && megaMenuData[item] && (
+                    {activeMenu === item.name && megaMenuData[item.name] && (
                       <motion.div
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: 10 }}
+                        transition={{ duration: 0.2 }}
                         style={{
-                          position: "absolute", top: "90%", left: 0,
-                          backgroundColor: theme.palette.mode === "dark" ? "#1E1E1E" : "white",
-                          boxShadow: "0 10px 30px rgba(0,0,0,0.15)",
-                          borderTop: "3px solid #0067ff", borderRadius: "0 0 8px 8px",
-                          padding: "25px", zIndex: 100,
-                          display: "flex", gap: "30px", width: "max-content"
+                          position: "absolute",
+                          top: "85%",
+                          left: 0,
+                          width: "max-content",
+                          backgroundColor: theme.palette.background.paper,
+                          borderTop: `3px solid ${theme.palette.primary.main}`,
+                          boxShadow: "0 15px 40px rgba(0,0,0,0.12)",
+                          zIndex: 1100,
+                          borderRadius: "0 0 8px 8px",
+                          padding: "20px"
                         }}
                       >
-                        {megaMenuData[item].map((section, idx) => (
-                          <Box key={idx} sx={{ minWidth: "180px" }}>
-                            <Typography variant="caption" fontWeight={900} sx={{ color: "#02509eff", mb: 2, display: "block", letterSpacing: 1 }}>
-                              {section.category}
-                            </Typography>
-                            <Stack spacing={0.5}>
-                              {section.links.map((link, lIdx) => (
-                                <MenuLinkItem key={lIdx} text={link} />
-                              ))}
-                            </Stack>
-                          </Box>
-                        ))}
+                        <Stack direction="row" spacing={4}>
+                          {megaMenuData[item.name].map((section) => (
+                            <Box key={section.category} sx={{ minWidth: "180px" }}>
+                              <Typography variant="caption" fontWeight={900} color="primary" sx={{ mb: 1.5, display: "block", textTransform: "uppercase" }}>
+                                {section.category}
+                              </Typography>
+                              <Stack spacing={1}>
+                                {section.links.map((link) => (
+                                  <MenuLinkItem key={link.name} text={link.name} url={link.url} />
+                                ))}
+                              </Stack>
+                            </Box>
+                          ))}
+                        </Stack>
                       </motion.div>
                     )}
                   </AnimatePresence>
@@ -151,87 +149,76 @@ const TwoNavbar = () => {
               ))}
             </Box>
 
-            {/* 3. TOOLS */}
+            {/* TOOLS & SOCIALS */}
             <Stack direction="row" spacing={1} alignItems="center">
-              <IconButton onClick={toggleColorMode} sx={{ color: theme.palette.mode === "dark" ? "#0067ff" : "#02509eff" }}>
-                {theme.palette.mode === "dark" ? <Brightness7 /> : <Brightness4 />}
-              </IconButton>
               
-              <IconButton
-                onClick={() => setMobileOpen(true)}
-                sx={{ display: { md: "none" }, color: "#02509eff" }}
+              {/* IJTIMOIY TARMOQLAR */}
+              <Stack direction="row" spacing={0.5} sx={{ mr: 1, display: { xs: "none", lg: "flex" } }}>
+                <IconButton size="small" component="a" href="https://t.me/yourchannel" target="_blank" sx={{ color: "#26A5E4" }}>
+                  <Telegram fontSize="small" />
+                </IconButton>
+                <IconButton size="small" component="a" href="https://instagram.com/yourprofile" target="_blank" sx={{ color: "#E4405F" }}>
+                  <Instagram fontSize="small" />
+                </IconButton>
+                <IconButton size="small" component="a" href="https://youtube.com/yourchannel" target="_blank" sx={{ color: "#FF0000" }}>
+                  <YouTube fontSize="small" />
+                </IconButton>
+              </Stack>
+
+              <Divider orientation="vertical" flexItem sx={{ mx: 1, height: 20, my: "auto", display: { xs: "none", lg: "block" } }} />
+
+              {/* TIL TUGMASI */}
+              <Button
+                onClick={(e) => setLangAnchor(e.currentTarget)}
+                disableRipple // ✅ Silkinish yo'q
+                startIcon={<Translate sx={{ fontSize: "1.1rem" }} />}
+                sx={{ fontWeight: 800, color: "text.primary", textTransform: "none", gap: 0.5 }}
               >
+                {currentLang.code}
+              </Button>
+
+              <Menu anchorEl={langAnchor} open={!!langAnchor} onClose={() => setLangAnchor(null)}>
+                {languages.map(lang => (
+                  <MenuItem key={lang.code} onClick={() => { setCurrentLang(lang); setLangAnchor(null); }} selected={currentLang.code === lang.code}>
+                    <ListItemText primary={lang.label} />
+                    {currentLang.code === lang.code && <Check fontSize="small" sx={{ ml: 1 }} />}
+                  </MenuItem>
+                ))}
+              </Menu>
+
+              <IconButton onClick={toggleColorMode} color="primary" disableRipple>
+                {theme.palette.mode === "dark" ? <Brightness7 fontSize="small" /> : <Brightness4 fontSize="small" />}
+              </IconButton>
+
+              <IconButton sx={{ display: { md: "none" } }} onClick={() => setMobileOpen(true)} disableRipple>
                 <MenuIcon />
               </IconButton>
             </Stack>
           </Toolbar>
         </Container>
       </AppBar>
-
-      {/* MOBILE DRAWER */}
-      <Drawer
-        anchor="right"
-        open={mobileOpen}
-        onClose={() => setMobileOpen(false)}
-        PaperProps={{ sx: { width: "85%", maxWidth: 350 } }}
-      >
-        <Box sx={{ p: 2, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <img src={LogoImg} alt="Logo" style={{ height: "40px" }} />
-          <IconButton onClick={() => setMobileOpen(false)}><CloseIcon /></IconButton>
-        </Box>
-        <Divider />
-        <List sx={{ px: 1 }}>
-          {navItems.map((item) => (
-            <Box key={item}>
-              <ListItem 
-                button 
-                disableRipple
-                onClick={() => megaMenuData[item] ? setMobileSubMenu(mobileSubMenu === item ? null : item) : null}
-                sx={{ "&:hover": { bgcolor: "transparent" } }} // MOBILE HOVER BACKGROUND O'CHIRILDI
-              >
-                <ListItemText primary={item} primaryTypographyProps={{ fontWeight: 700, color: mobileSubMenu === item ? "#0067ff" : "inherit" }} />
-                {megaMenuData[item] && (mobileSubMenu === item ? <ExpandLess sx={{color:"#0067ff"}} /> : <ExpandMore />)}
-              </ListItem>
-              {megaMenuData[item] && (
-                <Collapse in={mobileSubMenu === item} timeout="auto" unmountOnExit>
-                  <List disablePadding sx={{ ml: 2 }}>
-                    {megaMenuData[item].map((sec) => (
-                      <Box key={sec.category} sx={{ py: 1, px: 2 }}>
-                        <Typography variant="caption" sx={{ fontWeight: 800, color: "#0067ff" }}>{sec.category}</Typography>
-                        {sec.links.map((link) => (
-                          <ListItem button disableRipple key={link} sx={{ "&:hover": { bgcolor: "transparent" }, pl: 1 }}>
-                            <ListItemText primary={link} primaryTypographyProps={{ fontSize: "0.85rem" }} />
-                          </ListItem>
-                        ))}
-                      </Box>
-                    ))}
-                  </List>
-                </Collapse>
-              )}
-            </Box>
-          ))}
-        </List>
-      </Drawer>
       <Toolbar />
     </>
   );
 };
 
-// Hover Link Komponenti (Bunda background yo'q edi, chiziq animatsiyasi qoldi)
-const MenuLinkItem = ({ text }) => {
-  const [hover, setHover] = useState(false);
+const MenuLinkItem = ({ text, url }) => {
   return (
-    <Box onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)} 
-         sx={{ display: "flex", alignItems: "center", cursor: "pointer", py: 0.5 }}>
-      <motion.div animate={{ opacity: hover ? 1 : 0, x: hover ? 0 : -5 }} style={{ display: "flex", color: "#0067ff", marginRight: "5px" }}>
-        <ChevronRight sx={{ fontSize: "14px" }} />
-      </motion.div>
-      <Box sx={{ position: "relative" }}>
-        <Typography sx={{ fontSize: "0.85rem", fontWeight: hover ? 600 : 400, color: hover ? "#0067ff" : "inherit", transition: "0.2s" }}>
-          {text}
-        </Typography>
-        <Box sx={{ position: "absolute", bottom: -1, left: 0, width: hover ? "100%" : "0%", height: "1.5px", bgcolor: "#0067ff", transition: "0.3s" }} />
-      </Box>
+    <Box
+      component="a"
+      href={url}
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        gap: 1,
+        textDecoration: "none",
+        color: "text.secondary",
+        transition: "0.2s",
+        "&:hover": { color: "primary.main", transform: "translateX(4px)" }
+      }}
+    >
+      <ChevronRight sx={{ fontSize: 14, color: "primary.main" }} />
+      <Typography sx={{ fontSize: "0.85rem", fontWeight: 500 }}>{text}</Typography>
     </Box>
   );
 };

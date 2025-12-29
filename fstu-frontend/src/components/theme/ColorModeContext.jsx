@@ -29,7 +29,7 @@ export default function ColorModeProvider({ children }) {
             primary: mode === "dark" ? "#fff" : "#000",
           },
           primary: {
-            main: "#ff7a00",
+            main: "#02509eff",
           },
         },
       }),

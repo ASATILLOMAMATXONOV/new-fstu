@@ -224,7 +224,7 @@ const TwoFacultiesContent = () => {
                 whileHover={{ x: 10 }}
                 onClick={() => navigate(`/faculties/${activeTab.id}`)}
                 style={{
-                  backgroundColor: accentColor,
+                  backgroundColor: '#02509eff',
                   color: "#fff",
                   padding: "16px 40px",
                   border: "none",

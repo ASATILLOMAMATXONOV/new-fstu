@@ -167,11 +167,13 @@ const TwoAboutTo = () => {
               transition={{ duration: 1 }}
               style={{ position: 'relative' }}
             >
+       
+
               <Box
                 sx={{
                   position: 'absolute',
                   inset: { xs: '-3%', md: '-6%' },
-                  bgcolor: '#0067ff',
+                  // bgcolor: '#0067ff',
                   clipPath: 'polygon(20% 0%, 100% 0%, 100% 100%, 0% 100%)',
                   zIndex: 0,
                 }}

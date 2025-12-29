@@ -1,21 +1,13 @@
 import React, { useState, useEffect } from "react";
-import {
-  Box,
-  Container,
-  Typography,
-  Stack,
-  Grid,
-} from "@mui/material";
+import { Box, Container, Typography, Stack, Grid, ButtonBase } from "@mui/material";
 import { motion, AnimatePresence } from "framer-motion";
-import { School, Public } from "@mui/icons-material";
+import { School, Public,  } from "@mui/icons-material";
 import { useTheme } from "@mui/material/styles";
 
-const text = "FSTU";
-
+const BRAND_TEXT = "FSTU";
 const images = [
-  "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1920&q=80",
-  "https://images.unsplash.com/photo-1541339907198-e08756ebafe3?auto=format&fit=crop&w=1920&q=80",
-  "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&w=1920&q=80",
+  "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1920&q=80",
+  "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1920&q=80",
 ];
 
 const TwoBanner = () => {
@@ -32,7 +24,6 @@ const TwoBanner = () => {
   return (
     <Box
       sx={{
-        bgcolor: theme.palette.background.default,
         minHeight: "90vh",
         display: "flex",
         alignItems: "center",
@@ -41,150 +32,268 @@ const TwoBanner = () => {
         pt: { xs: 10, md: 0 },
       }}
     >
-      {/* GRADIENTLI ANIMATSIYALI FON */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={index}
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -20 }}
-          transition={{ duration: 1.2, ease: "easeInOut" }}
-          style={{
-            position: "absolute",
-            top: 0,
-            right: 0, // O'ng tomonga bog'ladik
-            width: "70%", // Faqat o'ng tarafni ko'proq egallaydi
-            height: "100%",
-            backgroundImage: `url(${images[index]})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            zIndex: 0,
-            // CHAPDAN O'NGGA GRADIENT NIQOB (MASK)
-            WebkitMaskImage: "linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)",
-            maskImage: "linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)",
+
+{/* 🖼 FULL BACKGROUND IMAGE */}
+<Box
+  sx={{
+    position: "absolute",
+    inset: 0,
+    zIndex: 0,
+    overflow: "hidden",
+  }}
+>
+  {images.map((img, i) => (
+    <motion.div
+      key={i}
+      animate={{ opacity: i === index ? 1 : 0 }}
+      transition={{ duration: 1.2, ease: "easeInOut" }}
+      style={{
+        position: "absolute",
+        inset: 0,
+        backgroundImage: `url(${img})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      {/* 🔥 OQ OVERLAY — CHAPDAN O‘NGGA YO‘QOLADI */}
+   <Box
+  sx={{
+    width: "100%",
+    height: "100%",
+    background:
+      theme.palette.mode === "light"
+        ? "linear-gradient(to right, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.7) 30%, rgba(255,255,255,0) 60%)"
+        : "linear-gradient(to right, rgba(10,10,10,0.98) 0%, rgba(10,10,10,0.75) 30%, rgba(10,10,10,0) 60%)",
+  }}
+/>
+    </motion.div>
+  ))}
+</Box>
+
+
+
+
+     
+
+      <Container maxWidth="xl" sx={{ zIndex: 2, position: "relative" }}>
+       <Grid 
+  container 
+  spacing={2} 
+  alignItems="center" 
+  sx={{ 
+    display: 'flex', 
+    justifyContent: 'flex-start', // Kontentni chapdan boshlaymiz
+    position: 'relative',
+    zIndex: 10
+  }}
+>
+  {/* 📝 MATN QISMI - Ekranning 60-65% qismini egallaydi */}
+  <Grid item xs={12} md={7.5} lg={7}> 
+    <motion.div
+      initial={{ opacity: 0, x: -50 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.8 }}
+    >
+      <Stack direction="row" alignItems="center" spacing={2} mb={3}>
+        <Box sx={{ width: 45, height: 3, bgcolor: "#02509eff", borderRadius: 1 }} />
+        <Typography
+          sx={{
+            color: "#02509eff",
+            
+            fontWeight: 800,
+            letterSpacing: 2,
+            fontSize: 14,
+            textTransform: "uppercase",
           }}
-        />
-      </AnimatePresence>
+        >
+          Kelajak shu yerdan boshlanadi
+        </Typography>
+      </Stack>
 
-      <Container maxWidth="xl" sx={{ zIndex: 2 }}>
-        <Grid container spacing={4} alignItems="center">
-          {/* LEFT CONTENT */}
-          <Grid item xs={12} md={7}>
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-            >
-              <Stack direction="row" alignItems="center" spacing={1} mb={2}>
-                <Box sx={{ width: 40, height: 2, bgcolor: "#02509eff" }} />
-                <Typography
-                  sx={{
-                    color: "#02509eff",
-                    fontWeight: 700,
-                    letterSpacing: 2,
-                    fontSize: 14,
-                  }}
-                >
-                  KELAJAK SHU YERDAN BOSHLANADI
-                </Typography>
-              </Stack>
+      <Typography
+        variant="h1"
+        sx={{
+          fontWeight: 950,
+          fontSize: { xs: "2.5rem", md: "4rem", lg: "2rem" },
+          lineHeight: 1.1,
+          mb: 3,
+          color: "text.primary",
+          maxWidth: "90%", // Matn juda yoyilib ketmasligi uchun
+        }}
+      >
+         <span style={{ color: "#02509eff" }}>Farg‘ona davlat texnika universiteti</span> 
+     
+      </Typography>
 
-              <Typography
-                variant="h1"
-                sx={{
-                  color: theme.palette.text.primary,
-                  fontWeight: 900,
-                  fontSize: { xs: "2.8rem", md: "3.8rem" },
-                  lineHeight: 1.1,
-                  mb: 3,
-                }}
-              >
-                BILIM BILAN <br />
-                <span style={{ color: "#02509eff" }}>DUNYONI</span> O'ZGARTIR
-              </Typography>
+      <Typography
+        sx={{
+          fontSize: { xs: 16, md: 19 },
+          maxWidth: 550,
+          color: "text.secondary",
+          lineHeight: 1.6,
+          mb: 4
+        }}
+      >
+        Zamonaviy texnologiyalar va xalqaro standartlar asosida ta'lim oling.
+        Biz bilan o'z sohangizning yetuk mutaxassisiga aylaning.
+      </Typography>
+    </motion.div>
+    </Grid>
 
-              <Typography
-                sx={{
-                  color: theme.palette.text.secondary,
-                  fontSize: 18,
-                  maxWidth: 500,
-                  textShadow: theme.palette.mode === 'light' ? "0 0 20px white" : "none" 
-                }}
-              >
-                Zamonaviy texnologiyalar va xalqaro standartlar asosida ta'lim
-                oling. Biz bilan o'z sohangizning yetuk mutaxassisiga aylaning.
-              </Typography>
-            </motion.div>
-          </Grid>
+    {/* 🎴 KARTALAR QISMI - Qolgan 35-40% qismda */}
+    <Grid 
+      item 
+      xs={12} 
+      md={4.5} 
+      lg={5} 
+      sx={{ 
+        display: { xs: "none", md: "block" },
+        position: "relative" 
+      }}
+    >
+      <Box sx={{ position: "relative", height: 500, width: "100%" }}>
+      
+      {/* MARKAZIY CHIZIQ */}
+      <Box
+        sx={{
+          position: "absolute",
+          left: { md: "20%", lg: "30%" }, // Chiziqni matnga yaqinroq surish
+          top: "10%",
+          bottom: "10%",
+          width: "3px",
+          bgcolor: "rgba(2, 80, 158, 0.2)",
+          borderRadius: 2,
+          "&::after": {
+            content: '""',
+            position: "absolute",
+            width: "100%",
+            height: "30%",
+            top: 0,
+            left: 0,
+            background: "linear-gradient(to bottom, transparent, #02509eff, transparent)",
+            animation: "moveLight 3s infinite linear",
+          },
+          "@keyframes moveLight": {
+            "0%": { top: "-30%" },
+            "100%": { top: "100%" }
+          }
+        }}
+      />
 
-          {/* RIGHT CONTENT */}
-          <Grid
-            item
-            xs={12}
-            md={5}
-            sx={{
-              display: { xs: "none", md: "flex" },
-              justifyContent: "center",
-              alignItems: "center",
-              height: 400,
-              position: 'relative'
-            }}
-          >
-             {/* Rasm ustidagi floating cardlar kodingizni saqlab qoldim */}
-             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1 }}
-              style={{ position: 'relative', width: '100%', height: '100%' }}
-            >
-              {/* FLOAT CARD 1 */}
-              <motion.div
-                animate={{ y: [0, -20, 0] }}
-                transition={{ repeat: Infinity, duration: 4 }}
-                style={{ position: "absolute", top: "20%", left: "10%", zIndex: 10 }}
-              >
-                <Box sx={{ bgcolor: "background.paper", p: 2, boxShadow: 10, borderRadius: 1, display: 'flex', gap: 2, alignItems: 'center' }}>
-                  <School sx={{ color: "#02509eff" }} />
-                  <Box>
-                    <Typography fontWeight={700} fontSize={14}>50+ Yo'nalishlar</Typography>
-                    <Typography fontSize={12} color="text.secondary">Bakalavr va Magistratura</Typography>
-                  </Box>
-                </Box>
-              </motion.div>
+      {/* CARD 1 */}
+   <motion.div
+      animate={{ y: [0, -15, 0] }}
+      transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+      style={{ 
+        position: "absolute", 
+        top: "20%", 
+        left: "35%", 
+        zIndex: 5 
+      }}
+    >
+      <ButtonBase
+        onClick={() => console.log("Yo'nalishlar bosildi")}
+        sx={{
+          ...cardStyle, // Oldingi cardStyle obyektingiz
+          textAlign: "left",
+          transition: "all 0.3s ease",
+          "&:hover": {
+            transform: "scale(1.05)",
+            boxShadow: "0px 25px 50px rgba(2, 80, 158, 0.2)",
+            borderColor: "#02509eff",
+          }
+        }}
+      >
+        <Box sx={iconWrapperStyle}>
+          <School sx={{ color: "#02509eff" }} />
+        </Box>
+        <Box>
+          <Typography fontWeight={700} fontSize={16} sx={{ display: 'block' }}>
+            50+ Yo'nalishlar
+          </Typography>
+          <Typography variant="caption" color="text.secondary">
+            Bakalavr & Magistratura
+          </Typography>
+        </Box>
+      </ButtonBase>
+    </motion.div>
 
-              {/* FLOAT CARD 2 */}
-              <motion.div
-                animate={{ y: [0, 20, 0] }}
-                transition={{ repeat: Infinity, duration: 5 }}
-                style={{ position: "absolute", bottom: "20%", right: "10%", zIndex: 10 }}
-              >
-                <Box sx={{ bgcolor: "background.paper", p: 2, boxShadow: 10, borderRadius: 1, display: 'flex', gap: 2, alignItems: 'center' }}>
-                  <Public sx={{ color: "#02509eff" }} />
-                  <Typography fontWeight={700} fontSize={14}>Xalqaro Diplom</Typography>
-                </Box>
-              </motion.div>
-            </motion.div>
-          </Grid>
-        </Grid>
+      {/* CARD 2 */}
+      <motion.div
+        animate={{ y: [0, 15, 0] }}
+        transition={{ repeat: Infinity, duration: 5, ease: "easeInOut" }}
+        style={{ 
+          position: "absolute", 
+          bottom: "25%", 
+          left: "15%", 
+          zIndex: 5 
+        }}
+      >
+        <ButtonBase
+          onClick={() => console.log("Diplom bosildi")}
+          sx={{
+            ...cardStyle,
+            textAlign: "left",
+            transition: "all 0.3s ease",
+            "&:hover": {
+              transform: "scale(1.05)",
+              boxShadow: "0px 25px 50px rgba(2, 80, 158, 0.2)",
+              borderColor: "#02509eff",
+            }
+          }}
+        >
+          <Box sx={iconWrapperStyle}>
+            <Public sx={{ color: "#02509eff" }} />
+          </Box>
+          <Typography fontWeight={700} fontSize={16}>
+            Xalqaro Diplom
+          </Typography>
+        </ButtonBase>
+      </motion.div>
+    </Box>
+  </Grid>
+</Grid>
       </Container>
 
-      {/* DECORATIVE TEXT */}
+      {/* BACKGROUND DECORATION */}
       <Typography
         sx={{
           position: "absolute",
-          bottom: 20,
-          right: 30,
-          fontSize: "150px",
-          fontWeight: 900,
-          color: theme.palette.mode === "dark" ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)",
+          bottom: -40,
+          right: 40,
+          fontSize: "200px",
+          fontWeight: 1000,
+          color: "rgba(2, 80, 158, 0.04)",
           userSelect: "none",
-          zIndex: 1,
+          zIndex: 0,
         }}
       >
-        {text}
+        {BRAND_TEXT}
       </Typography>
     </Box>
   );
+};
+
+// --- YORDAMCHI STILLAR ---
+const cardStyle = {
+  bgcolor: "background.paper",
+  p:1,
+  // borderRadius: 3,
+  boxShadow: "0px 20px 40px rgba(0,0,0,0.1)",
+  display: "flex",
+  alignItems: "center",
+  gap: 2,
+  minWidth: 240,
+  border: "1px solid rgba(2, 80, 158, 0.1)",
+};
+
+const iconWrapperStyle = {
+  bgcolor: "rgba(2, 80, 158, 0.1)",
+  p: 1.5,
+  borderRadius: 2,
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center"
 };
 
 export default TwoBanner;

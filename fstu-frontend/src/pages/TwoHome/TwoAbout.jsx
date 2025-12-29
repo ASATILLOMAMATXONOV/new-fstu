@@ -25,7 +25,7 @@ const universityStructure = [
   { title: "Kafedralar", desc: "Ilmiy-nazariy markazlar", icon: <Apartment />, path: "/twodepartments" },
   { title: "Markazlar", desc: "Ma'muriy boshqaruv", icon: <Settings />, path: "/twocentrs" },
   { title: "Ma'muriyat", desc: "Rektorat va Kengash", icon: <AccountBalance />, path: "/administration" },
-  { title: "Aloqa", desc: "+998 71 200 00 00", icon: <PhoneInTalk />, path: "/contact" },
+  { title: "Aloqa", desc: "+998 71 200 00 00", icon: <PhoneInTalk />, path: "/twocontact" },
 ];
 
   const TwoAbout = () => {

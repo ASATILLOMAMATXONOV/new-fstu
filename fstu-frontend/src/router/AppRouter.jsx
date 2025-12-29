@@ -23,6 +23,7 @@ import TwoAboutBanner from "../pages/TwoHome/TwoAboutBanner";
 import TwoDepartments from "../pages/TwoHome/TwoDepartments";
 import TwoCenters from "../pages/TwoHome/TwoCenters";
 import TwoAdministration from "../pages/TwoHome/TwoAdministration";
+import TwoContact from "../pages/TwoHome/TwoContact";
 
 export default function AppRouter() {
   return (
@@ -54,6 +55,7 @@ export default function AppRouter() {
             <Route path="/twodepartments" element={<TwoDepartments />} />
             <Route path="/twocentrs" element={<TwoCenters />} />
             <Route path="/administration" element={<TwoAdministration />} />
+            <Route path="/twocontact" element={<TwoContact />} />
 
           </Routes>
         </Box>
