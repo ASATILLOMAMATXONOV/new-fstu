@@ -57,7 +57,7 @@ const universityStructure = [
           >
 
             {/* CHAP TOMON: O‘LCHAMI O‘ZGARMAGAN */}
-            <Grid item xs={12} md={4} lg={3.6} width={"25%"}>
+            <Grid item xs={12} md={4} lg={3.6}>
               <Typography
                 variant="h6"
                 sx={{

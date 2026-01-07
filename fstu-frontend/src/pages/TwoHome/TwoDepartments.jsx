@@ -124,7 +124,7 @@ const TwoDepartmentsContent = () => {
           flex: selectedDept && !isMobile ? "0 0 350px" : "1 1 350px",
           display: selectedDept && isMobile ? "none" : "block"
         }}>
-          <Typography variant="h3" sx={{ fontWeight: 900, mb: 1, textTransform: "uppercase" }}>
+          <Typography variant="h3" sx={{ fontWeight: 800, fontSize: "24px", mb: 1, textTransform: "uppercase" }}>
             Fakultetlar
           </Typography>
           <Typography sx={{ opacity: 0.5, mb: 4, fontSize: "14px" }}>Kafedrani tanlang.</Typography>
@@ -356,7 +356,7 @@ const TwoDepartmentsContent = () => {
                   <Box sx={{ flex: 1 }}>
                     <motion.div variants={fadeInUp}>
                         <Typography variant="overline" sx={{ letterSpacing: 3, fontWeight: 900, color: accentColor }}>Kafedra Haqida</Typography>
-                        <Typography variant="h2" sx={{ fontWeight: 900, mb: 3, fontSize: isSmallMobile ? "32px" : "48px" }}>{selectedDept.name}</Typography>
+                        <Typography variant="h2" sx={{ fontWeight: 900, mb: 3, fontSize: isSmallMobile ? "16px" : "25px" }}>{selectedDept.name}</Typography>
                     </motion.div>
 
                     <motion.div variants={fadeInUp}>
@@ -373,7 +373,7 @@ const TwoDepartmentsContent = () => {
                             { icon: <Microscope />, val: "8", lab: "Laboratoriyalar" }
                         ].map((s, i) => (
                             <motion.div key={i} variants={fadeInUp}>
-                                <Box sx={{ p: 3, borderRadius: "24px", border: "1px solid", borderColor: "divider", textAlign: "center" }}>
+                                <Box sx={{ p: 3, borderRadius: "22px", border: "1px solid #02509eff" ,  textAlign: "center" }}>
                                     <Box sx={{ color: accentColor, mb: 1, display: "flex", justifyContent: "center" }}>{s.icon}</Box>
                                     <Typography variant="h5" sx={{ fontWeight: 900 }}>{s.val}</Typography>
                                     <Typography variant="caption" sx={{ fontWeight: 700, opacity: 0.5 }}>{s.lab}</Typography>
@@ -384,7 +384,7 @@ const TwoDepartmentsContent = () => {
 
                     <motion.div variants={fadeInUp}>
                         <Box sx={{ display: "flex", gap: 2 }}>
-                            <Button variant="contained" size="large" sx={{ bgcolor: accentColor, px: 5, py: 2, borderRadius: "16px", fontWeight: 800 }}>
+                            <Button variant="contained"  sx={{ bgcolor: accentColor, px: 2, borderRadius: "12px", fontWeight: 600 }}>
                                 Batafsil Ma'lumot
                             </Button>
                             <IconButton sx={{ border: "1px solid", borderColor: "divider", borderRadius: "16px", p: 2 }}>

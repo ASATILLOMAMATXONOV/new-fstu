@@ -21,6 +21,7 @@ import TwoPages from "../pages/TwoHome/TwoPages";
 import TwoFaculties from "../pages/TwoHome/TwoFaculties";
 import TwoAboutBanner from "../pages/TwoHome/TwoAboutBanner";
 import TwoDepartments from "../pages/TwoHome/TwoDepartments";
+import TwoDepartmentsContent from "../pages/TwoHome/TwoDepartmentsContent";
 import TwoCenters from "../pages/TwoHome/TwoCenters";
 import TwoAdministration from "../pages/TwoHome/TwoAdministration";
 import TwoContact from "../pages/TwoHome/TwoContact";
@@ -53,6 +54,7 @@ export default function AppRouter() {
             <Route path="/twofaculties" element={<TwoFaculties />} />
             <Route path="/twoaboutbaner" element={<TwoAboutBanner />} />
             <Route path="/twodepartments" element={<TwoDepartments />} />
+            <Route path="/twodepartmentscontact" element={<TwoDepartmentsContent />} />
             <Route path="/twocentrs" element={<TwoCenters />} />
             <Route path="/administration" element={<TwoAdministration />} />
             <Route path="/twocontact" element={<TwoContact />} />

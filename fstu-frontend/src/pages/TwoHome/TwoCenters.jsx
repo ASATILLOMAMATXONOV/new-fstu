@@ -515,7 +515,7 @@ const slides = [
           flex: selectedDivision && !isMobile ? "0 0 350px" : "1 1 350px",
           display: selectedDivision && isMobile ? "none" : "block"
         }}>
-          <Typography variant="h2" sx={{ fontWeight: 600, mb: 4, color: "#00003E", letterSpacing: "-1px", fontSize:'34px', fontFamily:' Arial, Helvetica, sans-serif;' }}>
+          <Typography variant="h2" sx={{ fontWeight: 800, mb: 4, color: "#02509eff", letterSpacing: "-1px", fontSize:'25px', fontFamily:' Arial, Helvetica, sans-serif;' }}>
             Markazlar va Bo'limlar
           </Typography>
 
@@ -620,7 +620,7 @@ const slides = [
                           sx={{
                             fontWeight: 600,
                             color: "#fff",
-                            fontSize:'34px', fontFamily:' Arial, Helvetica, sans-serif;',
+                            fontSize:'25px', fontFamily:' Arial, Helvetica, sans-serif;',
                             textShadow: "0 0 30px rgba(0,0,0,0.8)",
                             mb: 2,
                           }}
@@ -739,11 +739,22 @@ const slides = [
 
             ) : (
               /* TANLANGAN BO'LIM MA'LUMOTI */
-              <motion.div key={selectedDivision.id} initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}>
+              <motion.div
+                key={selectedDivision.id}
+                initial={{ opacity: 0, x: 30 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -30 }}
+                style={{
+                  position: "sticky",
+                  top: 100,
+                  zIndex: 10,
+                }}
+              >
+
                 <Button 
                   startIcon={<ArrowLeft size={18} />} 
                   onClick={() => setSelectedDivision(null)} 
-                  sx={{ mb: 4, fontWeight: 700,  color: "text.primary" }}
+                  sx={{ mb: 2, fontWeight: 800,  color: "#02509eff"}}
                 >
                   Orqaga qaytish
                 </Button>
@@ -776,7 +787,7 @@ const slides = [
 
                   {/* Kontent */}
                   <Box sx={{ flex: 1, pt: 2 }}>
-                    <Typography variant="h2" sx={{ fontWeight: 900, mb: 3, color: "text.primary", fontSize: { xs: "2.5rem", md: "3.5rem" }, letterSpacing: "-1px" }}>
+                    <Typography variant="h2" sx={{ fontWeight: 900, mb: 3, color: "#02509eff", fontSize: { xs: "1rem", md: "2rem" }, letterSpacing: "-1px" }}>
                       {selectedDivision.name}
                     </Typography>
                     <Typography sx={{ fontSize: "1.1rem", color: "text.secondary", mb: 5, lineHeight: 1.8 }}>
@@ -787,10 +798,10 @@ const slides = [
   size="large"
   sx={{
     bgcolor: accentColor,
-    px: 6,
-    py: 2,
+    px: 5,
+    py: 1,
     borderRadius: "14px",
-    fontWeight: 800,
+    fontWeight: 600,
     fontSize: "1rem",
     textTransform: "none", // Matnni asl holicha qoldirish
     boxShadow: `0 10px 25px ${accentColor}40`,

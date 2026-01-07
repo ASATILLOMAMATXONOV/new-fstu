@@ -64,16 +64,13 @@ const TwoAboutTo = () => {
                 sx={{
                   color: theme.palette.text.primary, // 🔑
                   fontWeight: 700,
-                  fontSize: { xs: '2rem', md: '4rem' },
+                  fontSize: { xs: '1rem', md: '2rem' },
                   lineHeight: 1.1,
                   mb: 3,
-                  fontFamily: "'Playfair Display', serif",
+                  fontFamily: "Arial, sans-serif",
                 }}
               >
-                Farg‘ona davlat <br />
-                <span style={{ fontStyle: 'italic', fontWeight: 400 }}>
-                  texnika universiteti
-                </span>
+                Farg‘ona davlat texnika universiteti
               </Typography>
 
               <Typography

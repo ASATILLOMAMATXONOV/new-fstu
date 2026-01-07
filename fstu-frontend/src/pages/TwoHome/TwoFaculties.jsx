@@ -188,7 +188,7 @@ const TwoFacultiesContent = () => {
                 key={`title-${activeTab.id}`}
                 initial={{ x: -20, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
-                style={{ fontSize: isMobile ? "28px" : "42px", fontWeight: 900, margin: "0 0 20px", textTransform: "uppercase", lineHeight: 1.1 }}
+                style={{ fontSize: isMobile ? "16px" : "25px", fontWeight: 900, margin: "0 0 20px", textTransform: "uppercase", lineHeight: 1.1 }}
               >
                 {activeTab.title}
               </motion.h2>

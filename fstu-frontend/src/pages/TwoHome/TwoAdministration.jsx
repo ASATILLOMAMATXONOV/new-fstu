@@ -123,8 +123,8 @@ const TwoAdministrations = () => {
 
           <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
             <Typography variant="h2" sx={{
-              fontWeight: 900, color: isDark ? "#fff" : "#00003E", letterSpacing: -1,
-              fontSize: { xs: '34px', md: '48px' }, fontFamily: 'Arial, Helvetica, sans-serif',
+              fontWeight: 900, color: isDark ? "#fff" : "#02509eff", letterSpacing: -1,
+              fontSize: { xs: '16px', md: '25px' }, fontFamily: 'Arial, Helvetica, sans-serif',
               position: "relative", display: "inline-block", mb: 2,
               '&::after': {
                 content: '""', position: "absolute", bottom: -8, left: "50%", transform: "translateX(-50%)",
@@ -206,7 +206,7 @@ const LeaderSection = ({ leader, index, isDark, isMobile, accentColor }) => {
               {leader.socials.map((soc, i) => (
                 <IconButton 
                   key={i} href={soc.link} size="small"
-                  sx={{ color: isDark ? "#fff" : "#00003E", "&:hover": { color: soc.color, transform: "scale(1.2)" }, transition: "0.3s" }}
+                  sx={{ color: isDark ? "#fff" : "#02509eff", "&:hover": { color: soc.color, transform: "scale(1.2)" }, transition: "0.3s" }}
                 >
                   {React.cloneElement(soc.icon, { size: 20 })}
                 </IconButton>
@@ -226,9 +226,9 @@ const LeaderSection = ({ leader, index, isDark, isMobile, accentColor }) => {
               {leader.role}
             </Typography>
             <Typography variant="h3" sx={{ 
-              fontWeight: 700, mt: 1, fontSize: '32px', 
+              fontWeight: 700, mt: 1, fontSize: '25px', 
               fontFamily: 'Arial, Helvetica, sans-serif', 
-              color: isDark ? "#fff" : "#00003E" 
+              color: isDark ? "#fff" : "#02509eff" 
             }}>
               {leader.name}
             </Typography>
