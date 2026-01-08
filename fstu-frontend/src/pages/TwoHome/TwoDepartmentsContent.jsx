@@ -1,41 +1,12 @@
 import React, { useState } from "react";
 import {
-  useTheme,
-  useMediaQuery,
-  Box,
-  Typography,
-  Button,
-  IconButton,
-  Avatar,
-  Chip,
-  Paper,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  Grid,
-  Divider,
+  useTheme, useMediaQuery, Box, Typography, Avatar, Chip,
+  Paper, Grid, Divider, Accordion, AccordionSummary, AccordionDetails, IconButton
 } from "@mui/material";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Info,
-  Users,
-  BookOpen,
-  FileText,
-  Handshake,
-  ChevronRight,
-  ChevronDown,
-  Phone,
-  Mail,
-  MapPin,
-  Building2,
-  Globe,
-  Microscope,
-  Award,
-  Clock,
-  Calendar,
-  Layers,
-  Calculator,
-  Monitor
+  Info, Users, BookOpen, FileText, Handshake, ChevronDown,
+  Phone, Mail, Award, GraduationCap, Briefcase, ExternalLink, Globe
 } from "lucide-react";
 
 import ColorModeProvider from "../../components/theme/ColorModeContext";
@@ -43,214 +14,228 @@ import TwoNavbar from "../../pages/TwoHome/TwoNavbar";
 import TwoAboutBanner from "../../pages/TwoHome/TwoAboutBanner";
 import TwoFooter from "../../pages/TwoHome/TwoFooter";
 
-// --- YORDAMCHI KOMPONENTLAR ---
-const InfoRow = ({ icon, label, val }) => (
-  <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-    <Box sx={{ color: "#fff", bgcolor: "primary.main", p: 0.8, borderRadius: "8px", display: "flex" }}>{icon}</Box>
-    <Box>
-      <Typography variant="caption" sx={{ display: "block", opacity: 0.5, fontWeight: 700 }}>{label}</Typography>
-      <Typography sx={{ fontWeight: 700, fontSize: "13px" }}>{val}</Typography>
+// --- XODIM KARTASI (EXPANDABLE) ---
+const StaffAccordion = ({ person, accentColor, expanded, onChange, isHead = false }) => (
+  <Paper 
+    elevation={0}
+    sx={{ 
+      mb: 2, borderRadius: "24px", overflow: "hidden",
+      border: "1px solid",
+      borderColor: expanded ? accentColor : "rgba(0,0,0,0.06)",
+      transition: "all 0.3s ease",
+      bgcolor: "white",
+      boxShadow: expanded ? "0 10px 30px rgba(0,0,0,0.05)" : "none"
+    }}
+  >
+    <Box 
+      onClick={() => onChange(person.id)}
+      sx={{ 
+        p: 3, cursor: "pointer", display: "flex", alignItems: "center", gap: 3,
+        bgcolor: expanded ? `${accentColor}05` : "transparent",
+        "&:hover": { bgcolor: expanded ? `${accentColor}08` : "#fcfcfc" }
+      }}
+    >
+      <Avatar 
+        src={person.img} 
+        sx={{ width: { xs: 60, md: 80 }, height: { xs: 60, md: 80 }, border: `2px solid ${accentColor}20` }}
+      >
+        {person.name[0]}
+      </Avatar>
+      
+      <Box sx={{ flex: 1 }}>
+        <Typography variant="overline" sx={{ color: accentColor, fontWeight: 800, letterSpacing: 1 }}>
+          {isHead ? "KAFEDRA MUDIRI" : person.role.toUpperCase()}
+        </Typography>
+        <Typography variant="h6" sx={{ fontWeight: 900, fontSize: { xs: "1rem", md: "1.25rem" } }}>{person.name}</Typography>
+        {!expanded && (
+          <Typography variant="body2" sx={{ opacity: 0.6 }}>{person.degree}</Typography>
+        )}
+      </Box>
+
+      <Box sx={{ 
+        transform: expanded ? "rotate(180deg)" : "rotate(0deg)", 
+        transition: "0.4s", color: accentColor 
+      }}>
+        <ChevronDown />
+      </Box>
     </Box>
-  </Box>
+
+    <AnimatePresence>
+      {expanded && (
+        <motion.div
+          initial={{ height: 0, opacity: 0 }}
+          animate={{ height: "auto", opacity: 1 }}
+          exit={{ height: 0, opacity: 0 }}
+          transition={{ duration: 0.4, ease: "easeInOut" }}
+        >
+          <Box sx={{ p: { xs: 2, md: 4 }, pt: 0 }}>
+            <Divider sx={{ mb: 3 }} />
+            <Grid container spacing={4}>
+              {/* Aloqa bo'limi */}
+              <Grid item xs={12} md={4}>
+                <Typography variant="subtitle2" sx={{ fontWeight: 800, mb: 2, color: accentColor, letterSpacing: 1 }}>ALOQA</Typography>
+                <Box sx={{ display: "flex", gap: 1.5, mb: 1.5 }}><Phone size={18} color={accentColor}/> <Typography variant="body2" sx={{ fontWeight: 600 }}>{person.phone}</Typography></Box>
+                <Box sx={{ display: "flex", gap: 1.5, mb: 1.5 }}><Mail size={18} color={accentColor}/> <Typography variant="body2" sx={{ fontWeight: 600 }}>{person.email}</Typography></Box>
+                <Box sx={{ display: "flex", gap: 1.5 }}><Globe size={18} color={accentColor}/> <Typography variant="body2" sx={{ fontWeight: 600 }}>Google Scholar Profile</Typography></Box>
+              </Grid>
+
+              {/* Batafsil ma'lumot */}
+              <Grid item xs={12} md={8}>
+                <Box sx={{ mb: 3 }}>
+                  <Typography sx={{ display: 'flex', alignItems: 'center', gap: 1, fontWeight: 800, fontSize: "0.85rem", color: accentColor, mb: 1 }}>
+                    <GraduationCap size={18}/> ILMIY DARAJA VA YO'NALISH
+                  </Typography>
+                  <Typography variant="body2" sx={{ fontWeight: 700, mb: 0.5 }}>{person.degree}</Typography>
+                  <Typography variant="body2" sx={{ opacity: 0.7 }}>{person.specialty}</Typography>
+                </Box>
+
+                <Box sx={{ mb: 3 }}>
+                  <Typography sx={{ display: 'flex', alignItems: 'center', gap: 1, fontWeight: 800, fontSize: "0.85rem", color: accentColor, mb: 1 }}>
+                    <BookOpen size={18}/> O'TADIGAN FANLARI
+                  </Typography>
+                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+                    {person.subjects?.map((s, i) => <Chip key={i} label={s} size="small" variant="filled" sx={{ bgcolor: `${accentColor}15`, fontWeight: 600 }} />)}
+                  </Box>
+                </Box>
+
+                <Box>
+                  <Typography sx={{ display: 'flex', alignItems: 'center', gap: 1, fontWeight: 800, fontSize: "0.85rem", color: accentColor, mb: 1 }}>
+                    <Award size={18}/> ILMIY ISHLARI VA NATIJALAR
+                  </Typography>
+                  <Typography variant="body2" sx={{ lineHeight: 1.7, opacity: 0.8 }}>{person.works}</Typography>
+                </Box>
+              </Grid>
+            </Grid>
+          </Box>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  </Paper>
 );
 
 const TwoDepartmentsContent = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-  const isDark = theme.palette.mode === "dark";
   const accentColor = theme.palette.primary.main;
-
   const [activeSection, setActiveSection] = useState("about");
+  const [expandedStaffId, setExpandedStaffId] = useState(null);
 
-  // --- MA'LUMOTLAR BAZASI ---
-  const currentDept = {
-    name: "Dasturiy Injiniring Kafedrasi",
-    img: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=1200",
-    description: "Kafedra 2010-yilda tashkil etilgan bo'lib, zamonaviy dasturiy ta'minot arxitekturasi va sun'iy intellekt yo'nalishida yuqori malakali mutaxassislar tayyorlaydi.",
-    head: {
-      name: "Dr. Anvar Akramov",
-      role: "Kafedra Mudiri, Dotsent",
-      img: "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=400",
-      phone: "+998 90 123 45 67",
-      email: "a.akramov@fpi.uz",
-      office: "A-blok, 302-xona"
+  const handleStaffToggle = (id) => setExpandedStaffId(expandedStaffId === id ? null : id);
+
+  const data = {
+    dept: {
+      name: "Dasturiy Injiniring Kafedrasi",
+      img: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=1200",
+      description: "Kafedra 2010-yilda tashkil etilgan bo'lib, zamonaviy dasturiy ta'minot arxitekturasi, sun'iy intellekt va bulutli texnologiyalar yo'nalishida yuqori malakali mutaxassislar tayyorlaydi. Hozirda kafedrada 20 dan ortiq professor-o'qituvchilar faoliyat yuritmoqda.",
+    },
+    head: { 
+        id: "h1", name: "Dr. Anvar Akramov", role: "Kafedra Mudiri", degree: "PhD, Dotsent",
+        specialty: "Sun'iy intellekt va Big Data arxitekturasi", phone: "+998 90 123 45 67", email: "a.akramov@fpi.uz",
+        subjects: ["Dasturiy arxitektura", "AI asoslari"], works: "50 dan ortiq maqolalar, 3 ta patent va 2 ta darslik muallifi."
     },
     staff: [
-      { name: "S. Karimov", role: "Professor", bio: "Algoritmlar bo'yicha mutaxassis" },
-      { name: "M. Olimov", role: "Dotsent", bio: "Web texnologiyalar eksperti" },
-      { name: "A. Azimov", role: "Assistent", bio: "Mobil dasturlash o'qituvchisi" }
+      { 
+        id: "s1", name: "S. Karimov", role: "Professor", degree: "Fan doktori (DSc)", 
+        specialty: "Algoritmlar va optimallashtirish", phone: "+998 91 111 22 33", email: "karimov@fpi.uz",
+        subjects: ["Ma'lumotlar tuzilmasi", "Murakkab algoritmlar"], works: "100 dan ortiq xalqaro maqolalar, 10 ta patent."
+      },
+      { 
+        id: "s2", name: "M. Olimov", role: "Dotsent", degree: "PhD", 
+        specialty: "Web va Mobil injiniring", phone: "+998 93 444 55 66", email: "olimov@fpi.uz",
+        subjects: ["React JS", "Node JS", "Cloud Computing"], works: "Full-stack texnologiyalar bo'yicha amaliy qo'llanmalar muallifi."
+      }
+    ],
+    subjects: [
+      { course: "1-KURS", list: [{ name: "Dasturlash asoslari", cr: 6, t: "Prof. S. Karimov" }, { name: "Matematik tahlil", cr: 4, t: "Dots. M. Aliyev" }] },
+      { course: "2-KURS", list: [{ name: "Ma'lumotlar bazasi", cr: 5, t: "Dr. A. Akramov" }, { name: "Web texnologiyalar", cr: 6, t: "Dots. M. Olimov" }] }
     ],
     articles: [
-      { title: "AI in Modern Software Engineering", year: "2025", journal: "IEEE Explore" },
-      { title: "Cloud computing security protocols", year: "2024", journal: "Springer" }
+      { title: "AI-based optimization in Cloud Systems", journal: "IEEE Explore", year: "2024", author: "A. Akramov" },
+      { title: "Modern Web Security Protocols", journal: "Scopus: IT Review", year: "2023", author: "M. Olimov" }
     ],
-    contracts: [
-      { company: "EPAM Systems", type: "Kadrlar tayyorlash", date: "2024-2027" },
-      { company: "IT Park", type: "Stajirovka dasturi", date: "2025-2030" }
-    ],
-    subjectsData: [
-      {
-        course: 1,
-        title: "1-kurs Fanlari",
-        icon: <Calculator size={20} />,
-        list: [
-          { name: "Matematik analiz", credit: 6, semester: 1, teacher: "Prof. H. Alimov", hours: 144, type: "Majburiy" },
-          { name: "Dasturlash asoslari", credit: 7, semester: 1, teacher: "Dots. S. Karimov", hours: 160, type: "Mutaxassislik" }
-        ]
-      },
-      {
-        course: 2,
-        title: "2-kurs Fanlari",
-        icon: <Layers size={20} />,
-        list: [
-          { name: "Ma'lumotlar tuzilmasi", credit: 6, semester: 3, teacher: "Dots. M. Olimov", hours: 144, type: "Mutaxassislik" }
-        ]
-      },
-      {
-        course: 3,
-        title: "3-kurs Fanlari",
-        icon: <Monitor size={20} />,
-        list: [
-          { name: "System Design", credit: 5, semester: 6, teacher: "Dr. A. Akramov", hours: 120, type: "Mutaxassislik" }
-        ]
-      }
+    partners: [
+      { name: "IT-Park Uzbekistan", type: "Hamkorlik shartnomasi", icon: <Briefcase /> },
+      { name: "EPAM Systems", type: "Amaliyot markazi", icon: <Handshake /> }
     ]
   };
 
-  const menuItems = [
-    { id: "about", title: "Kafedra haqida", icon: <Info size={20} /> },
-    { id: "staff", title: "Xodimlar", icon: <Users size={20} /> },
-    { id: "subjects", title: "Fanlari", icon: <BookOpen size={20} /> },
-    { id: "articles", title: "Maqolalari", icon: <FileText size={20} /> },
-    { id: "contracts", title: "Shartnomalari", icon: <Handshake size={20} /> },
-  ];
-
   return (
-    <Box sx={{ bgcolor: "background.default", minHeight: "100vh" }}>
+    <Box sx={{ minHeight: "100vh" }}>
       <TwoNavbar />
       <TwoAboutBanner />
 
-      <Box sx={{ 
-        maxWidth: "1400px", margin: "0 auto", 
-        display: "flex", flexDirection: isMobile ? "column" : "row",
-        pt: 8, px: { xs: 2, md: 4 }, pb: 10, gap: 5
-      }}>
+      <Box sx={{ maxWidth: "1400px", margin: "0 auto", display: "flex", flexDirection: isMobile ? "column" : "row", pt: 8, px: { xs: 2, md: 4 }, pb: 10, gap: 5 }}>
         
-        {/* --- CHAP MENYU --- */}
-        <Box sx={{ flex: "0 0 320px" }}>
-          <Typography variant="h5" sx={{ fontWeight: 900, mb: 3 }}>MENYU</Typography>
-          <Paper variant="outlined" sx={{ borderRadius: "20px", overflow: "hidden" }}>
-            {menuItems.map((item) => (
-              <Box
-                key={item.id}
-                onClick={() => setActiveSection(item.id)}
-                sx={{
-                  p: 2.5, cursor: "pointer", display: "flex", alignItems: "center", gap: 2,
-                  borderLeft: "4px solid",
-                  borderColor: activeSection === item.id ? accentColor : "transparent",
-                  bgcolor: activeSection === item.id ? (isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.02)") : "transparent",
-                  "&:hover": { bgcolor: "action.hover" }
+        {/* NAVIGATSIYA MENYUSI */}
+        <Box sx={{ flex: "0 0 300px" }}>
+          <Paper elevation={0} sx={{ borderRadius: "24px", overflow: "hidden", position: 'sticky', top: 100, border: "1px solid rgba(0,0,0,0.05)" }}>
+            {[
+              { id: "about", title: "Kafedra haqida", icon: <Info size={20}/> },
+              { id: "staff", title: "Xodimlar", icon: <Users size={20}/> },
+              { id: "subjects", title: "Fanlar", icon: <BookOpen size={20}/> },
+              { id: "articles", title: "Maqolalar", icon: <FileText size={20}/> },
+              { id: "contracts", title: "Hamkorlik", icon: <Handshake size={20}/> }
+            ].map((item) => (
+              <Box 
+                key={item.id} 
+                onClick={() => setActiveSection(item.id)} 
+                sx={{ 
+                  p: 2.5, cursor: "pointer", display: "flex", alignItems: "center", gap: 2, 
+                  borderLeft: "6px solid", borderColor: activeSection === item.id ? accentColor : "transparent", 
+                  bgcolor: activeSection === item.id ? `${accentColor}08` : "transparent",
+                  "&:hover": { bgcolor: "rgba(0,0,0,0.02)" }
                 }}
               >
                 <Box sx={{ color: activeSection === item.id ? accentColor : "text.secondary" }}>{item.icon}</Box>
-                <Typography sx={{ fontWeight: activeSection === item.id ? 800 : 600 }}>{item.title}</Typography>
+                <Typography sx={{ fontWeight: 800 }}>{item.title}</Typography>
               </Box>
             ))}
           </Paper>
         </Box>
 
-        {/* --- O'NG TOMON --- */}
+        {/* ASOSIY KONTENT */}
         <Box sx={{ flex: 1 }}>
           <AnimatePresence mode="wait">
-            <motion.div
-              key={activeSection}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-            >
-              {/* 1. KAFEDRA HAQIDA */}
+            <motion.div key={activeSection} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.3 }}>
+              
+              {/* 1. HAQIDA */}
               {activeSection === "about" && (
                 <Box>
-                  <Box sx={{ width: "100%", height: "300px", borderRadius: "24px", overflow: "hidden", mb: 4 }}>
-                    <img src={currentDept.img} style={{ width: "100%", height: "100%", objectFit: "cover" }} alt="dept" />
+                  <Box sx={{ width: "100%", height: "400px", borderRadius: "32px", overflow: "hidden", mb: 4, boxShadow: "0 20px 40px rgba(0,0,0,0.1)" }}>
+                    <img src={data.dept.img} style={{ width: "100%", height: "100%", objectFit: "cover" }} alt="dept" />
                   </Box>
-                  <Typography variant="h3" sx={{ fontWeight: 900, mb: 2 }}>{currentDept.name}</Typography>
-                  <Typography sx={{ fontSize: "18px", opacity: 0.7, mb: 4 }}>{currentDept.description}</Typography>
-                  
-                  <Paper variant="outlined" sx={{ p: 4, borderRadius: "24px" }}>
-                    <Grid container spacing={3} alignItems="center">
-                      <Grid item xs={12} sm={4} md={3}>
-                        <Avatar src={currentDept.head.img} sx={{ width: 120, height: 120, border: `4px solid ${accentColor}` }} />
-                      </Grid>
-                      <Grid item xs={12} sm={8} md={9}>
-                        <Typography variant="h5" sx={{ fontWeight: 900 }}>{currentDept.head.name}</Typography>
-                        <Typography sx={{ color: accentColor, fontWeight: 700, mb: 3 }}>{currentDept.head.role}</Typography>
-                        <Grid container spacing={2}>
-                          <Grid item xs={12} sm={6}><InfoRow icon={<Phone size={16}/>} label="Telefon" val={currentDept.head.phone} /></Grid>
-                          <Grid item xs={12} sm={6}><InfoRow icon={<Mail size={16}/>} label="Email" val={currentDept.head.email} /></Grid>
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                  </Paper>
+                  <Typography variant="h3" sx={{ fontWeight: 900, mb: 3 }}>{data.dept.name}</Typography>
+                  <Typography sx={{ fontSize: "1.1rem", opacity: 0.7, mb: 5, lineHeight: 1.8 }}>{data.dept.description}</Typography>
+                  <Divider sx={{ mb: 4 }} />
+                  <Typography variant="h5" sx={{ fontWeight: 900, mb: 3 }}>Kafedra Rahbariyati</Typography>
+                  <StaffAccordion person={data.head} accentColor={accentColor} expanded={expandedStaffId === data.head.id} onChange={handleStaffToggle} isHead={true} />
                 </Box>
               )}
 
               {/* 2. XODIMLAR */}
               {activeSection === "staff" && (
                 <Box>
-                  <Typography variant="h4" sx={{ fontWeight: 900, mb: 4 }}>Kafedra xodimlari</Typography>
-                  <Grid container spacing={3}>
-                    {currentDept.staff.map((person, i) => (
-                      <Grid item xs={12} sm={6} key={i}>
-                        <Paper variant="outlined" sx={{ p: 3, borderRadius: "20px", textAlign: "center" }}>
-                          <Avatar sx={{ width: 70, height: 70, mx: "auto", mb: 2, bgcolor: accentColor }}>{person.name[0]}</Avatar>
-                          <Typography sx={{ fontWeight: 800 }}>{person.name}</Typography>
-                          <Typography variant="caption" sx={{ color: accentColor, fontWeight: 700 }}>{person.role}</Typography>
-                        </Paper>
-                      </Grid>
-                    ))}
-                  </Grid>
+                  <Typography variant="h4" sx={{ fontWeight: 900, mb: 4 }}>Kafedra jamoasi</Typography>
+                  <StaffAccordion person={data.head} accentColor={accentColor} expanded={expandedStaffId === data.head.id} onChange={handleStaffToggle} isHead={true} />
+                  {data.staff.map(p => (
+                    <StaffAccordion key={p.id} person={p} accentColor={accentColor} expanded={expandedStaffId === p.id} onChange={handleStaffToggle} />
+                  ))}
                 </Box>
               )}
 
-              {/* 3. FANLAR (KURS KESIMIDA) */}
+              {/* 3. FANLAR */}
               {activeSection === "subjects" && (
                 <Box>
-                  <Typography variant="h4" sx={{ fontWeight: 900, mb: 4 }}>O'quv rejasidagi fanlar</Typography>
-                  {currentDept.subjectsData.map((courseGroup, idx) => (
-                    <Accordion key={idx} sx={{ mb: 2, borderRadius: "16px !important", border: "1px solid", borderColor: "divider", boxShadow: "none" }}>
-                      <AccordionSummary expandIcon={<ChevronDown color={accentColor} />}>
-                        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-                          <Box sx={{ color: accentColor, bgcolor: `${accentColor}15`, p: 1, borderRadius: "10px" }}>{courseGroup.icon}</Box>
-                          <Typography sx={{ fontWeight: 800 }}>{courseGroup.title}</Typography>
-                        </Box>
-                      </AccordionSummary>
-                      <AccordionDetails sx={{ p: 0 }}>
-                        {courseGroup.list.map((sub, i) => (
-                          <Box key={i} sx={{ p: 3, borderTop: "1px solid", borderColor: "divider" }}>
-                            <Grid container spacing={2} alignItems="center">
-                              <Grid item xs={12} md={4}>
-                                <Typography sx={{ fontWeight: 800 }}>{sub.name}</Typography>
-                                <Chip label={sub.type} size="small" sx={{ mt: 1, fontSize: "10px" }} />
-                              </Grid>
-                              <Grid item xs={6} md={3}>
-                                <Typography variant="caption" sx={{ display: "flex", alignItems: "center", gap: 1, fontWeight: 700 }}>
-                                  <Award size={14} color={accentColor} /> Kredit: {sub.credit}
-                                </Typography>
-                                <Typography variant="caption" sx={{ display: "flex", alignItems: "center", gap: 1, opacity: 0.6 }}>
-                                  <Clock size={14} /> {sub.hours} soat
-                                </Typography>
-                              </Grid>
-                              <Grid item xs={6} md={3}>
-                                <Typography variant="caption" sx={{ fontWeight: 700, display: "block" }}>Semestr: {sub.semester}</Typography>
-                                <Typography variant="caption" sx={{ opacity: 0.6 }}>{sub.teacher}</Typography>
-                              </Grid>
-                              <Grid item xs={12} md={2}>
-                                <Button fullWidth variant="outlined" size="small" sx={{ borderRadius: "8px" }}>Sillabus</Button>
-                              </Grid>
-                            </Grid>
-                          </Box>
+                  <Typography variant="h4" sx={{ fontWeight: 900, mb: 4 }}>O'quv dasturi</Typography>
+                  {data.subjects.map((course, i) => (
+                    <Accordion key={i} elevation={0} sx={{ mb: 2, borderRadius: "20px !important", border: "1px solid rgba(0,0,0,0.05)" }}>
+                      <AccordionSummary expandIcon={<ChevronDown />}><Typography sx={{ fontWeight: 800 }}>{course.course}</Typography></AccordionSummary>
+                      <AccordionDetails>
+                        {course.list.map((sub, j) => (
+                          <Paper key={j} sx={{ p: 2.5, mb: 1.5, display: "flex", justifyContent: "space-between", alignItems: "center", borderRadius: "16px", border: "1px solid rgba(0,0,0,0.03)" }}>
+                            <Box><Typography sx={{ fontWeight: 700 }}>{sub.name}</Typography><Typography variant="caption" sx={{ opacity: 0.6 }}>O'qituvchi: {sub.t}</Typography></Box>
+                            <Chip label={`${sub.cr} Kredit`} color="primary" sx={{ fontWeight: 700 }} />
+                          </Paper>
                         ))}
                       </AccordionDetails>
                     </Accordion>
@@ -261,33 +246,37 @@ const TwoDepartmentsContent = () => {
               {/* 4. MAQOLALAR */}
               {activeSection === "articles" && (
                 <Box>
-                  <Typography variant="h4" sx={{ fontWeight: 900, mb: 4 }}>Ilmiy maqolalar</Typography>
-                  {currentDept.articles.map((art, i) => (
-                    <Paper key={i} variant="outlined" sx={{ p: 3, mb: 2, borderRadius: "16px" }}>
-                      <Typography variant="h6" sx={{ fontWeight: 800 }}>{art.title}</Typography>
-                      <Typography variant="body2" sx={{ opacity: 0.6 }}>{art.journal} • {art.year}</Typography>
+                  <Typography variant="h4" sx={{ fontWeight: 900, mb: 4 }}>Ilmiy nashrlar</Typography>
+                  {data.articles.map((art, i) => (
+                    <Paper key={i} sx={{ p: 3, mb: 2, borderRadius: "24px", borderLeft: `8px solid ${accentColor}`, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <Box>
+                        <Typography sx={{ fontWeight: 800, mb: 0.5, fontSize: "1.1rem" }}>{art.title}</Typography>
+                        <Typography variant="body2" sx={{ opacity: 0.6 }}>{art.author} | {art.journal} ({art.year})</Typography>
+                      </Box>
+                      <IconButton color="primary"><ExternalLink size={20}/></IconButton>
                     </Paper>
                   ))}
                 </Box>
               )}
 
-              {/* 5. SHARTNOMALAR */}
+              {/* 5. HAMKORLIK */}
               {activeSection === "contracts" && (
                 <Box>
-                  <Typography variant="h4" sx={{ fontWeight: 900, mb: 4 }}>Hamkorlik shartnomalari</Typography>
+                  <Typography variant="h4" sx={{ fontWeight: 900, mb: 4 }}>Strategik hamkorlar</Typography>
                   <Grid container spacing={3}>
-                    {currentDept.contracts.map((con, i) => (
-                      <Grid item xs={12} sm={6} key={i}>
-                        <Paper sx={{ p: 3, borderRadius: "20px", borderLeft: `6px solid ${accentColor}` }}>
-                          <Typography variant="h6" sx={{ fontWeight: 800 }}>{con.company}</Typography>
-                          <Typography variant="body2" sx={{ opacity: 0.7 }}>{con.type}</Typography>
-                          <Typography variant="caption" sx={{ fontWeight: 800, mt: 1, display: "block" }}>{con.date}</Typography>
+                    {data.partners.map((con, i) => (
+                      <Grid item xs={12} md={6} key={i}>
+                        <Paper sx={{ p: 4, borderRadius: "28px", textAlign: "center", border: "1px solid rgba(0,0,0,0.05)", transition: "0.3s", "&:hover": { borderColor: accentColor } }}>
+                          <Box sx={{ color: accentColor, mb: 2, display: "flex", justifyContent: "center" }}>{con.icon}</Box>
+                          <Typography variant="h6" sx={{ fontWeight: 800, mb: 1 }}>{con.name}</Typography>
+                          <Typography variant="body2" sx={{ opacity: 0.6 }}>{con.type}</Typography>
                         </Paper>
                       </Grid>
                     ))}
                   </Grid>
                 </Box>
               )}
+
             </motion.div>
           </AnimatePresence>
         </Box>
