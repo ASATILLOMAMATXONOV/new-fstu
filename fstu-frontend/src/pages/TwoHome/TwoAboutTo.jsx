@@ -1,19 +1,23 @@
-import React from 'react';
-import { Box, Container, Typography, Stack } from '@mui/material';
-import { motion } from 'framer-motion';
-import { CheckCircleOutline } from '@mui/icons-material';
-import { useTheme } from "@mui/material/styles";
+import React, { useState } from "react";
+import { Box, Container, Typography, Stack, useTheme, alpha, Tooltip } from "@mui/material";
+import { motion, AnimatePresence } from "framer-motion";
+import { 
+  CheckCircleOutline, 
+  Public, 
+  Bolt, 
+} from "@mui/icons-material";
 
-import L3Img from "../../assets/videos/F1.gif";
+const mainBrandColor = "#02509eff";
 
-
-const admissionFeatures = [
-  { title: "Bakalavriat ta’lim yo‘nalishlari", link: "https://fstu.uz/uz/page/bakalavriat" },
-  { title: "Magistratura mutaxassisliklari", link: "https://fstu.uz/uz/page/magistratura" },
-  { title: "Sirtqi va masofaviy ta’lim", link: "https://fstu.uz/uz/page/sirtqi-talim" },
-  { title: "Davlat grantlari va to‘lov-kontrakt", link: "https://fstu.uz/uz/page/qabul" },
-  { title: "Xalqaro ta’lim dasturlari", link: "https://fstu.uz/uz/page/xalqaro-aloqalar" },
-  { title: "Iqtidorli talabalar uchun stipendiyalar", link: "https://fstu.uz/uz/page/stipendiyalar" },
+// 1. HAR BIR USTUN UCHUN MA'LUMOTLAR VA LINKLAR
+const chartData = [
+  { label: "Bakalavriat", val: 85, stat: "92% Qabul", link: "https://fstu.uz/uz/page/bakalavriat" },
+  { label: "Magistratura", val: 55, stat: "88% Yutuq", link: "https://fstu.uz/uz/page/magistratura" },
+  { label: "Sirtqi", val: 75, stat: "95% Bandlik", link: "https://fstu.uz/uz/page/sirtqi-talim" },
+  { label: "Qabul", val: 40, stat: "12k Ariza", link: "https://fstu.uz/uz/page/qabul" },
+  { label: "Xalqaro", val: 90, stat: "24ta Grant", link: "https://fstu.uz/uz/page/xalqaro-aloqalar" },
+  { label: "Stipendiya", val: 65, stat: "450+ Talaba", link: "https://fstu.uz/uz/page/stipendiyalar" },
+  { label: "Ilmiy", val: 70, stat: "18ta Loyiha", link: "https://fstu.uz/uz/page/ilmiy-tadqiqot" },
 ];
 
 const TwoAboutTo = () => {
@@ -22,189 +26,215 @@ const TwoAboutTo = () => {
   return (
     <Box
       sx={{
-        bgcolor: theme.palette.background.default, // 🔑 FAQAT RANG
-        py: { xs: 6, md: 14 },
-        position: 'relative',
-        overflow: 'hidden',
+        bgcolor: theme.palette.background.default,
+        py: { xs: 8, md: 15 },
+        position: "relative",
+        overflow: "hidden",
       }}
     >
       <Container maxWidth="xl">
         <Box
           sx={{
-            display: 'flex',
-            flexDirection: { xs: 'column', md: 'row' },
-            alignItems: 'center',
-            gap: { xs: 6, md: 10 },
+            display: "flex",
+            flexDirection: { xs: "column", lg: "row" },
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: { xs: 8, lg: 12 },
           }}
         >
-          {/* LEFT CONTENT */}
-          <Box sx={{ flex: 1, width: '100%' }}>
+          {/* CHAP TOMON: MATNLAR */}
+          <Box sx={{ flex: 1.1, width: "100%" }}>
             <motion.div
               initial={{ opacity: 0, x: -60 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
             >
-              <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 2 }}>
-                <Box sx={{ width: 35, height: 2, bgcolor: '#02509eff' }} />
-                <Typography
-                  sx={{
-                    color: '#02509eff',
-                    fontWeight: 800,
-                    letterSpacing: 2,
-                    fontSize: '0.75rem',
-                    textTransform: 'uppercase',
-                  }}
-                >
-                  FSTU
+              <Stack spacing={4}>
+                <Stack direction="row" alignItems="center" spacing={2}>
+                  <Box sx={{ width: 45, height: 4, bgcolor: mainBrandColor, borderRadius: 10 }} />
+                  <Typography sx={{ color: mainBrandColor, fontWeight: 900, letterSpacing: 3, fontSize: "0.85rem", textTransform: "uppercase" }}>
+                    FSTU GLOBAL ANALYTIKA
+                  </Typography>
+                </Stack>
+
+                <Typography sx={{ fontWeight: 1000, fontSize: { xs: "2.2rem", md: "3.5rem" }, lineHeight: 1.1, color: "text.primary" }}>
+                  Innovatsion Kelajak <br />
+                  <Box component="span" sx={{ color: mainBrandColor }}>Raqamli Dunyoda</Box>
                 </Typography>
-              </Stack>
 
-              <Typography
-                sx={{
-                  color: theme.palette.text.primary, // 🔑
-                  fontWeight: 700,
-                  fontSize: { xs: '1rem', md: '2rem' },
-                  lineHeight: 1.1,
-                  mb: 3,
-                  fontFamily: "Arial, sans-serif",
-                }}
-              >
-                Farg‘ona davlat texnika universiteti
-              </Typography>
+                <Typography sx={{ color: "text.secondary", fontSize: "1.1rem", maxWidth: 580, lineHeight: 1.8 }}>
+                  Universitetimizning har bir bo'limi bo'yicha real vaqt rejimidagi ko'rsatkichlar bilan tanishing.
+                </Typography>
 
-              <Typography
-                sx={{
-                  color: theme.palette.text.secondary, // 🔑
-                  fontSize: '1.05rem',
-                  mb: 5,
-                  maxWidth: 520,
-                  lineHeight: 1.8,
-                }}
-              >
-                Farg‘ona davlat texnika universiteti olinadigan bilim va amaliy
-                ko‘nikmalarni birlashtirgan oliy ta’lim muassasasidir. Bu yerda
-                talabalar mustahkam akademik bazaga ega bo‘lib, zamonaviy ilm-fan
-                va innovatsiyalar yo‘nalishlarida bilim olishadi hamda murakkab
-                dunyoda muvaffaqiyatli faoliyat yuritish uchun zarur
-                ko‘nikmalarni egallaydilar.
-              </Typography>
-
-              {/* FEATURES */}
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  rowGap: 2,
-                  columnGap: 2,
-                  mb: 6,
-                  width: '100%',
-                }}
-              >
-                {admissionFeatures.map((item, index) => (
-                  <Box
-                    key={index}
-                    component={motion.a}
-                    href={item.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                    whileHover={{ x: 8 }}
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      width: { xs: '100%', sm: 'calc(50% - 16px)' },
-                      textDecoration: 'none',
-                      cursor: 'pointer',
-                      '&:hover .feature-text': {
-                        color: '#0067ff',
-                        fontWeight: 600,
-                      },
-                      '&:hover .check-icon': {
-                        transform: 'scale(1.2)',
-                        color: '#02509eff',
-                      },
-                    }}
-                  >
-                    <CheckCircleOutline
-                      className="check-icon"
+                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 3, pt: 2 }}>
+                  {chartData.slice(0, 6).map((item, index) => (
+                    <Box
+                      key={index}
+                      component={motion.a}
+                      href={item.link}
+                      target="_blank"
+                      whileHover={{ x: 10 }}
                       sx={{
-                        color: '#02509eff',
-                        mr: 1.5,
-                        transition: 'all 0.2s ease',
-                      }}
-                    />
-
-                    <Typography
-                      className="feature-text"
-                      sx={{
-                        color: theme.palette.text.primary, // 🔑
-                        fontSize: '0.95rem',
-                        transition: 'all 0.2s ease',
-                        lineHeight: 1.4,
+                        display: "flex",
+                        alignItems: "center",
+                        width: { xs: "100%", sm: "calc(50% - 16px)" },
+                        textDecoration: "none",
+                        transition: "0.3s",
                       }}
                     >
-                      {item.title}
-                    </Typography>
-                  </Box>
-                ))}
-              </Box>
+                      <CheckCircleOutline sx={{ color: mainBrandColor, mr: 1.5, fontSize: 22 }} />
+                      <Typography sx={{ color: "text.primary", fontWeight: 700, fontSize: "1rem" }}>
+                        {item.label}
+                      </Typography>
+                    </Box>
+                  ))}
+                </Box>
+              </Stack>
             </motion.div>
           </Box>
 
-          {/* RIGHT IMAGE (TEGILMAGAN) */}
-          <Box sx={{ flex: 1, width: '100%', position: 'relative' }}>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, x: 60 }}
-              whileInView={{ opacity: 1, scale: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1 }}
-              style={{ position: 'relative' }}
-            >
-       
-
-              <Box
-                sx={{
-                  position: 'absolute',
-                  inset: { xs: '-3%', md: '-6%' },
-                  // bgcolor: '#0067ff',
-                  clipPath: 'polygon(20% 0%, 100% 0%, 100% 100%, 0% 100%)',
-                  zIndex: 0,
-                }}
-              />
-
-              <Box
-                sx={{
-                  position: 'relative',
-                  zIndex: 1,
-                  height: { xs: 260, sm: 360, md: 540 },
-                  overflow: 'hidden',
-                  clipPath: { xs: 'none', md: 'polygon(12% 0, 100% 0, 100% 100%, 0 100%)' },
-                  boxShadow: '0 30px 60px rgba(0,0,0,0.55)',
-                }}
-              >
-                <Box
-                  component="img"
-                  src={L3Img}
-                  alt="University"
-                  loading="lazy"
-                  sx={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                    transition: '1s',
-                    '&:hover': { transform: 'scale(1.08)' },
-                  }}
-                />
-              </Box>
-            </motion.div>
+          {/* O'NG TOMON: INTERAKTIV NEON CHART */}
+          <Box sx={{ flex: 0.9, width: "100%", display: "flex", justifyContent: "center" }}>
+            <FuturisticFlexChart />
           </Box>
         </Box>
       </Container>
     </Box>
+  );
+};
+
+/* --- ASOSIY CHART KOMPONENTI --- */
+const FuturisticFlexChart = () => {
+  const [hoveredIndex, setHoveredIndex] = useState(null);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, perspective: 1200, rotateY: 20 }}
+      whileInView={{ opacity: 1, rotateY: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 1.2, ease: "easeOut" }}
+      style={{ width: "100%", }}
+    >
+      <Box
+        sx={{
+          position: "relative",
+          p: { xs: 3, md: 5 },
+          borderRadius: "20px",
+          background: `linear-gradient(135deg, rgb(254 254 254 / 98%) 0%, ${alpha(mainBrandColor, 0.15)} 100%)`,
+          backdropFilter: "blur(20px)",
+          border: `2px solid ${alpha(mainBrandColor, 0.3)}`,
+          boxShadow: `0 30px 60px ${alpha(mainBrandColor, 0.25)}`,
+          overflow: "hidden",
+        }}
+      >
+        <Stack spacing={4}>
+          {/* Header */}
+          <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+            <Box>
+              <Typography variant="h5" sx={{ fontWeight: 1000, color: mainBrandColor, }}>
+                BO'LIMLAR STATUSI
+              </Typography>
+              <Typography sx={{ color: mainBrandColor, fontSize: 9, letterSpacing: 2, fontWeight: 800 }}>
+                USTUNNI TANLANG
+              </Typography>
+            </Box>
+            <motion.div animate={{ rotate: 360 }} transition={{ duration: 25, repeat: Infinity, ease: "linear" }}>
+              <Public sx={{ color: mainBrandColor, fontSize: 35 }} />
+            </motion.div>
+          </Box>
+
+          {/* 2. NEON USTUNLAR HUDUDI */}
+          <Box 
+            sx={{ 
+              height: 220, 
+              position: "relative", 
+              display: "flex", 
+              alignItems: "flex-end", 
+              gap: 1.5, 
+              px: 1, 
+              zIndex: 2,
+              pt: 5 // Hover badge uchun joy
+            }}
+          >
+            {/* Hover bo'lgandagi Floating Badge */}
+            <AnimatePresence>
+              {hoveredIndex !== null && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10, scale: 0.8 }}
+                  animate={{ opacity: 1, y: -40, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  style={{ position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)", zIndex: 10 }}
+                >
+                  <Box sx={{ bgcolor: "#fff", px: 2, py: 0.8, borderRadius: "12px", border: `2px solid ${mainBrandColor}`, boxShadow: `0 0 20px ${mainBrandColor}` }}>
+                    <Typography sx={{ color: mainBrandColor, fontWeight: 1000, fontSize: 13, whiteSpace: "nowrap" }}>
+                      {chartData[hoveredIndex].stat}
+                    </Typography>
+                  </Box>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* Raqamli Yer shari (Fonda sekin aylanadi) */}
+            <Box sx={{ position: "absolute", inset: 0, display: "flex", justifyContent: "center", alignItems: "center", opacity: 0.1, zIndex: -1 }}>
+              <Public sx={{ fontSize: 220, color: mainBrandColor }} />
+            </Box>
+
+            {/* Ustunlar (Bars) */}
+            {chartData.map((item, i) => (
+              <Box key={i} sx={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center" }}>
+                <Tooltip title={`${item.label}ga o'tish`} arrow placement="top">
+                  <Box
+                    component={motion.div}
+                    onMouseEnter={() => setHoveredIndex(i)}
+                    onMouseLeave={() => setHoveredIndex(null)}
+                    onClick={() => window.open(item.link, "_blank")}
+                    whileHover={{ scaleX: 1.1, filter: "brightness(1.4)" }}
+                    sx={{ width: "100%", position: "relative", cursor: "pointer" }}
+                  >
+                    <motion.div
+                      initial={{ height: 0 }}
+                      whileInView={{ height: `${item.val * 1.5}px` }} // Balandlikni barqaror qilish
+                      transition={{ duration: 1, delay: i * 0.1 }}
+                      style={{
+                        width: "100%",
+                        background: `linear-gradient(to top, transparent, ${mainBrandColor})`,
+                        borderRadius: "8px 8px 2px 2px",
+                        borderTop: `3px solid #fff`,
+                        boxShadow: hoveredIndex === i 
+                          ? `0 0 25px ${alpha(mainBrandColor, 0.6)}` 
+                          : `0 0 10px ${alpha(mainBrandColor, 0.2)}`,
+                        transition: "box-shadow 0.3s ease"
+                      }}
+                    />
+                  </Box>
+                </Tooltip>
+                
+                {/* Ustun ostidagi label (kichik ekranlarda ham sig'ishi uchun) */}
+                <Typography sx={{ mt: 1.5, fontSize: 8, fontWeight: 900, color: hoveredIndex === i ? mainBrandColor : alpha("#000000ff", 0.4), transform: "rotate(-45deg)", whiteSpace: "nowrap", transition: "0.3s" }}>
+                  {item.label.substring(0, 6)}
+                </Typography>
+              </Box>
+            ))}
+          </Box>
+
+          {/* Pastki Qism: Status Bar */}
+          <Box sx={{ borderTop: `1px solid ${alpha("#fff", 0.1)}`, pt: 3 }}>
+            <Stack direction="row" justifyContent="space-between" alignItems="center">
+              <Typography sx={{ fontSize: 9, fontWeight: 900, color: mainBrandColor, letterSpacing: 3 }}>
+                FSTU NETWORK: ONLINE
+              </Typography>
+              <Stack direction="row" spacing={0.5}>
+                {[1, 2, 3].map((s) => (
+                   <motion.div key={s} animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 1.5, delay: s * 0.3, repeat: Infinity }}
+                    style={{ width: 4, height: 4, borderRadius: "50%", backgroundColor: mainBrandColor }} />
+                ))}
+              </Stack>
+            </Stack>
+          </Box>
+        </Stack>
+      </Box>
+    </motion.div>
   );
 };
 
