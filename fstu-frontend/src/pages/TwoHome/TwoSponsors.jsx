@@ -1,197 +1,167 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, EffectCoverflow, Pagination, Navigation } from 'swiper/modules';
+import { Autoplay } from 'swiper/modules';
 import { useTheme } from '@mui/material/styles';
+import { Box, Typography, Container, Grid, Stack, Divider } from '@mui/material';
+import { motion, useMotionValue, useSpring, useInView } from 'framer-motion';
 
-// Swiper styles
+// Ikonkalar
+import SchoolIcon from '@mui/icons-material/School';
+import GroupIcon from '@mui/icons-material/Group';
+import HistoryEduIcon from '@mui/icons-material/HistoryEdu';
+import AutoStoriesIcon from '@mui/icons-material/AutoStories';
+
+// Rasmlar
+import asiaQs from '../../assets/images/reyting-logo/asia qs ranking.png';
+import emblemUz from '../../assets/images/reyting-logo/Emblem_of_Uzbekistan.svg.png';
+import impactRanking from '../../assets/images/reyting-logo/impackt renking.png';
+import qsCentralAsia from '../../assets/images/reyting-logo/QS centreal asian ranking 2024.png';
+import worldUni from '../../assets/images/reyting-logo/the world universty reanking.png';
+
 import 'swiper/css';
-import 'swiper/css/effect-coverflow';
+
+// 0 dan sanaluvchi raqam komponenti
+const Counter = ({ value }) => {
+  const ref = useRef(null);
+  const motionValue = useMotionValue(0);
+  const springValue = useSpring(motionValue, { stiffness: 50, damping: 30 });
+  const isInView = useInView(ref, { once: true });
+
+  useEffect(() => {
+    if (isInView) {
+      motionValue.set(value);
+    }
+  }, [isInView, value, motionValue]);
+
+  useEffect(() => {
+    springValue.on("change", (latest) => {
+      if (ref.current) {
+        ref.current.textContent = Intl.NumberFormat("en-US").format(latest.toFixed(0));
+      }
+    });
+  }, [springValue]);
+
+  return <span ref={ref}>0</span>;
+};
 
 const TwoSponsors = () => {
   const theme = useTheme();
-  const accentColor = '#02509eff';
+  const mainBlue = '#002B5B';
+  const accentCyan = '#00E5FF';
 
-  const sponsors = [
-    { id: 1, name: "Artel", logo: "https://fstu.uz/uploads/links/Wg3EBm8fBP.png", link: "https://artelgroup.org" },
-    { id: 2, name: "Uztelecom", logo: "https://fstu.uz/uploads/links/p1_eMIqu7W.png", link: "https://uztelecom.uz" },
-    { id: 3, name: "IT Park", logo: "https://fstu.uz/uploads/links/Ih03Fyo4pg.webp", link: "https://it-park.uz" },
-    { id: 4, name: "PayMe", logo: "https://fstu.uz/uploads/links/gRXN_OGJ3i.webp", link: "https://payme.uz" },
-    { id: 5, name: "Huawei", logo: "https://fstu.uz/uploads/links/XfoBaqKjlL.webp", link: "https://huawei.com" },
-    { id: 6, name: "Artel 2", logo: "https://fstu.uz/uploads/links/Wg3EBm8fBP.png", link: "#" },
-    { id: 7, name: "Uztelecom 2", logo: "https://fstu.uz/uploads/links/p1_eMIqu7W.png", link: "#" },
+  const stats = [
+    { number: 27768, label: 'TALABALAR', icon: <GroupIcon sx={{ fontSize: 50 }} /> },
+    { number: 831, label: "PROFESSOR O'QITUVCHILAR", icon: <HistoryEduIcon sx={{ fontSize: 50 }} /> },
+    { number: 67270, label: 'BITIRUVCHILAR', icon: <SchoolIcon sx={{ fontSize: 50 }} /> },
+    { number: 257800, label: 'KITOB FONDI', icon: <AutoStoriesIcon sx={{ fontSize: 50 }} /> },
   ];
 
+  const sponsors = [asiaQs, emblemUz, impactRanking, qsCentralAsia, worldUni];
+
   return (
-    <div
-      style={{
-        ...sectionWrapper,
-        backgroundColor: theme.palette.background.default,
-        color: theme.palette.text.primary,
-      }}
-    >
-      <div style={container}>
-        <div style={headerBox} className="fade-in">
-          <h2
-            style={{
-              ...sectionTitle,
-              color: theme.palette.text.primary,
-            }}
-          >
-            Foydali havolalar
-          </h2>
-          <div
-            style={{
-              ...underline,
-              backgroundColor: accentColor,
-            }}
-          />
-        </div>
+    <Box sx={{ bgcolor: '#fff', py: 12 }}>
+      <Container maxWidth="xl">
+        
+        {/* === HEADER: Markazda === */}
+        <Stack alignItems="center" sx={{ mb: 10 }}>
+          <Typography variant="h4" sx={{ fontWeight: 800, color: mainBlue, mb: 1, textAlign: 'center' }}>
+            STATISTIKA
+          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', maxWidth: 700 }}>
+            <Divider sx={{ flexGrow: 1, height: 2, bgcolor: mainBlue }} />
+            <Typography sx={{ px: 3, fontWeight: 600, color: mainBlue, textAlign: 'center' }}>
+              Farg'ona davlat texnika universiteti
+            </Typography>
+            <Divider sx={{ flexGrow: 1, height: 2, bgcolor: mainBlue }} />
+          </Box>
+        </Stack>
+
+        {/* === STATISTIKA: Markazda va Sanaluvchi raqamlar === */}
+        <Box 
+          sx={{ 
+            bgcolor: mainBlue, 
+            borderRadius: '30px', 
+            p: { xs: 4, md: 8 }, 
+            mb: 12,
+            position: 'relative',
+            overflow: 'hidden',
+            boxShadow: '0 20px 40px rgba(0,43,91,0.2)'
+          }}
+        >
+          {/* Fon effekti (nuqtachalar) */}
+          <Box sx={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, opacity: 0.1, backgroundImage: 'radial-gradient(#fff 1px, transparent 1px)', backgroundSize: '30px 30px' }} />
+
+          <Grid container spacing={6} justifyContent="center" alignItems="center">
+            {stats.map((item, index) => (
+              <Grid item xs={12} sm={6} md={3} key={index}>
+                <Stack alignItems="center" spacing={2} sx={{ position: 'relative', zIndex: 1 }}>
+                  <Box sx={{ color: accentCyan, mb: 1 }}>
+                    <motion.div whileHover={{ scale: 1.2, rotate: 10 }} transition={{ type: 'spring' }}>
+                      {item.icon}
+                    </motion.div>
+                  </Box>
+                  
+                  <Typography variant="h2" sx={{ fontWeight: 800, color: '#fff', fontSize: { xs: '2.5rem', md: '3.5rem' } }}>
+                    <Counter value={item.number} />
+                  </Typography>
+
+                  <motion.div 
+                    initial={{ width: 0 }} 
+                    whileInView={{ width: '80%' }} 
+                    transition={{ duration: 1, delay: 0.5 }}
+                    style={{ height: '3px', backgroundColor: accentCyan }} 
+                  />
+
+                  <Typography variant="button" sx={{ fontWeight: 800, color: accentCyan, textAlign: 'center', mt: 2, letterSpacing: 1.5 }}>
+                    {item.label}
+                  </Typography>
+                </Stack>
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
+
+        {/* === SLIDER: Tartibli va Silliq === */}
+        <Box sx={{ display: 'flex', alignItems: 'center', mb: 4, gap: 2 }}>
+          <Typography variant="overline" sx={{ fontWeight: 900, color: '#94a3b8', letterSpacing: 3, whiteSpace: 'nowrap' }}>
+            INTERNATIONAL RANKINGS
+          </Typography>
+          <Divider sx={{ flexGrow: 1 }} />
+        </Box>
 
         <Swiper
-          modules={[Autoplay, EffectCoverflow, Pagination, Navigation]}
-          effect="coverflow"
-          grabCursor
-          centeredSlides
-          slidesPerView="auto"
-          loop
-          speed={3000}
-          autoplay={{
-            delay: 0,
-            disableOnInteraction: false,
+          modules={[Autoplay]}
+          loop={true}
+          speed={6000}
+          autoplay={{ delay: 0, disableOnInteraction: false }}
+          slidesPerView={2}
+          breakpoints={{ 
+            640: { slidesPerView: 3 }, 
+            1024: { slidesPerView: 5 } 
           }}
-          coverflowEffect={{
-            rotate: 30,
-            stretch: 0,
-            depth: 100,
-            modifier: 1,
-            slideShadows: false, // ❌ shadow yo‘q
-          }}
-          className="sponsors-coverflow-slider"
-          style={swiperContainerStyle}
         >
-          {sponsors.map((sponsor) => (
-            <SwiperSlide key={sponsor.id} style={swiperSlideStyle}>
-              <a
-                href={sponsor.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="logo-card-coverflow"
-                style={{
-                  backgroundColor: theme.palette.background.paper,
-                  borderColor: theme.palette.divider,
-                }}
-              >
-                <img
-                  src={sponsor.logo}
-                  alt={sponsor.name}
-                  className="sponsor-img-coverflow"
-                />
-              </a>
+          {[...sponsors, ...sponsors].map((logo, i) => (
+            <SwiperSlide key={i}>
+              <Box sx={{ 
+                height: 120, 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center',
+                filter: 'grayscale(100%)',
+                opacity: 0.5,
+                transition: '0.4s ease',
+                '&:hover': { filter: 'grayscale(0%)', opacity: 1, transform: 'scale(1.1)' }
+              }}>
+                <img src={logo} alt="Ranking" style={{ maxWidth: '80%', maxHeight: '60px', objectFit: 'contain' }} />
+              </Box>
             </SwiperSlide>
           ))}
         </Swiper>
-      </div>
+      </Container>
 
-      <style>{`
-        /* LINEAR HARAKAT */
-        .sponsors-coverflow-slider .swiper-wrapper {
-          transition-timing-function: linear !important;
-        }
-
-        .fade-in {
-          animation: fadeIn 0.8s ease-out forwards;
-        }
-
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-
-        .sponsors-coverflow-slider .swiper-slide {
-          width: 280px;
-          height: 150px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        /* CARD – FAQAT BORDER */
-        .logo-card-coverflow {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          border: 1px solid ${theme.palette.divider};
-          border-radius: 20px;
-          height: 100%;
-          width: 100%;
-          text-decoration: none;
-          transition: border-color 0.3s, transform 0.3s;
-        }
-
-        .logo-card-coverflow:hover {
-          border-color: ${accentColor};
-          transform: scale(1.05);
-          z-index: 10;
-        }
-
-        .sponsor-img-coverflow {
-          max-width: 70%;
-          max-height: 80px;
-          object-fit: contain;
-          transition: all 0.4s ease;
-        }
-
-        @media (max-width: 768px) {
-          .sponsors-coverflow-slider .swiper-slide {
-            width: 200px;
-            height: 110px;
-          }
-        }
-      `}</style>
-    </div>
+      <style>{`.swiper-wrapper { transition-timing-function: linear !important; }`}</style>
+    </Box>
   );
-};
-
-/* === STILLAR (O‘ZGARMAGAN) === */
-
-const sectionWrapper = {
-  padding: '10px 0',
-  overflow: 'hidden',
-  fontFamily: 'Inter, sans-serif',
-};
-
-const container = {
-  maxWidth: '1200px',
-  margin: '0 auto',
-  padding: '0 20px',
-};
-
-const headerBox = {
-  textAlign: 'center',
-  marginBottom: '50px',
-};
-
-const sectionTitle = {
-  fontSize: '24px',
-  fontWeight: '800',
-  margin: '0 0 15px 0',
-  textTransform: 'uppercase',
-};
-
-const underline = {
-  width: '80px',
-  height: '4px',
-  margin: '0 auto',
-  borderRadius: '2px',
-};
-
-const swiperContainerStyle = {
-  width: '100%',
-  padding: '40px 0',
-};
-
-const swiperSlideStyle = {
-  background: 'transparent',
 };
 
 export default TwoSponsors;

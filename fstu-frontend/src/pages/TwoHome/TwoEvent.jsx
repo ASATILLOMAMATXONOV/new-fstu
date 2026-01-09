@@ -36,20 +36,14 @@ const TwoEvent = () => {
       image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=400",
       location: "TTJ",
     },
-    {
-      id: 4,
-      title: "Iqtidorli talabalar tanlovi",
-      price: "Grantlar",
-      image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=400",
-      location: "Yoshlar Ittifoqi",
-    },
+
   ];
 
   return (
     <div
       style={{
         ...pageWrapper,
-        backgroundColor: theme.palette.background.default,
+        backgroundColor: '#f1f5f9',
         color: theme.palette.text.primary,
       }}
     >
@@ -275,7 +269,6 @@ const TwoEvent = () => {
 /* === STILLAR (O‘ZGARMAGAN) === */
 
 const pageWrapper = {
-marginBottom:'20px',
   padding: '20px 20px',
   fontFamily: "'Inter', sans-serif",
 };
