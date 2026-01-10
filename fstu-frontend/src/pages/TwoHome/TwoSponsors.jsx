@@ -60,8 +60,6 @@ const TwoSponsors = () => {
 
   return (
     <Box sx={{ bgcolor: '#fff', py: 12 }}>
-      <Container maxWidth="xl">
-        
         {/* === HEADER: Markazda === */}
         <Stack alignItems="center" sx={{ mb: 10 }}>
           <Typography variant="h4" sx={{ fontWeight: 800, color: mainBlue, mb: 1, textAlign: 'center' }}>
@@ -80,7 +78,6 @@ const TwoSponsors = () => {
         <Box 
           sx={{ 
             bgcolor: mainBlue, 
-            borderRadius: '30px', 
             p: { xs: 4, md: 8 }, 
             mb: 12,
             position: 'relative',
@@ -120,13 +117,15 @@ const TwoSponsors = () => {
             ))}
           </Grid>
         </Box>
+      <Container maxWidth="xl">
+        
 
         {/* === SLIDER: Tartibli va Silliq === */}
         <Box sx={{ display: 'flex', alignItems: 'center', mb: 4, gap: 2 }}>
-          <Typography variant="overline" sx={{ fontWeight: 900, color: '#94a3b8', letterSpacing: 3, whiteSpace: 'nowrap' }}>
+          <Typography variant="overline" sx={{ fontWeight: 900, color: mainBlue, fontSize: 12, letterSpacing: 3, whiteSpace: 'nowrap' }}>
             INTERNATIONAL RANKINGS
           </Typography>
-          <Divider sx={{ flexGrow: 1 }} />
+          <Divider sx={{ flexGrow: 1, height: 1, bgcolor: mainBlue }} />
         </Box>
 
         <Swiper

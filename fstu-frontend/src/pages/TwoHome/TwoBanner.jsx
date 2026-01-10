@@ -29,7 +29,7 @@ const TwoBanner = () => {
     return () => clearInterval(timer);
   }, []);
 
-  const HERO_H = "90vh"; // banner balandligi
+  const HERO_H = "83vh"; // banner balandligi
 
   return (
     <>
