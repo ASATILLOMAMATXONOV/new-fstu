@@ -96,7 +96,7 @@ const TwoAbout = () => {
               <motion.div variants={headerVariants}>
                 <Typography
                   sx={{
-                    fontSize: { xs: "1rem", md: "2rem" },
+                    fontSize: { xs: "1rem", md: "1.2rem" },
                     fontWeight: 1000,
                     color: "text.primary",
                     lineHeight: 1.1,
@@ -124,7 +124,7 @@ const TwoAbout = () => {
           </motion.div>
         </Box>
 
-        <Grid container spacing={5}>
+        <Grid container spacing={5} sx={{ justifyContent: "space-evenly" }}>
           {/* ✅ CHAP TOMON: AXBOROT TIZIMLARI (Chapdan surilib kiradi) */}
           <Grid item xs={12} lg={3}>
             <motion.div

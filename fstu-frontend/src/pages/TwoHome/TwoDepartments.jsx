@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { useTheme, useMediaQuery, Box, Typography, Button, IconButton, Avatar } from "@mui/material";
+import { useTheme, useMediaQuery, Box, Typography, Button, IconButton, Avatar, alpha } from "@mui/material";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Code2, Zap, ShieldCheck,Building2, Phone, Mail, ArrowLeft,
   ExternalLink, Info, GraduationCap, Users, Award, 
-  ChevronRight, ChevronLeft, ChevronDown, MapPin, Briefcase, Microscope
+  ChevronRight, ChevronLeft, ChevronDown, MapPin, Briefcase, Microscope, 
 } from "lucide-react";
+import { useNavigate } from "react-router-dom"; // Import
 
 import ColorModeProvider from "../../components/theme/ColorModeContext";
 import TwoNavbar from "../../pages/TwoHome/TwoNavbar";
@@ -43,6 +44,8 @@ const TwoDepartmentsContent = () => {
 
   const [openFacId, setOpenFacId] = useState(1);
   const [selectedDept, setSelectedDept] = useState(null);
+
+  const navigate = useNavigate();
 
   const faculties = [
     {
@@ -382,16 +385,35 @@ const TwoDepartmentsContent = () => {
                         ))}
                     </Box>
 
-                    <motion.div variants={fadeInUp}>
-                        <Box sx={{ display: "flex", gap: 2 }}>
-                            <Button variant="contained"  sx={{ bgcolor: accentColor, px: 2, borderRadius: "12px", fontWeight: 600 }}>
-                                Batafsil Ma'lumot
-                            </Button>
-                            <IconButton sx={{ border: "1px solid", borderColor: "divider", borderRadius: "16px", p: 2 }}>
-                                <ExternalLink />
-                            </IconButton>
-                        </Box>
-                    </motion.div>
+                  <motion.div variants={fadeInUp}>
+    <Box sx={{ display: "flex", gap: 2 }}>
+        <Button 
+            variant="contained"  
+            onClick={() => navigate("/twodepartmentscontact")} // Yo'naltirish funksiyasi
+            sx={{ 
+                bgcolor: accentColor, 
+                px: 2, 
+                borderRadius: "12px", 
+                fontWeight: 600,
+                "&:hover": { bgcolor: alpha(accentColor, 0.8) } // Yaxshiroq interaktivlik uchun
+            }}
+        >
+            Batafsil Ma'lumot
+        </Button>
+        
+        <IconButton 
+            onClick={() => navigate("/twodepartmentscontact")} // Ikonka bosilganda ham ishlaydi
+            sx={{ 
+                border: "1px solid", 
+                borderColor: "divider", 
+                borderRadius: "16px", 
+                p: 2 
+            }}
+        >
+            <ExternalLink size={20} />
+        </IconButton>
+    </Box>
+</motion.div>
                   </Box>
                 </Box>
               </motion.div>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import {
   useTheme, useMediaQuery, Box, Typography, Avatar, Chip,
-  Paper, Grid, Divider, Accordion, AccordionSummary, AccordionDetails, IconButton
+  Paper, Grid, Divider, Accordion, AccordionSummary, AccordionDetails, IconButton, alpha, Stack 
 } from "@mui/material";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -115,6 +115,7 @@ const StaffAccordion = ({ person, accentColor, expanded, onChange, isHead = fals
 
 const TwoDepartmentsContent = () => {
   const theme = useTheme();
+  const isDarkMode = theme.palette.mode === "dark";
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const accentColor = theme.palette.primary.main;
   const [activeSection, setActiveSection] = useState("about");
@@ -128,23 +129,46 @@ const TwoDepartmentsContent = () => {
       img: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=1200",
       description: "Kafedra 2010-yilda tashkil etilgan bo'lib, zamonaviy dasturiy ta'minot arxitekturasi, sun'iy intellekt va bulutli texnologiyalar yo'nalishida yuqori malakali mutaxassislar tayyorlaydi. Hozirda kafedrada 20 dan ortiq professor-o'qituvchilar faoliyat yuritmoqda.",
     },
-    head: { 
-        id: "h1", name: "Dr. Anvar Akramov", role: "Kafedra Mudiri", degree: "PhD, Dotsent",
-        specialty: "Sun'iy intellekt va Big Data arxitekturasi", phone: "+998 90 123 45 67", email: "a.akramov@fpi.uz",
-        subjects: ["Dasturiy arxitektura", "AI asoslari"], works: "50 dan ortiq maqolalar, 3 ta patent va 2 ta darslik muallifi."
-    },
-    staff: [
-      { 
-        id: "s1", name: "S. Karimov", role: "Professor", degree: "Fan doktori (DSc)", 
-        specialty: "Algoritmlar va optimallashtirish", phone: "+998 91 111 22 33", email: "karimov@fpi.uz",
-        subjects: ["Ma'lumotlar tuzilmasi", "Murakkab algoritmlar"], works: "100 dan ortiq xalqaro maqolalar, 10 ta patent."
-      },
-      { 
-        id: "s2", name: "M. Olimov", role: "Dotsent", degree: "PhD", 
-        specialty: "Web va Mobil injiniring", phone: "+998 93 444 55 66", email: "olimov@fpi.uz",
-        subjects: ["React JS", "Node JS", "Cloud Computing"], works: "Full-stack texnologiyalar bo'yicha amaliy qo'llanmalar muallifi."
-      }
-    ],
+  head: {
+  id: "h1",
+  name: "Dr. Anvar Akramov",
+  role: "Kafedra Mudiri",
+  degree: "PhD, Dotsent",
+  specialty: "Sun'iy intellekt va Big Data arxitekturasi",
+  phone: "+998 90 123 45 67",
+  email: "a.akramov@fpi.uz",
+  img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=400", // ✅
+  subjects: ["Dasturiy arxitektura", "AI asoslari"],
+  works: "50 dan ortiq maqolalar..."
+},
+
+staff: [
+  {
+    id: "s1",
+    name: "S. Karimov",
+    role: "Professor",
+    degree: "Fan doktori (DSc)",
+    specialty: "Algoritmlar",
+    phone: "+998 91 111 22 33",
+    email: "karimov@fpi.uz",
+    img: "https://images.unsplash.com/photo-1544723795-3fb6469f5b39?q=80&w=400", // ✅
+    subjects: ["Algoritmlar"],
+    works: "100+ maqolalar."
+  },
+  {
+    id: "s2",
+    name: "M. Olimov",
+    role: "Dotsent",
+    degree: "PhD",
+    specialty: "Web injiniring",
+    phone: "+998 93 444 55 66",
+    email: "olimov@fpi.uz",
+    img: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=400", // ✅
+    subjects: ["React JS"],
+    works: "Amaliy qo'llanmalar."
+  }
+],
+
     subjects: [
       { course: "1-KURS", list: [{ name: "Dasturlash asoslari", cr: 6, t: "Prof. S. Karimov" }, { name: "Matematik tahlil", cr: 4, t: "Dots. M. Aliyev" }] },
       { course: "2-KURS", list: [{ name: "Ma'lumotlar bazasi", cr: 5, t: "Dr. A. Akramov" }, { name: "Web texnologiyalar", cr: 6, t: "Dots. M. Olimov" }] }
@@ -168,7 +192,7 @@ const TwoDepartmentsContent = () => {
         
         {/* NAVIGATSIYA MENYUSI */}
         <Box sx={{ flex: "0 0 300px" }}>
-          <Paper elevation={0} sx={{ borderRadius: "24px", overflow: "hidden", position: 'sticky', top: 100, border: "1px solid rgba(0,0,0,0.05)" }}>
+          <Paper elevation={0} sx={{  overflow: "hidden", position: 'sticky', top: 100, border: "1px solid rgba(0,0,0,0.05)" }}>
             {[
               { id: "about", title: "Kafedra haqida", icon: <Info size={20}/> },
               { id: "staff", title: "Xodimlar", icon: <Users size={20}/> },
@@ -201,27 +225,128 @@ const TwoDepartmentsContent = () => {
               {/* 1. HAQIDA */}
               {activeSection === "about" && (
                 <Box>
-                  <Box sx={{ width: "100%", height: "400px", borderRadius: "32px", overflow: "hidden", mb: 4, boxShadow: "0 20px 40px rgba(0,0,0,0.1)" }}>
+                  <Box sx={{ width: "100%", height: "400px", borderRadius: "5px", overflow: "hidden", mb: 4, boxShadow: "0 20px 40px rgba(0,0,0,0.1)" }}>
                     <img src={data.dept.img} style={{ width: "100%", height: "100%", objectFit: "cover" }} alt="dept" />
                   </Box>
                   <Typography variant="h3" sx={{ fontWeight: 900, mb: 3 }}>{data.dept.name}</Typography>
                   <Typography sx={{ fontSize: "1.1rem", opacity: 0.7, mb: 5, lineHeight: 1.8 }}>{data.dept.description}</Typography>
                   <Divider sx={{ mb: 4 }} />
-                  <Typography variant="h5" sx={{ fontWeight: 900, mb: 3 }}>Kafedra Rahbariyati</Typography>
-                  <StaffAccordion person={data.head} accentColor={accentColor} expanded={expandedStaffId === data.head.id} onChange={handleStaffToggle} isHead={true} />
+                  
                 </Box>
               )}
 
-              {/* 2. XODIMLAR */}
-              {activeSection === "staff" && (
-                <Box>
-                  <Typography variant="h4" sx={{ fontWeight: 900, mb: 4 }}>Kafedra jamoasi</Typography>
-                  <StaffAccordion person={data.head} accentColor={accentColor} expanded={expandedStaffId === data.head.id} onChange={handleStaffToggle} isHead={true} />
-                  {data.staff.map(p => (
-                    <StaffAccordion key={p.id} person={p} accentColor={accentColor} expanded={expandedStaffId === p.id} onChange={handleStaffToggle} />
-                  ))}
-                </Box>
-              )}
+          {/* 2. XODIMLAR BO'LIMI - YANGI DIZAYN */}
+          {activeSection === "staff" && (
+            <Box 
+              component={motion.div} 
+              initial={{ opacity: 0 }} 
+              animate={{ opacity: 1 }}
+              sx={{ py: 2 }}
+            >
+              {/* Zamonaviy Sarlavha */}
+              <Box sx={{ mb: 6, position: 'relative' }}>
+                <Typography variant="h3" sx={{ fontWeight: 900, color: isDarkMode ? "#fff" : "#000", letterSpacing: -1 }}>
+                  Kafedra <Box component="span" sx={{ color: accentColor }}>Jamoasi</Box>
+                </Typography>
+                <Typography variant="body1" sx={{ color: "text.secondary", maxWidth: 500, mt: 1, fontWeight: 500 }}>
+                  Soha yetakchilari va tajribali mutaxassislar bilan tanishing.
+                </Typography>
+              </Box>
+
+              <Grid container spacing={2}>
+                {[data.head, ...data.staff].map((p, index) => (
+                  <Grid item xs={12} sm={6} md={4} lg={3} key={p.id}>
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: index * 0.1 }}
+                    >
+                      <Box
+                        onClick={() => window.open(`https://scholar.google.com/citations?user=${p.name}`, "_blank")}
+                        sx={{ 
+                          position: "relative",
+                          cursor: "pointer",
+                          height: 400,
+                          overflow: "hidden",
+                          bgcolor: "#1a1a1a",
+                          "&:hover .info-box": { transform: "translateY(0)", opacity: 1 },
+                          "&:hover .staff-img": { transform: "scale(1.1)", filter: "blur(2px) brightness(0.5)" },
+                          "&:hover .bottom-name": { opacity: 0 }
+                        }}
+                      >
+                        {/* ASOSIY RASM - To'liq rangli */}
+                        <img 
+                          className="staff-img"
+                          src={p.img} 
+                          alt={p.name} 
+                          style={{ 
+                            width: "100%", 
+                            height: "100%", 
+                            objectFit: "cover", 
+                            transition: "0.7s cubic-bezier(0.4, 0, 0.2, 1)"
+                          }} 
+                        />
+
+                        {/* DOIMIY ISM (PASTDA) - Chiroyli gradient bilan */}
+                        <Box className="bottom-name" sx={{ 
+                          position: 'absolute', bottom: 0, left: 0, right: 0, p: 3,
+                          background: "linear-gradient(to top, rgba(0,0,0,0.8), transparent)",
+                          transition: "0.3s ease"
+                        }}>
+                          <Typography variant="h6" sx={{ color: "#fff", fontWeight: 900, lineHeight: 1.1 }}>
+                            {p.name}
+                          </Typography>
+                          <Typography variant="caption" sx={{ color: accentColor, fontWeight: 800, textTransform: 'uppercase', letterSpacing: 1.5 }}>
+                            {p.role}
+                          </Typography>
+                        </Box>
+
+                        {/* HOVER INFO - Noodatiy va Rangli */}
+                        <Box 
+                          className="info-box"
+                          sx={{ 
+                            position: 'absolute', inset: 0, p: 4,
+                            display: 'flex', flexDirection: 'column', justifyContent: 'center',
+                            bgcolor: alpha(isDarkMode ? "#000" : accentColor, 0.85),
+                            backdropFilter: "blur(8px)",
+                            color: "#fff",
+                            opacity: 0,
+                            transform: "translateY(100%)",
+                            transition: "0.5s cubic-bezier(0.4, 0, 0.2, 1)",
+                            zIndex: 2
+                          }}
+                        >
+                          <Typography variant="overline" sx={{ opacity: 0.7, fontWeight: 900 }}>Ilmiy daraja</Typography>
+                          <Typography variant="h6" sx={{ fontWeight: 900, mb: 2, lineHeight: 1.2 }}>{p.degree}</Typography>
+                          
+                          <Divider sx={{ bgcolor: "rgba(255,255,255,0.2)", mb: 3 }} />
+
+                          <Box sx={{ mb: 3 }}>
+                            <Typography sx={{ fontSize: "2.5rem", fontWeight: 900, lineHeight: 1, color: "#fff" }}>
+                              {p.works.split(' ')[0]}<Box component="span" sx={{ fontSize: "1rem", ml: 1, opacity: 0.7 }}>maqola</Box>
+                            </Typography>
+                            <Typography variant="caption" sx={{ fontWeight: 700, mt: 1, display: 'block' }}>
+                              {p.specialty}
+                            </Typography>
+                          </Box>
+
+                          <Stack direction="row" spacing={2} sx={{ mt: 'auto' }}>
+                            <Box sx={{ p: 1, border: "1px solid rgba(255,255,255,0.3)", borderRadius: 0 }}>
+                              <Mail size={16} />
+                            </Box>
+                            <Box sx={{ flex: 1, border: "1px solid rgba(255,255,255,0.3)", display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
+                              <Typography variant="caption" sx={{ fontWeight: 900 }}>PROFIL</Typography>
+                              <ExternalLink size={12} />
+                            </Box>
+                          </Stack>
+                        </Box>
+                      </Box>
+                    </motion.div>
+                  </Grid>
+                ))}
+              </Grid>
+            </Box>
+          )}
 
               {/* 3. FANLAR */}
               {activeSection === "subjects" && (

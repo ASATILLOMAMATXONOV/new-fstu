@@ -41,7 +41,6 @@ const TwoBanner = () => {
         sx={{
           position: "fixed",
           inset: 0,
-          height: HERO_H,
           zIndex: -10,
           overflow: "hidden",
         }}
@@ -83,7 +82,7 @@ const TwoBanner = () => {
           sx={{
             position: "relative",
             zIndex: 2,
-            height: HERO_H,
+            height: "100%",
             display: "flex",
             alignItems: "center",
           }}
