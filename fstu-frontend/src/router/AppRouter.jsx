@@ -25,6 +25,8 @@ import TwoDepartmentsContent from "../pages/TwoHome/TwoDepartmentsContent";
 import TwoCenters from "../pages/TwoHome/TwoCenters";
 import TwoAdministration from "../pages/TwoHome/TwoAdministration";
 import TwoContact from "../pages/TwoHome/TwoContact";
+import TwoActivity from "../pages/TwoHome/TwoActivity";
+
 
 export default function AppRouter() {
   return (
@@ -58,6 +60,7 @@ export default function AppRouter() {
             <Route path="/twocentrs" element={<TwoCenters />} />
             <Route path="/administration" element={<TwoAdministration />} />
             <Route path="/twocontact" element={<TwoContact />} />
+            <Route path="/twoactivity" element={<TwoActivity />} />
 
           </Routes>
         </Box>
