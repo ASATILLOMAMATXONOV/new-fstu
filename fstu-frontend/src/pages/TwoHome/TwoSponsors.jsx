@@ -1,8 +1,18 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useContext } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
-import { useTheme } from '@mui/material/styles';
-import { Box, Typography, Container, Grid, Stack, Divider } from '@mui/material';
+import { 
+  useTheme, 
+  Box, 
+  Typography, 
+  Container, 
+  Grid, 
+  Stack, 
+  Divider, 
+  IconButton, 
+  useMediaQuery,
+  alpha 
+} from '@mui/material';
 import { motion, useMotionValue, useSpring, useInView } from 'framer-motion';
 
 // Ikonkalar
@@ -10,8 +20,10 @@ import SchoolIcon from '@mui/icons-material/School';
 import GroupIcon from '@mui/icons-material/Group';
 import HistoryEduIcon from '@mui/icons-material/HistoryEdu';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
+import Brightness4 from '@mui/icons-material/Brightness4';
+import Brightness7 from '@mui/icons-material/Brightness7';
 
-// Rasmlar
+// Rasmlar (Siz import qilgan fayllar)
 import asiaQs from '../../assets/images/reyting-logo/asia qs ranking.png';
 import emblemUz from '../../assets/images/reyting-logo/Emblem_of_Uzbekistan.svg.png';
 import impactRanking from '../../assets/images/reyting-logo/impackt renking.png';
@@ -28,13 +40,11 @@ const Counter = ({ value }) => {
   const isInView = useInView(ref, { once: true });
 
   useEffect(() => {
-    if (isInView) {
-      motionValue.set(value);
-    }
+    if (isInView) motionValue.set(value);
   }, [isInView, value, motionValue]);
 
   useEffect(() => {
-    springValue.on("change", (latest) => {
+    return springValue.on("change", (latest) => {
       if (ref.current) {
         ref.current.textContent = Intl.NumberFormat("en-US").format(latest.toFixed(0));
       }
@@ -46,112 +56,139 @@ const Counter = ({ value }) => {
 
 const TwoSponsors = () => {
   const theme = useTheme();
-  const mainBlue = '#002B5B';
+  const isDarkMode = theme.palette.mode === "dark";
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  
+  // Ranglar sxemasi
+  const mainBlue = isDarkMode ? theme.palette.primary.light : '#002B5B';
+  const sectionBg = isDarkMode ? theme.palette.background.default : '#fff';
+  const statsBg = isDarkMode ? alpha(theme.palette.primary.main, 0.15) : '#002B5B';
   const accentCyan = '#00E5FF';
 
   const stats = [
-    { number: 27768, label: 'TALABALAR', icon: <GroupIcon sx={{ fontSize: 50 }} /> },
-    { number: 831, label: "PROFESSOR O'QITUVCHILAR", icon: <HistoryEduIcon sx={{ fontSize: 50 }} /> },
-    { number: 67270, label: 'BITIRUVCHILAR', icon: <SchoolIcon sx={{ fontSize: 50 }} /> },
-    { number: 257800, label: 'KITOB FONDI', icon: <AutoStoriesIcon sx={{ fontSize: 50 }} /> },
+    { number: 27768, label: 'TALABALAR', icon: <GroupIcon sx={{ fontSize: isMobile ? 35 : 50 }} /> },
+    { number: 831, label: "PROFESSORLAR", icon: <HistoryEduIcon sx={{ fontSize: isMobile ? 35 : 50 }} /> },
+    { number: 67270, label: 'BITIRUVCHILAR', icon: <SchoolIcon sx={{ fontSize: isMobile ? 35 : 50 }} /> },
+    { number: 257800, label: 'KITOB FONDI', icon: <AutoStoriesIcon sx={{ fontSize: isMobile ? 35 : 50 }} /> },
   ];
 
   const sponsors = [asiaQs, emblemUz, impactRanking, qsCentralAsia, worldUni];
 
   return (
-    <Box sx={{ bgcolor: '#fff', py: 12 }}>
-        {/* === HEADER: Markazda === */}
-        <Stack alignItems="center" sx={{ mb: 10 }}>
-          <Typography variant="h4" sx={{ fontWeight: 800, color: mainBlue, mb: 1, textAlign: 'center' }}>
+    <Box sx={{ bgcolor: sectionBg, py: isMobile ? 6 : 10, transition: '0.3s' }}>
+      
+      {/* === HEADER === */}
+      <Container maxWidth="xl">
+        <Stack alignItems="center" sx={{ mb: isMobile ? 5 : 8 }}>
+          <Typography variant={isMobile ? "h5" : "h4"} sx={{ fontWeight: 800, color: theme.palette.text.primary, mb: 1 }}>
             STATISTIKA
           </Typography>
-          <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', maxWidth: 700 }}>
-            <Divider sx={{ flexGrow: 1, height: 2, bgcolor: mainBlue }} />
-            <Typography sx={{ px: 3, fontWeight: 600, color: mainBlue, textAlign: 'center' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', maxWidth: 600 }}>
+            <Divider sx={{ flexGrow: 1, height: 2, bgcolor: alpha(mainBlue, 0.3) }} />
+            <Typography sx={{ px: 2, fontWeight: 600, color: theme.palette.text.secondary, fontSize: isMobile ? 12 : 14, textAlign: 'center' }}>
               Farg'ona davlat texnika universiteti
             </Typography>
-            <Divider sx={{ flexGrow: 1, height: 2, bgcolor: mainBlue }} />
+            <Divider sx={{ flexGrow: 1, height: 2, bgcolor: alpha(mainBlue, 0.3) }} />
           </Box>
         </Stack>
+      </Container>
 
-        {/* === STATISTIKA: Markazda va Sanaluvchi raqamlar === */}
-        <Box 
-          sx={{ 
-            bgcolor: mainBlue, 
-            p: { xs: 4, md: 8 }, 
-            mb: 12,
-            position: 'relative',
-            overflow: 'hidden',
-            boxShadow: '0 20px 40px rgba(0,43,91,0.2)'
-          }}
-        >
-          {/* Fon effekti (nuqtachalar) */}
-          <Box sx={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, opacity: 0.1, backgroundImage: 'radial-gradient(#fff 1px, transparent 1px)', backgroundSize: '30px 30px' }} />
-
-          <Grid container spacing={6} justifyContent="center" alignItems="center">
+ {/* === STATISTIKA BLOKI === */}
+      <Box sx={{ 
+        bgcolor: statsBg, 
+        py: isMobile ? 6 : 8, 
+        mb: 10,
+        position: 'relative',
+        borderTop: isDarkMode ? `1px solid ${alpha('#fff', 0.1)}` : 'none',
+        borderBottom: isDarkMode ? `1px solid ${alpha('#fff', 0.1)}` : 'none',
+      }}>
+        <Container maxWidth="xl">
+          <Grid 
+            container 
+            spacing={isMobile ? 2 : 4} 
+            justifyContent="space-evenly" // Elementlarni teng masofada taqsimlaydi
+            alignItems="center"
+          >
             {stats.map((item, index) => (
-              <Grid item xs={12} sm={6} md={3} key={index}>
-                <Stack alignItems="center" spacing={2} sx={{ position: 'relative', zIndex: 1 }}>
-                  <Box sx={{ color: accentCyan, mb: 1 }}>
-                    <motion.div whileHover={{ scale: 1.2, rotate: 10 }} transition={{ type: 'spring' }}>
+              <Grid 
+                item 
+                xs={6}    // Mobilda 2 tadan
+                sm={4}    // Planshetda 3 tadan (ixtiyoriy)
+                md={2.5}  // Kompyuterda elementlar kengligini boshqarish uchun
+                key={index}
+              >
+                <Stack 
+                  alignItems="center" 
+                  spacing={1} 
+                  sx={{ width: '100%' }}
+                >
+                  <Box sx={{ color: accentCyan }}>
+                    <motion.div 
+                      whileHover={{ scale: 1.15 }}
+                      transition={{ type: "spring", stiffness: 300 }}
+                    >
                       {item.icon}
                     </motion.div>
                   </Box>
-                  
-                  <Typography variant="h2" sx={{ fontWeight: 800, color: '#fff', fontSize: { xs: '2.5rem', md: '3.5rem' } }}>
+                  <Typography variant="h3" sx={{ 
+                    fontWeight: 800, 
+                    color: '#fff', 
+                    fontSize: { xs: '1.7rem', sm: '2.2rem', md: '3rem' },
+                    lineHeight: 1
+                  }}>
                     <Counter value={item.number} />
                   </Typography>
-
-                  <motion.div 
-                    initial={{ width: 0 }} 
-                    whileInView={{ width: '80%' }} 
-                    transition={{ duration: 1, delay: 0.5 }}
-                    style={{ height: '3px', backgroundColor: accentCyan }} 
-                  />
-
-                  <Typography variant="button" sx={{ fontWeight: 800, color: accentCyan, textAlign: 'center', mt: 2, letterSpacing: 1.5 }}>
+                  <Typography sx={{ 
+                    fontWeight: 700, 
+                    color: isDarkMode ? alpha('#fff', 0.6) : alpha('#fff', 0.9), 
+                    fontSize: { xs: 10, md: 12 },
+                    letterSpacing: 1,
+                    textAlign: 'center',
+                    textTransform: 'uppercase'
+                  }}>
                     {item.label}
                   </Typography>
                 </Stack>
               </Grid>
             ))}
           </Grid>
-        </Box>
-      <Container maxWidth="xl">
-        
+        </Container>
+      </Box>
 
-        {/* === SLIDER: Tartibli va Silliq === */}
+      {/* === RANKINGS SLIDER === */}
+      <Container maxWidth="xl">
         <Box sx={{ display: 'flex', alignItems: 'center', mb: 4, gap: 2 }}>
-          <Typography variant="overline" sx={{ fontWeight: 900, color: mainBlue, fontSize: 12, letterSpacing: 3, whiteSpace: 'nowrap' }}>
+          <Typography variant="overline" sx={{ fontWeight: 900, color: theme.palette.text.primary, fontSize: 11, letterSpacing: 2 }}>
             INTERNATIONAL RANKINGS
           </Typography>
-          <Divider sx={{ flexGrow: 1, height: 1, bgcolor: mainBlue }} />
+          <Divider sx={{ flexGrow: 1, bgcolor: alpha(theme.palette.text.primary, 0.1) }} />
         </Box>
 
         <Swiper
           modules={[Autoplay]}
           loop={true}
-          speed={6000}
+          speed={4000}
           autoplay={{ delay: 0, disableOnInteraction: false }}
-          slidesPerView={2}
-          breakpoints={{ 
-            640: { slidesPerView: 3 }, 
-            1024: { slidesPerView: 5 } 
-          }}
+          slidesPerView={isMobile ? 2 : 5}
+          spaceBetween={40}
         >
           {[...sponsors, ...sponsors].map((logo, i) => (
             <SwiperSlide key={i}>
               <Box sx={{ 
-                height: 120, 
+                height: 80, 
                 display: 'flex', 
                 alignItems: 'center', 
                 justifyContent: 'center',
-                filter: 'grayscale(100%)',
-                opacity: 0.5,
+                filter: isDarkMode ? 'grayscale(100%) brightness(1.5)' : 'grayscale(100%)',
+                opacity: 0.6,
                 transition: '0.4s ease',
-                '&:hover': { filter: 'grayscale(0%)', opacity: 1, transform: 'scale(1.1)' }
+                '&:hover': { filter: 'grayscale(0%) brightness(1)', opacity: 1, transform: 'scale(1.05)' }
               }}>
-                <img src={logo} alt="Ranking" style={{ maxWidth: '80%', maxHeight: '60px', objectFit: 'contain' }} />
+                <img 
+                  src={logo} 
+                  alt="Ranking Logo" 
+                  style={{ maxWidth: '100%', maxHeight: '60px', objectFit: 'contain' }} 
+                />
               </Box>
             </SwiperSlide>
           ))}

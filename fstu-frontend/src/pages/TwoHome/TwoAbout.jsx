@@ -30,7 +30,6 @@ const digitalServices = [
   { name: "HEMIS OTM", icon: <Dashboard />, url: "https://hemis.fstu.uz" },
   { name: "HEMIS Student", icon: <Person />, url: "https://student.fstu.uz" },
   { name: "Unilibrary", icon: <LibraryBooks />, url: "https://lib.fstu.uz" },
-  { name: "Bo'sh ish o'rinlari", icon: <WorkOutline />, url: "/twopages" },
 ];
 
 const universityStructure = [
@@ -38,6 +37,7 @@ const universityStructure = [
   { title: "Kafedralar", desc: "Ilmiy-nazariy markazlar", icon: <Apartment />, path: "/twodepartments" },
   { title: "Markazlar", desc: "Ma'muriy boshqaruv", icon: <Settings />, path: "/twocentrs" },
   { title: "Ma'muriyat", desc: "Rektorat va Kengash", icon: <AccountBalance />, path: "/administration" },
+  { title: "O'quv bo'limi", desc: "O'quv jarayonini boshqarish", icon: <Settings />, path: "/twoactivity" },
   { title: "Aloqa", desc: "+998 71 200 00 00", icon: <PhoneInTalk />, path: "/twocontact" },
 ];
 
