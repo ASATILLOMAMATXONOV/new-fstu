@@ -15,8 +15,8 @@ const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/default')))
 const DashboardAnalytics = Loadable(lazy(() => import('pages/dashboard/analytics')));
 
 // render - widget
-const WidgetStatistics = Loadable(lazy(() => import('pages/widget/statistics')));
-const WidgetData = Loadable(lazy(() => import('pages/widget/data')));
+const WidgetBanner = Loadable(lazy(() => import('pages/widget/banner')));
+const WidgetMenu = Loadable(lazy(() => import('pages/widget/menu')));
 const WidgetChart = Loadable(lazy(() => import('pages/widget/chart')));
 
 // render - applications
@@ -147,12 +147,12 @@ const MainRoutes = {
           path: 'widget',
           children: [
             {
-              path: 'statistics',
-              element: <WidgetStatistics />
+              path: 'banner',
+              element: <WidgetBanner />
             },
             {
-              path: 'data',
-              element: <WidgetData />
+              path: 'menu',
+              element: <WidgetMenu />
             },
             {
               path: 'chart',

@@ -20,18 +20,18 @@ const widget = {
   type: 'group',
   children: [
     {
-      id: 'statistics',
-      title: <FormattedMessage id="statistics" />,
-      type: 'item',
-      url: '/widget/statistics',
-      icon: icons.IdcardOutlined
-    },
-    {
       id: 'data',
       title: <FormattedMessage id="data" />,
       type: 'item',
-      url: '/widget/data',
+      url: '/widget/menu',
       icon: icons.DatabaseOutlined
+    },
+    {
+      id: 'statistics',
+      title: <FormattedMessage id="statistics" />,
+      type: 'item',
+      url: '/widget/banner',
+      icon: icons.IdcardOutlined
     },
     {
       id: 'chart',

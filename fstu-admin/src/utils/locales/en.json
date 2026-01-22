@@ -39,7 +39,7 @@
   "custom": "Custom",
   "customer": "Customer",
   "dashboard": "Dashboard",
-  "data": "Data",
+  "data": "Menu",
   "data-display": "Data Display",
   "datatable": "Datatable",
   "datetime": "Date & Time",
@@ -135,6 +135,6 @@
   "user-list": "User List",
   "user-profile": "User Profile",
   "utils": "Utils",
-  "widgets": "Widgets",
+  "widgets": "Asosiy saxifalar ko‘rinishi",
   "more-items": "More Items"
 }
