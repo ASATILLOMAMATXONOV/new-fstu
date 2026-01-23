@@ -1,372 +1,538 @@
 import React, { useEffect, useMemo, useState } from "react";
 
 // material-ui
-import Grid from "@mui/material/Grid";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardActions from "@mui/material/CardActions";
-import CardMedia from "@mui/material/CardMedia";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import Stack from "@mui/material/Stack";
-import Box from "@mui/material/Box";
-import Divider from "@mui/material/Divider";
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import DialogActions from "@mui/material/DialogActions";
-import TextField from "@mui/material/TextField";
-import Switch from "@mui/material/Switch";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Tooltip from "@mui/material/Tooltip";
-import Alert from "@mui/material/Alert";
+import {
+  Grid, Card, CardContent, CardActions, CardMedia, Typography, Button,
+  IconButton, Stack, Box, Divider, Dialog, DialogTitle, DialogContent,
+  DialogActions, TextField, Switch, FormControlLabel, Tooltip, Alert,
+  Chip, MenuItem, Paper, useTheme
+} from "@mui/material";
 
 // icons (ant)
 import PlusOutlined from "@ant-design/icons/PlusOutlined";
 import EditOutlined from "@ant-design/icons/EditOutlined";
 import DeleteOutlined from "@ant-design/icons/DeleteOutlined";
 import UploadOutlined from "@ant-design/icons/UploadOutlined";
+import PictureOutlined from "@ant-design/icons/PictureOutlined";
+import DeleteFilled from "@ant-design/icons/DeleteFilled";
 
-const LS_KEY = "app_banners_v1";
+const LS_KEY = "app_hero_banners_v3"; // storage key
 
-function fileToBase64(file) {
-  return new Promise((resolve, reject) => {
-    const r = new FileReader();
-    r.onload = () => resolve(String(r.result));
-    r.onerror = reject;
-    r.readAsDataURL(file);
+// --- Helpers ---
+const uid = () => Math.random().toString(16).slice(2) + Date.now().toString(16);
+
+// ✅ LocalStorage safe write (quota bo‘lsa yiqilmaydi)
+function safeSetLS(key, value) {
+  try {
+    localStorage.setItem(key, value);
+    return { ok: true };
+  } catch (e) {
+    return { ok: false, error: e };
+  }
+}
+
+// ✅ base64 juda katta bo‘lsa yoki quota bo‘lsa: rasmni saqlamaslik uchun
+const isDataUrl = (s) => typeof s === "string" && s.startsWith("data:image/");
+
+// ✅ canvas bilan rasmni kichraytirib + siqib base64 qilish (quota muammosini hal qiladi)
+async function fileToCompressedDataUrl(file, opts = {}) {
+  const {
+    maxW = 1400, // banner uchun yetarli
+    quality = 0.75, // 0..1 (jpeg)
+    mime = "image/jpeg"
+  } = opts;
+
+  const img = await new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file);
+    const im = new Image();
+    im.onload = () => {
+      URL.revokeObjectURL(url);
+      resolve(im);
+    };
+    im.onerror = (err) => {
+      URL.revokeObjectURL(url);
+      reject(err);
+    };
+    im.src = url;
   });
+
+  const ratio = img.width / img.height;
+  let w = img.width;
+  let h = img.height;
+
+  if (w > maxW) {
+    w = maxW;
+    h = Math.round(w / ratio);
+  }
+
+  const canvas = document.createElement("canvas");
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext("2d");
+  ctx.drawImage(img, 0, 0, w, h);
+
+  // JPEG siqadi (png bo‘lsa ham jpegga aylantiradi)
+  return canvas.toDataURL(mime, quality);
 }
 
-function uid() {
-  return Math.random().toString(16).slice(2) + Date.now().toString(16);
-}
+// ✅ Icon options
+const ICON_OPTIONS = [
+  { value: "cap", label: "🎓 Talaba qalpoqchasi" },
+  { value: "globe", label: "🌐 Dunyo/Xalqaro" },
+  { value: "lab", label: "🧪 Laboratoriya" },
+  { value: "gear", label: "⚙️ Texnologiya" },
+  { value: "building", label: "🏛️ Universitet" },
+  { value: "book", label: "📚 Kutubxona" },
+  { value: "rocket", label: "🚀 Innovatsiya" },
+  { value: "shield", label: "🛡️ Xavfsizlik" },
+  { value: "people", label: "👥 Hamjamiyat" },
+  { value: "briefcase", label: "💼 Karyera" },
+  { value: "medal", label: "🏅 Yutuqlar" },
+  { value: "star", label: "⭐ Sifat" }
+];
 
 const DEMO_BANNERS = [
   {
     id: "demo-1",
-    title: "Qabul 2026",
-    subtitle: "Ariza topshirish boshlandi",
+    active: true,
+    image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1600&q=60",
+    kicker: "KELAJAK SHU YERDAN BOSHLANADI",
+    title: "Farg‘ona davlat texnika universiteti",
+    description: "Zamonaviy texnologiyalar va xalqaro standartlar asosida ta’lim oling.",
     link: "/admission",
-    active: true,
-    image:
-      "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1200&q=60",
-  },
-  {
-    id: "demo-2",
-    title: "Online kurslar",
-    subtitle: "Yangi dasturlar ochildi",
-    link: "/courses",
-    active: true,
-    image:
-      "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=60",
-  },
+    stats: [
+      { active: true, icon: "cap", title: "50+ Yo‘nalishlar", subtitle: "Bakalavr & Magistratura" },
+      { active: true, icon: "globe", title: "Xalqaro Diplom", subtitle: "" },
+      { active: false, icon: "rocket", title: "Innovatsiya markazi", subtitle: "Startap & grantlar" }
+    ]
+  }
 ];
 
-function loadBanners() {
-  try {
-    const raw = localStorage.getItem(LS_KEY);
-    if (!raw) return DEMO_BANNERS;
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) && parsed.length ? parsed : DEMO_BANNERS;
-  } catch {
-    return DEMO_BANNERS;
-  }
-}
+// ✅ normalize (old data ham ishlaydi)
+const normalizeBanner = (b) => {
+  const s0 = b?.stats?.[0] || {};
+  const s1 = b?.stats?.[1] || {};
+  const s2 = b?.stats?.[2] || {};
 
-function saveBanners(banners) {
-  localStorage.setItem(LS_KEY, JSON.stringify(banners));
-}
+  return {
+    id: b?.id || uid(),
+    active: b?.active ?? false,
+    image: b?.image || "",
+    kicker: b?.kicker || "",
+    title: b?.title || "",
+    description: b?.description || "",
+    link: b?.link || "",
+    stats: [
+      { active: s0?.active ?? true, icon: s0?.icon || "cap", title: s0?.title || "", subtitle: s0?.subtitle || "" },
+      { active: s1?.active ?? true, icon: s1?.icon || "globe", title: s1?.title || "", subtitle: s1?.subtitle || "" },
+      { active: s2?.active ?? false, icon: s2?.icon || "star", title: s2?.title || "", subtitle: s2?.subtitle || "" }
+    ]
+  };
+};
 
 export default function WidgetStatistics() {
-  const [banners, setBanners] = useState(() => loadBanners());
+  const theme = useTheme();
 
-  const [open, setOpen] = useState(false);
-  const [mode, setMode] = useState("create"); // create | edit
-  const [editingId, setEditingId] = useState(null);
-
-  const [form, setForm] = useState({
-    title: "",
-    subtitle: "",
-    link: "",
-    image: "", // base64 yoki url
+  const [banners, setBanners] = useState(() => {
+    try {
+      const raw = localStorage.getItem(LS_KEY);
+      return raw ? JSON.parse(raw).map(normalizeBanner) : DEMO_BANNERS.map(normalizeBanner);
+    } catch {
+      return DEMO_BANNERS.map(normalizeBanner);
+    }
   });
 
-  const [fileError, setFileError] = useState("");
+  const [open, setOpen] = useState(false);
+  const [mode, setMode] = useState("create");
+  const [editingId, setEditingId] = useState(null);
+  const [form, setForm] = useState(() => normalizeBanner({}));
+  const [error, setError] = useState("");
+  const [lsWarn, setLsWarn] = useState(""); // ✅ quota warning
 
+  // ✅ LocalStorage save (quota bo‘lsa yiqilmaydi + userga xabar)
   useEffect(() => {
-    saveBanners(banners);
-  }, [banners]);
+    const payload = JSON.stringify(banners);
+    const res = safeSetLS(LS_KEY, payload);
 
-  const sortedBanners = useMemo(() => {
-    // active birinchi chiqsin, keyin title bo'yicha
-    return [...banners].sort((a, b) => {
-      if (a.active !== b.active) return a.active ? -1 : 1;
-      return (a.title || "").localeCompare(b.title || "");
-    });
-  }, [banners]);
+    if (!res.ok) {
+      // fallback: dataURL rasmlarni saqlamasdan urinib ko‘ramiz
+      const lite = banners.map((b) => ({
+        ...b,
+        image: isDataUrl(b.image) ? "" : b.image // dataURL bo‘lsa olib tashlaymiz
+      }));
 
-  const openCreate = () => {
-    setMode("create");
-    setEditingId(null);
-    setFileError("");
-    setForm({ title: "", subtitle: "", link: "", image: "" });
-    setOpen(true);
-  };
+      const payloadLite = JSON.stringify(lite);
+      const res2 = safeSetLS(LS_KEY, payloadLite);
 
-  const openEdit = (banner) => {
-    setMode("edit");
-    setEditingId(banner.id);
-    setFileError("");
-    setForm({
-      title: banner.title || "",
-      subtitle: banner.subtitle || "",
-      link: banner.link || "",
-      image: banner.image || "",
-    });
-    setOpen(true);
-  };
-
-  const onDelete = (id) => {
-    const ok = window.confirm("Banner o‘chirilsinmi?");
-    if (!ok) return;
-    setBanners((prev) => prev.filter((b) => b.id !== id));
-  };
-
-  // ✅ MB cheklovi yo'q: faqat image/* tekshiramiz
-  const onPickFile = async (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    const isImg = file.type.startsWith("image/");
-    if (!isImg) {
-      setFileError("Faqat rasm (image/*) yuklang.");
-      return;
-    }
-
-    setFileError("");
-    const base64 = await fileToBase64(file);
-    setForm((p) => ({ ...p, image: base64 }));
-  };
-
-  const onSave = () => {
-    if (!form.title.trim()) {
-      setFileError("Sarlavha (title) majburiy.");
-      return;
-    }
-    if (!form.image) {
-      setFileError("Rasm tanlang (yoki image url kiriting).");
-      return;
-    }
-    setFileError("");
-
-    if (mode === "create") {
-      // ✅ create paytida default OFF bo'lsin (keyin kartadan active qilasiz)
-      const newBanner = { ...form, id: uid(), active: false };
-      setBanners((prev) => [newBanner, ...prev]);
+      if (!res2.ok) {
+        setLsWarn("⚠️ Storage to‘lib qolgan (Quota). Bannerlar saqlanmadi. Eski bannerlarni o‘chiring yoki rasmni kichraytiring.");
+      } else {
+        setLsWarn("⚠️ Storage to‘lib qolgan. Rasm(base64) saqlanmadi, faqat matn/sozlamalar saqlandi. Rasm uchun URL ishlating yoki rasmni kichraytiring.");
+      }
     } else {
-      setBanners((prev) =>
-        prev.map((b) =>
-          b.id === editingId
-            ? { ...b, title: form.title, subtitle: form.subtitle, link: form.link, image: form.image }
-            : b
-        )
-      );
+      setLsWarn("");
     }
+  }, [banners]);
 
-    setOpen(false);
+  const sortedBanners = useMemo(
+    () => [...banners].sort((a, b) => (b.active ? 1 : 0) - (a.active ? 1 : 0)),
+    [banners]
+  );
+
+  const setFormField = (key, value) => setForm((p) => ({ ...p, [key]: value }));
+
+  const setStatField = (idx, key, value) =>
+    setForm((p) => {
+      const next = [...p.stats];
+      next[idx] = { ...next[idx], [key]: value };
+      return { ...p, stats: next };
+    });
+
+  const openModal = (banner = null) => {
+    if (banner) {
+      setMode("edit");
+      setEditingId(banner.id);
+      setForm(normalizeBanner(banner));
+    } else {
+      setMode("create");
+      setForm(normalizeBanner({}));
+    }
+    setError("");
+    setOpen(true);
   };
 
-  // ✅ Active/Off faqat saqlangan bannerni kartasida toggleda o'zgaradi
-  const toggleActive = (id) => {
-    setBanners((prev) =>
-      prev.map((b) => (b.id === id ? { ...b, active: !b.active } : b))
-    );
+ const onSave = () => {
+  // ✅ Sarlavha majburiy EMAS
+  // if (!form.title.trim()) return setError("Sarlavha kiritish shart!");
+
+  // ✅ Rasm majburiy bo‘lib qolsin (xohlasangiz buni ham olib tashlayman)
+  if (!form.image.trim()) return setError("Rasm yuklash yoki URL kiritish shart!");
+
+  if (mode === "create") {
+    setBanners((prev) => [normalizeBanner({ ...form, active: false }), ...prev]);
+  } else {
+    setBanners((prev) => prev.map((b) => (b.id === editingId ? { ...form, active: b.active } : b)));
+  }
+  setOpen(false);
+};
+
+
+  const clearStorage = () => {
+    if (!window.confirm("LocalStorage tozalanadi. Davom etamizmi?")) return;
+    try {
+      localStorage.removeItem(LS_KEY);
+      setBanners(DEMO_BANNERS.map(normalizeBanner));
+      setLsWarn("");
+    } catch {
+      setLsWarn("Storage tozalashda xatolik bo‘ldi.");
+    }
   };
 
   return (
-    <Grid container spacing={3}>
-      {/* Header */}
-      <Grid item xs={12}>
-        <Card>
-          <CardContent>
-            <Stack
-              direction={{ xs: "column", sm: "row" }}
-              alignItems={{ xs: "flex-start", sm: "center" }}
-              justifyContent="space-between"
-              spacing={2}
+    <Box sx={{ p: { xs: 2, md: 3 } }}>
+      {/* --- HEADER --- */}
+      <Paper elevation={0} sx={{ p: 3, mb: 3, borderRadius: 2, border: "1px solid", borderColor: "divider" }}>
+        <Stack direction={{ xs: "column", sm: "row" }} justifyContent="space-between" alignItems="center" spacing={2}>
+          <Box>
+            <Typography variant="h4" fontWeight={800} color="primary.main">
+              Hero Bannerlar
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Asosiy sahifa bannerlarini boshqarish paneli
+            </Typography>
+          </Box>
+
+          <Stack direction="row" spacing={1}>
+            <Button
+              variant="outlined"
+              color="error"
+              startIcon={<DeleteFilled />}
+              onClick={clearStorage}
+              sx={{ borderRadius: 2 }}
             >
-              <Box>
-                <Typography variant="h5" fontWeight={700}>
-                  Bannerlar
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Banner qo‘shish / tahrirlash / o‘chirish (rasm yuklash bilan).
-                </Typography>
+              Storage tozalash
+            </Button>
+
+            <Button
+              variant="contained"
+              size="large"
+              startIcon={<PlusOutlined />}
+              onClick={() => openModal()}
+              sx={{ borderRadius: 2, px: 4 }}
+            >
+              Yangi Banner
+            </Button>
+          </Stack>
+        </Stack>
+
+        {lsWarn ? (
+          <Alert severity="warning" sx={{ mt: 2 }}>
+            {lsWarn}
+          </Alert>
+        ) : null}
+      </Paper>
+
+      {/* --- LIST --- */}
+      <Grid container spacing={3}>
+        {sortedBanners.map((b) => (
+          <Grid key={b.id} item xs={12} sm={6} lg={4}>
+            <Card
+              sx={{
+                height: "100%",
+                borderRadius: 3,
+                transition: "0.3s",
+                "&:hover": { boxShadow: theme.shadows[10] },
+                position: "relative"
+              }}
+            >
+              <Box sx={{ position: "relative" }}>
+                <CardMedia component="img" height="200" image={b.image || "https://via.placeholder.com/1200x600?text=No+Image"} alt={b.title} />
+                <Chip
+                  label={b.active ? "FAOL" : "O'CHIK"}
+                  color={b.active ? "success" : "default"}
+                  size="small"
+                  sx={{ position: "absolute", top: 12, right: 12, fontWeight: 700 }}
+                />
               </Box>
 
-              <Button variant="contained" startIcon={<PlusOutlined />} onClick={openCreate}>
-                New Banners
-              </Button>
-            </Stack>
-          </CardContent>
-        </Card>
+              <CardContent sx={{ pb: 1 }}>
+                <Typography variant="overline" color="primary" fontWeight={700}>
+                  {b.kicker || "Bnanner nomi"}
+                </Typography>
+                <Typography variant="h6" fontWeight={800} sx={{ mb: 1, height: 60, overflow: "hidden" }}>
+                  {b.title}
+                </Typography>
+                <Typography variant="body2" color="text.secondary" noWrap>
+                  {b.description}
+                </Typography>
+
+                <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
+                  <Chip size="small" variant="outlined" label={`Info card: ${b.stats.filter((s) => s.active).length} ta`} />
+                  {isDataUrl(b.image) ? <Chip size="small" color="warning" label="base64" /> : <Chip size="small" color="info" label="url" />}
+                </Stack>
+              </CardContent>
+
+              <Divider />
+
+              <CardActions sx={{ justifyContent: "space-between", px: 2 }}>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={b.active}
+                      onChange={() => setBanners((prev) => prev.map((x) => (x.id === b.id ? { ...x, active: !x.active } : x)))}
+                      size="small"
+                    />
+                  }
+                  label={
+                    <Typography variant="caption" fontWeight={600}>
+                      Holat
+                    </Typography>
+                  }
+                />
+                <Stack direction="row" spacing={1}>
+                  <IconButton color="primary" onClick={() => openModal(b)} size="small" sx={{ bgcolor: "primary.lighter" }}>
+                    <EditOutlined />
+                  </IconButton>
+                  <IconButton
+                    color="error"
+                    onClick={() => window.confirm("O'chirilsinmi?") && setBanners((p) => p.filter((x) => x.id !== b.id))}
+                    size="small"
+                    sx={{ bgcolor: "error.lighter" }}
+                  >
+                    <DeleteOutlined />
+                  </IconButton>
+                </Stack>
+              </CardActions>
+            </Card>
+          </Grid>
+        ))}
       </Grid>
 
-      {/* List */}
-      {sortedBanners.map((b) => (
-        <Grid key={b.id} item xs={12} sm={6} md={4} lg={3}>
-          <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
-            <CardMedia
-              component="img"
-              height="160"
-              image={b.image}
-              alt={b.title}
-              sx={{ objectFit: "cover" }}
-            />
-            <CardContent sx={{ flexGrow: 1 }}>
-              <Stack spacing={1}>
-                <Stack direction="row" alignItems="center" justifyContent="space-between" gap={1}>
-                  <Typography variant="subtitle1" fontWeight={700} noWrap>
-                    {b.title}
-                  </Typography>
-
-                  {/* ✅ Saqlangandan keyin active/off shu yerda */}
-                  <FormControlLabel
-                    sx={{ m: 0 }}
-                    control={
-                      <Switch
-                        size="small"
-                        checked={!!b.active}
-                        onChange={() => toggleActive(b.id)}
-                      />
-                    }
-                    label={
-                      <Typography variant="caption" fontWeight={700}>
-                        {b.active ? "ACTIVE" : "OFF"}
-                      </Typography>
-                    }
-                  />
-                </Stack>
-
-                {!!b.subtitle && (
-                  <Typography variant="body2" color="text.secondary" noWrap>
-                    {b.subtitle}
-                  </Typography>
-                )}
-
-                {!!b.link && (
-                  <Typography variant="caption" color="text.secondary" noWrap>
-                    Link: {b.link}
-                  </Typography>
-                )}
-              </Stack>
-            </CardContent>
-
-            <Divider />
-
-            <CardActions sx={{ justifyContent: "flex-end" }}>
-              <Tooltip title="Tahrirlash">
-                <IconButton onClick={() => openEdit(b)}>
-                  <EditOutlined />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="O‘chirish">
-                <IconButton onClick={() => onDelete(b.id)}>
-                  <DeleteOutlined />
-                </IconButton>
-              </Tooltip>
-            </CardActions>
-          </Card>
-        </Grid>
-      ))}
-
-      {/* Dialog: create/edit */}
-      <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="sm">
-        <DialogTitle>
-          {mode === "create" ? "Yangi banner qo‘shish" : "Banner tahrirlash"}
+      {/* --- DIALOG --- */}
+      <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="md" scroll="body">
+        <DialogTitle sx={{ fontWeight: 800, fontSize: "1.5rem" }}>
+          {mode === "create" ? "Yangi Banner Yaratish" : "Bannerni Tahrirlash"}
         </DialogTitle>
 
         <DialogContent dividers>
-          <Stack spacing={2}>
-            {fileError ? <Alert severity="warning">{fileError}</Alert> : null}
+          <Stack spacing={3}>
+            {error && (
+              <Alert severity="error" variant="filled" sx={{ borderRadius: 2 }}>
+                {error}
+              </Alert>
+            )}
 
-            <TextField
-              label="Sarlavha (title)"
-              value={form.title}
-              onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))}
-              fullWidth
-            />
+            <Box>
+              <Typography variant="subtitle2" gutterBottom fontWeight={700}>
+                1. Asosiy ma'lumotlar
+              </Typography>
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                  <TextField fullWidth label="Kicker (Short Text)" value={form.kicker} onChange={(e) => setFormField("kicker", e.target.value)} />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+  fullWidth
+  label="Asosiy Sarlavha"
+  value={form.title}
+  onChange={(e) => setFormField("title", e.target.value)}
+/>
 
-            <TextField
-              label="Subtitle (ixtiyoriy)"
-              value={form.subtitle}
-              onChange={(e) => setForm((p) => ({ ...p, subtitle: e.target.value }))}
-              fullWidth
-            />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField fullWidth multiline rows={2} label="Tavsif" value={form.description} onChange={(e) => setFormField("description", e.target.value)} />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField fullWidth label="Tugma uchun Link" value={form.link} onChange={(e) => setFormField("link", e.target.value)} placeholder="/services" />
+                </Grid>
+              </Grid>
+            </Box>
 
-            <TextField
-              label="Link (ixtiyoriy) - masalan: /admission"
-              value={form.link}
-              onChange={(e) => setForm((p) => ({ ...p, link: e.target.value }))}
-              fullWidth
-            />
+            <Box>
+              <Typography variant="subtitle2" gutterBottom fontWeight={700}>
+                2. Media (Rasm) — ✅ siqib saqlaydi (quota kamayadi)
+              </Typography>
 
-            <Stack direction={{ xs: "column", sm: "row" }} spacing={2} alignItems="center">
-              <Button
-                component="label"
-                variant="outlined"
-                startIcon={<UploadOutlined />}
-                sx={{ whiteSpace: "nowrap" }}
-              >
-                Rasm tanlash
-                <input hidden type="file" accept="image/*" onChange={onPickFile} />
-              </Button>
+              <Stack direction={{ xs: "column", sm: "row" }} spacing={2} sx={{ mb: 2 }}>
+                <Button
+                  variant="outlined"
+                  component="label"
+                  startIcon={<UploadOutlined />}
+                  onClick={() => setError("")}
+                >
+                  Rasm Yuklash (compress)
+                  <input
+                    hidden
+                    type="file"
+                    accept="image/*"
+                    onChange={async (e) => {
+                      const file = e.target.files?.[0];
+                      if (!file) return;
 
-              <TextField
-                label="yoki image URL kiriting"
-                value={form.image?.startsWith("data:") ? "" : form.image}
-                onChange={(e) => setForm((p) => ({ ...p, image: e.target.value }))}
-                fullWidth
-                helperText="Agar file tanlasangiz, bu joy bo‘sh qolishi mumkin."
-              />
-            </Stack>
+                      try {
+                        // ✅ compress
+                        const dataUrl = await fileToCompressedDataUrl(file, { maxW: 1400, quality: 0.75, mime: "image/jpeg" });
+                        setFormField("image", dataUrl);
+                      } catch {
+                        setError("Rasmni o‘qishda xatolik.");
+                      } finally {
+                        e.target.value = "";
+                      }
+                    }}
+                  />
+                </Button>
 
-            {form.image ? (
-              <Box
-                sx={{
-                  border: "1px solid",
-                  borderColor: "divider",
-                  borderRadius: 2,
-                  overflow: "hidden",
-                }}
-              >
-                <Box sx={{ p: 1 }}>
-                  <Typography variant="caption" color="text.secondary">
-                    Preview
-                  </Typography>
-                </Box>
-                <Box
-                  component="img"
-                  src={form.image}
-                  alt="preview"
-                  sx={{ width: "100%", height: 220, objectFit: "cover", display: "block" }}
+                <TextField
+                  fullWidth
+                  size="small"
+                  label="Yoki Rasm URL manzili (tavsiya)"
+                  value={isDataUrl(form.image) ? "" : form.image}
+                  onChange={(e) => setFormField("image", e.target.value)}
+                  placeholder="https://..."
                 />
-              </Box>
-            ) : null}
+              </Stack>
+
+              {form.image ? (
+                <Box sx={{ position: "relative", borderRadius: 2, overflow: "hidden", border: "1px solid #ddd" }}>
+                  <img src={form.image} alt="preview" style={{ width: "100%", height: 200, objectFit: "cover" }} />
+                  <Chip
+                    icon={<PictureOutlined />}
+                    label={isDataUrl(form.image) ? "Ko'rinish (base64-compressed)" : "Ko'rinish (url)"}
+                    size="small"
+                    sx={{ position: "absolute", top: 10, left: 10, bgcolor: "white" }}
+                  />
+                </Box>
+              ) : null}
+
+              <Alert severity="info" sx={{ mt: 2 }}>
+                ✅ Eng yaxshi yo‘l: rasmni serverga yuklab URL saqlash. LocalStorage faqat kichik data uchun.
+              </Alert>
+            </Box>
+
+            <Box>
+              <Typography variant="subtitle2" gutterBottom fontWeight={700}>
+                3. Info Cardlar — 3 tagacha (yoqish/o‘chirish + icon tanlash)
+              </Typography>
+
+              <Grid container spacing={2}>
+                {[0, 1, 2].map((idx) => (
+                  <Grid item xs={12} sm={6} md={4} key={idx}>
+                    <Paper variant="outlined" sx={{ p: 2, bgcolor: "grey.50" }}>
+                      <Stack spacing={1.5}>
+                        <Stack direction="row" alignItems="center" justifyContent="space-between">
+                          <Typography variant="caption" fontWeight={900} color="text.secondary">
+                            KARTA {idx + 1}
+                          </Typography>
+
+                          <FormControlLabel
+                            sx={{ m: 0 }}
+                            control={
+                              <Switch
+                                size="small"
+                                checked={!!form.stats[idx].active}
+                                onChange={(e) => setStatField(idx, "active", e.target.checked)}
+                              />
+                            }
+                            label={<Typography variant="caption" fontWeight={700}>ON</Typography>}
+                          />
+                        </Stack>
+
+                        <TextField
+                          select
+                          fullWidth
+                          size="small"
+                          label="Belgi (Icon)"
+                          value={form.stats[idx].icon}
+                          onChange={(e) => setStatField(idx, "icon", e.target.value)}
+                          disabled={!form.stats[idx].active}
+                        >
+                          {ICON_OPTIONS.map((opt) => (
+                            <MenuItem key={opt.value} value={opt.value}>
+                              {opt.label}
+                            </MenuItem>
+                          ))}
+                        </TextField>
+
+                        <TextField
+                          fullWidth
+                          size="small"
+                          label="Sarlavha"
+                          value={form.stats[idx].title}
+                          onChange={(e) => setStatField(idx, "title", e.target.value)}
+                          disabled={!form.stats[idx].active}
+                        />
+                        <TextField
+                          fullWidth
+                          size="small"
+                          label="Kichik matn"
+                          value={form.stats[idx].subtitle}
+                          onChange={(e) => setStatField(idx, "subtitle", e.target.value)}
+                          disabled={!form.stats[idx].active}
+                        />
+
+                        {!form.stats[idx].active ? (
+                          <Alert severity="info" sx={{ py: 0.5 }}>
+                            Bu karta o‘chiq (saytda ko‘rinmaydi).
+                          </Alert>
+                        ) : null}
+                      </Stack>
+                    </Paper>
+                  </Grid>
+                ))}
+              </Grid>
+            </Box>
           </Stack>
         </DialogContent>
 
-        <DialogActions>
-          <Button onClick={() => setOpen(false)} color="inherit">
+        <DialogActions sx={{ p: 3 }}>
+          <Button onClick={() => setOpen(false)} color="inherit" sx={{ fontWeight: 700 }}>
             Bekor qilish
           </Button>
-          <Button onClick={onSave} variant="contained">
+          <Button onClick={onSave} variant="contained" size="large" sx={{ px: 4, borderRadius: 2, fontWeight: 700 }}>
             Saqlash
           </Button>
         </DialogActions>
       </Dialog>
-    </Grid>
+    </Box>
   );
 }
