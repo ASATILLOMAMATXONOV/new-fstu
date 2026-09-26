@@ -1,0 +1,182 @@
+.site-footer {
+  width: 100%;
+
+  margin-top: auto;
+
+  background: var(--color-primary-dark);
+
+  color: #ffffff;
+}
+
+.footer-grid {
+  display: grid;
+
+  grid-template-columns:
+    1.4fr
+    1fr
+    1fr
+    1.2fr;
+
+  gap: 48px;
+
+  padding-top: 64px;
+  padding-bottom: 48px;
+}
+
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+
+  align-items: flex-start;
+}
+
+.footer-brand img {
+  width: auto;
+  max-width: 260px;
+  height: 64px;
+
+  margin-bottom: 20px;
+
+  object-fit: contain;
+}
+
+.footer-brand p {
+  max-width: 320px;
+
+  margin: 0;
+
+  color: rgba(
+    255,
+    255,
+    255,
+    0.72
+  );
+
+  font-size: 15px;
+
+  line-height: 1.7;
+}
+
+.footer-column {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: flex-start;
+
+  gap: 12px;
+}
+
+.footer-column h3 {
+  margin: 0 0 8px;
+
+  color: #ffffff;
+
+  font-size: 16px;
+
+  font-weight: 600;
+}
+
+.footer-column a {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  color: rgba(
+    255,
+    255,
+    255,
+    0.72
+  );
+
+  font-size: 14px;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.footer-column a:hover {
+  color: #ffffff;
+
+  transform: translateX(2px);
+}
+
+.footer-address {
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 9px;
+
+  color: rgba(
+    255,
+    255,
+    255,
+    0.72
+  );
+
+  font-size: 14px;
+}
+
+.footer-bottom {
+  display: flex;
+
+  align-items: center;
+
+  min-height: 64px;
+
+  padding-top: 20px;
+  padding-bottom: 20px;
+
+  border-top:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.12
+    );
+
+  color: rgba(
+    255,
+    255,
+    255,
+    0.6
+  );
+
+  font-size: 13px;
+}
+
+@media (max-width: 1000px) {
+  .footer-grid {
+    grid-template-columns:
+      repeat(2, 1fr);
+
+    gap: 40px;
+  }
+}
+
+@media (max-width: 600px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+
+    gap: 32px;
+
+    padding-top: 48px;
+    padding-bottom: 36px;
+  }
+
+  .footer-brand img {
+    height: 52px;
+  }
+
+  .footer-bottom {
+    min-height: auto;
+
+    padding-top: 18px;
+    padding-bottom: 18px;
+  }
+}
