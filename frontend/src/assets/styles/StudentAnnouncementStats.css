@@ -1,0 +1,337 @@
+.sas-section {
+  width: 100%;
+  padding: 0 0 30px;
+  content-visibility: auto;
+  contain-intrinsic-size: 720px;
+}
+
+.sas-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1.05fr 1.25fr;
+  gap: 18px;
+  align-items: stretch;
+}
+
+.sas-card {
+  min-height: 300px;
+  background: #ffffff;
+  /* border-radius: 10px; */
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(6, 43, 99, 0.07);
+}
+
+.sas-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22px;
+}
+
+.sas-header h3 {
+  margin: 0;
+  color: #062b63;
+  font-size: 19px;
+  font-weight: 800;
+}
+
+.sas-header a {
+  color: #062b63;
+  font-size: 11px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+/* E’LONLAR */
+.announcement-list {
+  display: grid;
+  gap: 14px;
+}
+
+.announcement-item {
+  display: grid;
+  grid-template-columns: 82px 64px 1fr;
+  gap: 14px;
+  align-items: center;
+  text-decoration: none;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #edf1f7;
+  transition: opacity 0.25s ease;
+}
+
+.announcement-item:hover {
+  opacity: 0.92;
+}
+
+.announcement-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.announcement-img {
+  width: 82px;
+  height: 62px;
+  object-fit: cover;
+  border-radius: 10px;
+  background: #e9eef7;
+}
+
+.announcement-date {
+  width: 64px;
+  height: 62px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #f8fbff 0%, #eef4ff 100%);
+  border: 1px solid #dbe7ff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.announcement-date strong {
+  font-size: 22px;
+  font-weight: 900;
+  line-height: 1;
+  color: #062b63;
+}
+
+.announcement-date span {
+  margin-top: 5px;
+  font-size: 10px;
+  font-weight: 800;
+  color: #d5a03a;
+}
+
+.announcement-text h4 {
+  margin: 0;
+  color: #062b63;
+  font-size: 13.5px;
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+.announcement-text span {
+  display: inline-block;
+  margin-top: 7px;
+  color: #d5a03a;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+/* BIZNING TALABALARIMIZ */
+.students-achievement-grid,
+.students-list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.student-achievement-card {
+  position: relative;
+  overflow: hidden;
+  min-height: 285px;
+  /* border-radius: 18px; */
+  background: #ffffff;
+  border: 1px solid rgba(6, 43, 99, 0.1);
+  box-shadow: 0 14px 32px rgba(6, 43, 99, 0.09);
+  text-decoration: none;
+  color: #102033;
+  opacity: 0;
+  transform: translateY(22px);
+  animation: studentCardReveal 0.65s ease forwards;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.student-achievement-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(213, 160, 58, 0.5);
+  box-shadow: 0 24px 54px rgba(6, 43, 99, 0.17);
+}
+
+.student-achievement-img-wrap {
+  height: 145px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #eef4ff 0%, #ffffff 100%);
+}
+
+.student-achievement-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.45s ease;
+}
+
+.student-achievement-card:hover .student-achievement-img-wrap img {
+  transform: scale(1.08);
+}
+
+.student-achievement-placeholder {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  color: #08429f;
+  font-size: 50px;
+  font-weight: 900;
+  background: linear-gradient(135deg, #eef4ff 0%, #dfe9ff 100%);
+}
+
+.student-achievement-content {
+  padding: 15px;
+}
+
+.student-achievement-label {
+  display: inline-flex;
+  margin-bottom: 8px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: rgba(213, 160, 58, 0.14);
+  color: #b9841d;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.student-achievement-content h4 {
+  margin: 0 0 8px;
+  color: #062b63;
+  font-size: 15.5px;
+  font-weight: 900;
+  line-height: 1.35;
+}
+
+.student-achievement-content p {
+  margin: 0 0 12px;
+  color: #52637f;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+
+
+/* eski student-item chiqsa ham buzilmasin */
+.student-item {
+  display: none;
+}
+
+.sas-empty-state {
+  border-radius: 16px;
+  border: 1px dashed #dbe4f0;
+  background: #f8fbff;
+  padding: 20px 18px;
+}
+
+.sas-empty-state h4 {
+  margin: 0 0 8px;
+  color: #062b63;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.sas-empty-state p {
+  margin: 0;
+  color: #5f6f88;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+@keyframes studentCardReveal {
+  from {
+    opacity: 0;
+    transform: translateY(22px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* RESPONSIVE */
+@media (max-width: 1350px) {
+  .students-achievement-grid,
+  .students-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 1200px) {
+  .sas-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .announcement-item {
+    grid-template-columns: 74px 58px 1fr;
+  }
+
+  .announcement-img {
+    width: 74px;
+    height: 58px;
+  }
+
+  .announcement-date {
+    width: 58px;
+    height: 58px;
+  }
+}
+
+@media (max-width: 768px) {
+  .sas-section {
+    padding: 0 0 42px;
+  }
+
+  .sas-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .sas-card {
+    padding: 20px;
+  }
+
+  .students-achievement-grid,
+  .students-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .student-achievement-card {
+    min-height: 260px;
+  }
+
+  .student-achievement-img-wrap {
+    height: 130px;
+  }
+}
+
+@media (max-width: 520px) {
+  .announcement-item {
+    grid-template-columns: 70px 1fr;
+  }
+
+  .announcement-date {
+    grid-column: 1;
+    grid-row: 2;
+    width: 70px;
+    height: 46px;
+    flex-direction: row;
+    gap: 4px;
+  }
+
+  .announcement-text {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+
+  .announcement-img {
+    width: 70px;
+    height: 56px;
+  }
+
+  .students-achievement-grid,
+  .students-list {
+    grid-template-columns: 1fr;
+  }
+}

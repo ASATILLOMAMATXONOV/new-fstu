@@ -1,0 +1,1 @@
+-- Demo menu seed removed. Menus should come from database content managed in admin.

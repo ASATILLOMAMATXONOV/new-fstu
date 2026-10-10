@@ -1,0 +1,265 @@
+.ann-page {
+  width: 100%;
+  padding: 46px 4% 60px;
+  background: #f6f8fb;
+}
+
+.ann-layout {
+  max-width: 1320px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 330px;
+  gap: 28px;
+  align-items: start;
+}
+
+.ann-main {
+  min-width: 0;
+}
+
+.ann-header {
+  margin: 0 0 34px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #e5eaf3;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.ann-header span {
+  color: #08429f;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 1.2px;
+}
+
+.ann-header h1 {
+  margin: 8px 0 0;
+  font-size: 34px;
+  font-weight: 900;
+  color: #111827;
+}
+
+.ann-header p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.ann-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  align-items: stretch;
+}
+
+.ann-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border: 1px solid #e5eaf3;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 14px 36px rgba(6, 43, 99, 0.06);
+  transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+  animation: annCardReveal 0.55s ease both;
+}
+
+.ann-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(8, 66, 159, 0.18);
+  box-shadow: 0 22px 48px rgba(6, 43, 99, 0.12);
+}
+
+.ann-image {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  height: 220px;
+  background: #e5e7eb;
+}
+
+.ann-image img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  transition: transform 0.55s ease, filter 0.55s ease;
+}
+
+.ann-image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(6, 43, 99, 0.04) 0%, rgba(6, 43, 99, 0.28) 100%);
+  opacity: 0.85;
+  transition: opacity 0.35s ease;
+}
+
+.ann-card:hover .ann-image::after {
+  opacity: 0.45;
+}
+
+.ann-card:hover .ann-image img {
+  transform: scale(1.09);
+  filter: saturate(1.05);
+}
+
+.ann-body {
+  flex: 1;
+  padding: 16px 18px 18px;
+  display: flex;
+  flex-direction: column;
+}
+
+.ann-date {
+  display: block;
+  margin-bottom: 10px;
+  color: #7b8798;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.ann-body h3 {
+  margin: 0 0 16px;
+  min-height: 58px;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+.ann-title-link {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  color: #172033;
+  text-decoration: none;
+  transition: color 0.25s ease, transform 0.25s ease;
+}
+
+.ann-card:hover .ann-title-link {
+  color: #08429f;
+  transform: translateX(4px);
+}
+
+.ann-btn {
+  margin-top: auto;
+  height: 38px;
+  padding: 0 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #08429f;
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+
+.ann-card:hover .ann-btn {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(8, 66, 159, 0.2);
+}
+
+@keyframes annCardReveal {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ann-pagination {
+  margin: 34px 0 0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.ann-sidebar {
+  position: sticky;
+  top: 95px;
+}
+
+.ann-sidebar .academic-sidebar {
+  background: #ffffff;
+  border-radius: 24px;
+  overflow: hidden;
+  border: 1px solid #e5eaf3;
+  box-shadow: 0 14px 40px rgba(6, 43, 99, 0.07);
+}
+
+.ann-pagination button {
+  min-width: 38px;
+  height: 38px;
+  padding: 0 13px;
+  border: 1px solid #d8e0ec;
+  background: #ffffff;
+  color: #062b63;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.ann-pagination button.active {
+  background: #08429f;
+  color: #ffffff;
+  border-color: #08429f;
+}
+
+.ann-pagination button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+@media (max-width: 992px) {
+  .ann-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .ann-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .ann-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .ann-sidebar {
+    position: static;
+  }
+}
+
+@media (max-width: 576px) {
+  .ann-page {
+    padding: 34px 16px 48px;
+  }
+
+  .ann-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ann-image {
+    height: 210px;
+  }
+
+  .ann-header h1 {
+    font-size: 28px;
+  }
+
+  .ann-pagination {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+}

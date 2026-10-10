@@ -1,0 +1,92 @@
+.seasonal-effects-overlay {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 55;
+}
+
+.seasonal-particle {
+  position: absolute;
+  top: -16vh;
+  left: var(--particle-left);
+  width: var(--particle-size);
+  height: var(--particle-size);
+  opacity: var(--particle-opacity);
+  filter: blur(var(--particle-blur));
+  animation: seasonal-particle-fall var(--particle-duration) linear infinite;
+  animation-delay: var(--particle-delay);
+  will-change: transform;
+}
+
+.seasonal-particle-inner {
+  display: block;
+  width: 100%;
+  height: 100%;
+  animation: seasonal-particle-sway var(--particle-sway-duration) ease-in-out infinite;
+  transform-origin: center;
+}
+
+.seasonal-particle img,
+.seasonal-particle svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.seasonal-particle svg {
+  fill: rgba(255, 255, 255, 0.92);
+  stroke: rgba(255, 255, 255, 0.92);
+  stroke-width: 1.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.seasonal-particle--spring svg {
+  fill: rgba(255, 164, 199, 0.92);
+  stroke: rgba(255, 164, 199, 0.92);
+}
+
+.seasonal-particle--summer svg {
+  fill: rgba(255, 208, 92, 0.95);
+  stroke: rgba(255, 208, 92, 0.95);
+}
+
+.seasonal-particle--autumn svg {
+  fill: rgba(214, 122, 52, 0.94);
+  stroke: rgba(214, 122, 52, 0.94);
+}
+
+.seasonal-particle--winter svg {
+  fill: rgba(255, 255, 255, 0.96);
+  stroke: rgba(255, 255, 255, 0.96);
+}
+
+@keyframes seasonal-particle-fall {
+  from {
+    transform: translate3d(0, -16vh, 0) rotate(var(--particle-rotate));
+  }
+
+  to {
+    transform: translate3d(var(--particle-drift), 118vh, 0)
+      rotate(calc(var(--particle-rotate) + 220deg));
+  }
+}
+
+@keyframes seasonal-particle-sway {
+  0%,
+  100% {
+    transform: translateX(-8px) scale(0.96);
+  }
+
+  50% {
+    transform: translateX(8px) scale(1.04);
+  }
+}
+
+@media (max-width: 767px) {
+  .seasonal-effects-overlay {
+    z-index: 30;
+  }
+}

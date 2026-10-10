@@ -1,0 +1,28 @@
+:root {
+  --surface-border: rgba(214, 224, 238, 0.82);
+  --page-bg-start: #f8fbff;
+  --page-bg-end: #f4f7fc;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto',
+    'Helvetica Neue', sans-serif;
+  background: linear-gradient(
+    180deg,
+    var(--page-bg-start) 0%,
+    var(--page-bg-end) 100%
+  );
+  color: #15386f;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}

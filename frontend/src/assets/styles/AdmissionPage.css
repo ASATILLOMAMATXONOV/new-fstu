@@ -1,0 +1,202 @@
+.admission-page {
+  width: 100%;
+  padding: 50px 4% 76px;
+  background: #f6f8fb;
+}
+
+.admission-page-shell {
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.admission-page-card {
+  background: #ffffff;
+  border: 1px solid #e5eaf3;
+  box-shadow: 0 16px 45px rgba(6, 43, 99, 0.08);
+  overflow: hidden;
+}
+
+.admission-page-head {
+  padding: 30px 34px 24px;
+  border-bottom: 1px solid #e5eaf3;
+  background:
+    radial-gradient(circle at top left, rgba(8, 66, 159, 0.08), transparent 34%),
+    linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+}
+
+.admission-page-label {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: #e8f1ff;
+  color: #08429f;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.admission-page-head h1 {
+  margin: 16px 0 10px;
+  color: #0f172a;
+  font-size: clamp(28px, 3vw, 40px);
+  line-height: 1.15;
+  font-weight: 900;
+}
+
+.admission-page-head p {
+  max-width: 780px;
+  margin: 0;
+  color: #64748b;
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+.admission-page-body {
+  padding: 34px;
+  color: #334155;
+  font-size: 16px;
+  line-height: 1.9;
+}
+
+.admission-page-body > *:first-child {
+  margin-top: 0 !important;
+}
+
+.admission-page-body > *:last-child {
+  margin-bottom: 0 !important;
+}
+
+.admission-page-body p {
+  margin: 0 0 18px;
+  color: inherit;
+  font-size: 16px;
+  line-height: 1.9;
+}
+
+.admission-page-body h1,
+.admission-page-body h2,
+.admission-page-body h3,
+.admission-page-body h4,
+.admission-page-body h5,
+.admission-page-body h6 {
+  margin: 28px 0 12px;
+  color: #0f172a;
+  line-height: 1.3;
+  font-weight: 900;
+}
+
+.admission-page-body ul,
+.admission-page-body ol {
+  margin: 0 0 20px;
+  padding-left: 22px;
+}
+
+.admission-page-body li {
+  margin-bottom: 8px;
+}
+
+.admission-page-body a {
+  color: #08429f;
+  font-weight: 800;
+}
+
+.admission-page-body a.content-file-link,
+.admission-page-body a[download]:not(.attached-files-item),
+.admission-page-body a[href^='data:'] {
+  color: #0000ee;
+  font-weight: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.admission-page-body a.content-file-link::before,
+.admission-page-body a.content-file-link::after,
+.admission-page-body a[download]:not(.attached-files-item)::before,
+.admission-page-body a[download]:not(.attached-files-item)::after,
+.admission-page-body a[href^='data:']::before,
+.admission-page-body a[href^='data:']::after {
+  content: none;
+}
+
+.admission-page-body a.content-file-link--file-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 6px 0;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: #eef4ff;
+  border: 1px solid #cddcf3;
+  box-shadow: 0 10px 22px rgba(8, 66, 159, 0.08);
+  color: #0b438d;
+  font-weight: 800;
+  text-decoration: none;
+  line-height: 1.4;
+  vertical-align: middle;
+}
+
+.admission-page-body a.content-file-link--file-name::before {
+  content: 'FILE';
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  height: 24px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: #0b438d;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.8px;
+}
+
+.admission-page-body a.content-file-link--file-name::after {
+  content: '↓';
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.admission-page-actions {
+  padding: 0 34px 34px;
+}
+
+.admission-page-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 24px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #0d2d67 0%, #1351b4 100%);
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 800;
+  box-shadow: 0 16px 32px rgba(16, 59, 130, 0.2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.admission-page-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 20px 36px rgba(16, 59, 130, 0.26);
+}
+
+@media (max-width: 767px) {
+  .admission-page {
+    padding: 32px 14px 56px;
+  }
+
+  .admission-page-head,
+  .admission-page-body,
+  .admission-page-actions {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .admission-page-head h1 {
+    font-size: 30px;
+  }
+}

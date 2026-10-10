@@ -1,0 +1,50 @@
+.app-content-shell,
+.nav-shell,
+.hero-shell {
+  width: min(85%, 1720px);
+  margin-inline: auto;
+}
+
+.section-fallback {
+  width: 100%;
+  border-radius: 18px;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(235, 241, 250, 0.9) 25%,
+      rgba(247, 250, 255, 1) 38%,
+      rgba(235, 241, 250, 0.9) 58%
+    );
+  background-size: 200% 100%;
+  animation: section-fallback-shimmer 1.4s linear infinite;
+}
+
+@keyframes section-fallback-shimmer {
+  from {
+    background-position: 200% 0;
+  }
+
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@media (max-width: 1100px) {
+  .app-content-shell,
+  .nav-shell,
+  .hero-shell {
+    width: min(92%, 1720px);
+  }
+}
+
+@media (max-width: 640px) {
+  .app-content-shell,
+  .nav-shell,
+  .hero-shell {
+    width: calc(100% - 24px);
+  }
+
+  .section-fallback {
+    border-radius: 14px;
+  }
+}

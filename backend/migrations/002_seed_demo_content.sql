@@ -1,0 +1,1 @@
+-- Demo seed removed. Content should be added from admin or real migration data.

@@ -1,0 +1,96 @@
+previews:
+  generation: automatic
+
+services:
+  - type: web
+    name: fstu-api
+    runtime: node
+    rootDir: backend
+    buildCommand: npm install
+    preDeployCommand: npm run db:migrate && npm run db:seed
+    startCommand: npm start
+    healthCheckPath: /health
+    domains:
+      - api.new.fstu.uz
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: fstu-db
+          property: connectionString
+      - key: DATABASE_SSL
+        value: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 12h
+      - key: JWT_ISSUER
+        value: fstu-admin
+      - key: JWT_AUDIENCE
+        value: fstu-admin-panel
+      - key: BCRYPT_ROUNDS
+        value: 12
+      - key: AUTH_MAX_FAILED_ATTEMPTS
+        value: 5
+      - key: AUTH_LOCK_MINUTES
+        value: 15
+      - key: LOGIN_RATE_LIMIT_WINDOW_MS
+        value: 600000
+      - key: LOGIN_RATE_LIMIT_MAX_ATTEMPTS
+        value: 10
+      - key: ADMIN_PASSWORD_MIN_LENGTH
+        value: 12
+      - key: ALLOW_PUBLIC_REGISTRATION
+        value: false
+      - key: CORS_ORIGINS
+        value: https://new.fstu.uz,https://admin.new.fstu.uz
+      - key: DEFAULT_ADMIN_FULL_NAME
+        value: System Administrator
+      - key: DEFAULT_ADMIN_LOGIN
+        sync: false
+      - key: DEFAULT_ADMIN_EMAIL
+        sync: false
+      - key: DEFAULT_ADMIN_PASSWORD
+        sync: false
+      - key: SYNC_DEFAULT_ADMIN_ON_BOOT
+        value: false
+
+  - type: web
+    name: fstu-admin
+    runtime: static
+    rootDir: admin
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./admin/dist
+    domains:
+      - admin.new.fstu.uz
+    envVars:
+      - key: VITE_APP_API_URL
+        value: https://api.new.fstu.uz
+      - key: VITE_APP_BASE_NAME
+        value: /
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+
+  - type: web
+    name: fstu-frontend
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./frontend/build
+    domains:
+      - new.fstu.uz
+    envVars:
+      - key: REACT_APP_API_URL
+        value: https://api.new.fstu.uz
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+
+databases:
+  - name: fstu-db
+    databaseName: fstu_cms
+    ipAllowList: []

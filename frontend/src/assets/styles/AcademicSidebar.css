@@ -1,0 +1,438 @@
+.academic-sidebar {
+  position: sticky;
+  top: 92px;
+  display: grid;
+  gap: 18px;
+  width: 100%;
+}
+
+.academic-dean-card,
+.academic-search-box,
+.academic-pages-box,
+.academic-sidebar-announcements {
+  background: #ffffff;
+  border: 1px solid #e3e8f2;
+  box-shadow: 0 18px 45px rgba(15, 36, 74, 0.08);
+  overflow: hidden;
+}
+
+.academic-dean-card {
+  padding: 0;
+}
+
+.academic-dean-title,
+.academic-pages-box > h3,
+.academic-sidebar-announcements-head {
+  margin: 0;
+  padding: 18px 20px;
+  color: #12153f;
+  font-size: 17px;
+  font-weight: 900;
+  border-bottom: 1px solid #edf1f7;
+}
+
+.academic-dean-photo-wrap {
+  padding: 20px 20px 0;
+}
+
+.academic-dean-photo {
+  width: 100%;
+  height: 300px;
+  display: block;
+  object-fit: cover;
+  object-position: center top;
+  background: #eef3fb;
+}
+
+.academic-dean-photo-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0b4aad;
+  font-size: 54px;
+  font-weight: 900;
+}
+
+.academic-dean-body {
+  padding: 18px 22px 16px;
+  text-align: center;
+}
+
+.academic-dean-body h4 {
+  margin: 0;
+  color: #12153f;
+  font-size: 18px;
+  line-height: 1.35;
+  font-weight: 900;
+}
+
+.academic-dean-body p {
+  margin: 6px 0 0;
+  color: #7d8498;
+  font-size: 14px;
+  line-height: 1.45;
+  font-weight: 600;
+}
+
+.academic-dean-social {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.academic-dean-social a {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #f3f5fb;
+  color: #174aa2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: 0.25s ease;
+}
+
+.academic-dean-social a svg {
+  width: 17px;
+  height: 17px;
+}
+
+.academic-dean-social a:hover {
+  background: #174aa2;
+  color: #ffffff;
+  transform: translateY(-3px);
+}
+
+.academic-dean-info {
+  margin: 0 20px 20px;
+  padding-top: 18px;
+  border-top: 1px solid #e7ecf4;
+}
+
+.academic-dean-info h4 {
+  margin: 0 0 14px;
+  color: #12153f;
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.academic-dean-info-row {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  min-height: 38px;
+  margin-bottom: 9px;
+}
+
+.academic-dean-info-row span {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #f2f5fb;
+  color: #174aa2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.academic-dean-info-row span svg {
+  width: 15px;
+  height: 15px;
+}
+
+.academic-dean-info-row p {
+  margin: 0;
+  color: #6f7689;
+  font-size: 13px;
+  line-height: 1.45;
+  font-weight: 600;
+  word-break: break-word;
+}
+
+.academic-dean-btn {
+  width: max-content;
+  max-width: 100%;
+  min-height: 38px;
+  margin: 16px auto 0;
+  padding: 0 16px;
+  border-radius: 8px;
+  background: #eef3ff;
+  color: #174aa2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 800;
+  transition: 0.25s ease;
+}
+
+.academic-dean-btn:hover {
+  background: #174aa2;
+  color: #ffffff;
+}
+
+.academic-search-box {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 92px;
+  padding: 18px;
+}
+
+.academic-search-box input {
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid #dfe5ef;
+  border-right: 0;
+  outline: none;
+  color: #172554;
+  font-size: 13px;
+}
+
+.academic-search-box button {
+  border: 0;
+  background: #174aa2;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+/* SAHIFA MENYUSI TABLE + HOVER */
+.academic-pages-box {
+  padding: 0;
+}
+
+.academic-sidebar-nav {
+  display: grid;
+  gap: 0;
+  padding: 0;
+}
+
+.academic-sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 54px;
+  padding: 0 18px;
+  border: 0;
+  border-bottom: 1px solid #edf1f7;
+  background: #ffffff;
+  text-decoration: none;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+.academic-sidebar-link:last-child {
+  border-bottom: 0;
+}
+
+.academic-sidebar-icon {
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
+  border-radius: 50%;
+  background: #edf3ff;
+  color: #174aa2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.25s ease;
+}
+
+.academic-sidebar-icon svg {
+  width: 15px;
+  height: 15px;
+}
+
+.academic-sidebar-link strong {
+  color: #12153f;
+  font-size: 15px;
+  font-weight: 900;
+  line-height: 1.35;
+  transition: 0.25s ease;
+}
+
+.academic-sidebar-link:hover,
+.academic-sidebar-link.is-active {
+  background: #08429f;
+}
+
+.academic-sidebar-link:hover strong,
+.academic-sidebar-link.is-active strong {
+  color: #ffffff;
+}
+
+.academic-sidebar-link:hover .academic-sidebar-icon,
+.academic-sidebar-link.is-active .academic-sidebar-icon {
+  background: #ffffff;
+  color: #08429f;
+  transform: translateX(4px);
+}
+
+.academic-sidebar-empty {
+  padding: 14px;
+  background: #f8fbff;
+  border: 1px dashed #d5e0ef;
+  color: #67748a;
+  font-size: 13px;
+}
+
+/* ELONLAR */
+.academic-sidebar-announcements {
+  padding: 0;
+}
+
+.academic-sidebar-announcements-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.academic-sidebar-announcements-head h4 {
+  margin: 0;
+  color: #12153f;
+  font-size: 17px;
+  font-weight: 900;
+}
+
+.academic-sidebar-announcements-all {
+  color: #174aa2;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.academic-sidebar-announcements-all:hover {
+  text-decoration: underline;
+}
+
+.academic-sidebar-announcements-list {
+  display: grid;
+  gap: 0;
+}
+
+.academic-sidebar-announcement-card {
+  display: grid;
+  grid-template-columns: 86px minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+  min-height: 88px;
+  padding: 12px 14px;
+  border-bottom: 1px solid #edf1f7;
+  background: #ffffff;
+  text-decoration: none;
+  transition: 0.25s ease;
+}
+
+.academic-sidebar-announcement-card:last-child {
+  border-bottom: 0;
+}
+
+.academic-sidebar-announcement-card:hover {
+  background: #eef5ff;
+}
+
+.academic-sidebar-announcement-image {
+  width: 86px;
+  height: 66px;
+  overflow: hidden;
+  background: #eef5ff;
+}
+
+.academic-sidebar-announcement-image img,
+.academic-sidebar-announcement-placeholder {
+  width: 100%;
+  height: 100%;
+}
+
+.academic-sidebar-announcement-image img {
+  display: block;
+  object-fit: cover;
+}
+
+.academic-sidebar-announcement-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #08429f;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.academic-sidebar-announcement-card strong {
+  color: #12153f;
+  font-size: 13px;
+  line-height: 1.45;
+  font-weight: 900;
+  transition: 0.25s ease;
+}
+
+.academic-sidebar-announcement-card:hover strong {
+  color: #08429f;
+}
+
+.academic-sidebar-announcement-empty {
+  padding: 14px;
+  background: #f8fbff;
+  border: 1px dashed #d5e0ef;
+  color: #67748a;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+@keyframes academicSidebarShow {
+  from {
+    opacity: 0;
+    transform: translateX(28px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@media (max-width: 1000px) {
+  .academic-sidebar {
+    position: static;
+  }
+
+  .academic-dean-photo {
+    height: 340px;
+  }
+}
+
+@media (max-width: 520px) {
+  .academic-dean-photo {
+    height: 270px;
+  }
+
+  .academic-search-box {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .academic-search-box input {
+    border-right: 1px solid #dfe5ef;
+  }
+
+  .academic-search-box button {
+    min-height: 42px;
+  }
+
+  .academic-sidebar-announcement-card {
+    grid-template-columns: 72px minmax(0, 1fr);
+  }
+
+  .academic-sidebar-announcement-image {
+    width: 72px;
+    height: 58px;
+  }
+}
