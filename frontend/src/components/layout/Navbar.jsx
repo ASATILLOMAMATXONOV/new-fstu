@@ -46,13 +46,6 @@ function includesAny(value, patterns = []) {
 }
 
 function getDropdownIcon(label, variant = 'link') {
-  if (variant === 'link') {
-    return ArrowMenuIcon;
-  }
-
-  return FolderIcon;
-
-  // eslint-disable-next-line no-unreachable
   const normalized = normalizeMenuLabel(label);
 
   if (variant === 'link') {
@@ -243,14 +236,31 @@ function getDropdownIcon(label, variant = 'link') {
   return variant === 'title' ? FolderIcon : MenuItemIcon;
 }
 
+function getDropdownNodeIcon(hasChildren, variant = 'link') {
+  if (variant === 'title' || hasChildren) {
+    return getDropdownIcon('', 'title');
+  }
+
+  return getDropdownIcon('', 'link');
+}
+
 function shouldDisplayAsMegaHeader(item) {
-  return Boolean(item?.displayAsHeader || item?.isHeader || item?.showAsHeader || item?.metadata?.displayAsHeader);
+  return Boolean(
+    item?.children?.length ||
+      item?.displayAsHeader ||
+      item?.isHeader ||
+      item?.showAsHeader ||
+      item?.metadata?.displayAsHeader
+  );
 }
 
 function Navbar() {
   const location = useLocation();
   const { menus: navItems, loading } = useMenuTree();
   const { currentLanguage, currentLanguageCode, languageOptions, setLanguage } = useLanguage();
+  const dropdownContentRef = React.useRef(null);
+  const closeDropdownTimerRef = React.useRef(null);
+  const contentSwitchTimerRef = React.useRef(null);
 
   const texts = React.useMemo(
     () => getSiteMessages(currentLanguageCode).navbar,
@@ -260,6 +270,13 @@ function Navbar() {
   const [open, setOpen] = useState(false);
   const [openSubmenu, setOpenSubmenu] = useState(null);
   const [languageOpen, setLanguageOpen] = useState(false);
+  const [activeDropdownId, setActiveDropdownId] = useState(null);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [dropdownHeight, setDropdownHeight] = useState(0);
+  const [visibleDropdownItem, setVisibleDropdownItem] = useState(null);
+  const [leavingDropdownItem, setLeavingDropdownItem] = useState(null);
+  const [contentSwitching, setContentSwitching] = useState(false);
+  const [contentDirection, setContentDirection] = useState('forward');
   const isAcademicDetailPage = Boolean(
     matchPath('/faculties/:id', location.pathname) ||
       matchPath('/departments/:facultyId/:departmentId', location.pathname) ||
@@ -305,11 +322,64 @@ function Navbar() {
     [texts]
   );
 
+  const closeFloatingDropdown = React.useCallback((immediate = false) => {
+    window.clearTimeout(closeDropdownTimerRef.current);
+
+    if (immediate) {
+      setDropdownOpen(false);
+      setActiveDropdownId(null);
+      setDropdownHeight(0);
+      setVisibleDropdownItem(null);
+      setLeavingDropdownItem(null);
+      setContentSwitching(false);
+      return;
+    }
+
+    closeDropdownTimerRef.current = window.setTimeout(() => {
+      setDropdownOpen(false);
+      setActiveDropdownId(null);
+      setDropdownHeight(0);
+      setVisibleDropdownItem(null);
+      setLeavingDropdownItem(null);
+      setContentSwitching(false);
+    }, 680);
+  }, []);
+
+  const measureDropdownHeight = React.useCallback(() => {
+    window.requestAnimationFrame(() => {
+      const activeContent = dropdownContentRef.current?.querySelector(
+        '.stripe-dropdown-content-enter'
+      );
+
+      setDropdownHeight(Math.ceil(activeContent?.scrollHeight || 0));
+    });
+  }, []);
+
   useEffect(() => {
     setOpen(false);
     setOpenSubmenu(null);
     setLanguageOpen(false);
-  }, [location.pathname, location.hash]);
+    closeFloatingDropdown(true);
+  }, [location.pathname, location.hash, closeFloatingDropdown]);
+
+  useEffect(() => {
+    if (!visibleDropdownItem || !dropdownContentRef.current) {
+      setDropdownHeight(0);
+      return undefined;
+    }
+
+    const frame = window.requestAnimationFrame(measureDropdownHeight);
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [visibleDropdownItem, currentLanguageCode, measureDropdownHeight]);
+
+  useEffect(
+    () => () => {
+      window.clearTimeout(closeDropdownTimerRef.current);
+      window.clearTimeout(contentSwitchTimerRef.current);
+    },
+    []
+  );
 
   const toggleMenu = () => {
     setOpen((prevOpen) => {
@@ -331,6 +401,101 @@ function Navbar() {
     setOpen(false);
     setOpenSubmenu(null);
     setLanguageOpen(false);
+    closeFloatingDropdown(true);
+  };
+
+  const isDesktopNavigation = () =>
+    typeof window !== 'undefined' && window.matchMedia('(min-width: 1081px)').matches;
+
+  const showFloatingDropdown = (itemOrId) => {
+    if (!isDesktopNavigation()) {
+      return;
+    }
+
+    const nextItem =
+      typeof itemOrId === 'object'
+        ? itemOrId
+        : navItems.find((item) => String(item.id) === String(itemOrId));
+
+    if (!nextItem?.children?.length) {
+      return;
+    }
+
+    window.clearTimeout(closeDropdownTimerRef.current);
+
+    if (dropdownOpen && String(activeDropdownId) === String(nextItem.id)) {
+      return;
+    }
+
+    const nextIndex = navItems.findIndex((item) => String(item.id) === String(nextItem.id));
+    const currentId = visibleDropdownItem?.id ?? activeDropdownId;
+    const currentIndex = navItems.findIndex((item) => String(item.id) === String(currentId));
+
+    if (currentIndex >= 0 && nextIndex >= 0 && nextIndex !== currentIndex) {
+      setContentDirection(nextIndex > currentIndex ? 'forward' : 'backward');
+    }
+
+    window.clearTimeout(contentSwitchTimerRef.current);
+    setActiveDropdownId(nextItem.id);
+    setDropdownOpen(true);
+
+    setVisibleDropdownItem((currentItem) => {
+      if (!currentItem || String(currentItem.id) === String(nextItem.id)) {
+        setLeavingDropdownItem(null);
+        setContentSwitching(false);
+        return nextItem;
+      }
+
+      setLeavingDropdownItem(currentItem);
+      setContentSwitching(true);
+
+      contentSwitchTimerRef.current = window.setTimeout(() => {
+        setLeavingDropdownItem(null);
+        setContentSwitching(false);
+      }, 220);
+
+      return nextItem;
+    });
+  };
+
+  const toggleFloatingDropdown = (id) => {
+    if (!isDesktopNavigation()) {
+      return false;
+    }
+
+    showFloatingDropdown(id);
+    return true;
+  };
+
+  const handleNavKeyDown = (event) => {
+    if (event.key === 'Escape') {
+      closeFloatingDropdown(true);
+      event.currentTarget.querySelector('.nav-link:focus, .nav-caret-btn:focus')?.blur();
+    }
+  };
+
+  const hideFloatingDropdown = () => {
+    closeFloatingDropdown();
+  };
+
+  const handleNavItemHover = (item, hasChildren) => {
+    if (hasChildren) {
+      showFloatingDropdown(item);
+      return;
+    }
+
+    hideFloatingDropdown();
+  };
+
+  const handleDesktopDropdownClick = (event, item, hasChildren) => {
+    if (!hasChildren || !isDesktopNavigation()) {
+      handleNavClick();
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+    toggleFloatingDropdown(item.id);
   };
 
   const handleLanguageSelect = (language) => {
@@ -339,6 +504,7 @@ function Navbar() {
   };
 
   return (
+    <>
     <header className={`fstu-header${isAcademicDetailPage ? ' fstu-header--overlay' : ''}`}>
       <div className="fstu-topbar">
         <div className="nav-shell fstu-inner topbar-row">
@@ -451,7 +617,17 @@ function Navbar() {
   </div>
 </AppLink>
 
-          <nav className={`nav-menu ${open ? 'active' : ''}`}>
+          <nav
+            className={`nav-menu ${open ? 'active' : ''}`}
+            onMouseEnter={() => window.clearTimeout(closeDropdownTimerRef.current)}
+            onMouseLeave={hideFloatingDropdown}
+            onBlur={(event) => {
+              if (!event.currentTarget.contains(event.relatedTarget)) {
+                hideFloatingDropdown();
+              }
+            }}
+            onKeyDown={handleNavKeyDown}
+          >
             {!navItems.length && loading ? (
               <div className="nav-loading" aria-hidden="true">
                 <span className="nav-loading-pill" />
@@ -469,13 +645,24 @@ function Navbar() {
                     key={item.id}
                     className={`nav-item ${hasChildren ? 'has-dropdown' : ''} ${
                       isSubmenuOpen ? 'submenu-open' : ''
+                    } ${
+                      hasChildren && String(activeDropdownId) === String(item.id)
+                        ? 'dropdown-active'
+                        : ''
                     }`}
+                    onFocus={() => {
+                      if (hasChildren) {
+                        showFloatingDropdown(item);
+                      }
+                    }}
                   >
                     <div className="nav-link-group">
                       <AppLink
                         href={getMenuNodeHref(item)}
                         className="nav-link"
-                        onClick={handleNavClick}
+                        onMouseEnter={() => handleNavItemHover(item, hasChildren)}
+                        onMouseMove={() => handleNavItemHover(item, hasChildren)}
+                        onClick={(event) => handleDesktopDropdownClick(event, item, hasChildren)}
                       >
                         <span>{title}</span>
                       </AppLink>
@@ -485,8 +672,20 @@ function Navbar() {
                           type="button"
                           className="nav-caret-btn"
                           aria-label={`${title} ${texts.openSectionSuffix}`}
-                          aria-expanded={isSubmenuOpen}
-                          onClick={() => toggleSubmenu(item.id)}
+                          aria-haspopup="true"
+                          aria-controls="navbar-mega-menu"
+                          aria-expanded={isSubmenuOpen || (dropdownOpen && String(activeDropdownId) === String(item.id))}
+                          onMouseEnter={() => handleNavItemHover(item, hasChildren)}
+                          onMouseMove={() => handleNavItemHover(item, hasChildren)}
+                          onClick={(event) => {
+                            if (toggleFloatingDropdown(item.id)) {
+                              event.preventDefault();
+                              event.stopPropagation();
+                              return;
+                            }
+
+                            toggleSubmenu(item.id);
+                          }}
                         >
                           <ChevronDownIcon className="nav-caret-icon" />
                         </button>
@@ -494,7 +693,7 @@ function Navbar() {
                     </div>
 
                     {hasChildren && (
-                      <div className="dropdown-menu mega-menu">
+                      <div className="dropdown-menu mega-menu mobile-dropdown-menu">
                         <MegaDropdown
                           items={item.children}
                           languageCode={currentLanguageCode}
@@ -506,6 +705,7 @@ function Navbar() {
                 );
               })
             )}
+
           </nav>
 
           <div className="navbar-actions">
@@ -519,39 +719,75 @@ function Navbar() {
               {open ? '✕' : '☰'}
             </button>
           </div>
+
+          {visibleDropdownItem && (
+            <div
+              id="navbar-mega-menu"
+              className={`stripe-dropdown-shell ${dropdownOpen ? 'is-open' : 'is-closing'} ${
+                contentSwitching ? 'is-switching' : ''
+              } direction-${contentDirection}`}
+              style={{
+                '--stripe-dropdown-height': `${dropdownHeight}px`
+              }}
+              onMouseEnter={() => window.clearTimeout(closeDropdownTimerRef.current)}
+              onMouseLeave={hideFloatingDropdown}
+            >
+              <div ref={dropdownContentRef} className="stripe-dropdown-content-wrap">
+                {leavingDropdownItem && (
+                  <div
+                    key={`leaving-${leavingDropdownItem.id}`}
+                    className="stripe-dropdown-content stripe-dropdown-content-exit"
+                  >
+                    <MegaDropdown
+                      items={leavingDropdownItem.children}
+                      languageCode={currentLanguageCode}
+                      onNavigate={handleNavClick}
+                      onContentChange={measureDropdownHeight}
+                    />
+                  </div>
+                )}
+
+                <div
+                  key={`active-${visibleDropdownItem.id}`}
+                  className="stripe-dropdown-content stripe-dropdown-content-enter"
+                >
+                  <MegaDropdown
+                    items={visibleDropdownItem.children}
+                    languageCode={currentLanguageCode}
+                    onNavigate={handleNavClick}
+                    onContentChange={measureDropdownHeight}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
+
     </header>
+
+    <div
+      className={`navbar-backdrop ${dropdownOpen ? 'is-visible' : ''}`}
+      aria-hidden="true"
+    />
+    </>
   );
 }
 
-function MegaDropdown({ items, languageCode, onNavigate }) {
+function MegaDropdown({ items, languageCode, onNavigate, onContentChange }) {
   const columns = sortMenuNodes(items);
   const headerColumns = columns.filter(shouldDisplayAsMegaHeader);
   const plainItems = columns.filter((column) => !shouldDisplayAsMegaHeader(column));
+  const displayColumns = [...headerColumns, ...plainItems];
+  const columnCount = Math.max(displayColumns.length, 1);
 
   return (
-    <div className="mega-menu-inner">
-      {plainItems.length > 0 && (
-        <div className="mega-column mega-column-flat">
-          <div className="mega-links">
-            {plainItems.map((item) => (
-              <MegaDropdownLink
-                key={item.id}
-                item={item}
-                languageCode={languageCode}
-                onNavigate={onNavigate}
-              />
-            ))}
-          </div>
-        </div>
-      )}
-
-      {headerColumns.map((column) => {
+    <div className="mega-menu-inner" style={{ '--mega-column-count': columnCount }}>
+      {displayColumns.map((column) => {
         const title = getMenuNodeTitle(column, languageCode);
-        const TitleIcon = getDropdownIcon(title, 'title');
         const children = sortMenuNodes(column.children || []);
         const hasChildren = children.length > 0;
+        const TitleIcon = getDropdownNodeIcon(hasChildren, 'title');
 
         return (
           <div key={column.id} className={`mega-column${hasChildren ? '' : ' mega-column-single'}`}>
@@ -561,7 +797,8 @@ function MegaDropdown({ items, languageCode, onNavigate }) {
                   <span className="mega-title-icon-wrap">
                     <TitleIcon className="mega-title-icon" />
                   </span>
-                  <span>{title}</span>
+                  <span className="mega-title-text">{title}</span>
+                  <span className="mega-title-count">{children.length}</span>
                 </AppLink>
 
                 <div className="mega-links">
@@ -571,6 +808,7 @@ function MegaDropdown({ items, languageCode, onNavigate }) {
                       item={child}
                       languageCode={languageCode}
                       onNavigate={onNavigate}
+                      onContentChange={onContentChange}
                     />
                   ))}
                 </div>
@@ -579,7 +817,7 @@ function MegaDropdown({ items, languageCode, onNavigate }) {
               <div className="mega-links">
                 <AppLink href={getMenuNodeHref(column)} className="mega-link mega-link-single" onClick={onNavigate}>
                   <span className="mega-link-icon-wrap">
-                    <TitleIcon className="mega-link-icon" />
+                    <ArrowMenuIcon className="mega-link-icon" />
                   </span>
                   <span className="mega-link-text">{title}</span>
                 </AppLink>
@@ -592,18 +830,23 @@ function MegaDropdown({ items, languageCode, onNavigate }) {
   );
 }
 
-function MegaDropdownLink({ item, languageCode, onNavigate, depth = 0 }) {
+function MegaDropdownLink({ item, languageCode, onNavigate, onContentChange, depth = 0 }) {
   const [expanded, setExpanded] = React.useState(false);
   const title = getMenuNodeTitle(item, languageCode);
-  const LinkIcon = getDropdownIcon(title, 'link');
   const children = sortMenuNodes(item.children || []);
   const hasChildren = children.length > 0;
+  const LinkIcon = getDropdownNodeIcon(hasChildren);
   const linkContent = (
     <>
       <span className="mega-link-icon-wrap">
         <LinkIcon className="mega-link-icon" />
       </span>
-      <span className="mega-link-text">{title}</span>
+      <span className="mega-link-copy">
+        <span className="mega-link-text">{title}</span>
+        <span className="mega-link-meta">
+          {hasChildren ? `${children.length} menu` : 'Menu'}
+        </span>
+      </span>
     </>
   );
 
@@ -617,7 +860,10 @@ function MegaDropdownLink({ item, languageCode, onNavigate, depth = 0 }) {
           type="button"
           className="mega-link mega-link-parent"
           aria-expanded={expanded}
-          onClick={() => setExpanded((current) => !current)}
+          onClick={() => {
+            setExpanded((current) => !current);
+            onContentChange?.();
+          }}
         >
           {linkContent}
         </button>
@@ -635,6 +881,7 @@ function MegaDropdownLink({ item, languageCode, onNavigate, depth = 0 }) {
               item={child}
               languageCode={languageCode}
               onNavigate={onNavigate}
+              onContentChange={onContentChange}
               depth={depth + 1}
             />
           ))}
