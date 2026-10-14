@@ -17,9 +17,34 @@ export default function DepartmentsPage() {
   const { items: faculties } = useContentList('faculties', {
     entityType: 'faculty'
   });
+  const departmentsCount = faculties.reduce(
+    (total, faculty) => total + (faculty.departments?.length || 0),
+    0
+  );
 
   return (
     <main className="departments-page">
+      <section className="departments-hero">
+        <div className="departments-hero-copy">
+          <span>YO‘NALISHLAR</span>
+          <h1>Fakultet va kafedralar xaritasi</h1>
+          <p>
+            Ta’lim yo‘nalishlarini fakultetlar bo‘yicha ko‘ring, kerakli kafedra sahifasiga tez o‘ting.
+          </p>
+        </div>
+
+        <div className="departments-hero-stats" aria-label="Yo‘nalishlar statistikasi">
+          <div>
+            <strong>{faculties.length}</strong>
+            <span>Fakultet</span>
+          </div>
+          <div>
+            <strong>{departmentsCount}</strong>
+            <span>Kafedra</span>
+          </div>
+        </div>
+      </section>
+
       <div className="departments-layout">
         <section className="departments-section">
           {faculties.map((faculty, index) => {
@@ -27,7 +52,11 @@ export default function DepartmentsPage() {
             const departments = faculty.departments || [];
 
             return (
-              <article key={faculty.id} className="departments-faculty-card is-open">
+              <article
+                key={faculty.id}
+                className="departments-faculty-card is-open"
+                style={{ '--department-card-index': index }}
+              >
                 <AppLink
                   href={`/faculties/${faculty.id}`}
                   className="departments-faculty-trigger"

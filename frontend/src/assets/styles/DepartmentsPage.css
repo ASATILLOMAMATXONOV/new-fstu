@@ -1,11 +1,112 @@
 .departments-page {
   width: 100%;
-  padding: 30px 4% 70px;
-  background: #f6f8fb;
+  padding: 34px 4% 74px;
+  background:
+    linear-gradient(90deg, rgba(var(--theme-primary-rgb), 0.07) 1px, transparent 1px),
+    linear-gradient(180deg, #ffffff 0%, var(--surface-soft) 100%);
+  background-size: 38px 38px, auto;
+}
+
+.departments-hero {
+  max-width: 1280px;
+  margin: 0 auto 28px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
+  gap: 22px;
+  align-items: stretch;
+}
+
+.departments-hero-copy {
+  position: relative;
+  padding: clamp(30px, 4vw, 54px);
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, var(--brand-primary-deep) 0%, var(--brand-primary-dark) 56%, var(--brand-primary) 100%);
+  color: #ffffff;
+  isolation: isolate;
+}
+
+.departments-hero-copy::before {
+  content: '';
+  position: absolute;
+  inset: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  z-index: -1;
+}
+
+.departments-hero-copy::after {
+  content: '';
+  position: absolute;
+  right: 36px;
+  top: 36px;
+  width: 130px;
+  height: 130px;
+  border: 22px solid rgba(255, 255, 255, 0.08);
+  transform: rotate(45deg);
+  z-index: -1;
+}
+
+.departments-hero-copy span {
+  display: inline-flex;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.13);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+}
+
+.departments-hero-copy h1 {
+  max-width: 720px;
+  margin: 22px 0 14px;
+  color: #ffffff;
+  font-size: clamp(36px, 5vw, 70px);
+  line-height: 0.98;
+  font-weight: 950;
+}
+
+.departments-hero-copy p {
+  max-width: 660px;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+.departments-hero-stats {
+  display: grid;
+  gap: 14px;
+}
+
+.departments-hero-stats div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 0;
+  padding: 28px;
+  background: #ffffff;
+  border: 1px solid var(--surface-border);
+  box-shadow: 0 18px 44px rgba(var(--theme-dark-rgb), 0.08);
+}
+
+.departments-hero-stats strong {
+  color: var(--brand-primary-dark);
+  font-size: clamp(42px, 6vw, 70px);
+  line-height: 0.95;
+  font-weight: 950;
+}
+
+.departments-hero-stats span {
+  margin-top: 10px;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
 .departments-layout {
-  max-width: 1180px;
+  max-width: 1280px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: minmax(0, 1fr) 310px;
@@ -20,112 +121,131 @@
 }
 
 .departments-faculty-card {
-  background: #ffffff;
+  position: relative;
   overflow: hidden;
-  border: 1px solid #e5e7eb;
-  transition: 0.3s;
+  background: #ffffff;
+  border: 1px solid var(--surface-border);
+  box-shadow: 0 18px 46px rgba(var(--theme-dark-rgb), 0.07);
+  animation: departmentCardIn 0.5s ease both;
+  animation-delay: calc(var(--department-card-index, 0) * 70ms);
 }
 
-.departments-faculty-card.is-open {
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+.departments-faculty-card::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 6px;
+  background: linear-gradient(180deg, var(--brand-primary), var(--brand-primary-dark));
 }
 
 .departments-faculty-trigger {
-  display: flex;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr);
+  align-items: stretch;
   width: 100%;
-  padding: 20px;
+  min-height: 150px;
   text-align: left;
   position: relative;
   text-decoration: none;
 }
 
 .departments-faculty-trigger:focus-visible {
-  outline: 2px solid #08429f;
+  outline: 2px solid var(--brand-primary-dark);
   outline-offset: -2px;
 }
 
 .departments-faculty-image {
-  width: 130px;
-  height: 90px;
-  border-radius: 14px;
+  width: 100%;
+  height: 100%;
+  min-height: 150px;
   object-fit: cover;
+  filter: saturate(1.06);
 }
 
 .departments-faculty-meta {
-  flex: 1;
-  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 24px 28px;
 }
 
 .departments-faculty-meta h2 {
+  max-width: 720px;
   margin: 0;
-  font-size: 24px;
-  color: #111827;
+  color: var(--text-primary);
+  font-size: clamp(22px, 2.7vw, 34px);
+  line-height: 1.14;
+  font-weight: 950;
 }
 
 .departments-faculty-meta p {
-  margin-top: 6px;
-  color: #6b7280;
+  width: max-content;
+  max-width: 100%;
+  margin: 14px 0 0;
+  padding: 8px 12px;
+  background: var(--surface-tint);
+  color: var(--brand-primary-dark);
+  font-size: 12px;
+  font-weight: 900;
 }
 
 .departments-panel-link {
   display: inline-flex;
   align-items: center;
-  margin: 8px 0 6px;
-  color: #08429f;
+  margin: 0 0 12px;
+  color: var(--brand-primary-dark);
   text-decoration: none;
   font-size: 13px;
-  font-weight: 800;
+  font-weight: 900;
 }
 
 .departments-list {
-  padding: 0 25px 25px;
+  padding: 0 24px 24px 30px;
   animation: fadeDown 0.35s ease;
 }
 
 .departments-item {
-  display: grid;
-  grid-template-columns: 58px 1fr;
-  align-items: center;
-  gap: 16px;
-  padding: 16px;
-  border-radius: 16px;
-  margin-top: 12px;
-  background: #f8fafc;
-  text-decoration: none;
-  transition: 0.3s;
   position: relative;
+  display: grid;
+  grid-template-columns: 54px 1fr;
+  align-items: center;
+  gap: 14px;
+  padding: 14px;
+  margin-top: 10px;
+  background:
+    linear-gradient(90deg, rgba(var(--theme-primary-rgb), 0.08), rgba(var(--theme-primary-rgb), 0.02)),
+    #ffffff;
+  border: 1px solid var(--surface-border);
+  text-decoration: none;
+  transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
   overflow: hidden;
 }
 
-.departments-item::before {
+.departments-item::after {
   content: '';
   position: absolute;
-  left: 0;
-  top: 0;
-  width: 4px;
-  height: 100%;
-  background: #08429f;
-  transform: scaleY(0);
-  transition: 0.3s;
-}
-
-.departments-item:hover::before {
-  transform: scaleY(1);
+  right: 14px;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  color: var(--brand-primary);
+  transform: rotate(-45deg);
+  opacity: 0.55;
 }
 
 .departments-item:hover {
   transform: translateX(8px);
-  background: #eef4ff;
+  border-color: var(--surface-border-strong);
+  background: var(--surface-tint);
 }
 
 .departments-item-logo {
-  width: 58px;
-  height: 58px;
-  border-radius: 16px;
+  width: 54px;
+  height: 54px;
   background: #ffffff;
   overflow: hidden;
-  border: 1px solid #e5eaf3;
+  border: 1px solid var(--surface-border);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -137,24 +257,42 @@
   object-fit: cover;
 }
 
+.departments-item-content {
+  min-width: 0;
+  padding-right: 24px;
+}
+
 .departments-item-content h4 {
   margin: 0;
-  color: #111827;
-  font-size: 17px;
-  font-weight: 800;
+  color: var(--text-primary);
+  font-size: 16px;
+  line-height: 1.35;
+  font-weight: 900;
 }
 
 .departments-item-content p {
   margin: 4px 0 0;
-  color: #6b7280;
-  font-size: 13px;
-  font-weight: 600;
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+@keyframes departmentCardIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes fadeDown {
   from {
     opacity: 0;
-    transform: translateY(-15px);
+    transform: translateY(-12px);
   }
 
   to {
@@ -164,6 +302,7 @@
 }
 
 @media (max-width: 1000px) {
+  .departments-hero,
   .departments-layout {
     grid-template-columns: 1fr;
   }
@@ -171,30 +310,18 @@
 
 @media (max-width: 650px) {
   .departments-page {
-    padding: 24px 16px 50px;
+    padding: 24px 16px 54px;
   }
 
   .departments-faculty-trigger {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 14px;
-  }
-
-  .departments-faculty-meta {
-    padding-left: 0;
+    grid-template-columns: 1fr;
   }
 
   .departments-faculty-image {
-    width: 100%;
-    height: 190px;
+    min-height: 190px;
   }
 
-  .departments-item {
-    grid-template-columns: 54px 1fr;
-  }
-
-  .departments-item-logo {
-    width: 54px;
-    height: 54px;
+  .departments-list {
+    padding: 0 16px 18px 22px;
   }
 }

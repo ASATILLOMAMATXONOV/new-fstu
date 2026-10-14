@@ -7,9 +7,9 @@
   background:
     linear-gradient(
       90deg,
-      #0b2f55 0%,
-      #0f487c 50%,
-      #0b2f55 100%
+      var(--brand-primary-deep) 0%,
+      var(--brand-primary-dark) 50%,
+      var(--brand-primary-deep) 100%
     );
 
   color: #ffffff;
@@ -268,16 +268,11 @@
 
   border:
     1px solid
-    #e8edf2;
+    var(--surface-border);
 
   box-shadow:
     0 18px 45px
-    rgba(
-      10,
-      42,
-      70,
-      0.18
-    );
+    rgba(var(--theme-deep-rgb), 0.18);
 
   opacity: 0;
   visibility: hidden;
@@ -320,11 +315,11 @@
 
   border-left:
     1px solid
-    #e8edf2;
+    var(--surface-border);
 
   border-top:
     1px solid
-    #e8edf2;
+    var(--surface-border);
 
   transform:
     rotate(45deg);
@@ -345,7 +340,7 @@
 
   background: transparent;
 
-  color: #334155;
+  color: var(--text-secondary);
 
   font-size: 14px;
 
@@ -366,7 +361,7 @@
     var(--color-primary);
 
   background:
-    #f3f7fb;
+    var(--surface-soft);
 }
 
 .language-menu button.active {
@@ -374,7 +369,7 @@
     var(--color-primary);
 
   background:
-    #eef5fb;
+    var(--surface-tint);
 
   font-weight: 600;
 }

@@ -2,8 +2,8 @@
   width: 100%;
   padding: 34px 4% 74px;
   background:
-    radial-gradient(circle at top left, rgba(8, 66, 159, 0.08), transparent 30%),
-    linear-gradient(180deg, #f8fbff 0%, #f3f6fb 100%);
+    radial-gradient(circle at top left, rgba(var(--theme-primary-rgb), 0.08), transparent 30%),
+    linear-gradient(180deg, var(--surface-soft) 0%, var(--surface-soft) 100%);
 }
 
 .student-detail-shell {
@@ -24,7 +24,7 @@
 .student-detail-back {
   display: inline-flex;
   align-items: center;
-  color: #08429f;
+  color: var(--brand-primary);
   text-decoration: none;
   font-size: 13px;
   font-weight: 800;
@@ -36,8 +36,8 @@
 
 .student-detail-profile-card {
   background: #ffffff;
-  border: 1px solid #e5eaf3;
-  box-shadow: 0 18px 48px rgba(6, 43, 99, 0.08);
+  border: 1px solid var(--surface-border);
+  box-shadow: 0 18px 48px rgba(var(--theme-dark-rgb), 0.08);
   overflow: hidden;
   animation: studentDetailFadeRight 0.6s ease both;
 }
@@ -46,7 +46,7 @@
   min-height: 260px;
   max-height: 260px;
   overflow: hidden;
-  background: #dfe9ff;
+  background: var(--surface-tint);
 }
 
 .student-detail-photo img {
@@ -63,7 +63,7 @@
   min-height: 260px;
   display: grid;
   place-items: center;
-  color: #08429f;
+  color: var(--brand-primary);
   font-size: 64px;
   font-weight: 900;
 }
@@ -77,7 +77,7 @@
 }
 
 .student-detail-profile-copy span {
-  color: #08429f;
+  color: var(--brand-primary);
   font-size: 12px;
   font-weight: 900;
   letter-spacing: 1px;
@@ -85,7 +85,7 @@
 
 .student-detail-profile-copy h3 {
   margin: 0;
-  color: #111827;
+  color: var(--text-primary);
   font-size: 28px;
   line-height: 1.16;
   font-weight: 900;
@@ -93,7 +93,7 @@
 
 .student-detail-profile-copy p {
   margin: 0;
-  color: #5b6678;
+  color: var(--text-secondary);
   font-size: 14px;
   line-height: 1.65;
   font-weight: 700;
@@ -103,8 +103,8 @@
 .student-detail-empty,
 .student-detail-sidecard {
   background: #ffffff;
-  border: 1px solid #e5eaf3;
-  box-shadow: 0 18px 48px rgba(6, 43, 99, 0.08);
+  border: 1px solid var(--surface-border);
+  box-shadow: 0 18px 48px rgba(var(--theme-dark-rgb), 0.08);
 }
 
 .student-detail-content-card {
@@ -126,13 +126,13 @@
 
 .student-detail-content-head {
   padding: 28px 30px 24px;
-  background: linear-gradient(180deg, #ffffff 0%, #f7faff 100%);
-  border-bottom: 1px solid #e5eaf3;
+  background: linear-gradient(180deg, #ffffff 0%, var(--surface-soft) 100%);
+  border-bottom: 1px solid var(--surface-border);
 }
 
 .student-detail-empty span,
 .student-detail-sidecard span {
-  color: #08429f;
+  color: var(--brand-primary);
   font-size: 12px;
   font-weight: 900;
   letter-spacing: 1px;
@@ -142,7 +142,7 @@
 .student-detail-empty h1,
 .student-detail-sidecard h3 {
   margin: 12px 0 10px;
-  color: #111827;
+  color: var(--text-primary);
   font-size: clamp(26px, 3vw, 38px);
   line-height: 1.15;
   font-weight: 900;
@@ -154,7 +154,7 @@
 
 .student-detail-content-head p {
   margin: 0;
-  color: #5b6678;
+  color: var(--text-secondary);
   font-size: 15px;
   line-height: 1.7;
   font-weight: 700;
@@ -172,8 +172,8 @@
   min-height: 34px;
   align-items: center;
   padding: 0 14px;
-  background: #eef4ff;
-  color: #08429f;
+  background: var(--surface-tint);
+  color: var(--brand-primary);
   font-size: 11px;
   font-weight: 900;
   letter-spacing: 1px;
@@ -185,7 +185,7 @@
 }
 
 .student-detail-content {
-  color: #374151;
+  color: var(--text-secondary);
   font-size: 16px;
   line-height: 1.85;
 }
@@ -193,7 +193,7 @@
 .student-detail-sidecard p,
 .student-detail-empty p {
   margin: 0;
-  color: #5b6678;
+  color: var(--text-secondary);
   font-size: 15px;
   line-height: 1.8;
 }
@@ -241,7 +241,7 @@
 .student-detail-content a.content-file-link,
 .student-detail-content a[download]:not(.attached-files-item),
 .student-detail-content a[href^='data:'] {
-  color: #0000ee;
+  color: var(--brand-primary);
   font-weight: inherit;
   text-decoration: underline;
   text-underline-offset: 2px;
@@ -257,7 +257,7 @@
 }
 
 .student-detail-content a {
-  color: #08429f;
+  color: var(--brand-primary);
   font-weight: 800;
   word-break: break-word;
 }
@@ -269,10 +269,10 @@
   margin: 6px 0;
   padding: 10px 14px;
   border-radius: 999px;
-  background: #eef4ff;
-  border: 1px solid #cddcf3;
-  box-shadow: 0 10px 22px rgba(8, 66, 159, 0.08);
-  color: #0b438d;
+  background: var(--surface-tint);
+  border: 1px solid var(--surface-border);
+  box-shadow: 0 10px 22px rgba(var(--theme-primary-rgb), 0.08);
+  color: var(--brand-primary);
   font-weight: 800;
   text-decoration: none;
   line-height: 1.4;
@@ -288,7 +288,7 @@
   height: 24px;
   padding: 0 8px;
   border-radius: 999px;
-  background: #0b438d;
+  background: var(--brand-primary);
   color: #fff;
   font-size: 10px;
   font-weight: 900;
@@ -311,8 +311,8 @@
 
 .student-detail-sidebar .academic-sidebar {
   background: #ffffff;
-  border: 1px solid #e5eaf3;
-  box-shadow: 0 18px 48px rgba(6, 43, 99, 0.08);
+  border: 1px solid var(--surface-border);
+  box-shadow: 0 18px 48px rgba(var(--theme-dark-rgb), 0.08);
 }
 
 .student-detail-related {
@@ -327,8 +327,8 @@
   gap: 12px;
   align-items: center;
   padding: 12px;
-  background: #f8fbff;
-  border: 1px solid #dbe6f4;
+  background: var(--surface-soft);
+  border: 1px solid var(--surface-border);
   text-decoration: none;
   opacity: 0;
   transform: translateY(14px);
@@ -338,8 +338,8 @@
 
 .student-detail-related-link:hover {
   transform: translateY(-3px);
-  border-color: #c4d9fa;
-  box-shadow: 0 14px 28px rgba(8, 66, 159, 0.08);
+  border-color: var(--surface-border-strong);
+  box-shadow: 0 14px 28px rgba(var(--theme-dark-rgb), 0.08);
 }
 
 .student-detail-related-media,
@@ -358,8 +358,8 @@
 .student-detail-related-placeholder {
   display: grid;
   place-items: center;
-  background: linear-gradient(135deg, #eef4ff 0%, #dfe9ff 100%);
-  color: #08429f;
+  background: linear-gradient(135deg, var(--surface-tint) 0%, var(--surface-tint) 100%);
+  color: var(--brand-primary);
   font-size: 24px;
   font-weight: 900;
 }
@@ -370,7 +370,7 @@
 
 .student-detail-related-copy strong {
   display: block;
-  color: #08295f;
+  color: var(--brand-primary-dark);
   font-size: 14px;
   font-weight: 900;
   line-height: 1.35;
@@ -379,7 +379,7 @@
 .student-detail-related-copy span {
   display: block;
   margin-top: 4px;
-  color: #64748b;
+  color: var(--text-secondary);
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0;

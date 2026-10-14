@@ -11,8 +11,8 @@
 .academic-pages-box,
 .academic-sidebar-announcements {
   background: #ffffff;
-  border: 1px solid #e3e8f2;
-  box-shadow: 0 18px 45px rgba(15, 36, 74, 0.08);
+  border: 1px solid #e3f2f1;
+  box-shadow: 0 18px 45px rgba(var(--theme-dark-rgb), 0.08);
   overflow: hidden;
 }
 
@@ -25,10 +25,10 @@
 .academic-sidebar-announcements-head {
   margin: 0;
   padding: 18px 20px;
-  color: #12153f;
+  color: var(--text-primary);
   font-size: 17px;
   font-weight: 900;
-  border-bottom: 1px solid #edf1f7;
+  border-bottom: 1px solid var(--surface-border);
 }
 
 .academic-dean-photo-wrap {
@@ -41,14 +41,14 @@
   display: block;
   object-fit: cover;
   object-position: center top;
-  background: #eef3fb;
+  background: var(--surface-tint);
 }
 
 .academic-dean-photo-empty {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #0b4aad;
+  color: var(--brand-primary);
   font-size: 54px;
   font-weight: 900;
 }
@@ -60,7 +60,7 @@
 
 .academic-dean-body h4 {
   margin: 0;
-  color: #12153f;
+  color: var(--text-primary);
   font-size: 18px;
   line-height: 1.35;
   font-weight: 900;
@@ -68,7 +68,7 @@
 
 .academic-dean-body p {
   margin: 6px 0 0;
-  color: #7d8498;
+  color: var(--text-muted);
   font-size: 14px;
   line-height: 1.45;
   font-weight: 600;
@@ -85,8 +85,8 @@
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  background: #f3f5fb;
-  color: #174aa2;
+  background: var(--surface-soft);
+  color: var(--brand-primary);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -100,7 +100,7 @@
 }
 
 .academic-dean-social a:hover {
-  background: #174aa2;
+  background: var(--brand-primary);
   color: #ffffff;
   transform: translateY(-3px);
 }
@@ -108,12 +108,12 @@
 .academic-dean-info {
   margin: 0 20px 20px;
   padding-top: 18px;
-  border-top: 1px solid #e7ecf4;
+  border-top: 1px solid var(--surface-border);
 }
 
 .academic-dean-info h4 {
   margin: 0 0 14px;
-  color: #12153f;
+  color: var(--text-primary);
   font-size: 15px;
   font-weight: 900;
 }
@@ -131,8 +131,8 @@
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  background: #f2f5fb;
-  color: #174aa2;
+  background: var(--surface-tint);
+  color: var(--brand-primary);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -145,7 +145,7 @@
 
 .academic-dean-info-row p {
   margin: 0;
-  color: #6f7689;
+  color: var(--text-secondary);
   font-size: 13px;
   line-height: 1.45;
   font-weight: 600;
@@ -159,8 +159,8 @@
   margin: 16px auto 0;
   padding: 0 16px;
   border-radius: 8px;
-  background: #eef3ff;
-  color: #174aa2;
+  background: var(--surface-tint);
+  color: var(--brand-primary);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -172,7 +172,7 @@
 }
 
 .academic-dean-btn:hover {
-  background: #174aa2;
+  background: var(--brand-primary);
   color: #ffffff;
 }
 
@@ -185,16 +185,16 @@
 .academic-search-box input {
   min-height: 44px;
   padding: 0 14px;
-  border: 1px solid #dfe5ef;
+  border: 1px solid var(--surface-border);
   border-right: 0;
   outline: none;
-  color: #172554;
+  color: var(--text-primary);
   font-size: 13px;
 }
 
 .academic-search-box button {
   border: 0;
-  background: #174aa2;
+  background: var(--brand-primary);
   color: #ffffff;
   font-size: 12px;
   font-weight: 800;
@@ -219,7 +219,7 @@
   min-height: 54px;
   padding: 0 18px;
   border: 0;
-  border-bottom: 1px solid #edf1f7;
+  border-bottom: 1px solid var(--surface-border);
   background: #ffffff;
   text-decoration: none;
   cursor: pointer;
@@ -237,8 +237,8 @@
   height: 30px;
   flex: 0 0 30px;
   border-radius: 50%;
-  background: #edf3ff;
-  color: #174aa2;
+  background: var(--surface-tint);
+  color: var(--brand-primary);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -251,7 +251,7 @@
 }
 
 .academic-sidebar-link strong {
-  color: #12153f;
+  color: var(--text-primary);
   font-size: 15px;
   font-weight: 900;
   line-height: 1.35;
@@ -260,7 +260,7 @@
 
 .academic-sidebar-link:hover,
 .academic-sidebar-link.is-active {
-  background: #08429f;
+  background: var(--brand-primary-dark);
 }
 
 .academic-sidebar-link:hover strong,
@@ -271,15 +271,15 @@
 .academic-sidebar-link:hover .academic-sidebar-icon,
 .academic-sidebar-link.is-active .academic-sidebar-icon {
   background: #ffffff;
-  color: #08429f;
+  color: var(--brand-primary-dark);
   transform: translateX(4px);
 }
 
 .academic-sidebar-empty {
   padding: 14px;
-  background: #f8fbff;
-  border: 1px dashed #d5e0ef;
-  color: #67748a;
+  background: var(--surface-soft);
+  border: 1px dashed var(--surface-border);
+  color: var(--text-secondary);
   font-size: 13px;
 }
 
@@ -297,13 +297,13 @@
 
 .academic-sidebar-announcements-head h4 {
   margin: 0;
-  color: #12153f;
+  color: var(--text-primary);
   font-size: 17px;
   font-weight: 900;
 }
 
 .academic-sidebar-announcements-all {
-  color: #174aa2;
+  color: var(--brand-primary);
   text-decoration: none;
   font-size: 12px;
   font-weight: 900;
@@ -325,7 +325,7 @@
   align-items: center;
   min-height: 88px;
   padding: 12px 14px;
-  border-bottom: 1px solid #edf1f7;
+  border-bottom: 1px solid var(--surface-border);
   background: #ffffff;
   text-decoration: none;
   transition: 0.25s ease;
@@ -336,14 +336,14 @@
 }
 
 .academic-sidebar-announcement-card:hover {
-  background: #eef5ff;
+  background: var(--surface-tint);
 }
 
 .academic-sidebar-announcement-image {
   width: 86px;
   height: 66px;
   overflow: hidden;
-  background: #eef5ff;
+  background: var(--surface-tint);
 }
 
 .academic-sidebar-announcement-image img,
@@ -361,13 +361,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #08429f;
+  color: var(--brand-primary);
   font-size: 14px;
   font-weight: 900;
 }
 
 .academic-sidebar-announcement-card strong {
-  color: #12153f;
+  color: var(--text-primary);
   font-size: 13px;
   line-height: 1.45;
   font-weight: 900;
@@ -375,14 +375,14 @@
 }
 
 .academic-sidebar-announcement-card:hover strong {
-  color: #08429f;
+  color: var(--brand-primary-dark);
 }
 
 .academic-sidebar-announcement-empty {
   padding: 14px;
-  background: #f8fbff;
-  border: 1px dashed #d5e0ef;
-  color: #67748a;
+  background: var(--surface-soft);
+  border: 1px dashed var(--surface-border);
+  color: var(--text-secondary);
   font-size: 13px;
   line-height: 1.6;
 }
@@ -420,7 +420,7 @@
   }
 
   .academic-search-box input {
-    border-right: 1px solid #dfe5ef;
+    border-right: 1px solid var(--surface-border);
   }
 
   .academic-search-box button {

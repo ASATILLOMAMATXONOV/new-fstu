@@ -1,61 +1,191 @@
 .admission-page {
   width: 100%;
-  padding: 50px 4% 76px;
-  background: #f6f8fb;
+  padding: 36px 4% 78px;
+  background:
+    radial-gradient(circle at 86% 12%, rgba(var(--theme-primary-rgb), 0.16), transparent 28%),
+    linear-gradient(180deg, #ffffff 0%, var(--surface-soft) 100%);
 }
 
 .admission-page-shell {
-  max-width: 1180px;
+  max-width: 1220px;
   margin: 0 auto;
 }
 
-.admission-page-card {
+.admission-page-hero {
+  min-height: 360px;
+  margin-bottom: 24px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 24px;
+  align-items: stretch;
+}
+
+.admission-page-hero > div:first-child {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(32px, 5vw, 62px);
+  background:
+    linear-gradient(135deg, rgba(var(--theme-deep-rgb), 0.98), rgba(var(--theme-dark-rgb), 0.92)),
+    var(--brand-primary-deep);
+  color: #ffffff;
+}
+
+.admission-page-hero > div:first-child::after {
+  content: '';
+  position: absolute;
+  right: -95px;
+  top: 50%;
+  width: 260px;
+  height: 260px;
+  border: 38px solid rgba(255, 255, 255, 0.08);
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.admission-page-hero span {
+  display: inline-flex;
+  min-height: 32px;
+  align-items: center;
+  padding: 0 13px;
+  background: rgba(255, 255, 255, 0.13);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.15em;
+}
+
+.admission-page-hero h1 {
+  max-width: 720px;
+  margin: 22px 0 14px;
+  color: #ffffff;
+  font-size: clamp(40px, 5.8vw, 76px);
+  line-height: 0.95;
+  font-weight: 950;
+}
+
+.admission-page-hero p {
+  max-width: 660px;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 17px;
+  line-height: 1.75;
+}
+
+.admission-page-orbit {
+  position: relative;
+  min-height: 360px;
   background: #ffffff;
-  border: 1px solid #e5eaf3;
-  box-shadow: 0 16px 45px rgba(6, 43, 99, 0.08);
+  border: 1px solid var(--surface-border);
+  box-shadow: 0 18px 46px rgba(var(--theme-dark-rgb), 0.08);
   overflow: hidden;
 }
 
-.admission-page-head {
-  padding: 30px 34px 24px;
-  border-bottom: 1px solid #e5eaf3;
-  background:
-    radial-gradient(circle at top left, rgba(8, 66, 159, 0.08), transparent 34%),
-    linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+.admission-page-orbit::before,
+.admission-page-orbit::after {
+  content: '';
+  position: absolute;
+  inset: 46px;
+  border: 1px solid rgba(var(--theme-primary-rgb), 0.22);
+  transform: rotate(45deg);
 }
 
-.admission-page-label {
+.admission-page-orbit::after {
+  inset: 92px;
+  background: rgba(var(--theme-primary-rgb), 0.06);
+}
+
+.admission-page-orbit span {
+  position: absolute;
+  left: calc(50% + cos(var(--orbit-index) * 120deg) * 98px);
+  top: calc(50% + sin(var(--orbit-index) * 120deg) * 98px);
+  width: 58px;
+  height: 58px;
+  padding: 0;
   display: inline-flex;
   align-items: center;
-  min-height: 32px;
-  padding: 0 14px;
-  border-radius: 999px;
-  background: #e8f1ff;
-  color: #08429f;
-  font-size: 11px;
-  font-weight: 900;
-  letter-spacing: 1px;
+  justify-content: center;
+  background: var(--brand-primary);
+  color: #ffffff;
+  border: 8px solid #ffffff;
+  box-shadow: 0 16px 26px rgba(var(--theme-dark-rgb), 0.16);
+  font-size: 18px;
+  font-weight: 950;
+  transform: translate(-50%, -50%);
 }
 
-.admission-page-head h1 {
-  margin: 16px 0 10px;
-  color: #0f172a;
-  font-size: clamp(28px, 3vw, 40px);
-  line-height: 1.15;
-  font-weight: 900;
+.admission-page-orbit span:nth-child(1) {
+  left: 50%;
+  top: 22%;
 }
 
-.admission-page-head p {
-  max-width: 780px;
-  margin: 0;
-  color: #64748b;
-  font-size: 15px;
-  line-height: 1.75;
+.admission-page-orbit span:nth-child(2) {
+  left: 72%;
+  top: 66%;
+}
+
+.admission-page-orbit span:nth-child(3) {
+  left: 28%;
+  top: 66%;
+}
+
+.admission-page-card {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  align-items: start;
+  background: #ffffff;
+  border: 1px solid var(--surface-border);
+  box-shadow: 0 18px 46px rgba(var(--theme-dark-rgb), 0.08);
+  overflow: hidden;
+}
+
+.admission-page-steps {
+  position: sticky;
+  top: 105px;
+  display: grid;
+  gap: 0;
+  padding: 20px;
+  background:
+    linear-gradient(180deg, rgba(var(--theme-primary-rgb), 0.08), rgba(var(--theme-primary-rgb), 0.02)),
+    var(--surface-soft);
+}
+
+.admission-page-step {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 12px;
+  align-items: center;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--surface-border);
+}
+
+.admission-page-step:last-child {
+  border-bottom: 0;
+}
+
+.admission-page-step span {
+  width: 42px;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--brand-primary-dark);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 950;
+}
+
+.admission-page-step strong {
+  color: var(--text-primary);
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.admission-page-content {
+  min-width: 0;
 }
 
 .admission-page-body {
   padding: 34px;
-  color: #334155;
+  color: var(--text-secondary);
   font-size: 16px;
   line-height: 1.9;
 }
@@ -82,7 +212,7 @@
 .admission-page-body h5,
 .admission-page-body h6 {
   margin: 28px 0 12px;
-  color: #0f172a;
+  color: var(--text-primary);
   line-height: 1.3;
   font-weight: 900;
 }
@@ -98,14 +228,14 @@
 }
 
 .admission-page-body a {
-  color: #08429f;
+  color: var(--brand-primary);
   font-weight: 800;
 }
 
 .admission-page-body a.content-file-link,
 .admission-page-body a[download]:not(.attached-files-item),
 .admission-page-body a[href^='data:'] {
-  color: #0000ee;
+  color: var(--brand-primary);
   font-weight: inherit;
   text-decoration: underline;
   text-underline-offset: 2px;
@@ -126,11 +256,10 @@
   gap: 10px;
   margin: 6px 0;
   padding: 10px 14px;
-  border-radius: 999px;
-  background: #eef4ff;
-  border: 1px solid #cddcf3;
-  box-shadow: 0 10px 22px rgba(8, 66, 159, 0.08);
-  color: #0b438d;
+  background: var(--surface-tint);
+  border: 1px solid var(--surface-border);
+  box-shadow: 0 10px 22px rgba(var(--theme-primary-rgb), 0.08);
+  color: var(--brand-primary);
   font-weight: 800;
   text-decoration: none;
   line-height: 1.4;
@@ -145,8 +274,7 @@
   min-width: 44px;
   height: 24px;
   padding: 0 8px;
-  border-radius: 999px;
-  background: #0b438d;
+  background: var(--brand-primary);
   color: #fff;
   font-size: 10px;
   font-weight: 900;
@@ -169,34 +297,66 @@
   justify-content: center;
   min-height: 52px;
   padding: 0 24px;
-  border-radius: 999px;
-  background: linear-gradient(135deg, #0d2d67 0%, #1351b4 100%);
+  background: var(--brand-primary-deep);
   color: #ffffff;
   text-decoration: none;
   font-size: 14px;
-  font-weight: 800;
-  box-shadow: 0 16px 32px rgba(16, 59, 130, 0.2);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  font-weight: 900;
+  box-shadow: 0 16px 32px rgba(var(--theme-dark-rgb), 0.2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
 .admission-page-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 20px 36px rgba(16, 59, 130, 0.26);
+  background: var(--brand-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 20px 36px rgba(var(--theme-primary-rgb), 0.26);
 }
 
-@media (max-width: 767px) {
-  .admission-page {
-    padding: 32px 14px 56px;
+@media (max-width: 900px) {
+  .admission-page-hero,
+  .admission-page-card {
+    grid-template-columns: 1fr;
   }
 
-  .admission-page-head,
+  .admission-page-steps {
+    position: static;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .admission-page-step {
+    grid-template-columns: 1fr;
+    align-items: start;
+    border-bottom: 0;
+    border-right: 1px solid var(--surface-border);
+  }
+
+  .admission-page-step:last-child {
+    border-right: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .admission-page {
+    padding: 24px 16px 56px;
+  }
+
+  .admission-page-orbit {
+    min-height: 260px;
+  }
+
+  .admission-page-steps {
+    grid-template-columns: 1fr;
+  }
+
+  .admission-page-step {
+    grid-template-columns: 44px 1fr;
+    border-right: 0;
+    border-bottom: 1px solid var(--surface-border);
+  }
+
   .admission-page-body,
   .admission-page-actions {
     padding-left: 20px;
     padding-right: 20px;
-  }
-
-  .admission-page-head h1 {
-    font-size: 30px;
   }
 }

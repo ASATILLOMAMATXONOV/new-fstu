@@ -1,370 +1,218 @@
-import React, { useEffect, useMemo, useState } from 'react';
+
+import React, { useMemo } from 'react';
 import '../../assets/styles/HomeInfoSection.css';
 
 import AppLink from '../common/AppLink';
-import { useLanguage } from '../../context/LanguageContext';
 import { useContentList } from '../../hooks/useContentList';
-import { useSetting } from '../../hooks/useSetting';
-import { getSiteMessages } from '../../locales/site';
-import {
-  formatCmsDate,
-  getHtmlExcerpt,
-  getLocalizedValue,
-  getTranslatedField,
-  sortContentByNewest,
-  stripHtml
-} from '../../utils/cms';
+import { getTranslatedField } from '../../utils/cms';
 
-import card1 from '../../assets/optimized/card-1.jpg';
-import card2 from '../../assets/optimized/card-2.jpg';
-import card3 from '../../assets/optimized/card-3.jpg';
+function QuickLinkIcon({ name }) {
+  const common = {
+    width: 34,
+    height: 34,
+    viewBox: '0 0 24 24',
+    fill: 'none',
+    stroke: 'currentColor',
+    strokeWidth: 1.65,
+    strokeLinecap: 'round',
+    strokeLinejoin: 'round',
+    'aria-hidden': true
+  };
 
-function SectionArrowIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M5 12h14M13 6l6 6-6 6" />
-    </svg>
-  );
-}
+  switch (name) {
+    case 'BankOutlined':
+    case 'university':
+      return (
+        <svg {...common}>
+          <path d="m3 10 9-7 9 7M5 10v10m4-10v10m6-10v10m4-10v10M3 21h18M3 10h18" />
+        </svg>
+      );
 
-function DirectionIcon() {
-  return (
-    <span className="direction-icon">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M12 3L19.5 7.5V16.5L12 21L4.5 16.5V7.5L12 3Z" />
-        <path d="M12 8.2A2.2 2.2 0 1 1 9.8 10.4A2.2 2.2 0 0 1 12 8.2Z" />
-        <path d="M12 12.6V15.8" />
-      </svg>
-    </span>
-  );
-}
+    case 'ReadOutlined':
+    case 'book':
+      return (
+        <svg {...common}>
+          <path d="M12 6c-3-2-6-2-9-1v14c3-1 6-1 9 1m0-14c3-2 6-2 9-1v14c-3-1-6-1-9 1m0-14v14" />
+        </svg>
+      );
 
-function AdmissionIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M3 8L12 4L21 8L12 12L3 8Z" />
-      <path d="M7 10.5V15.5C7 17 9.2 18.5 12 18.5C14.8 18.5 17 17 17 15.5V10.5" />
-      <path d="M21 8V14" />
-    </svg>
-  );
-}
+    case 'graduation':
+      return (
+        <svg {...common}>
+          <path d="m2 9 10-5 10 5-10 5L2 9Zm5 3v5c3 3 7 3 10 0v-5M22 9v7" />
+        </svg>
+      );
 
-function getDirectionHref(item) {
-  if (!item) return '/departments';
+    case 'TeamOutlined':
+    case 'users':
+      return (
+        <svg {...common}>
+          <circle cx="9" cy="8" r="3" />
+          <path d="M3 20v-2a6 6 0 0 1 12 0v2H3Zm13-15a3 3 0 0 1 0 6m1 3a5 5 0 0 1 4 5v1h-4" />
+        </svg>
+      );
 
-  const customUrl = item.url || item.href || item.link;
+    case 'GlobalOutlined':
+      return (
+        <svg {...common}>
+          <circle cx="12" cy="12" r="9" />
+          <path d="M3 12h18M12 3c2.1 2.5 3.1 5.5 3.1 9S14.1 18.5 12 21M12 3c-2.1 2.5-3.1 5.5-3.1 9S9.9 18.5 12 21" />
+        </svg>
+      );
 
-  if (
-    customUrl &&
-    customUrl !== '/' &&
-    customUrl !== '#' &&
-    customUrl !== '/#' &&
-    !customUrl.includes('undefined') &&
-    !customUrl.includes('null')
-  ) {
-    return customUrl;
+    case 'SettingOutlined':
+      return (
+        <svg {...common}>
+          <path d="M12 15.2A3.2 3.2 0 1 0 12 8.8a3.2 3.2 0 0 0 0 6.4Z" />
+          <path d="M12 2.5v2.1m0 14.8v2.1m7.1-17.6-1.5 1.5M6.4 17.6l-1.5 1.5m16.6-7.1h-2.1M4.6 12H2.5m16.6 7.1-1.5-1.5M6.4 6.4 4.9 4.9" />
+        </svg>
+      );
+
+    default:
+      return (
+        <svg {...common}>
+          <rect x="3" y="5" width="18" height="16" rx="2" />
+          <path d="M7 3v4m10-4v4M3 10h18m-13 4h3m3 0h2" />
+        </svg>
+      );
   }
-
-  if (item.facultyId && item.departmentId) {
-    return `/departments/${item.facultyId}/${item.departmentId}`;
-  }
-
-  if (item.facultyId) {
-    return `/faculties/${item.facultyId}`;
-  }
-
-  return '/departments';
 }
 
-function getDirectionDetailsHref(item) {
-  if (item?.facultyId && item?.departmentId) {
-    return `/departments/${item.facultyId}/${item.departmentId}#attached-directions`;
-  }
-
-  return getDirectionHref(item);
-}
-
-function sortByOrder(items = []) {
-  return [...items].sort((left, right) => Number(left.order || 0) - Number(right.order || 0));
+function isExternalHref(href = '') {
+  return /^(https?:|mailto:|tel:)/i.test(href);
 }
 
 function HomeInfoSection() {
-  const { currentLanguageCode } = useLanguage();
-
-  const texts = React.useMemo(
-    () => getSiteMessages(currentLanguageCode).home.homeInfo,
-    [currentLanguageCode]
-  );
-
-  const [activeDirectionIndex, setActiveDirectionIndex] = useState(0);
-  const [activeNewsIndex, setActiveNewsIndex] = useState(0);
-
-  const { item: admissionSetting } = useSetting('admission-cta', {
-    revalidate: true
-  });
-  const { items: newsItems } = useContentList('news', {
-    limit: 8,
-    orderBy: 'recent',
-    revalidate: true
-  });
-  const { items: directionItems } = useContentList('directions', {
-    summaryOnly: false,
+  const { items } = useContentList('advantages', {
     revalidate: true
   });
 
-  const featuredNews = useMemo(() => sortContentByNewest(newsItems).slice(0, 4), [newsItems]);
+  const links = useMemo(() => {
+    return (items || [])
+      .filter((item) => item?.active !== false)
+      .map((item, index) => {
+        const title = getTranslatedField(
+          item,
+          'title',
+          item.title || ''
+        );
 
-  const directions = useMemo(
-    () =>
-      sortByOrder(directionItems)
-        .map((item, index) => {
-          const title = getTranslatedField(item, 'title', item.title || texts.facultyFallbackTitle);
-          const content = getHtmlExcerpt(getTranslatedField(item, 'content') || '', 170);
-          const order = Number(item.order || index + 1);
+        const description = getTranslatedField(
+          item,
+          'description',
+          item.description || item.subtitle || ''
+        );
 
-          return {
-            id: item.id || item._id || index,
-            title,
-            href: getDirectionHref(item),
-            detailsHref: getDirectionDetailsHref(item),
-            image: item.image || [card1, card2, card3][index % 3],
-            promoTitle: title,
-            promoText:
-              content || texts.directionPromoFallback || `${title} ${texts.detailsAction || 'Batafsil'}`,
-            promoTag: texts.directionOrderTag ? texts.directionOrderTag(order) : `${order}`
-          };
-        }),
-    [directionItems, texts]
-  );
+        return {
+          ...item,
+          id: item.id ?? item._id ?? index,
+          title,
+          description,
+          href: item.link || '',
+          featured: Boolean(
+            item.featured || item.metadata?.featured
+          )
+        };
+      })
+      .filter((item) => item.title)
+      .sort(
+        (left, right) =>
+          Number(left.order || 0) - Number(right.order || 0)
+      );
+  }, [items]);
 
-  const activeDirection = directions[activeDirectionIndex] || null;
-
-  useEffect(() => {
-    if (!directions.length) {
-      setActiveDirectionIndex(0);
-      return;
-    }
-
-    if (activeDirectionIndex > directions.length - 1) {
-      setActiveDirectionIndex(0);
-    }
-  }, [activeDirectionIndex, directions.length]);
-
-  useEffect(() => {
-    if (directions.length < 2) return undefined;
-
-    const intervalId = window.setInterval(() => {
-      setActiveDirectionIndex((currentIndex) => (currentIndex + 1) % directions.length);
-    }, 4200);
-
-    return () => window.clearInterval(intervalId);
-  }, [directions.length]);
-
-  useEffect(() => {
-    if (!featuredNews.length) {
-      setActiveNewsIndex(0);
-      return;
-    }
-
-    if (activeNewsIndex > featuredNews.length - 1) {
-      setActiveNewsIndex(0);
-    }
-  }, [activeNewsIndex, featuredNews.length]);
-
-  useEffect(() => {
-    if (featuredNews.length < 2) return undefined;
-
-    const intervalId = window.setInterval(() => {
-      setActiveNewsIndex((currentIndex) => (currentIndex + 1) % featuredNews.length);
-    }, 3600);
-
-    return () => window.clearInterval(intervalId);
-  }, [featuredNews.length]);
-
-  const admissionData = useMemo(() => {
-    const isConfigured = Boolean(admissionSetting);
-    const isVisible = !isConfigured || admissionSetting.active !== false;
-
-    return {
-      isVisible,
-      title: getLocalizedValue(admissionSetting?.title, texts.admissionTitle),
-      content: stripHtml(getLocalizedValue(admissionSetting?.content, texts.admissionText))
-    };
-  }, [admissionSetting, texts]);
-
-  const handleDirectionClick = (_item, index) => {
-    setActiveDirectionIndex(index);
-  };
+  if (!links.length) {
+    return null;
+  }
 
   return (
-    <section className="home-info-section">
-      <div className="home-info-shell">
-        <div className="home-info-grid">
-          <article className="directions-studio">
-            <div className="directions-panel">
-              <div className="card-header">
-                <h3>{texts.directionsTitle}</h3>
+    <section
+      className="home-info-section"
+      aria-label="Tezkor havolalar"
+    >
+      <nav
+        className="home-info-links"
+        aria-label="Asosiy bo‘limlar"
+        style={{
+          '--home-info-columns': Math.min(links.length, 5)
+        }}
+      >
+        {links.map((item) => {
+          const className = [
+            'home-info-link',
+            item.featured ? 'is-featured' : ''
+          ]
+            .filter(Boolean)
+            .join(' ');
 
-                <AppLink href="/departments" className="card-link">
-                  <span>{texts.seeAll}</span>
-                  <SectionArrowIcon />
-                </AppLink>
-              </div>
-
-              <div className="directions-stage">
-                {directions.length ? (
-                  <>
-                    <ul className="directions-list">
-                      {directions.map((item, index) => (
-                        <li key={item.id || item.title}>
-                          <button
-                            type="button"
-                            className={`direction-link ${
-                              index === activeDirectionIndex ? 'active' : ''
-                            }`}
-                            onMouseEnter={() => setActiveDirectionIndex(index)}
-                            onFocus={() => setActiveDirectionIndex(index)}
-                            onClick={() => handleDirectionClick(item, index)}
-                          >
-                            <DirectionIcon />
-                            <span>{item.title}</span>
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
-
-                    <div className="direction-preview" key={activeDirection.id || activeDirection.title}>
-                      <img
-                        src={activeDirection.image}
-                        alt={activeDirection.title}
-                        width="560"
-                        height="350"
-                        loading="lazy"
-                        decoding="async"
-                      />
-
-                      <div className="direction-preview-copy">
-                        <span className="promo-tag">{activeDirection.promoTag}</span>
-                        <h3>{activeDirection.promoTitle}</h3>
-                        <p>{activeDirection.promoText}</p>
-
-                        <AppLink href={activeDirection.detailsHref || activeDirection.href} className="promo-details-link">
-                          <span>{texts.detailsAction || 'Batafsil'}</span>
-                          <SectionArrowIcon />
-                        </AppLink>
-                      </div>
-                    </div>
-                  </>
+          const content = (
+            <>
+              <span className="home-info-icon">
+                {item.mediaType === 'image' && item.image ? (
+                  <img
+                    src={item.image}
+                    alt=""
+                    width="34"
+                    height="34"
+                    loading="lazy"
+                    decoding="async"
+                  />
                 ) : (
-                  <div className="directions-empty-state">
-                    <p>{texts.directionsEmptyTitle}</p>
-
-                    <AppLink href="/departments" className="card-link">
-                      <span>{texts.directionsEmptyAction}</span>
-                      <SectionArrowIcon />
-                    </AppLink>
-                  </div>
+                  <QuickLinkIcon name={item.icon} />
                 )}
-              </div>
-            </div>
-          </article>
+              </span>
 
-          {admissionData.isVisible ? (
-            <aside className="admission-card" aria-label={admissionData.title}>
-              <div className="admission-copy">
-                <span className="admission-kicker">{texts.directionsPromoTag}</span>
-                <h3>{admissionData.title}</h3>
-                <p>{admissionData.content}</p>
-              </div>
+              <span className="home-info-title">
+                {item.title}
+              </span>
 
-              <div className="admission-bg-icon">
-                <AdmissionIcon />
-              </div>
-            </aside>
-          ) : null}
+              {item.description && (
+                <span className="home-info-desc">
+                  {item.description}
+                </span>
+              )}
 
-          <article className="news-studio">
-            <div className="card-header">
-              <h3>{texts.newsTitle}</h3>
-
-              <AppLink href="/news" className="card-link">
-                <span>{texts.seeAll}</span>
-                <SectionArrowIcon />
-              </AppLink>
-            </div>
-
-            {featuredNews.length ? (
-              <div className="news-slider" aria-live="polite">
-                <div
-                  className="news-track"
-                  style={{ transform: `translateX(-${activeNewsIndex * 100}%)` }}
+              {item.featured && (
+                <span
+                  className="home-info-arrow"
+                  aria-hidden="true"
                 >
-                  {featuredNews.map((item, index) => {
-                    const title = getTranslatedField(item, 'title', item.title || texts.newsFallbackTitle);
-                    const image = item.image || [card1, card2, card3][index % 3];
-                    const nextItem = featuredNews[(index + 1) % featuredNews.length];
-                    const hoverImage = nextItem?.image || [card2, card3, card1][index % 3];
-                    const dateLabel = formatCmsDate(item.createdAt);
-                    const machineDate = item.createdAt
-                      ? new Date(item.createdAt).toISOString()
-                      : undefined;
+                  ↗
+                </span>
+              )}
+            </>
+          );
 
-                    return (
-                      <div className="news-slide" key={item.id || title}>
-                        <AppLink href={`/news/page/${item.id}`} className="news-item">
-                          <span className="news-flip-media">
-                            <img
-                              className="news-img-front"
-                              src={image}
-                              alt={title}
-                              width="420"
-                              height="240"
-                              loading="lazy"
-                              decoding="async"
-                            />
-                            <img
-                              className="news-img-back"
-                              src={hoverImage}
-                              alt=""
-                              width="420"
-                              height="240"
-                              loading="lazy"
-                              decoding="async"
-                            />
-                          </span>
+          if (!item.href) {
+            return (
+              <article
+                key={item.id}
+                className={className}
+              >
+                {content}
+              </article>
+            );
+          }
 
-                          <span className="news-copy">
-                            <time dateTime={machineDate}>{dateLabel || texts.noDate}</time>
-                            <span className="news-title">{title}</span>
-                          </span>
-                        </AppLink>
-                      </div>
-                    );
-                  })}
-                </div>
-
-                <div className="news-dots" aria-hidden="true">
-                  {featuredNews.map((item, index) => (
-                    <span
-                      className={index === activeNewsIndex ? 'active' : ''}
-                      key={item.id || index}
-                    />
-                  ))}
-                </div>
-              </div>
-            ) : (
-              <div className="news-empty-state">
-                <p>{texts.newsEmptyTitle}</p>
-
-                <AppLink href="/news" className="card-link">
-                  <span>{texts.newsEmptyAction}</span>
-                  <SectionArrowIcon />
-                </AppLink>
-              </div>
-            )}
-          </article>
-        </div>
-      </div>
+          return (
+            <AppLink
+              key={item.id}
+              href={item.href}
+              className={className}
+              {...(
+                isExternalHref(item.href)
+                  ? {
+                      target: '_blank',
+                      rel: 'noopener noreferrer'
+                    }
+                  : {}
+              )}
+            >
+              {content}
+            </AppLink>
+          );
+        })}
+      </nav>
     </section>
   );
 }

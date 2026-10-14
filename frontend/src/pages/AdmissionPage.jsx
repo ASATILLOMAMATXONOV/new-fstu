@@ -47,31 +47,57 @@ function AdmissionPage() {
   const buttonText = getLocalizedValue(item?.buttonText, texts.action);
   const buttonUrl = normalizeAdmissionUrl(item?.buttonUrl);
   const showAction = !isAdmissionPageUrl(buttonUrl);
+  const steps = [
+    'Hujjatlarni tayyorlash',
+    'Arizani yuborish',
+    'Natijani kuzatish'
+  ];
 
   return (
     <main className="admission-page">
       <div className="admission-page-shell">
-        <section className="admission-page-card">
-          <header className="admission-page-head">
-            <span className="admission-page-label">{texts.label}</span>
+        <section className="admission-page-hero">
+          <div>
+            <span>{texts.label}</span>
             <h1>{title}</h1>
             <p>{texts.description}</p>
-          </header>
+          </div>
 
-          <div
-            className="admission-page-body"
-            dangerouslySetInnerHTML={createSafeMarkup(
-              formatAdmissionHtml(content, texts.emptyContent)
-            )}
-          />
+          <div className="admission-page-orbit" aria-hidden="true">
+            {steps.map((step, index) => (
+              <span key={step} style={{ '--orbit-index': index }}>
+                {index + 1}
+              </span>
+            ))}
+          </div>
+        </section>
 
-          {showAction ? (
-            <div className="admission-page-actions">
-              <AppLink href={buttonUrl} className="admission-page-btn">
-                <span>{buttonText}</span>
-              </AppLink>
-            </div>
-          ) : null}
+        <section className="admission-page-card">
+          <aside className="admission-page-steps">
+            {steps.map((step, index) => (
+              <div key={step} className="admission-page-step">
+                <span>{String(index + 1).padStart(2, '0')}</span>
+                <strong>{step}</strong>
+              </div>
+            ))}
+          </aside>
+
+          <div className="admission-page-content">
+            <div
+              className="admission-page-body"
+              dangerouslySetInnerHTML={createSafeMarkup(
+                formatAdmissionHtml(content, texts.emptyContent)
+              )}
+            />
+
+            {showAction ? (
+              <div className="admission-page-actions">
+                <AppLink href={buttonUrl} className="admission-page-btn">
+                  <span>{buttonText}</span>
+                </AppLink>
+              </div>
+            ) : null}
+          </div>
         </section>
       </div>
     </main>

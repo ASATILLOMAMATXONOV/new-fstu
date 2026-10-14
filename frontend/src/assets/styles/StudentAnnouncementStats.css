@@ -18,7 +18,7 @@
   background: #ffffff;
   /* border-radius: 10px; */
   padding: 24px;
-  box-shadow: 0 8px 24px rgba(6, 43, 99, 0.07);
+  box-shadow: 0 8px 24px rgba(var(--theme-dark-rgb), 0.07);
 }
 
 .sas-header {
@@ -30,13 +30,13 @@
 
 .sas-header h3 {
   margin: 0;
-  color: #062b63;
+  color: var(--brand-primary);
   font-size: 19px;
   font-weight: 800;
 }
 
 .sas-header a {
-  color: #062b63;
+  color: var(--brand-primary);
   font-size: 11px;
   font-weight: 700;
   text-decoration: none;
@@ -55,7 +55,7 @@
   align-items: center;
   text-decoration: none;
   padding-bottom: 14px;
-  border-bottom: 1px solid #edf1f7;
+  border-bottom: 1px solid var(--surface-border);
   transition: opacity 0.25s ease;
 }
 
@@ -73,15 +73,15 @@
   height: 62px;
   object-fit: cover;
   border-radius: 10px;
-  background: #e9eef7;
+  background: var(--surface-tint);
 }
 
 .announcement-date {
   width: 64px;
   height: 62px;
   border-radius: 12px;
-  background: linear-gradient(180deg, #f8fbff 0%, #eef4ff 100%);
-  border: 1px solid #dbe7ff;
+  background: linear-gradient(180deg, var(--surface-soft) 0%, var(--surface-tint) 100%);
+  border: 1px solid var(--surface-border);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -92,19 +92,19 @@
   font-size: 22px;
   font-weight: 900;
   line-height: 1;
-  color: #062b63;
+  color: var(--brand-primary);
 }
 
 .announcement-date span {
   margin-top: 5px;
   font-size: 10px;
   font-weight: 800;
-  color: #d5a03a;
+  color: var(--brand-primary);
 }
 
 .announcement-text h4 {
   margin: 0;
-  color: #062b63;
+  color: var(--brand-primary);
   font-size: 13.5px;
   font-weight: 800;
   line-height: 1.4;
@@ -113,7 +113,7 @@
 .announcement-text span {
   display: inline-block;
   margin-top: 7px;
-  color: #d5a03a;
+  color: var(--brand-primary);
   font-size: 11px;
   font-weight: 800;
 }
@@ -132,10 +132,10 @@
   min-height: 285px;
   /* border-radius: 18px; */
   background: #ffffff;
-  border: 1px solid rgba(6, 43, 99, 0.1);
-  box-shadow: 0 14px 32px rgba(6, 43, 99, 0.09);
+  border: 1px solid rgba(var(--theme-dark-rgb), 0.1);
+  box-shadow: 0 14px 32px rgba(var(--theme-dark-rgb), 0.09);
   text-decoration: none;
-  color: #102033;
+  color: var(--text-primary);
   opacity: 0;
   transform: translateY(22px);
   animation: studentCardReveal 0.65s ease forwards;
@@ -147,14 +147,14 @@
 
 .student-achievement-card:hover {
   transform: translateY(-8px);
-  border-color: rgba(213, 160, 58, 0.5);
-  box-shadow: 0 24px 54px rgba(6, 43, 99, 0.17);
+  border-color: rgba(var(--theme-dark-rgb), 0.5);
+  box-shadow: 0 24px 54px rgba(var(--theme-dark-rgb), 0.17);
 }
 
 .student-achievement-img-wrap {
   height: 145px;
   overflow: hidden;
-  background: linear-gradient(135deg, #eef4ff 0%, #ffffff 100%);
+  background: linear-gradient(135deg, var(--surface-tint) 0%, #ffffff 100%);
 }
 
 .student-achievement-img-wrap img {
@@ -173,10 +173,10 @@
   height: 100%;
   display: grid;
   place-items: center;
-  color: #08429f;
+  color: var(--brand-primary);
   font-size: 50px;
   font-weight: 900;
-  background: linear-gradient(135deg, #eef4ff 0%, #dfe9ff 100%);
+  background: linear-gradient(135deg, var(--surface-tint) 0%, var(--surface-tint) 100%);
 }
 
 .student-achievement-content {
@@ -188,15 +188,15 @@
   margin-bottom: 8px;
   padding: 5px 10px;
   border-radius: 999px;
-  background: rgba(213, 160, 58, 0.14);
-  color: #b9841d;
+  background: rgba(var(--theme-primary-rgb), 0.14);
+  color: var(--brand-primary);
   font-size: 11px;
   font-weight: 900;
 }
 
 .student-achievement-content h4 {
   margin: 0 0 8px;
-  color: #062b63;
+  color: var(--brand-primary);
   font-size: 15.5px;
   font-weight: 900;
   line-height: 1.35;
@@ -204,7 +204,7 @@
 
 .student-achievement-content p {
   margin: 0 0 12px;
-  color: #52637f;
+  color: var(--text-secondary);
   font-size: 13px;
   font-weight: 500;
   line-height: 1.5;
@@ -219,21 +219,21 @@
 
 .sas-empty-state {
   border-radius: 16px;
-  border: 1px dashed #dbe4f0;
-  background: #f8fbff;
+  border: 1px dashed var(--surface-border);
+  background: var(--surface-soft);
   padding: 20px 18px;
 }
 
 .sas-empty-state h4 {
   margin: 0 0 8px;
-  color: #062b63;
+  color: var(--brand-primary);
   font-size: 15px;
   font-weight: 800;
 }
 
 .sas-empty-state p {
   margin: 0;
-  color: #5f6f88;
+  color: var(--text-secondary);
   font-size: 13px;
   line-height: 1.6;
 }

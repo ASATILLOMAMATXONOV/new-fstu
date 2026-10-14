@@ -14,11 +14,14 @@ import './App.css';
 import { LanguageProvider } from './context/LanguageContext';
 import Navbar from './components/layout/Navbar';
 import HeroBanner from './components/layout/HeroBanner';
-import HeroFeatures from './components/layout/HeroFeatures';
 import HomeInfoSection from './components/layout/HomeInfoSection';
+import HomeFacultyOrbit from './components/layout/HomeFacultyOrbit';
+import NewsPages from './components/layout/NewsPage';
+import HomeFacultyConstellation from './components/layout/HomeFacultyConstellation';
 import Footer from './components/layout/Footer';
 import InnerPageBanner from './components/layout/InnerPageBanner';
 import SeasonalEffectsOverlay from './components/layout/SeasonalEffectsOverlay';
+import ThemeColorSwitcher from './components/layout/ThemeColorSwitcher';
 
 const RektorMurojaati = React.lazy(() => import('./components/layout/RektorMurojaati'));
 const StudentAnnouncementStats = React.lazy(() => import('./components/layout/StudentAnnouncementStats'));
@@ -80,8 +83,10 @@ function HomePage() {
       <HeroBanner />
 
       <div className="app-content-shell">
-        <HeroFeatures />
         <HomeInfoSection />
+        <HomeFacultyOrbit />
+        <HomeFacultyConstellation />
+        <NewsPages />
 
         <Suspense fallback={<SectionFallback minHeight={520} />}>
           <StudentAnnouncementStats />
@@ -108,6 +113,7 @@ function App() {
     <LanguageProvider>
       <BrowserRouter>
         <SeasonalEffectsOverlay />
+        <ThemeColorSwitcher />
         <Routes>
           <Route element={<SiteLayout />}>
 

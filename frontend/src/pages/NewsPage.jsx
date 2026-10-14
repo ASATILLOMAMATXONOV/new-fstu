@@ -15,12 +15,14 @@ function NewsPage() {
     [currentLanguageCode]
   );
   const { items } = useContentList('news', {
-    orderBy: 'recent'
+    orderBy: 'recent',
+    revalidate: true
   });
   const [page, setPage] = useState(1);
   const perPage = 6;
   const sortedItems = useMemo(() => sortContentByNewest(items), [items]);
   const totalPages = Math.max(1, Math.ceil(sortedItems.length / perPage));
+  const featuredItem = sortedItems[0];
 
   const currentNews = useMemo(() => {
     const start = (page - 1) * perPage;
@@ -29,8 +31,34 @@ function NewsPage() {
 
   return (
     <main className="all-news-page">
+      <section className="all-news-hero">
+        <div className="all-news-hero-copy">
+          <span>FSTU MEDIA</span>
+          <h1>Universitet yangiliklari</h1>
+          <p>
+            Kampusdagi eng so‘nggi xabarlar, e’lonlar va muhim voqealar bitta sahifada.
+          </p>
+        </div>
+
+        {featuredItem ? (
+          <Link to={`/news/page/${featuredItem.id}`} className="all-news-featured">
+            <img
+              src={featuredItem.image}
+              alt={getTranslatedField(featuredItem, 'title', featuredItem.title)}
+            />
+            <span>{formatCmsDate(featuredItem.createdAt)}</span>
+            <strong>{getTranslatedField(featuredItem, 'title', featuredItem.title)}</strong>
+          </Link>
+        ) : null}
+      </section>
+
       <div className="all-news-layout">
         <section className="all-news-main">
+          <div className="all-news-section-head">
+            <span>{String(sortedItems.length).padStart(2, '0')}</span>
+            <h2>Barcha materiallar</h2>
+          </div>
+
           <div className="all-news-grid">
             {currentNews.map((item, index) => (
               <article

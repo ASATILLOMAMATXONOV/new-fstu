@@ -1,7 +1,7 @@
 .ann-detail-page {
   width: 100%;
   padding: 50px 4% 70px;
-  background: #f6f8fb;
+  background: var(--surface-soft);
 }
 
 .ann-detail-layout {
@@ -16,8 +16,8 @@
 .ann-detail-card {
   background: #ffffff;
   overflow: hidden;
-  border: 1px solid #e5eaf3;
-  box-shadow: 0 14px 40px rgba(6, 43, 99, 0.07);
+  border: 1px solid var(--surface-border);
+  box-shadow: 0 14px 40px rgba(var(--theme-dark-rgb), 0.07);
   animation: annFadeUp 0.55s ease both;
 }
 
@@ -27,18 +27,18 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  border-bottom: 1px solid #edf1f7;
+  border-bottom: 1px solid var(--surface-border);
 }
 
 .ann-detail-back {
-  color: #08429f;
+  color: var(--brand-primary);
   text-decoration: none;
   font-size: 14px;
   font-weight: 900;
 }
 
 .ann-detail-back:hover {
-  color: #062b63;
+  color: var(--brand-primary-dark);
 }
 
 .ann-detail-date {
@@ -46,8 +46,8 @@
   align-items: center;
   padding: 8px 14px;
   border-radius: 999px;
-  background: #eef4ff;
-  color: #08429f;
+  background: var(--surface-tint);
+  color: var(--brand-primary);
   font-size: 13px;
   font-weight: 900;
   white-space: nowrap;
@@ -57,7 +57,7 @@
   width: 100%;
   height: 430px;
   overflow: hidden;
-  background: #e5e7eb;
+  background: var(--surface-border);
 }
 
 .ann-detail-image {
@@ -77,8 +77,8 @@
   margin-bottom: 14px;
   padding: 7px 13px;
   border-radius: 999px;
-  background: #f3f6fb;
-  color: #08429f;
+  background: var(--surface-soft);
+  color: var(--brand-primary);
   font-size: 12px;
   font-weight: 900;
   letter-spacing: 0.6px;
@@ -87,7 +87,7 @@
 .ann-detail-content h1 {
   margin: 0 0 20px;
   max-width: 850px;
-  color: #111827;
+  color: var(--text-primary);
   font-size: 38px;
   line-height: 1.22;
   font-weight: 900;
@@ -96,7 +96,7 @@
 .ann-detail-content p {
   margin: 0 0 18px;
   max-width: 880px;
-  color: #4b5563;
+  color: var(--text-secondary);
   font-size: 16px;
   line-height: 1.9;
 }
@@ -104,7 +104,7 @@
 .ann-detail-content a.content-file-link,
 .ann-detail-content a[download]:not(.attached-files-item),
 .ann-detail-content a[href^='data:'] {
-  color: #0000ee;
+  color: var(--brand-primary);
   font-weight: inherit;
   text-decoration: underline;
   text-underline-offset: 2px;
@@ -126,10 +126,10 @@
   margin: 6px 0;
   padding: 10px 14px;
   border-radius: 999px;
-  background: #eef4ff;
-  border: 1px solid #cddcf3;
-  box-shadow: 0 10px 22px rgba(8, 66, 159, 0.08);
-  color: #0b438d;
+  background: var(--surface-tint);
+  border: 1px solid var(--surface-border);
+  box-shadow: 0 10px 22px rgba(var(--theme-primary-rgb), 0.08);
+  color: var(--brand-primary);
   font-weight: 800;
   text-decoration: none;
   line-height: 1.4;
@@ -145,7 +145,7 @@
   height: 24px;
   padding: 0 8px;
   border-radius: 999px;
-  background: #0b438d;
+  background: var(--brand-primary);
   color: #fff;
   font-size: 10px;
   font-weight: 900;
@@ -168,8 +168,8 @@
 .ann-detail-sidebar .academic-sidebar {
   background: #ffffff;
   overflow: hidden;
-  border: 1px solid #e5eaf3;
-  box-shadow: 0 14px 40px rgba(6, 43, 99, 0.07);
+  border: 1px solid var(--surface-border);
+  box-shadow: 0 14px 40px rgba(var(--theme-dark-rgb), 0.07);
 }
 
 .ann-not-found {
@@ -178,19 +178,19 @@
   padding: 44px;
   border-radius: 24px;
   background: #ffffff;
-  border: 1px solid #e5eaf3;
+  border: 1px solid var(--surface-border);
   text-align: center;
 }
 
 .ann-not-found h1 {
   margin: 0 0 16px;
-  color: #111827;
+  color: var(--text-primary);
   font-size: 32px;
   font-weight: 900;
 }
 
 .ann-not-found a {
-  color: #08429f;
+  color: var(--brand-primary);
   font-weight: 900;
   text-decoration: none;
 }

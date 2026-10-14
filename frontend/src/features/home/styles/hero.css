@@ -6,7 +6,7 @@
 
   overflow: hidden;
 
-  background: #0b2d4f;
+  background: var(--brand-primary-deep);
 }
 
 .university-hero-slides {
@@ -55,10 +55,10 @@
   background:
     linear-gradient(
       90deg,
-      rgba(6, 35, 62, 0.86) 0%,
-      rgba(6, 35, 62, 0.67) 38%,
-      rgba(6, 35, 62, 0.30) 70%,
-      rgba(6, 35, 62, 0.10) 100%
+      rgba(var(--theme-deep-rgb), 0.86) 0%,
+      rgba(var(--theme-deep-rgb), 0.67) 38%,
+      rgba(var(--theme-deep-rgb), 0.30) 70%,
+      rgba(var(--theme-deep-rgb), 0.10) 100%
     );
 }
 
@@ -176,13 +176,13 @@
 
   background: #ffffff;
 
-  color: #0b2d4f;
+  color: var(--brand-primary-deep);
 }
 
 .university-hero-primary:hover {
   transform: translateY(-2px);
 
-  background: #eef4f8;
+  background: var(--surface-tint);
 }
 
 .university-hero-secondary {
@@ -297,12 +297,7 @@
     );
 
   background:
-    rgba(
-      5,
-      28,
-      49,
-      0.34
-    );
+    rgba(var(--theme-deep-rgb), 0.34);
 
   color: #ffffff;
 
@@ -350,8 +345,8 @@
     background:
       linear-gradient(
         90deg,
-        rgba(6, 35, 62, 0.86),
-        rgba(6, 35, 62, 0.48)
+        rgba(var(--theme-deep-rgb), 0.86),
+        rgba(var(--theme-deep-rgb), 0.48)
       );
   }
 

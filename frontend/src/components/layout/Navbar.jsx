@@ -254,6 +254,18 @@ function shouldDisplayAsMegaHeader(item) {
   );
 }
 
+function getSimpleMenuGroupTitle(languageCode) {
+  if (languageCode === 'ru') {
+    return 'Меню';
+  }
+
+  if (languageCode === 'en') {
+    return 'Menus';
+  }
+
+  return 'Menyular';
+}
+
 function Navbar() {
   const location = useLocation();
   const { menus: navItems, loading } = useMenuTree();
@@ -342,7 +354,7 @@ function Navbar() {
       setVisibleDropdownItem(null);
       setLeavingDropdownItem(null);
       setContentSwitching(false);
-    }, 680);
+    }, 220);
   }, []);
 
   const measureDropdownHeight = React.useCallback(() => {
@@ -452,7 +464,7 @@ function Navbar() {
       contentSwitchTimerRef.current = window.setTimeout(() => {
         setLeavingDropdownItem(null);
         setContentSwitching(false);
-      }, 220);
+      }, 640);
 
       return nextItem;
     });
@@ -488,8 +500,16 @@ function Navbar() {
   };
 
   const handleDesktopDropdownClick = (event, item, hasChildren) => {
-    if (!hasChildren || !isDesktopNavigation()) {
+    if (!hasChildren) {
       handleNavClick();
+      return;
+    }
+
+    if (!isDesktopNavigation()) {
+      event.preventDefault();
+      event.stopPropagation();
+      closeFloatingDropdown(true);
+      toggleSubmenu(item.id);
       return;
     }
 
@@ -599,7 +619,10 @@ function Navbar() {
   className="brand"
   aria-label="FSTU bosh sahifa"
 >
-  <div className="brand-logo-wrap">
+  <div
+    className="brand-logo-wrap"
+    style={{ '--brand-logo-image': `url(${logo})` }}
+  >
     <span
       className="brand-logo-glow"
       aria-hidden="true"
@@ -650,13 +673,18 @@ function Navbar() {
                         ? 'dropdown-active'
                         : ''
                     }`}
+                    onMouseEnter={() => handleNavItemHover(item, hasChildren)}
+                    onMouseMove={() => handleNavItemHover(item, hasChildren)}
                     onFocus={() => {
                       if (hasChildren) {
                         showFloatingDropdown(item);
                       }
                     }}
                   >
-                    <div className="nav-link-group">
+                    <div
+                      className="nav-link-group"
+                      onMouseEnter={() => handleNavItemHover(item, hasChildren)}
+                    >
                       <AppLink
                         href={getMenuNodeHref(item)}
                         className="nav-link"
@@ -778,54 +806,76 @@ function MegaDropdown({ items, languageCode, onNavigate, onContentChange }) {
   const columns = sortMenuNodes(items);
   const headerColumns = columns.filter(shouldDisplayAsMegaHeader);
   const plainItems = columns.filter((column) => !shouldDisplayAsMegaHeader(column));
-  const displayColumns = [...headerColumns, ...plainItems];
-  const columnCount = Math.max(displayColumns.length, 1);
+  const nestedColumns = [...headerColumns, ...plainItems].filter((column) => column.children?.length);
+  const simpleColumns = [...headerColumns, ...plainItems].filter((column) => !column.children?.length);
+  const simpleGroupTitle = getSimpleMenuGroupTitle(languageCode);
 
   return (
-    <div className="mega-menu-inner" style={{ '--mega-column-count': columnCount }}>
-      {displayColumns.map((column) => {
-        const title = getMenuNodeTitle(column, languageCode);
-        const children = sortMenuNodes(column.children || []);
-        const hasChildren = children.length > 0;
-        const TitleIcon = getDropdownNodeIcon(hasChildren, 'title');
+    <div className="mega-menu-inner">
+      <div className="mega-menu-panel">
+        {simpleColumns.length > 0 && (
+          <div className="mega-content-group mega-simple-group">
+            <div className="mega-content-heading">
+              <span className="mega-content-heading-icon">
+                <MenuItemIcon className="mega-title-icon" />
+              </span>
+              <span className="mega-title-text">{simpleGroupTitle}</span>
+            </div>
 
-        return (
-          <div key={column.id} className={`mega-column${hasChildren ? '' : ' mega-column-single'}`}>
-            {hasChildren ? (
-              <>
-                <AppLink href={getMenuNodeHref(column)} className="mega-title" onClick={onNavigate}>
-                  <span className="mega-title-icon-wrap">
-                    <TitleIcon className="mega-title-icon" />
-                  </span>
-                  <span className="mega-title-text">{title}</span>
-                  <span className="mega-title-count">{children.length}</span>
-                </AppLink>
+            <div className="mega-links">
+              {simpleColumns.map((column) => {
+                const title = getMenuNodeTitle(column, languageCode);
 
-                <div className="mega-links">
-                  {children.map((child) => (
-                    <MegaDropdownLink
-                      key={child.id}
-                      item={child}
-                      languageCode={languageCode}
-                      onNavigate={onNavigate}
-                      onContentChange={onContentChange}
-                    />
-                  ))}
-                </div>
-              </>
-            ) : (
-              <div className="mega-links">
-                <AppLink href={getMenuNodeHref(column)} className="mega-link mega-link-single" onClick={onNavigate}>
-                  <span className="mega-link-icon-wrap">
-                    <ArrowMenuIcon className="mega-link-icon" />
-                  </span>
-                  <span className="mega-link-text">{title}</span>
-                </AppLink>
-              </div>
-            )}
+                return (
+                  <AppLink
+                    key={column.id}
+                    href={getMenuNodeHref(column)}
+                    className="mega-link"
+                    onClick={onNavigate}
+                  >
+                    <span className="mega-link-icon-wrap">
+                      <ArrowMenuIcon className="mega-link-icon" />
+                    </span>
+                    <span className="mega-link-copy">
+                      <span className="mega-link-text">{title}</span>
+                      <span className="mega-link-meta">Menu</span>
+                    </span>
+                  </AppLink>
+                );
+              })}
+            </div>
           </div>
-        );
-      })}
+        )}
+
+        {nestedColumns.map((column) => {
+          const title = getMenuNodeTitle(column, languageCode);
+          const children = sortMenuNodes(column.children || []);
+          const TitleIcon = getDropdownNodeIcon(true, 'title');
+
+          return (
+            <div key={column.id} className="mega-content-group">
+              <div className="mega-content-heading">
+                <span className="mega-content-heading-icon">
+                  <TitleIcon className="mega-title-icon" />
+                </span>
+                <span className="mega-title-text">{title}</span>
+              </div>
+
+              <div className="mega-links">
+                {children.map((child) => (
+                  <MegaDropdownLink
+                    key={child.id}
+                    item={child}
+                    languageCode={languageCode}
+                    onNavigate={onNavigate}
+                    onContentChange={onContentChange}
+                  />
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
@@ -836,6 +886,13 @@ function MegaDropdownLink({ item, languageCode, onNavigate, onContentChange, dep
   const children = sortMenuNodes(item.children || []);
   const hasChildren = children.length > 0;
   const LinkIcon = getDropdownNodeIcon(hasChildren);
+
+  React.useEffect(() => {
+    if (expanded) {
+      onContentChange?.();
+    }
+  }, [expanded, onContentChange]);
+
   const linkContent = (
     <>
       <span className="mega-link-icon-wrap">
@@ -862,7 +919,6 @@ function MegaDropdownLink({ item, languageCode, onNavigate, onContentChange, dep
           aria-expanded={expanded}
           onClick={() => {
             setExpanded((current) => !current);
-            onContentChange?.();
           }}
         >
           {linkContent}

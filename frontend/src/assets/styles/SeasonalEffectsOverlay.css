@@ -49,13 +49,13 @@
 }
 
 .seasonal-particle--summer svg {
-  fill: rgba(255, 208, 92, 0.95);
-  stroke: rgba(255, 208, 92, 0.95);
+  fill: rgba(97, 250, 237, 0.95);
+  stroke: rgba(97, 250, 237, 0.95);
 }
 
 .seasonal-particle--autumn svg {
-  fill: rgba(214, 122, 52, 0.94);
-  stroke: rgba(214, 122, 52, 0.94);
+  fill: rgba(52, 214, 201, 0.94);
+  stroke: rgba(52, 214, 201, 0.94);
 }
 
 .seasonal-particle--winter svg {

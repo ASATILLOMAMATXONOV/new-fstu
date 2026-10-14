@@ -11,9 +11,9 @@
   background:
     linear-gradient(
       90deg,
-      rgba(235, 241, 250, 0.9) 25%,
-      rgba(247, 250, 255, 1) 38%,
-      rgba(235, 241, 250, 0.9) 58%
+      rgba(var(--theme-primary-rgb), 0.08) 25%,
+      rgba(255, 255, 255, 1) 38%,
+      rgba(var(--theme-primary-rgb), 0.08) 58%
     );
   background-size: 200% 100%;
   animation: section-fallback-shimmer 1.4s linear infinite;

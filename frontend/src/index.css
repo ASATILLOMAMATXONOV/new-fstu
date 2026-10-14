@@ -1,25 +1,239 @@
 :root {
-  --surface-border: rgba(214, 224, 238, 0.82);
-  --page-bg-start: #f8fbff;
-  --page-bg-end: #f4f7fc;
+  --brand-primary: #14b8a6;
+  --brand-primary-dark: #02645c;
+  --brand-primary-deep: #013f3a;
+  --brand-primary-soft: #dffaf6;
+  --brand-primary-muted: #f2fffd;
+  --theme-primary-rgb: 20, 184, 166;
+  --theme-dark-rgb: 2, 100, 92;
+  --theme-deep-rgb: 1, 63, 58;
+  --text-primary: var(--brand-primary-deep);
+  --text-secondary: rgba(var(--theme-deep-rgb), 0.76);
+  --text-muted: rgba(var(--theme-deep-rgb), 0.58);
+  --text-on-brand: #ffffff;
+  --heading-color: var(--brand-primary-deep);
+  --link-color: var(--brand-primary);
+  --hover-color: var(--brand-primary);
+  --surface: #ffffff;
+  --surface-soft: #f7fcfb;
+  --surface-tint: #effefd;
+  --surface-border: rgba(var(--theme-primary-rgb), 0.18);
+  --surface-border-strong: rgba(var(--theme-primary-rgb), 0.34);
+  --page-bg-start: #fbfffe;
+  --page-bg-end: #eefcf9;
+  --shadow-brand: rgba(var(--theme-primary-rgb), 0.14);
+  --font-sans: Arial, Helvetica, 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 * {
   box-sizing: border-box;
 }
 
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 body {
   margin: 0;
-  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto',
-    'Helvetica Neue', sans-serif;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.5;
   background: linear-gradient(
     180deg,
     var(--page-bg-start) 0%,
     var(--page-bg-end) 100%
   );
-  color: #15386f;
+  color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+::placeholder {
+  color: var(--text-muted);
+  opacity: 0.72;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+label,
+td,
+th {
+  font-family: inherit;
+  color: inherit;
+  letter-spacing: 0;
+}
+
+p,
+li {
+  color: inherit;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  letter-spacing: 0;
+}
+
+a {
+  color: var(--link-color);
+  transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.fstu-topbar,
+.fstu-topbar *,
+.site-footer,
+.site-footer *,
+.hero-feature-card,
+.hero-feature-card *,
+.rektor-appeal,
+.rektor-appeal *,
+.hero-btn.primary,
+.hero-btn.primary *,
+.partners-primary-btn,
+.partners-primary-btn *,
+.university-hero-primary,
+.university-hero-primary * {
+  color: #ffffff;
+}
+
+.fstu-topbar h1,
+.fstu-topbar h2,
+.fstu-topbar h3,
+.fstu-topbar h4,
+.fstu-topbar h5,
+.fstu-topbar h6,
+.site-footer h1,
+.site-footer h2,
+.site-footer h3,
+.site-footer h4,
+.site-footer h5,
+.site-footer h6,
+.hero-feature-card h1,
+.hero-feature-card h2,
+.hero-feature-card h3,
+.hero-feature-card h4,
+.hero-feature-card h5,
+.hero-feature-card h6,
+.rektor-appeal h1,
+.rektor-appeal h2,
+.rektor-appeal h3,
+.rektor-appeal h4,
+.rektor-appeal h5,
+.rektor-appeal h6,
+.university-hero-primary h1,
+.university-hero-primary h2,
+.university-hero-primary h3,
+.university-hero-primary h4,
+.university-hero-primary h5,
+.university-hero-primary h6 {
+  color: var(--text-on-brand);
+}
+
+.theme-surface,
+.fstu-navbar,
+.dropdown-menu,
+.mega-menu,
+.stripe-dropdown-shell,
+.language-menu,
+.sections-page,
+.news-page,
+.announcements-page,
+.partners-page,
+.student-detail-page,
+.students-page,
+.academic-entity-page,
+.dynamic-page,
+.admission-page,
+.rektor-page {
+  background-color: var(--surface-soft);
+  color: var(--text-primary);
+}
+
+.section-fallback,
+.news-card,
+.announcement-card,
+.partner-card,
+.section-card,
+.student-card,
+.department-card,
+.faculty-card,
+.academic-content-card,
+.linked-info-table,
+.dynamic-content-card,
+.student-stats-card,
+.statistics-card,
+.mega-content-group,
+.mega-link,
+.mega-sub-links {
+  border-color: var(--surface-border) !important;
+  background-color: var(--surface) !important;
+  color: var(--text-primary) !important;
+  box-shadow: 0 14px 34px rgba(var(--theme-dark-rgb), 0.08);
+}
+
+.fstu-navbar,
+.dropdown-menu,
+.mega-menu,
+.stripe-dropdown-shell,
+.language-menu,
+.section-fallback,
+[class*='card'],
+[class*='section'],
+[class*='page'] {
+  color: var(--text-primary);
+}
+
+.nav-link,
+.mega-content-heading,
+.mega-link-title,
+.section-title,
+.page-title,
+.news-card-title,
+.announcement-card-title {
+  color: var(--heading-color);
+}
+
+.mega-link-description,
+.section-subtitle,
+.page-description,
+.news-card-description,
+.announcement-card-description {
+  color: var(--text-secondary);
+}
+
+.news-card-description,
+.announcement-card-description,
+.section-card-description,
+.student-card-description,
+.partner-description,
+.page-description,
+.section-subtitle,
+.mega-link-meta,
+.mega-sub-link,
+.dynamic-page p,
+.academic-entity-page p {
+  color: var(--text-secondary) !important;
+}
+
+a:hover,
+button:hover,
+.nav-link:hover,
+.nav-item:hover > .nav-link-group .nav-link,
+.nav-item.dropdown-active > .nav-link-group .nav-link,
+.mega-link:hover .mega-link-title,
+.language-item:hover,
+.dropdown-item:hover,
+.sections-pagination button:hover:not(:disabled),
+.students-pagination button:hover:not(:disabled) {
+  color: var(--hover-color);
 }
 
 code {

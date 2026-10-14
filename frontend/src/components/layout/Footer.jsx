@@ -152,7 +152,11 @@ function Footer() {
         {/* LOGO VA UNIVERSITET */}
 
         <div className="footer-brand">
-          <AppLink href="/" className="footer-logo">
+          <AppLink
+            href="/"
+            className="footer-logo"
+            style={{ '--footer-logo-image': `url(${logo})` }}
+          >
             <img
               src={logo}
               alt="FSTU logo"
