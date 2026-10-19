@@ -338,6 +338,7 @@ const siteMessages = {
       },
       studentAnnouncementStats: {
         announcementsTitle: 'E’lonlar',
+        latestAnnouncement: 'Yangi',
         studentsTitle: 'Bizning talabalarimiz',
         seeAll: 'Barchasi',
         announcementsEmptyTitle: 'E’lonlar hozircha mavjud emas',
@@ -724,6 +725,7 @@ const siteMessages = {
       },
       studentAnnouncementStats: {
         announcementsTitle: 'Объявления',
+        latestAnnouncement: 'Новое',
         studentsTitle: 'Наши студенты',
         seeAll: 'Все',
         announcementsEmptyTitle: 'Объявлений пока нет',
@@ -1110,6 +1112,7 @@ const siteMessages = {
       },
       studentAnnouncementStats: {
         announcementsTitle: 'Announcements',
+        latestAnnouncement: 'Latest',
         studentsTitle: 'Our students',
         seeAll: 'View all',
         announcementsEmptyTitle: 'No announcements yet',

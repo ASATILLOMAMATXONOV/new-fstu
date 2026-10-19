@@ -1,8 +1,13 @@
 .app-content-shell,
 .nav-shell,
 .hero-shell {
-  width: min(85%, 1720px);
+  width: 80%;
+  min-width: 0;
   margin-inline: auto;
+}
+
+.app-content-shell :is(.home-info-section, .ac-container, .ui-container, .rektor-layout) {
+  max-width: none;
 }
 
 .section-fallback {
@@ -29,21 +34,7 @@
   }
 }
 
-@media (max-width: 1100px) {
-  .app-content-shell,
-  .nav-shell,
-  .hero-shell {
-    width: min(92%, 1720px);
-  }
-}
-
 @media (max-width: 640px) {
-  .app-content-shell,
-  .nav-shell,
-  .hero-shell {
-    width: calc(100% - 24px);
-  }
-
   .section-fallback {
     border-radius: 14px;
   }

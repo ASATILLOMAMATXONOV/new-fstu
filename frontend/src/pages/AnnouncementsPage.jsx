@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import '../assets/styles/AnnouncementsPage.css';
 import AcademicSidebar from '../components/layout/AcademicSidebar';
+import AnnouncementImage from '../components/common/AnnouncementImage';
 import { useLanguage } from '../context/LanguageContext';
 import { useContentList } from '../hooks/useContentList';
 import { getSiteMessages } from '../locales/site';
@@ -48,7 +49,7 @@ function AnnouncementsPage() {
                 style={{ animationDelay: `${index * 0.08}s` }}
               >
                 <Link to={`/announcements/page/${item.id}`} className="ann-image">
-                  <img src={item.image} alt={getTranslatedField(item, 'title', item.title)} />
+                  <AnnouncementImage src={item.image} alt={getTranslatedField(item, 'title', item.title)} />
                 </Link>
 
                 <div className="ann-body">

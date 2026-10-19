@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 import AcademicSidebar from '../components/layout/AcademicSidebar';
+import AnnouncementImage from '../components/common/AnnouncementImage';
 import '../assets/styles/AnnouncementDetailPage.css';
 import { useLanguage } from '../context/LanguageContext';
 import { useContentItem } from '../hooks/useContentItem';
@@ -45,10 +46,10 @@ function AnnouncementDetailPage() {
           </div>
 
           <div className="ann-detail-image-wrap">
-            <img
+            <AnnouncementImage
               src={item.image}
               alt={getTranslatedField(item, 'title', item.title)}
-              className="ann-detail-image"
+              priority
             />
           </div>
 

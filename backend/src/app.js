@@ -11,6 +11,7 @@ import accountRoutes from './modules/account/account.routes.js';
 import adminUserRoutes from './modules/admin-users/admin-users.routes.js';
 import contentRoutes from './modules/content/content.routes.js';
 import settingsRoutes from './modules/settings/settings.routes.js';
+import assistantRoutes from './modules/assistant/assistant.routes.js';
 
 function isLocalDevOrigin(origin) {
   if (!origin) {
@@ -96,6 +97,7 @@ export function createApp() {
   app.use('/api/account', accountRoutes);
   app.use('/api/content', optionalAuth, contentRoutes);
   app.use('/api/settings', optionalAuth, settingsRoutes);
+  app.use('/api/assistant', assistantRoutes);
   app.use('/api/admin-users', authenticate, authorizeRoles('super_admin'), adminUserRoutes);
 
   app.use(notFoundHandler);

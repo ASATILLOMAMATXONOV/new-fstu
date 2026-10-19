@@ -16,15 +16,19 @@ import Navbar from './components/layout/Navbar';
 import HeroBanner from './components/layout/HeroBanner';
 import HomeInfoSection from './components/layout/HomeInfoSection';
 import HomeFacultyOrbit from './components/layout/HomeFacultyOrbit';
-import NewsPages from './components/layout/NewsPage';
+import NewsPageHome from './components/layout/NewsPageHome';
+import StudentsSection from './components/layout/StudentsSection';
+import LaboratoryPage from './components/layout/LaboratoryPage';
 import HomeFacultyConstellation from './components/layout/HomeFacultyConstellation';
 import Footer from './components/layout/Footer';
 import InnerPageBanner from './components/layout/InnerPageBanner';
 import SeasonalEffectsOverlay from './components/layout/SeasonalEffectsOverlay';
 import ThemeColorSwitcher from './components/layout/ThemeColorSwitcher';
+const RobotAssistant = React.lazy(() => import('./components/assistant/RobotAssistant'));
 
 const RektorMurojaati = React.lazy(() => import('./components/layout/RektorMurojaati'));
 const StudentAnnouncementStats = React.lazy(() => import('./components/layout/StudentAnnouncementStats'));
+
 const HomePartnersSection = React.lazy(() => import('./components/layout/HomePartnersSection'));
 const StatisticsSection = React.lazy(() => import('./components/layout/StatisticsSection'));
 
@@ -86,15 +90,18 @@ function HomePage() {
         <HomeInfoSection />
         <HomeFacultyOrbit />
         <HomeFacultyConstellation />
-        <NewsPages />
+         <RektorMurojaati />
+        <NewsPageHome />
+        <StudentsSection />
+        <LaboratoryPage />
+      </div>
 
-        <Suspense fallback={<SectionFallback minHeight={520} />}>
+
+      <div className="app-content-shell">
+        <Suspense fallback={<SectionFallback minHeight={340} />}>
           <StudentAnnouncementStats />
         </Suspense>
 
-         <Suspense fallback={<SectionFallback minHeight={420} />}>
-          <RektorMurojaati />
-        </Suspense>
 
         <Suspense fallback={<SectionFallback minHeight={280} />}>
           <HomePartnersSection />
@@ -114,6 +121,7 @@ function App() {
       <BrowserRouter>
         <SeasonalEffectsOverlay />
         <ThemeColorSwitcher />
+        <Suspense fallback={null}><RobotAssistant /></Suspense>
         <Routes>
           <Route element={<SiteLayout />}>
 

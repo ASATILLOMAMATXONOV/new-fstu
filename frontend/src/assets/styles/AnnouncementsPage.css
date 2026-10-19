@@ -81,32 +81,6 @@
   background: var(--surface-border);
 }
 
-.ann-image img {
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: cover;
-  transition: transform 0.55s ease, filter 0.55s ease;
-}
-
-.ann-image::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(var(--theme-dark-rgb), 0.04) 0%, rgba(var(--theme-dark-rgb), 0.28) 100%);
-  opacity: 0.85;
-  transition: opacity 0.35s ease;
-}
-
-.ann-card:hover .ann-image::after {
-  opacity: 0.45;
-}
-
-.ann-card:hover .ann-image img {
-  transform: scale(1.09);
-  filter: saturate(1.05);
-}
-
 .ann-body {
   flex: 1;
   padding: 16px 18px 18px;
