@@ -1,4 +1,5 @@
 :root {
+  --box-radius: 6px;
   --brand-primary: #14b8a6;
   --brand-primary-dark: #02645c;
   --brand-primary-deep: #013f3a;
@@ -27,6 +28,14 @@
 
 * {
   box-sizing: border-box;
+}
+
+:where(button, input, select, textarea, fieldset, dialog, [role='dialog'], [class*='card'], [class*='panel'], [class*='box']) {
+  border-radius: var(--box-radius);
+}
+
+:root :is(.MuiPaper-root, .MuiInputBase-root, .MuiButton-root, .MuiChip-root, .MuiAlert-root, .MuiTooltip-tooltip) {
+  border-radius: var(--box-radius);
 }
 
 html,
@@ -169,10 +178,7 @@ a {
 .linked-info-table,
 .dynamic-content-card,
 .student-stats-card,
-.statistics-card,
-.mega-content-group,
-.mega-link,
-.mega-sub-links {
+.statistics-card {
   border-color: var(--surface-border) !important;
   background-color: var(--surface) !important;
   color: var(--text-primary) !important;

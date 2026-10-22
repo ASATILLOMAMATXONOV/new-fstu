@@ -100,7 +100,7 @@ export default function Profile() {
         sx={{
           p: 0.25,
           bgcolor: open ? iconBackColorOpen : 'transparent',
-          borderRadius: 1,
+          borderRadius: '6px',
           '&:hover': { bgcolor: theme.palette.mode === ThemeMode.DARK ? 'secondary.light' : 'secondary.lighter' },
           '&:focus-visible': { outline: `2px solid ${theme.palette.secondary.dark}`, outlineOffset: 2 }
         }}

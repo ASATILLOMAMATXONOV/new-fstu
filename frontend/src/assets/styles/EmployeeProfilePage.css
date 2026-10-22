@@ -12,8 +12,8 @@
   --epp-panel-bg:  var(--brand-primary-deep);
   --epp-panel-mid: var(--brand-primary-dark);
   --epp-panel-txt: rgba(182, 253, 247, 0.55);
-  --epp-radius:    16px;
-  --epp-radius-sm: 10px;
+  --epp-radius:    var(--box-radius);
+  --epp-radius-sm: var(--box-radius);
 }
 
 /* ── Keyframes ─────────────────────────────────────────── */
@@ -121,7 +121,7 @@
   width: 100%;
   height: 210px;              /* ← fixed, panel ichida sig'adi */
   flex-shrink: 0;
-  border-radius: var(--epp-radius);
+  border-radius: var(--box-radius);
   overflow: hidden;
   background: rgba(255,255,255,0.06);
   border: 1px solid rgba(var(--theme-primary-rgb), 0.15);
@@ -138,7 +138,7 @@
   position: absolute;
   inset: 0;
   box-shadow: inset 0 -50px 40px rgba(7, 69, 64, 0.6);
-  border-radius: var(--epp-radius);
+  border-radius: var(--box-radius);
 }
 .epp-panel__photo img {
   width: 100%; height: 100%;
@@ -171,7 +171,7 @@
 .epp-panel__menu::-webkit-scrollbar { width: 3px; }
 .epp-panel__menu::-webkit-scrollbar-thumb {
   background: linear-gradient(180deg, rgba(var(--theme-primary-rgb), 0.4) 0%, rgba(var(--theme-primary-rgb), 0.28) 100%);
-  border-radius: 99px;
+  border-radius: var(--box-radius);
 }
 
 /* AcademicSidebar — panelga mos shaffof stil */
@@ -182,7 +182,7 @@
   background: #ffffff !important;
   border: 1px solid rgba(212, 242, 240, 0.95) !important;
   box-shadow: 0 14px 28px rgba(var(--theme-deep-rgb), 0.12) !important;
-  border-radius: 0 !important;
+  border-radius: var(--box-radius) !important;
   padding: 18px 16px 14px !important;
   gap: 0 !important;
   backdrop-filter: none !important;
@@ -225,7 +225,7 @@
   gap: 10px !important;
   min-height: 44px !important;
   padding: 0 12px !important;
-  border-radius: 0 !important;
+  border-radius: var(--box-radius) !important;
   background: #ffffff !important;
   border: 1px solid rgba(236, 248, 247, 0.98) !important;
   text-decoration: none !important;
@@ -257,7 +257,7 @@
   flex-shrink: 0 !important;
   display: flex !important; align-items: center !important; justify-content: center !important;
   width: 28px !important; height: 28px !important;
-  border-radius: 0 !important;
+  border-radius: var(--box-radius) !important;
   background: #fffaf0 !important;
   border: 1px solid rgba(var(--theme-primary-rgb), 0.26) !important;
   color: var(--brand-primary) !important;
@@ -410,7 +410,7 @@
   flex-shrink: 0;
   width: 52px;
   height: 52px;
-  border-radius: 14px;
+  border-radius: var(--box-radius);
   overflow: hidden;
   background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-primary-dark) 100%);
   display: flex; align-items: center; justify-content: center;
@@ -548,7 +548,7 @@
 .epp-body__content li { margin-bottom: 7px; line-height: 1.75; }
 .epp-body__content img {
   max-width: 100%; height: auto; display: block;
-  margin: 24px auto; border-radius: var(--epp-radius);
+  margin: 24px auto; border-radius: var(--box-radius);
 }
 
 .epp-body__content a.content-file-link,
@@ -575,7 +575,7 @@
   gap: 10px;
   margin: 6px 0;
   padding: 10px 14px;
-  border-radius: 999px;
+  border-radius: var(--box-radius);
   background: var(--surface-tint);
   border: 1px solid var(--surface-border);
   box-shadow: 0 10px 22px rgba(var(--theme-primary-rgb), 0.08);
@@ -594,7 +594,7 @@
   min-width: 44px;
   height: 24px;
   padding: 0 8px;
-  border-radius: 999px;
+  border-radius: var(--box-radius);
   background: var(--brand-primary);
   color: #fff;
   font-size: 10px;
@@ -611,7 +611,7 @@
 /* ── Btn ──────────────────────────────────────────────── */
 .epp-btn {
   display: inline-flex; align-items: center;
-  height: 42px; padding: 0 20px; border-radius: 999px;
+  height: 42px; padding: 0 20px; border-radius: var(--box-radius);
   background: var(--epp-accent); color: #fff;
   text-decoration: none; font-size: 14px; font-weight: 800;
   transition: opacity 0.18s, transform 0.18s;

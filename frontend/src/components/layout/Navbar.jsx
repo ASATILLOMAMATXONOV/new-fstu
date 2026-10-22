@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { matchPath, useLocation } from 'react-router-dom';
 
 import '../../assets/styles/Navbar.css';
+import '../../assets/styles/HomeHeader.css';
 import logo from '../../assets/optimized/logo.png';
 import { useLanguage } from '../../context/LanguageContext';
 import { getSiteMessages } from '../../locales/site';
@@ -268,11 +269,36 @@ function getSimpleMenuGroupTitle(languageCode) {
 
 function Navbar() {
   const location = useLocation();
+  const isHomePage = location.pathname === '/';
+  const headerRef = React.useRef(null);
+  const navigationMeasureRef = React.useRef(null);
+  const [mobileNavigation, setMobileNavigation] = useState(() =>
+    typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches
+  );
+
+  React.useLayoutEffect(() => {
+    if (!isHomePage || !headerRef.current) return undefined;
+    const updateHeight = () => {
+      const height = headerRef.current?.getBoundingClientRect().height;
+      if (height) document.documentElement.style.setProperty('--home-header-height', `${Math.ceil(height)}px`);
+    };
+    updateHeight();
+    const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(updateHeight);
+    observer?.observe(headerRef.current);
+    window.addEventListener('resize', updateHeight);
+    return () => {
+      observer?.disconnect();
+      window.removeEventListener('resize', updateHeight);
+      document.documentElement.style.removeProperty('--home-header-height');
+    };
+  }, [isHomePage]);
+
   const { menus: navItems, loading } = useMenuTree();
   const { currentLanguage, currentLanguageCode, languageOptions, setLanguage } = useLanguage();
   const dropdownContentRef = React.useRef(null);
   const closeDropdownTimerRef = React.useRef(null);
   const contentSwitchTimerRef = React.useRef(null);
+  const dropdownMeasureFrameRef = React.useRef(null);
 
   const texts = React.useMemo(
     () => getSiteMessages(currentLanguageCode).navbar,
@@ -294,6 +320,43 @@ function Navbar() {
       matchPath('/departments/:facultyId/:departmentId', location.pathname) ||
       matchPath('/sections/:id', location.pathname)
   );
+
+  React.useLayoutEffect(() => {
+    const menu = navigationMeasureRef.current;
+    if (!menu) return undefined;
+
+    // Measure the desktop layout even while the visible menu is collapsed.
+    const measureNavigation = () => {
+      if (window.matchMedia('(max-width: 768px)').matches) {
+        setMobileNavigation(true);
+        return;
+      }
+
+      const style = window.getComputedStyle(menu);
+      const menuItems = [...menu.children];
+      const gap = parseFloat(style.columnGap) || 0;
+      const requiredWidth = menuItems.reduce((width, item) => width + item.getBoundingClientRect().width, 0)
+        + Math.max(0, menuItems.length - 1) * gap;
+      const availableWidth = menu.clientWidth
+        - (parseFloat(style.paddingLeft) || 0)
+        - (parseFloat(style.paddingRight) || 0);
+
+      setMobileNavigation(Math.ceil(requiredWidth) > Math.floor(availableWidth));
+    };
+
+    measureNavigation();
+    const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(measureNavigation);
+    observer?.observe(menu);
+    [...menu.children].forEach(item => observer?.observe(item));
+    window.addEventListener('resize', measureNavigation);
+    document.fonts?.addEventListener('loadingdone', measureNavigation);
+
+    return () => {
+      observer?.disconnect();
+      window.removeEventListener('resize', measureNavigation);
+      document.fonts?.removeEventListener('loadingdone', measureNavigation);
+    };
+  }, [navItems, currentLanguageCode, isHomePage, isAcademicDetailPage]);
 
   const topbarInfo = React.useMemo(
     () => [
@@ -358,12 +421,16 @@ function Navbar() {
   }, []);
 
   const measureDropdownHeight = React.useCallback(() => {
-    window.requestAnimationFrame(() => {
+    if (dropdownMeasureFrameRef.current !== null) {
+      window.cancelAnimationFrame(dropdownMeasureFrameRef.current);
+    }
+    dropdownMeasureFrameRef.current = window.requestAnimationFrame(() => {
+      dropdownMeasureFrameRef.current = null;
       const activeContent = dropdownContentRef.current?.querySelector(
         '.stripe-dropdown-content-enter'
       );
 
-      setDropdownHeight(Math.ceil(activeContent?.scrollHeight || 0));
+      setDropdownHeight(Math.ceil(activeContent?.getBoundingClientRect().height || 0));
     });
   }, []);
 
@@ -375,20 +442,38 @@ function Navbar() {
   }, [location.pathname, location.hash, closeFloatingDropdown]);
 
   useEffect(() => {
+    setOpen(false);
+    setOpenSubmenu(null);
+    closeFloatingDropdown(true);
+  }, [mobileNavigation, closeFloatingDropdown]);
+
+  useEffect(() => {
     if (!visibleDropdownItem || !dropdownContentRef.current) {
       setDropdownHeight(0);
       return undefined;
     }
 
-    const frame = window.requestAnimationFrame(measureDropdownHeight);
+    const activeContent = dropdownContentRef.current.querySelector('.stripe-dropdown-content-enter');
+    const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(measureDropdownHeight);
+    if (activeContent) observer?.observe(activeContent);
+    window.addEventListener('resize', measureDropdownHeight);
+    measureDropdownHeight();
 
-    return () => window.cancelAnimationFrame(frame);
+    return () => {
+      observer?.disconnect();
+      window.removeEventListener('resize', measureDropdownHeight);
+      if (dropdownMeasureFrameRef.current !== null) {
+        window.cancelAnimationFrame(dropdownMeasureFrameRef.current);
+        dropdownMeasureFrameRef.current = null;
+      }
+    };
   }, [visibleDropdownItem, currentLanguageCode, measureDropdownHeight]);
 
   useEffect(
     () => () => {
       window.clearTimeout(closeDropdownTimerRef.current);
       window.clearTimeout(contentSwitchTimerRef.current);
+      if (dropdownMeasureFrameRef.current !== null) window.cancelAnimationFrame(dropdownMeasureFrameRef.current);
     },
     []
   );
@@ -416,8 +501,7 @@ function Navbar() {
     closeFloatingDropdown(true);
   };
 
-  const isDesktopNavigation = () =>
-    typeof window !== 'undefined' && window.matchMedia('(min-width: 1081px)').matches;
+  const isDesktopNavigation = () => !mobileNavigation;
 
   const showFloatingDropdown = (itemOrId) => {
     if (!isDesktopNavigation()) {
@@ -523,9 +607,11 @@ function Navbar() {
     setLanguageOpen(false);
   };
 
+  const headerClassName = `fstu-header${isAcademicDetailPage ? ' fstu-header--overlay' : ''}${isHomePage ? ' fstu-header--home' : ''}`;
+
   return (
     <>
-    <header className={`fstu-header${isAcademicDetailPage ? ' fstu-header--overlay' : ''}`}>
+    <header ref={headerRef} className={`${headerClassName}${mobileNavigation ? ' fstu-header--mobile' : ''}`}>
       <div className="fstu-topbar">
         <div className="nav-shell fstu-inner topbar-row">
           <div className="topbar-left">
@@ -794,6 +880,25 @@ function Navbar() {
 
     </header>
 
+    <div className={`${headerClassName} fstu-header--measure`} aria-hidden="true" inert>
+      <div className="fstu-navbar">
+        <div className="nav-shell fstu-inner navbar-row">
+          <span className="brand"><span className="brand-logo-wrap" /></span>
+          <div ref={navigationMeasureRef} className="nav-menu">
+            {navItems.map(item => (
+              <div className={`nav-item${item.children?.length ? ' has-dropdown' : ''}`} key={item.id}>
+                <div className="nav-link-group">
+                  <span className="nav-link"><span>{getMenuNodeTitle(item, currentLanguageCode)}</span></span>
+                  {item.children?.length > 0 && <span className="nav-caret-btn"><ChevronDownIcon className="nav-caret-icon" /></span>}
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="navbar-actions" />
+        </div>
+      </div>
+    </div>
+
     <div
       className={`navbar-backdrop ${dropdownOpen ? 'is-visible' : ''}`}
       aria-hidden="true"
@@ -888,9 +993,7 @@ function MegaDropdownLink({ item, languageCode, onNavigate, onContentChange, dep
   const LinkIcon = getDropdownNodeIcon(hasChildren);
 
   React.useEffect(() => {
-    if (expanded) {
-      onContentChange?.();
-    }
+    onContentChange?.();
   }, [expanded, onContentChange]);
 
   const linkContent = (

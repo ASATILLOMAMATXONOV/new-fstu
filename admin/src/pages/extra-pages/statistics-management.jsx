@@ -319,7 +319,7 @@ export default function StatisticsManagementPage() {
                 <Paper
                   variant="outlined"
                   sx={{
-                    borderRadius: 3,
+                    borderRadius: '6px',
                     p: { xs: 2, md: 3 },
                     bgcolor: '#fafafa'
                   }}
@@ -400,7 +400,7 @@ export default function StatisticsManagementPage() {
                 <Paper
                   variant="outlined"
                   sx={{
-                    borderRadius: 3,
+                    borderRadius: '6px',
                     p: { xs: 2, md: 3 },
                     bgcolor: '#fafafa'
                   }}
@@ -498,7 +498,7 @@ export default function StatisticsManagementPage() {
                         onDragOver={(e) => e.preventDefault()}
                         sx={{
                           minHeight: 96,
-                          borderRadius: 2.5,
+                          borderRadius: '6px',
                           border: '1px dashed',
                           borderColor:
                             form.mediaType === 'image' && form.image
@@ -514,7 +514,7 @@ export default function StatisticsManagementPage() {
                           sx={{
                             width: 62,
                             height: 62,
-                            borderRadius: 2.5,
+                            borderRadius: '6px',
                             bgcolor: '#eef4ff',
                             color: '#082e69',
                             display: 'flex',
@@ -564,7 +564,7 @@ export default function StatisticsManagementPage() {
               <Paper
                 variant="outlined"
                 sx={{
-                  borderRadius: 3,
+                  borderRadius: '6px',
                   overflow: 'hidden',
                   height: '100%'
                 }}
@@ -592,7 +592,7 @@ export default function StatisticsManagementPage() {
                   <Box
                     sx={{
                       width: '100%',
-                      borderRadius: 4,
+                      borderRadius: '6px',
                       bgcolor: '#fff',
                       border: '1px solid',
                       borderColor: 'divider',
@@ -605,7 +605,7 @@ export default function StatisticsManagementPage() {
                       sx={{
                         width: 78,
                         height: 78,
-                        borderRadius: 3,
+                        borderRadius: '6px',
                         bgcolor: '#eef4ff',
                         color: '#082e69',
                         display: 'flex',
@@ -688,7 +688,7 @@ export default function StatisticsManagementPage() {
       <Paper
         variant="outlined"
         sx={{
-          borderRadius: 3,
+          borderRadius: '6px',
           p: { xs: 2, md: 3 },
           mb: 3,
           bgcolor: '#fafafa'
@@ -719,7 +719,7 @@ export default function StatisticsManagementPage() {
             <Box
               key={item.id}
               sx={{
-                borderRadius: 4,
+                borderRadius: '6px',
                 bgcolor: '#fff',
                 border: '1px solid',
                 borderColor: 'divider',
@@ -734,7 +734,7 @@ export default function StatisticsManagementPage() {
                 sx={{
                   width: 66,
                   height: 66,
-                  borderRadius: 3,
+                  borderRadius: '6px',
                   bgcolor: '#eef4ff',
                   color: '#082e69',
                   display: 'flex',
@@ -806,7 +806,7 @@ export default function StatisticsManagementPage() {
                       sx={{
                         width: 48,
                         height: 48,
-                        borderRadius: 2,
+                        borderRadius: '6px',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',

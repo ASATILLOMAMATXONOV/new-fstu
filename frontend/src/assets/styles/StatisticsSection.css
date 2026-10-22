@@ -1,223 +1,285 @@
+
+/* =========================================
+   FSTU — INSTITUTIONAL STATISTICS
+   Professional Engineering Design
+========================================= */
+
 .statistics-section {
-  content-visibility: auto;
-  contain-intrinsic-size: 520px;
+  --stats-primary: var(--brand-primary, #077fae);
+  --stats-text: var(--text-primary, #172b42);
+  --stats-muted: var(--text-secondary, #66788a);
+  --stats-border: var(--surface-border, #e1e7eb);
+
+  width: 100%;
+  padding: 30px 0 42px;
 }
+
+.statistics-section *,
+.statistics-section *::before,
+.statistics-section *::after {
+  box-sizing: border-box;
+}
+
+/* HEADER */
 
 .statistics-top {
-  text-align: center;
-  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--stats-border);
 }
 
-.statistics-top span {
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  color: var(--brand-primary);
-  text-transform: uppercase;
+.statistics-heading-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.statistics-heading-accent {
+  display: block;
+  width: 4px;
+  height: 30px;
+  background: var(--stats-primary);
 }
 
 .statistics-top h2 {
-  margin: 10px 0 0;
-  font-size: 24px;
-  font-weight: 800;
-  color: var(--text-primary);
+  margin: 0;
+  color: var(--stats-text);
+  font-size: clamp(22px, 2vw, 28px);
+  font-weight: 700;
+  letter-spacing: -0.5px;
 }
+
+/* GRID */
 
 .statistics-panel {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  border: 1px solid var(--stats-border);
+  background: var(--stats-border);
 }
+
+/* CARD */
 
 .statistics-item {
-  background: #ffffff;
-  border: 1px solid var(--surface-border);
-  /* border-radius: 14px; */
-  padding: 24px 18px;
-  text-align: center;
+  position: relative;
+  min-width: 0;
+  min-height: 255px;
+  overflow: hidden;
+  background: var(--surface-primary, #fff);
+  border-right: 1px solid var(--stats-border);
+  border-bottom: 1px solid var(--stats-border);
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s ease,
+    background-color 0.3s ease;
+  transition-delay: calc(var(--card-index, 0) * 70ms);
 }
 
-.statistics-icon {
-  width: 58px;
-  height: 58px;
-  margin: 0 auto 16px;
-  border-radius: 14px;
-  background: var(--surface-tint);
-  color: var(--brand-primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.statistics-icon svg {
-  width: 26px;
-  height: 26px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.7;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.statistics-icon img {
-  width: 28px;
-  height: 28px;
-  object-fit: contain;
-  display: block;
-}
-
-.statistics-item h4 {
-  margin: 0;
-  font-size: 32px;
-  font-weight: 800;
-  color: var(--text-primary);
-}
-
-.statistics-item span {
-  display: block;
-  margin-top: 8px;
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--text-primary);
-  text-transform: uppercase;
-}
-
-.statistics-item {
-  background: #ffffff;
-  border: 1px solid var(--surface-border);
-  /* border-radius: 14px; */
-  padding: 24px 18px;
-  text-align: center;
-  transition: 0.25s ease;
+.statistics-item.is-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .statistics-item:hover {
-  transform: translateY(-6px);
-  border-color: var(--brand-primary-dark);
-  box-shadow: 0 14px 35px rgba(var(--theme-dark-rgb), 0.12);
+  background: var(--surface-soft, #f8fafc);
 }
 
-.statistics-item:hover .statistics-icon {
-  background: var(--brand-primary-dark);
-  color: #ffffff;
-}
+/* NO DECORATIVE RINGS OR CORNERS */
 
-@media (max-width: 992px) {
-  .statistics-panel {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 576px) {
-  .statistics-section {
-    padding: 40px 0;
-  }
-
-  .statistics-top h2 {
-    font-size: 26px;
-  }
-
-  .statistics-panel {
-    grid-template-columns: 1fr;
-  }
-}
-
-.students-section-card {
-  /* border-radius: 18px; */
-  background: #fff;
-}
-
-.students-achievement-grid,
-.students-list {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 18px;
-}
-
-.student-achievement-card {
-  overflow: hidden;
-  /* border-radius: 18px; */
-  background: #fff;
-  /* border: 1px solid var(--surface-border); */
-  min-height: 285px;
-  text-decoration: none;
-  box-shadow: 0 14px 34px rgba(var(--theme-dark-rgb), 0.08);
-  animation: studentCardReveal 0.6s ease forwards;
-  transition: 0.3s ease;
-}
-
-.student-achievement-card:hover {
-  transform: translateY(-7px);
-  box-shadow: 0 24px 55px rgba(var(--theme-dark-rgb), 0.15);
-}
-
-.student-achievement-img-wrap {
-  width: 100%;
-  height: 190px;
-  background: var(--surface-tint);
-  overflow: hidden;
-}
-
-.student-achievement-img-wrap img {
-  width: 100%;
-  height: 100%;
-  /* object-fit: contain; */
-  background: var(--surface-tint);
-}
-
-.student-achievement-placeholder {
-  width: 100%;
-  height: 100%;
-  display: grid;
-  place-items: center;
-  color: var(--brand-primary);
-  font-size: 58px;
-  font-weight: 900;
-  background: #ebfefd;
-}
-
-.student-achievement-content {
-  padding: 18px 14px 20px;
-  text-align: center;
-}
-
-
-.student-achievement-content h4 {
-  margin: 0;
-  color: var(--brand-primary);
-  font-size: 16px;
-  font-weight: 900;
-  line-height: 1.35;
-}
-
-.student-achievement-label,
-.student-achievement-content p,
-.student-achievement-content strong {
+.statistics-corner,
+.statistics-tech-ring,
+.statistics-tech-footer {
   display: none;
 }
 
-@keyframes studentCardReveal {
-  from {
-    opacity: 0;
-    transform: translateY(22px) scale(0.96);
-  }
+/* CONTENT */
 
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
+.statistics-card-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 255px;
+  padding: 30px 22px;
+  text-align: center;
+}
+
+/* ICON — CENTER */
+
+.statistics-visual {
+  display: grid;
+  place-items: center;
+  width: 76px;
+  height: 76px;
+  margin-bottom: 22px;
+}
+
+.statistics-icon {
+  display: grid;
+  place-items: center;
+  width: 68px;
+  height: 68px;
+  background: var(--surface-soft, #f1f5f8);
+  color: var(--stats-primary);
+  border: 1px solid var(--stats-border);
+  border-radius: var(--box-radius);
+  transition:
+    transform 0.35s ease,
+    border-color 0.35s ease;
+}
+
+.statistics-icon svg {
+  width: 34px;
+  height: 34px;
+  stroke: currentColor;
+}
+
+.statistics-icon img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+}
+
+.statistics-item:hover .statistics-icon {
+  transform: translateY(-3px);
+  border-color: var(--stats-primary);
+}
+
+/* TEXT */
+
+.statistics-content {
+  width: 100%;
+}
+
+.statistics-value {
+  margin: 0 0 9px;
+  color: var(--stats-text);
+  font-size: clamp(30px, 2.8vw, 43px);
+  font-weight: 750;
+  letter-spacing: -1px;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.statistics-count {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 2px;
+}
+
+.statistics-count-plus {
+  font-size: 0.6em;
+  font-weight: 700;
+  color: var(--stats-primary);
+}
+
+.statistics-label {
+  margin: 0;
+  color: var(--stats-muted);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+/* SUBTLE HOVER LINE */
+
+.statistics-item::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 0;
+  height: 3px;
+  background: var(--stats-primary);
+  transform: translateX(-50%);
+  transition: width 0.35s ease;
+}
+
+.statistics-item:hover::after {
+  width: 100%;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 1100px) {
+  .statistics-panel {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-@media (max-width: 1350px) {
-  .students-achievement-grid,
-  .students-list {
-    grid-template-columns: repeat(2, 1fr);
+@media (max-width: 600px) {
+  .statistics-section {
+    padding: 22px 0 30px;
+  }
+
+  .statistics-panel {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .statistics-item,
+  .statistics-card-inner {
+    min-height: 215px;
+  }
+
+  .statistics-card-inner {
+    padding: 22px 12px;
+  }
+
+  .statistics-visual {
+    width: 58px;
+    height: 58px;
+    margin-bottom: 16px;
+  }
+
+  .statistics-icon {
+    width: 54px;
+    height: 54px;
+  }
+
+  .statistics-icon svg {
+    width: 27px;
+    height: 27px;
+  }
+
+  .statistics-icon img {
+    width: 34px;
+    height: 34px;
+  }
+
+  .statistics-value {
+    font-size: clamp(24px, 5.5vw, 34px);
+  }
+
+  .statistics-label {
+    font-size: 12px;
   }
 }
 
-@media (max-width: 640px) {
-  .students-achievement-grid,
-  .students-list {
+@media (max-width: 360px) {
+  .statistics-panel {
     grid-template-columns: 1fr;
+  }
+}
+
+/* ACCESSIBILITY */
+
+@media (prefers-reduced-motion: reduce) {
+  .statistics-section *,
+  .statistics-section *::before,
+  .statistics-section *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .statistics-item {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }

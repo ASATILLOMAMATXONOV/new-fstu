@@ -48,7 +48,7 @@
 .rector-text-block span {
   display: inline-block;
   padding: 9px 16px;
-  border-radius: 999px;
+  border-radius: var(--box-radius);
   background: rgba(var(--theme-primary-rgb), 0.12);
   color: var(--brand-primary);
   font-size: 12px;
@@ -85,7 +85,7 @@
   width: 100%;
   height: auto;
   /* object-fit: cover; */
-  border-radius: 34px;
+  border-radius: var(--box-radius);
   display: block;
   box-shadow: 0 35px 80px rgba(var(--theme-dark-rgb), 0.25);
 }
@@ -95,7 +95,7 @@
   margin: -62px auto 0;
   position: relative;
   padding: 22px;
-  border-radius: 24px;
+  border-radius: var(--box-radius);
   background: rgba(255, 255, 255, 0.92);
   text-align: center;
   box-shadow: 0 18px 45px rgba(var(--theme-dark-rgb), 0.16);
@@ -130,7 +130,7 @@
 .rector-note {
   background: #ffffff;
   border: 1px solid var(--surface-border);
-  border-radius: 26px;
+  border-radius: var(--box-radius);
   padding: 34px;
   box-shadow: 0 20px 55px rgba(var(--theme-dark-rgb), 0.08);
   animation: fadeUp 0.9s ease both;
@@ -179,7 +179,7 @@
   gap: 10px;
   margin: 6px 0;
   padding: 10px 14px;
-  border-radius: 999px;
+  border-radius: var(--box-radius);
   background: var(--surface-tint);
   border: 1px solid var(--surface-border);
   box-shadow: 0 10px 22px rgba(var(--theme-primary-rgb), 0.08);
@@ -198,7 +198,7 @@
   min-width: 44px;
   height: 24px;
   padding: 0 8px;
-  border-radius: 999px;
+  border-radius: var(--box-radius);
   background: var(--brand-primary);
   color: #fff;
   font-size: 10px;

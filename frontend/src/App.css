@@ -12,7 +12,7 @@
 
 .section-fallback {
   width: 100%;
-  border-radius: 18px;
+  border-radius: var(--box-radius);
   background:
     linear-gradient(
       90deg,
@@ -36,6 +36,6 @@
 
 @media (max-width: 640px) {
   .section-fallback {
-    border-radius: 14px;
+    border-radius: var(--box-radius);
   }
 }

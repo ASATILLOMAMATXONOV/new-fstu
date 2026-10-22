@@ -1,4 +1,4 @@
-﻿.ann-section {
+.ann-section {
   --ann-primary: var(--brand-primary, #2563eb);
   --ann-text: var(--text-primary, #19294f);
   --ann-muted: var(--text-secondary, #64748b);
@@ -38,7 +38,7 @@
   flex: 0 0 42px;
   place-items: center;
   height: 42px;
-  border-radius: 12px;
+  border-radius: var(--box-radius);
   background: color-mix(in srgb, var(--ann-primary) 9%, #fff);
   color: var(--ann-primary);
 }
@@ -81,7 +81,7 @@
   width: 30px;
   height: 30px;
   border: 1px solid var(--ann-border);
-  border-radius: 9px;
+  border-radius: var(--box-radius);
   background: var(--surface-soft, #f5f8ff);
 }
 
@@ -98,7 +98,7 @@
   overflow: hidden;
   overflow: clip;
   touch-action: pan-y;
-  border-radius: 14px;
+  border-radius: var(--box-radius);
 }
 
 .ann-section .ann-carousel-track {
@@ -120,7 +120,7 @@
   min-width: 0;
   overflow: hidden;
   border: 1px solid var(--ann-border);
-  border-radius: 14px;
+  border-radius: var(--box-radius);
   background: #fff;
   box-shadow: 0 8px 24px rgba(var(--theme-dark-rgb, 25, 41, 79), .045);
 }
@@ -199,7 +199,7 @@
   gap: 6px;
   padding: 5px 8px;
   border: 1px solid #ffffffb3;
-  border-radius: 7px;
+  border-radius: var(--box-radius);
   background: #fffffff2;
   color: var(--ann-primary);
   font-size: 10px;
@@ -302,7 +302,7 @@
   height: 34px;
   padding: 0;
   border: 1px solid var(--ann-border);
-  border-radius: 50%;
+  border-radius: var(--box-radius);
   background: #fff;
   color: var(--ann-primary);
   cursor: pointer;
@@ -319,7 +319,7 @@
   min-height: 160px;
   padding: 28px;
   border: 1px dashed var(--ann-border);
-  border-radius: 18px;
+  border-radius: var(--box-radius);
   background: #fff;
   color: var(--ann-muted);
   font-size: 13px;
@@ -368,7 +368,7 @@
   .ann-section { padding: 18px 0 22px; }
   .ann-section .ann-header { gap: 10px; margin-bottom: 14px; padding-bottom: 12px; }
   .ann-section .ann-heading { gap: 10px; }
-  .ann-section .ann-heading-icon { flex-basis: 36px; height: 36px; border-radius: 10px; }
+  .ann-section .ann-heading-icon { flex-basis: 36px; height: 36px; border-radius: var(--box-radius); }
   .ann-section .ann-see-all { gap: 7px; font-size: 11px; }
   .ann-section .ann-carousel-viewport { --ann-visible: 1; }
   .ann-section .ann-compact-content { gap: 8px; padding: 14px; }

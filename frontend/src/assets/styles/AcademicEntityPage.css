@@ -47,7 +47,7 @@
   position: relative;
   min-height: 430px;
   overflow: hidden;
-  border-radius: 0;
+  border-radius: var(--box-radius);
   background:
     linear-gradient(110deg, rgba(var(--theme-dark-rgb), 0.92) 0%, rgba(var(--theme-primary-rgb), 0.83) 45%, rgba(var(--theme-primary-rgb), 0.58) 100%),
     var(--brand-primary-dark);
@@ -132,7 +132,7 @@
   min-height: 74px;
   padding: 0;
   border: 0;
-  border-radius: 0;
+  border-radius: var(--box-radius);
   background: transparent;
   color: var(--text-secondary);
   box-shadow: none;
@@ -173,7 +173,7 @@
   padding: 18px 20px;
   align-items: center;
   overflow: hidden;
-  border-radius: 28px;
+  border-radius: var(--box-radius);
   background:
     linear-gradient(180deg, rgba(var(--theme-primary-rgb), 0.03), rgba(var(--theme-primary-rgb), 0)),
     #ffffff;
@@ -187,7 +187,7 @@
 .academic-entity-hero::after {
   content: '';
   position: absolute;
-  border-radius: 999px;
+  border-radius: var(--box-radius);
   pointer-events: none;
 }
 
@@ -196,7 +196,7 @@
   left: 0;
   width: 100%;
   height: 6px;
-  border-radius: 0;
+  border-radius: var(--box-radius);
   background: linear-gradient(90deg, var(--brand-primary-dark) 0%, var(--brand-primary) 100%);
 }
 
@@ -235,7 +235,7 @@
   align-items: center;
   justify-content: center;
   padding: 0 16px;
-  border-radius: 999px;
+  border-radius: var(--box-radius);
   background: var(--surface-tint);
   border: 1px solid var(--surface-border);
   color: var(--brand-primary);
@@ -256,7 +256,7 @@
   justify-content: center;
   min-height: 36px;
   padding: 0 16px;
-  border-radius: 999px;
+  border-radius: var(--box-radius);
   background: var(--surface-soft);
   border: 1px solid var(--surface-border);
   color: var(--brand-primary);
@@ -285,7 +285,7 @@
 }
 
 .academic-entity-page--section .academic-entity-back-link {
-  border-radius: 0;
+  border-radius: var(--box-radius);
 }
 
 .academic-entity-not-found .academic-entity-back-link {
@@ -308,7 +308,7 @@
 
 .academic-entity-summary-card {
   padding: 12px 14px;
-  border-radius: 16px;
+  border-radius: var(--box-radius);
   background: var(--surface-soft);
   border: 1px solid var(--surface-border);
   opacity: 0;
@@ -362,7 +362,7 @@
   width: 100%;
   max-width: 156px;
   padding: 8px;
-  border-radius: 22px;
+  border-radius: var(--box-radius);
   background: linear-gradient(180deg, var(--surface-soft) 0%, var(--surface-tint) 100%);
   border: 1px solid var(--surface-border);
   box-shadow: 0 16px 30px rgba(var(--theme-primary-rgb), 0.1);
@@ -379,7 +379,7 @@
   height: 100%;
   min-height: 140px;
   max-height: 140px;
-  border-radius: 16px;
+  border-radius: var(--box-radius);
   aspect-ratio: 1 / 1;
   object-fit: cover;
 }
@@ -396,13 +396,13 @@
   font-weight: 900;
   letter-spacing: 0.5px;
   background: var(--surface-tint);
-  border-radius: 18px;
+  border-radius: var(--box-radius);
 }
 
 .academic-entity-panel,
 .academic-entity-not-found {
   padding: 30px;
-  border-radius: 30px;
+  border-radius: var(--box-radius);
   background: #ffffff;
   border: 1px solid var(--surface-border);
   box-shadow: 0 18px 48px rgba(var(--theme-dark-rgb), 0.08);
@@ -430,7 +430,7 @@
   padding: 0 16px;
   min-width: 0;
   border: 1px solid var(--surface-border);
-  border-radius: 16px;
+  border-radius: var(--box-radius);
   background: var(--surface-soft);
   color: var(--text-secondary);
   font-size: 15px;
@@ -465,7 +465,7 @@
   width: max-content;
   max-width: min(260px, calc(100vw - 48px));
   padding: 10px 12px;
-  border-radius: 14px;
+  border-radius: var(--box-radius);
   background: var(--text-primary);
   color: #ffffff;
   font-size: 13px;
@@ -630,7 +630,7 @@
   height: auto;
   display: block;
   margin: 24px auto;
-  border-radius: 20px;
+  border-radius: var(--box-radius);
 }
 
 .academic-entity-rich a {
@@ -674,7 +674,7 @@
   gap: 10px;
   margin: 6px 0;
   padding: 10px 14px;
-  border-radius: 999px;
+  border-radius: var(--box-radius);
   background: var(--surface-tint);
   border: 1px solid var(--surface-border);
   box-shadow: 0 10px 22px rgba(var(--theme-primary-rgb), 0.08);
@@ -693,7 +693,7 @@
   min-width: 44px;
   height: 24px;
   padding: 0 8px;
-  border-radius: 999px;
+  border-radius: var(--box-radius);
   background: var(--brand-primary);
   color: #fff;
   font-size: 10px;
@@ -726,7 +726,7 @@
 .academic-entity-card {
   display: block;
   overflow: hidden;
-  border-radius: 22px;
+  border-radius: var(--box-radius);
   background: var(--surface-soft);
   border: 1px solid var(--surface-border);
   text-decoration: none;
@@ -787,14 +787,14 @@
   grid-template-columns: minmax(260px, 340px) minmax(0, 1fr);
   gap: 22px;
   padding: 22px;
-  border-radius: 24px;
+  border-radius: var(--box-radius);
   background: var(--surface-soft);
   border: 1px solid var(--surface-border);
 }
 
 .academic-entity-feature-media {
   overflow: hidden;
-  border-radius: 22px;
+  border-radius: var(--box-radius);
   background: var(--surface-border);
 }
 
@@ -812,7 +812,7 @@
   margin-top: 18px;
   min-height: 48px;
   padding: 0 18px;
-  border-radius: 999px;
+  border-radius: var(--box-radius);
   background: var(--brand-primary-dark);
   color: #ffffff;
   text-decoration: none;
@@ -824,7 +824,7 @@
 
 .academic-entity-empty-state {
   padding: 22px;
-  border-radius: 18px;
+  border-radius: var(--box-radius);
   background: var(--surface-soft);
   border: 1px dashed var(--surface-border);
   color: var(--text-secondary);
@@ -861,7 +861,7 @@
   position: sticky;
   top: 26px;
   padding: 22px;
-  border-radius: 24px;
+  border-radius: var(--box-radius);
   background: #ffffff;
   border: 1px solid var(--surface-border);
   box-shadow: 0 22px 52px rgba(var(--theme-dark-rgb), 0.12);
@@ -879,7 +879,7 @@
   overflow: hidden;
   width: min(100%, 196px);
   margin: 0 auto;
-  border-radius: 18px;
+  border-radius: var(--box-radius);
   aspect-ratio: 0.78 / 1;
   background: var(--surface-tint);
   box-shadow: 0 18px 36px rgba(var(--theme-dark-rgb), 0.14);
@@ -932,7 +932,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
+  border-radius: var(--box-radius);
   background: var(--surface-soft);
   color: var(--brand-primary);
   text-decoration: none;
@@ -987,7 +987,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
+  border-radius: var(--box-radius);
   background: var(--surface-soft);
   color: var(--brand-primary);
 }
@@ -1031,7 +1031,7 @@
   margin-top: 16px;
   min-height: 48px;
   padding: 0 18px;
-  border-radius: 16px;
+  border-radius: var(--box-radius);
   background: var(--surface-tint);
   color: var(--brand-primary);
   text-decoration: none;
@@ -1190,7 +1190,7 @@
 
   .academic-entity-showcase-hero {
     min-height: 320px;
-    border-radius: 0;
+    border-radius: var(--box-radius);
   }
 
   .academic-entity-showcase-copy {
@@ -1209,7 +1209,7 @@
   .academic-entity-showcase-update {
     min-height: 64px;
     padding: 0;
-    border-radius: 0;
+    border-radius: var(--box-radius);
   }
 
   .academic-entity-panel,
@@ -1217,7 +1217,7 @@
   .academic-entity-leader-card,
   .academic-entity-content-surface {
     padding: 22px;
-    border-radius: 24px;
+    border-radius: var(--box-radius);
   }
 
   .academic-entity-leader-photo {
@@ -1234,7 +1234,7 @@
     min-height: 56px;
     min-width: 0;
     padding: 0 16px;
-    border-radius: 14px;
+    border-radius: var(--box-radius);
   }
 
   .academic-employee-grid {
@@ -1483,7 +1483,7 @@
   align-items: center;
   gap: 8px;
   padding: 10px 14px;
-  border-radius: 999px;
+  border-radius: var(--box-radius);
   background: var(--brand-primary);
   color: #ffffff;
   text-decoration: none;
@@ -1512,7 +1512,7 @@
   display: block;
   background: #ffffff;
   border: 1px solid var(--surface-border);
-  border-radius: 16px;
+  border-radius: var(--box-radius);
   overflow: hidden;
   text-decoration: none;
   box-shadow: 0 14px 34px rgba(var(--theme-dark-rgb), 0.08);
@@ -1637,7 +1637,7 @@
   position: sticky !important;
   top: 92px !important;
   padding: 0 !important;
-  border-radius: 0 !important;
+  border-radius: var(--box-radius) !important;
   overflow: hidden !important;
   background: #ffffff !important;
   border: 1px solid var(--surface-border) !important;
@@ -1648,7 +1648,7 @@
 .academic-entity-leader-clean-title {
   padding: 16px 20px !important;
   background: linear-gradient(90deg, var(--brand-primary) 0%, var(--brand-primary) 100%) !important;
-  border-radius: 0 !important;
+  border-radius: var(--box-radius) !important;
 }
 
 .academic-entity-leader-clean-title h2 {
@@ -1670,7 +1670,7 @@
 .academic-entity-leader-clean-photo {
   width: 104px !important;
   height: 124px !important;
-  border-radius: 0 !important;
+  border-radius: var(--box-radius) !important;
   overflow: hidden !important;
   border: 1px solid var(--surface-border) !important;
   background: var(--surface-tint) !important;
@@ -1715,7 +1715,7 @@
 .academic-entity-leader-clean-action {
   width: 40px !important;
   height: 40px !important;
-  border-radius: 0 !important;
+  border-radius: var(--box-radius) !important;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -1744,7 +1744,7 @@
   margin-top: 14px !important;
   min-height: 40px !important;
   padding: 0 16px !important;
-  border-radius: 0 !important;
+  border-radius: var(--box-radius) !important;
   background: var(--brand-primary) !important;
   color: #ffffff !important;
   text-decoration: none !important;
@@ -1770,7 +1770,7 @@
   width: auto !important;
   min-width: 155px !important;
   min-height: 48px !important;
-  border-radius: 0 !important;
+  border-radius: var(--box-radius) !important;
   background: #ffffff !important;
   border: 1px solid var(--surface-border) !important;
   color: var(--text-primary) !important;
@@ -1800,7 +1800,7 @@
 .academic-entity-feature,
 .academic-employee-card,
 .academic-entity-leader-card {
-  border-radius: 0 !important;
+  border-radius: var(--box-radius) !important;
 }
 
 @keyframes cleanLeaderShow {
@@ -1889,7 +1889,7 @@
   display: flex !important;
   flex-direction: column !important;
   padding: 0 !important;
-  border-radius: 0 !important;
+  border-radius: var(--box-radius) !important;
   background: #ffffff !important;
   border: 1px solid var(--surface-border) !important;
   box-shadow: none !important;
@@ -1913,7 +1913,7 @@
   max-width: 190px !important;
   height: 230px !important;
   margin: 28px auto 0 !important;
-  border-radius: 0 !important;
+  border-radius: var(--box-radius) !important;
   overflow: hidden !important;
   background: var(--surface-border) !important;
   border: 1px solid var(--surface-border) !important;
@@ -1964,7 +1964,7 @@
 .academic-entity-leader-action {
   width: 68px !important;
   height: 68px !important;
-  border-radius: 0 !important;
+  border-radius: var(--box-radius) !important;
   background: var(--surface-tint) !important;
   color: var(--brand-primary) !important;
   text-decoration: none !important;
@@ -1991,7 +1991,7 @@
   margin: 28px auto 0 !important;
   min-height: 70px !important;
   padding: 0 34px !important;
-  border-radius: 0 !important;
+  border-radius: var(--box-radius) !important;
   background: var(--brand-primary-dark) !important;
   color: #ffffff !important;
   font-size: 24px !important;
@@ -2020,7 +2020,7 @@
   width: auto !important;
   min-width: 145px !important;
   min-height: 44px !important;
-  border-radius: 0 !important;
+  border-radius: var(--box-radius) !important;
 }
 
 .academic-entity-panel,
@@ -2029,7 +2029,7 @@
 .academic-entity-card,
 .academic-department-item,
 .academic-employee-card {
-  border-radius: 0 !important;
+  border-radius: var(--box-radius) !important;
 }
 
 @keyframes deanCardShow {

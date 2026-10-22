@@ -33,7 +33,7 @@ export default function AuthCodeVerification() {
             padding: '10px',
             border: '1px solid',
             borderColor: theme.palette.divider,
-            borderRadius: 4,
+            borderRadius: '6px',
             ':hover': { borderColor: theme.palette.primary.main }
           }}
           focusStyle={{

@@ -114,7 +114,7 @@
       0.08
     );
 
-  border-radius: 50%;
+  border-radius: var(--box-radius);
 
   transition:
     transform 0.2s ease,

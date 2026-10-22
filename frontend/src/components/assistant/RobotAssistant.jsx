@@ -1,298 +1,661 @@
-import React, { Suspense, useEffect, useMemo, useRef, useState } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, useAnimations, useGLTF } from '@react-three/drei';
-import * as THREE from 'three';
-import { useLocation, useNavigate } from 'react-router-dom';
 
-import { buildApiUrl, API_BASE_URL } from '../../config/api';
+import React, {
+  useEffect,
+  useRef,
+  useState
+} from 'react';
+
+import {
+  FiArrowLeft,
+  FiArrowUpRight,
+  FiCheck,
+  FiCpu,
+  FiFileText,
+  FiGrid,
+  FiSend,
+  FiX
+} from 'react-icons/fi';
+
+import { FaUniversalAccess } from 'react-icons/fa';
+import { AnimatePresence, motion } from 'framer-motion';
+
+import {
+  API_BASE_URL,
+  buildApiUrl
+} from '../../config/api';
+
 import { useLanguage } from '../../context/LanguageContext';
+
+import AccessibilityChat from './AccessibilityChat';
+import FloatingRobot from './FloatingRobot';
+import { assistantCopy } from './assistantCopy';
+
 import '../../assets/styles/RobotAssistant.css';
 
-const MODEL_URL = '/models/RobotExpressive.glb';
-const ACTION_ALIASES = {
-  idle: ['Idle', 'idle'],
-  waving: ['Wave', 'Waving'],
-  talking: ['Talking', 'Talk'],
-  listening: ['Standing'],
-  thinking: ['Thinking', 'Idle']
-};
+function RequestForm({ mode, language, text }) {
+  const [status, setStatus] = useState('idle');
+  const [reference, setReference] = useState('');
 
-const copy = {
-  uz: { name: 'FSTU AI yordamchisi', welcome: 'Assalomu alaykum! Universitet sayti bo‘yicha yordam beraman.', placeholder: 'Murojaatingizni yozing…', send: 'Yuborish', open: '3D yordamchini ochish', close: 'Yopish', mute: 'Ovozni o‘chirish', unmute: 'Ovozni yoqish', unavailable: 'Bu ma’lumot CMSda topilmadi. Iltimos, aniqroq bo‘lim yoki sahifani so‘rang.', thinking: 'Ma’lumot izlayapman…', speak: 'Ovozli savol', stop: 'To‘xtatish', readPrompt: 'Sahifadagi ma’lumotlarni o‘qib beraymi?', yes: 'Ha, o‘qib bering', no: 'Yo‘q, rahmat', page: 'joriy sahifa' },
-  ru: { name: 'Помощник FSTU', welcome: 'Здравствуйте! Я помогу с сайтом университета.', placeholder: 'Напишите вопрос…', send: 'Отправить', open: 'Открыть 3D помощника', close: 'Закрыть', mute: 'Выключить звук', unmute: 'Включить звук', unavailable: 'Эти данные не найдены в CMS. Уточните раздел или страницу.', thinking: 'Ищу информацию…', speak: 'Голосовой вопрос', stop: 'Остановить', readPrompt: 'Прочитать информацию этой страницы?', yes: 'Да, прочитайте', no: 'Нет, спасибо', page: 'текущая страница' },
-  en: { name: 'FSTU assistant', welcome: 'Hello! I can help you navigate the university website.', placeholder: 'Ask a question…', send: 'Send', open: 'Open 3D assistant', close: 'Close', mute: 'Mute voice', unmute: 'Unmute voice', unavailable: 'This information was not found in the CMS. Please name a section or page.', thinking: 'Looking for information…', speak: 'Voice question', stop: 'Stop', readPrompt: 'Would you like me to read this page?', yes: 'Yes, read it', no: 'No, thanks', page: 'current page' }
-};
+  const controllerRef = useRef(null);
+  const nameRef = useRef(null);
 
-function RobotModel({ state }) {
-  const group = useRef();
-  const { scene, animations } = useGLTF(MODEL_URL);
-  const { actions } = useAnimations(animations, group);
-  const bones = useMemo(() => {
-    const found = {};
-    scene?.traverse((node) => {
-      if (!node.isBone) return;
-      const name = node.name.toLowerCase();
-      if (name.includes('head') || name.includes('neck')) found.head = found.head || node;
-      if (name.includes('leftarm') || name.includes('leftshoulder')) found.leftArm = found.leftArm || node;
-      if (name.includes('rightarm') || name.includes('rightshoulder')) found.rightArm = found.rightArm || node;
-    });
-    return found;
-  }, [scene]);
-  const fit = useMemo(() => {
-    if (!scene) return { scale: 1, position: [0, 0, 0] };
-    const box = new THREE.Box3().setFromObject(scene);
-    const size = box.getSize(new THREE.Vector3());
-    const center = box.getCenter(new THREE.Vector3());
-    const scale = Math.min(1.6 / Math.max(size.y, 0.01), 1.15);
-    return {
-      scale,
-      position: [-center.x * scale, -center.y * scale - 0.05, -center.z * scale]
+  useEffect(() => {
+    nameRef.current?.focus();
+
+    return () => {
+      controllerRef.current?.abort();
     };
-  }, [scene]);
-  const [hasModelError, setHasModelError] = useState(false);
-  const selectedAction = useMemo(() => {
-    const names = ACTION_ALIASES[state] || ACTION_ALIASES.idle;
-    return names.find((name) => actions?.[name]) || Object.keys(actions || {})[0];
-  }, [actions, state]);
+  }, []);
 
-  useEffect(() => {
-    if (!scene) setHasModelError(true);
-  }, [scene]);
+  const submit = async (event) => {
+    event.preventDefault();
 
-  useEffect(() => {
-    if (!selectedAction || !actions?.[selectedAction]) return undefined;
-    const action = actions[selectedAction];
-    action.reset().fadeIn(0.25).play();
-    return () => action.fadeOut(0.25);
-  }, [actions, selectedAction]);
+    if (status === 'sending') return;
 
-  useFrame((_, delta) => {
-    if (!group.current) return;
-    group.current.position.y = Math.sin(Date.now() * 0.0018) * 0.025;
-    group.current.rotation.y = Math.PI + Math.sin(Date.now() * 0.0012) * (state === 'thinking' ? 0.08 : 0.025);
-    const pulse = Math.sin(Date.now() * 0.006);
-    if (bones.head) bones.head.rotation.y = state === 'listening' ? pulse * 0.18 : state === 'thinking' ? -0.2 + pulse * 0.04 : pulse * 0.03;
-    if (bones.leftArm) bones.leftArm.rotation.z = state === 'talking' ? pulse * 0.18 : state === 'waving' ? pulse * 0.45 : 0;
-    if (bones.rightArm) bones.rightArm.rotation.z = state === 'talking' ? -pulse * 0.18 : state === 'waving' ? -pulse * 0.45 : 0;
-  });
+    const form = event.currentTarget;
 
-  if (hasModelError || !scene) return null;
-  return <primitive ref={group} object={scene} scale={fit.scale} position={fit.position} />;
-}
+    const fields = Object.fromEntries(
+      new FormData(form)
+    );
 
-function RobotCanvas({ state, onModelError }) {
+    controllerRef.current?.abort();
+
+    const controller = new AbortController();
+    controllerRef.current = controller;
+
+    setStatus('sending');
+
+    try {
+      const response = await fetch(
+        buildApiUrl(
+          '/api/assistant/requests',
+          API_BASE_URL
+        ),
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            ...fields,
+            type: mode,
+            language
+          }),
+          signal: controller.signal
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('request-failed');
+      }
+
+      const result = await response.json();
+
+      if (!result.id) {
+        throw new Error('request-not-saved');
+      }
+
+      setReference(String(result.id));
+      setStatus('success');
+
+      form.reset();
+    } catch (error) {
+      if (error.name !== 'AbortError') {
+        setStatus('error');
+      }
+    }
+  };
+
+  if (status === 'success') {
+    return (
+      <div
+        className="fstu-ai__success"
+        role="status"
+      >
+        <span className="fstu-ai__success-icon">
+          <FiCheck />
+        </span>
+
+        <h3>{text.sent}</h3>
+
+        <p>
+          {text.saved}{' '}
+          <strong>#{reference}</strong>
+        </p>
+
+        <button
+          type="button"
+          className="fstu-ai__submit"
+          onClick={() => setStatus('idle')}
+        >
+          {text.newRequest}
+          <FiArrowUpRight />
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <Canvas
-      camera={{ position: [0, 0.25, 3.4], fov: 38 }}
-      dpr={[1, 1.5]}
-      onCreated={({ gl }) => gl.setClearColor('#000000', 0)}
-      onError={onModelError}
-      aria-label="Animatsiyali 3D robot"
+    <form
+      className="fstu-ai__request"
+      onSubmit={submit}
     >
-      <ambientLight intensity={1.8} />
-      <directionalLight position={[2, 3, 4]} intensity={2.2} color="#dffaf6" />
-      <directionalLight position={[-3, 1, 1]} intensity={1.1} color="#8db9ff" />
-      <Suspense fallback={null}>
-        <RobotModel state={state} />
-      </Suspense>
-      <OrbitControls enableZoom={false} enablePan={false} minPolarAngle={1.3} maxPolarAngle={1.8} />
-    </Canvas>
-  );
-}
+      <p className="fstu-ai__intro">
+        {mode === 'hemis'
+          ? text.hemisIntro
+          : text.appealIntro}
+      </p>
 
-class RobotCanvasBoundary extends React.Component {
-  state = { failed: false };
-  static getDerivedStateFromError() { return { failed: true }; }
-  componentDidCatch() { this.props.onError?.(); }
-  render() { return this.state.failed ? null : this.props.children; }
+      <label>
+        {text.fullName}
+
+        <input
+          ref={nameRef}
+          name="fullName"
+          autoComplete="name"
+          required
+          minLength={2}
+          maxLength={150}
+          placeholder={text.namePlaceholder}
+        />
+      </label>
+
+      <label>
+        {text.phone}
+
+        <input
+          name="phone"
+          type="tel"
+          autoComplete="tel"
+          required
+          pattern="[+0-9\(\)\s\-]{7,30}"
+          maxLength={30}
+          placeholder="+998 90 123 45 67"
+        />
+      </label>
+
+      {mode === 'hemis' && (
+        <div className="fstu-ai__field-row">
+          <label>
+            {text.studentId}
+
+            <input
+              name="studentId"
+              maxLength={50}
+              placeholder={text.optional}
+            />
+          </label>
+
+          <label>
+            {text.group}
+
+            <input
+              name="group"
+              maxLength={80}
+              placeholder="12-24"
+            />
+          </label>
+        </div>
+      )}
+
+      <label>
+        {text.subject}
+
+        <input
+          name="subject"
+          required
+          minLength={3}
+          maxLength={200}
+          placeholder={
+            mode === 'hemis'
+              ? text.hemisSubject
+              : text.subjectPlaceholder
+          }
+        />
+      </label>
+
+      <label>
+        {text.message}
+
+        <textarea
+          name="message"
+          required
+          minLength={10}
+          maxLength={5000}
+          rows={3}
+          placeholder={text.messagePlaceholder}
+        />
+      </label>
+
+      {status === 'error' && (
+        <p
+          className="fstu-ai__error"
+          role="alert"
+        >
+          {text.sendError}
+        </p>
+      )}
+
+      <button
+        className="fstu-ai__submit"
+        type="submit"
+        disabled={status === 'sending'}
+      >
+        {status === 'sending'
+          ? text.sending
+          : text.send}
+
+        <FiSend />
+      </button>
+    </form>
+  );
 }
 
 export default function RobotAssistant() {
   const { currentLanguageCode } = useLanguage();
-  const navigate = useNavigate();
-  const location = useLocation();
-  const language = currentLanguageCode === 'ru' ? 'ru' : currentLanguageCode === 'en' ? 'en' : 'uz';
-  const text = copy[language];
-  const [open, setOpen] = useState(false);
-  const [choiceOpen, setChoiceOpen] = useState(false);
+
+  const language = ['uz', 'ru', 'en'].includes(
+    currentLanguageCode
+  )
+    ? currentLanguageCode
+    : 'uz';
+
+  const text = assistantCopy[language];
+
+  const [menuOpen, setMenuOpen] = useState(false);
   const [mode, setMode] = useState(null);
-  const [walking, setWalking] = useState(false);
-  const [muted, setMuted] = useState(false);
-  const [state, setState] = useState('idle');
-  const [modelError, setModelError] = useState(false);
-  const [input, setInput] = useState('');
-  const [messages, setMessages] = useState([{ role: 'assistant', content: text.welcome }]);
-  const [loading, setLoading] = useState(false);
-  const [pagePrompt, setPagePrompt] = useState(null);
-  const askedPathRef = useRef('');
-  const inputRef = useRef(null);
+
+  const [
+    assistantLanguage,
+    setAssistantLanguage
+  ] = useState(language);
+
+  const [robotHidden, setRobotHidden] = useState(false);
+  const [robotState, setRobotState] = useState('idle');
+
+  const rootRef = useRef(null);
+  const launcherRef = useRef(null);
+  const closeTimer = useRef(null);
+
+  const restoringFocus = useRef(false);
+
+  const panelText =
+    mode === 'accessibility'
+      ? assistantCopy[assistantLanguage]
+      : text;
 
   useEffect(() => {
-    setMessages((current) => current.length === 1 ? [{ role: 'assistant', content: text.welcome }] : current);
-  }, [text.welcome]);
+    setAssistantLanguage(language);
+  }, [language]);
+
+  const focusLauncher = () => {
+    restoringFocus.current = true;
+
+    launcherRef.current?.focus({
+      preventScroll: true
+    });
+
+    restoringFocus.current = false;
+  };
+
+  const close = () => {
+    setMode(null);
+    setMenuOpen(false);
+    setRobotState('idle');
+
+    focusLauncher();
+  };
 
   useEffect(() => {
-    if (!location.pathname || location.pathname === '/' || askedPathRef.current === location.pathname) return;
-    askedPathRef.current = location.pathname;
-    setOpen(true);
-    setPagePrompt(location.pathname);
-    setMessages((current) => [...current, { role: 'assistant', content: text.readPrompt, prompt: true }]);
-  }, [location.pathname, text.readPrompt]);
-
-  const speak = (value) => {
-    if (muted || typeof window === 'undefined' || !window.speechSynthesis) return;
-    window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(value);
-    utterance.lang = language === 'uz' ? 'uz-UZ' : language === 'ru' ? 'ru-RU' : 'en-US';
-    utterance.onstart = () => setState('talking');
-    utterance.onend = () => setState('idle');
-    window.speechSynthesis.speak(utterance);
-  };
-
-  const toggleAssistant = () => {
-    const nextOpen = !open;
-    setOpen(nextOpen);
-    setChoiceOpen(nextOpen);
-    if (!nextOpen) { setMode(null); setWalking(false); }
-  };
-
-  const chooseMode = (nextMode) => {
-    setMode(nextMode);
-    setChoiceOpen(false);
-    setOpen(true);
-    if (nextMode === 'accessibility') {
-      setWalking(true);
-      speak('Mas’uliyati cheklangan foydalanuvchilar uchun yordamchi yoqildi. Sizni eshitishga tayyorman.');
-      window.setTimeout(() => startListening(), 700);
-    } else {
-      speak(text.welcome);
-    }
-  };
-
-  const answerFromSite = (question) => {
-    const value = question.toLowerCase();
-    const routes = [
-      { words: ['yangilik', 'news', 'новост'], path: '/news', label: language === 'uz' ? 'Yangiliklar bo‘limiga o‘tishingiz mumkin.' : language === 'ru' ? 'Откройте раздел новостей.' : 'Open the news section.' },
-      { words: ['fakultet', 'faculty', 'факультет'], path: '/faculties', label: language === 'uz' ? 'Fakultetlar bo‘limini ochdim.' : language === 'ru' ? 'Открываю раздел факультетов.' : 'Opening faculties.' },
-      { words: ['qabul', 'admission', 'прием'], path: '/admission', label: language === 'uz' ? 'Qabul bo‘limini ochdim.' : language === 'ru' ? 'Открываю раздел приёма.' : 'Opening admissions.' },
-      { words: ['rektor', 'rector', 'ректор'], path: '/rektor', label: language === 'uz' ? 'Rektor murojaati sahifasini ochdim.' : language === 'ru' ? 'Открываю обращение ректора.' : 'Opening the rector page.' }
-    ];
-    return routes.find((route) => route.words.some((word) => value.includes(word)));
-  };
-
-  const readCurrentPage = async () => {
-    setPagePrompt(null);
-    setLoading(true);
-    setState('thinking');
-    try {
-      const response = await fetch(buildApiUrl('/api/assistant/chat', API_BASE_URL), {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: `Men ${location.pathname} sahifasidaman. Shu sahifadagi CMS ma'lumotlarini qisqa va tushunarli qilib o'zbek tilida o'qib ber.`, language })
-      });
-      if (!response.ok) throw new Error('assistant-api-unavailable');
-      const data = await response.json();
-      const answer = data.answer || text.unavailable;
-      setMessages((current) => [...current, { role: 'assistant', content: answer }]);
-      speak(answer);
-    } catch {
-      const answer = text.unavailable;
-      setMessages((current) => [...current, { role: 'assistant', content: answer }]);
-      speak(answer);
-    } finally {
-      setLoading(false);
-      setState('idle');
-    }
-  };
-
-  const submit = async (event) => {
-    event?.preventDefault();
-    const question = input.trim();
-    if (!question || loading) return;
-    setInput('');
-    setMessages((current) => [...current, { role: 'user', content: question }]);
-    setState('listening');
-    setLoading(true);
-    try {
-      const route = answerFromSite(question);
-      let answer = route?.label;
-      if (route) navigate(route.path);
-      if (!answer) {
-        setState('thinking');
-        const response = await fetch(buildApiUrl('/api/assistant/chat', API_BASE_URL), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: question, language }) });
-        if (!response.ok) throw new Error('assistant-api-unavailable');
-        const data = await response.json();
-        answer = data.answer || text.unavailable;
+    const onKey = (event) => {
+      if (event.key === 'Escape') {
+        setMode(null);
+        setMenuOpen(false);
+        setRobotState('idle');
       }
-      setMessages((current) => [...current, { role: 'assistant', content: answer }]);
-      speak(answer);
-    } catch {
-      const answer = text.unavailable;
-      setMessages((current) => [...current, { role: 'assistant', content: answer }]);
-      speak(answer);
-    } finally {
-      setLoading(false);
-      setState('idle');
+    };
+
+    const onPointer = (event) => {
+      if (
+        rootRef.current &&
+        !rootRef.current.contains(event.target)
+      ) {
+        setMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('keydown', onKey);
+    document.addEventListener('pointerdown', onPointer);
+
+    return () => {
+      clearTimeout(closeTimer.current);
+
+      document.removeEventListener('keydown', onKey);
+      document.removeEventListener(
+        'pointerdown',
+        onPointer
+      );
+    };
+  }, []);
+
+  const chooseMode = (value) => {
+    clearTimeout(closeTimer.current);
+
+    setMenuOpen(false);
+    setMode(value);
+
+    if (value === 'accessibility') {
+      setRobotHidden(false);
     }
+
+    setRobotState(
+      value === 'accessibility'
+        ? 'greeting'
+        : 'guiding'
+    );
   };
 
-  const startListening = () => {
-    const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!Recognition) { inputRef.current?.focus(); return; }
-    const recognition = new Recognition();
-    recognition.lang = language === 'uz' ? 'uz-UZ' : language === 'ru' ? 'ru-RU' : 'en-US';
-    recognition.interimResults = false;
-    recognition.onstart = () => setState('listening');
-    recognition.onresult = (event) => setInput(event.results[0][0].transcript);
-    recognition.onerror = () => setState('idle');
-    recognition.onend = () => setState('idle');
-    recognition.start();
-  };
+  const options = [
+    {
+      id: 'appeal',
+      label: text.appeal,
+      Icon: FiFileText,
+      detail: text.appealHint
+    },
+    {
+      id: 'accessibility',
+      label: text.accessibility,
+      Icon: FaUniversalAccess,
+      detail: text.accessibilityHint
+    },
+    {
+      id: 'hemis',
+      label: 'HEMIS',
+      Icon: FiGrid,
+      detail: text.hemisHint
+    }
+  ];
 
   return (
-    <aside className={`robot-assistant${open ? ' is-open' : ''}${walking ? ' is-walking' : ''}${modelError ? ' has-fallback' : ''}`} aria-label={text.name}>
-      <button type="button" className="robot-assistant__launcher" onClick={toggleAssistant} aria-expanded={open} aria-label={open ? text.close : text.open}>
-        {modelError ? <span className="robot-assistant__fallback-icon" aria-hidden="true">✦</span> : <RobotCanvasBoundary onError={() => setModelError(true)}><RobotCanvas state={state} onModelError={() => setModelError(true)} /></RobotCanvasBoundary>}
-        <span className="robot-assistant__status" aria-hidden="true" />
-      </button>
-      {open && choiceOpen && (
-        <section className="robot-assistant__choice" aria-label="Yordam turini tanlang">
-          <strong>Qanday yordam kerak?</strong>
-          <button type="button" onClick={() => chooseMode('accessibility')}>Mas’uliyati cheklanganlar uchun</button>
-          <button type="button" onClick={() => chooseMode('appeal')}>Murojaatlar uchun</button>
-        </section>
+    <aside
+      ref={rootRef}
+      className={[
+        'fstu-ai',
+        menuOpen && !mode ? 'is-expanded' : '',
+        mode ? 'has-panel' : ''
+      ]
+        .filter(Boolean)
+        .join(' ')}
+      aria-label={text.name}
+    >
+
+      {mode === 'accessibility' && !robotHidden && (
+        <FloatingRobot
+          state={robotState}
+          onActivate={() =>
+            chooseMode('accessibility')
+          }
+          onHide={() => {
+            setRobotHidden(true);
+            setRobotState('idle');
+          }}
+        />
       )}
-      {open && !choiceOpen && (
-        <section className="robot-assistant__panel" aria-live="polite">
-          <header className="robot-assistant__header">
-            <div><strong>{text.name}</strong><span>{mode === 'accessibility' ? 'Maxsus yordam rejimi' : mode === 'appeal' ? 'Murojaatlar bo‘limi' : state === 'thinking' ? text.thinking : state}</span></div>
-            <div className="robot-assistant__actions">
-              <button type="button" onClick={() => { setMuted((value) => !value); window.speechSynthesis?.cancel(); }} aria-label={muted ? text.unmute : text.mute}>{muted ? '🔇' : '🔊'}</button>
-              <button type="button" onClick={() => setOpen(false)} aria-label={text.close}>×</button>
-            </div>
-          </header>
-          <div className="robot-assistant__messages">
-            {messages.map((message, index) => (
-              <React.Fragment key={`${message.role}-${index}`}>
-                <p className={`robot-assistant__message is-${message.role}`}>{message.content}</p>
-                {message.prompt && pagePrompt && (
-                  <div className="robot-assistant__prompt-actions">
-                    <button type="button" onClick={readCurrentPage}>{text.yes}</button>
-                    <button type="button" onClick={() => setPagePrompt(null)}>{text.no}</button>
-                  </div>
-                )}
-              </React.Fragment>
-            ))}
-            {loading && <p className="robot-assistant__message is-assistant is-loading">•••</p>}
-          </div>
-          <form className="robot-assistant__form" onSubmit={submit}>
-            <input ref={inputRef} value={input} onChange={(event) => setInput(event.target.value)} placeholder={text.placeholder} aria-label={text.placeholder} />
-            <button type="button" onClick={startListening} aria-label={text.speak}>⌕</button>
-            <button type="submit" aria-label={text.send}>→</button>
-          </form>
-          <button type="button" className="robot-assistant__stop" onClick={() => { window.speechSynthesis?.cancel(); setState('idle'); }} aria-label={text.stop}>{text.stop}</button>
-        </section>
+
+      {mode === 'accessibility' && robotHidden && (
+        <motion.button
+          type="button"
+          className="fstu-robot-restore"
+          initial={{
+            opacity: 0,
+            scale: 0.7
+          }}
+          animate={{
+            opacity: 1,
+            scale: 1
+          }}
+          onClick={() => {
+            setRobotHidden(false);
+            setRobotState('greeting');
+          }}
+          aria-label={panelText.robot}
+        >
+          <FiCpu />
+          <span>AI robot</span>
+        </motion.button>
       )}
+
+      <AnimatePresence>
+        {mode && (
+          <motion.section
+            className={`fstu-ai__panel${
+              mode === 'accessibility'
+                ? ' is-chat'
+                : ''
+            }`}
+            role="dialog"
+            aria-modal="false"
+            aria-labelledby="fstu-ai-title"
+            initial={{
+              opacity: 0,
+              y: 18,
+              scale: 0.96
+            }}
+            animate={{
+              opacity: 1,
+              y: 0,
+              scale: 1
+            }}
+            exit={{
+              opacity: 0,
+              y: 12,
+              scale: 0.97
+            }}
+            transition={{
+              duration: 0.26,
+              ease: [0.22, 1, 0.36, 1]
+            }}
+          >
+
+            <header className="fstu-ai__header">
+              <button
+                type="button"
+                className="fstu-ai__icon-button"
+                aria-label={panelText.back}
+                onClick={() => {
+                  setMode(null);
+                  setRobotState('idle');
+                  setMenuOpen(true);
+                  focusLauncher();
+                }}
+              >
+                <FiArrowLeft />
+              </button>
+
+              <div>
+                <span className="fstu-ai__eyebrow">
+                  fstu<span>AI</span> /{' '}
+                  {panelText.online}
+                </span>
+
+                <h2 id="fstu-ai-title">
+                  {mode === 'hemis'
+                    ? text.hemisTitle
+                    : mode === 'appeal'
+                      ? text.appeal
+                      : panelText.chatTitle}
+                </h2>
+              </div>
+
+              <button
+                type="button"
+                className="fstu-ai__icon-button"
+                onClick={close}
+                aria-label={panelText.close}
+              >
+                <FiX />
+              </button>
+            </header>
+
+            {mode === 'accessibility' ? (
+              <AccessibilityChat
+                text={
+                  assistantCopy[assistantLanguage]
+                }
+                language={assistantLanguage}
+                onLanguageChange={
+                  setAssistantLanguage
+                }
+                onStateChange={setRobotState}
+              />
+            ) : (
+              <RequestForm
+                key={mode}
+                mode={mode}
+                language={language}
+                text={text}
+              />
+            )}
+          </motion.section>
+        )}
+      </AnimatePresence>
+
+      <div
+        className="fstu-ai__orbit"
+        onMouseEnter={() => {
+          clearTimeout(closeTimer.current);
+
+          if (
+            !mode &&
+            window.matchMedia?.(
+              '(hover: hover)'
+            ).matches
+          ) {
+            setMenuOpen(true);
+          }
+        }}
+        onMouseLeave={() => {
+          closeTimer.current = setTimeout(
+            () => setMenuOpen(false),
+            220
+          );
+        }}
+        onBlur={(event) => {
+          if (
+            !event.currentTarget.contains(
+              event.relatedTarget
+            )
+          ) {
+            setMenuOpen(false);
+          }
+        }}
+      >
+
+        <div
+          id="fstu-ai-options"
+          className="fstu-ai__branches"
+          inert={
+            !menuOpen || Boolean(mode)
+              ? true
+              : undefined
+          }
+        >
+          <svg
+            className="fstu-ai__connectors"
+            viewBox="0 0 360 416"
+            aria-hidden="true"
+          >
+            <path d="M304 304 C348 240 338 57 286 57" />
+            <path d="M292 306 C316 240 311 167 286 167" />
+            <path d="M269 317 Q303 277 286 277" />
+          </svg>
+
+          {options.map(
+            ({
+              id,
+              label,
+              Icon,
+              detail
+            }, index) => (
+              <button
+                key={id}
+                type="button"
+                className={`fstu-ai__node is-${id}`}
+                style={{
+                  '--node-index': index
+                }}
+                onClick={() => chooseMode(id)}
+              >
+                <span className="fstu-ai__node-disc">
+                  <Icon />
+
+                  <span className="fstu-ai__node-number">
+                    0{index + 1}
+                  </span>
+                </span>
+
+                <span className="fstu-ai__node-copy">
+                  <strong>{label}</strong>
+                  <small>{detail}</small>
+                </span>
+              </button>
+            )
+          )}
+        </div>
+
+        <button
+          ref={launcherRef}
+          type="button"
+          className="fstu-ai__launcher"
+          aria-label={text.menu}
+          aria-expanded={
+            menuOpen && !mode
+          }
+          aria-controls="fstu-ai-options"
+          onClick={() => {
+            if (mode) {
+              close();
+            } else {
+              setMenuOpen(
+                (value) => !value
+              );
+            }
+          }}
+          onFocus={(event) => {
+            if (
+              !mode &&
+              !restoringFocus.current &&
+              event.currentTarget.matches(
+                ':focus-visible'
+              )
+            ) {
+              setMenuOpen(true);
+            }
+          }}
+        >
+          <span className="fstu-ai__ring is-outer" />
+          <span className="fstu-ai__ring is-inner" />
+
+          <span className="fstu-ai__launcher-disc">
+            <span
+              className="fstu-ai__sparkle"
+              aria-hidden="true"
+            >
+              ✦
+            </span>
+
+            <strong>
+              fstu<span>AI</span>
+            </strong>
+
+            <small>
+              {text.assistant}
+            </small>
+          </span>
+
+          <span className="fstu-ai__online-dot" />
+        </button>
+      </div>
     </aside>
   );
 }

@@ -269,7 +269,7 @@
 .university-hero-dot.active {
   width: 30px;
 
-  border-radius: 20px;
+  border-radius: var(--box-radius);
 
   background: #ffffff;
 }

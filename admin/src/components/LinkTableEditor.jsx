@@ -97,7 +97,7 @@ export default function LinkTableEditor({
     <Paper
       variant="outlined"
       sx={{
-        borderRadius: 3,
+        borderRadius: '6px',
         p: { xs: 2, md: 3 },
         bgcolor: '#fafafa'
       }}
@@ -118,7 +118,7 @@ export default function LinkTableEditor({
             key={item.id}
             variant="outlined"
             sx={{
-              borderRadius: 3,
+              borderRadius: '6px',
               overflow: 'hidden',
               bgcolor: 'background.paper'
             }}

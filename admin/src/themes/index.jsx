@@ -36,6 +36,9 @@ export default function ThemeCustomization({ children }) {
         }
       },
       direction: themeDirection,
+      shape: {
+        borderRadius: 6
+      },
       mixins: {
         toolbar: {
           minHeight: 60,

@@ -273,7 +273,7 @@ export default function NavCollapse({ menu, level, parentId, setSelectedItems, s
                   minWidth: 28,
                   color: selected === menu.id ? 'primary.main' : textColor,
                   ...(!drawerOpen && {
-                    borderRadius: 1.5,
+                    borderRadius: '6px',
                     width: 36,
                     height: 36,
                     alignItems: 'center',

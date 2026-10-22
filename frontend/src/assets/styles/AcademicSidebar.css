@@ -84,7 +84,7 @@
 .academic-dean-social a {
   width: 38px;
   height: 38px;
-  border-radius: 50%;
+  border-radius: var(--box-radius);
   background: var(--surface-soft);
   color: var(--brand-primary);
   display: inline-flex;
@@ -158,7 +158,7 @@
   min-height: 38px;
   margin: 16px auto 0;
   padding: 0 16px;
-  border-radius: 8px;
+  border-radius: var(--box-radius);
   background: var(--surface-tint);
   color: var(--brand-primary);
   display: flex;
@@ -236,7 +236,7 @@
   width: 30px;
   height: 30px;
   flex: 0 0 30px;
-  border-radius: 50%;
+  border-radius: var(--box-radius);
   background: var(--surface-tint);
   color: var(--brand-primary);
   display: flex;

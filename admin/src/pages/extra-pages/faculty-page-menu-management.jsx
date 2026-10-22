@@ -424,7 +424,7 @@ export default function FacultyPageMenuManagementPage() {
               <Paper
                 variant="outlined"
                 sx={{
-                  borderRadius: 3,
+                  borderRadius: '6px',
                   p: { xs: 2, md: 3 },
                   bgcolor: '#fafafa'
                 }}
@@ -536,7 +536,7 @@ export default function FacultyPageMenuManagementPage() {
               <Paper
                 variant="outlined"
                 sx={{
-                  borderRadius: 3,
+                  borderRadius: '6px',
                   p: { xs: 2, md: 3 },
                   bgcolor: '#fafafa'
                 }}
@@ -612,7 +612,7 @@ export default function FacultyPageMenuManagementPage() {
               <Paper
                 variant="outlined"
                 sx={{
-                  borderRadius: 3,
+                  borderRadius: '6px',
                   p: { xs: 2, md: 3 },
                   bgcolor: '#fafafa'
                 }}
@@ -649,7 +649,7 @@ export default function FacultyPageMenuManagementPage() {
               <Paper
                 variant="outlined"
                 sx={{
-                  borderRadius: 3,
+                  borderRadius: '6px',
                   p: { xs: 2, md: 3 },
                   bgcolor: '#fafafa'
                 }}
@@ -670,7 +670,7 @@ export default function FacultyPageMenuManagementPage() {
                       key={lang.key}
                       variant="outlined"
                       sx={{
-                        borderRadius: 3,
+                        borderRadius: '6px',
                         overflow: 'hidden',
                         bgcolor: 'background.paper'
                       }}
@@ -692,7 +692,7 @@ export default function FacultyPageMenuManagementPage() {
                         sx={{
                           p: { xs: 2, md: 3 },
                           '& .tox-tinymce': {
-                            borderRadius: '10px !important'
+                            borderRadius: '6px !important'
                           }
                         }}
                       >
@@ -775,7 +775,7 @@ export default function FacultyPageMenuManagementPage() {
                         sx={{
                           width: 36,
                           height: 36,
-                          borderRadius: 1.5,
+                          borderRadius: '6px',
                           bgcolor: '#eef4ff',
                           color: '#082e69',
                           display: 'flex',

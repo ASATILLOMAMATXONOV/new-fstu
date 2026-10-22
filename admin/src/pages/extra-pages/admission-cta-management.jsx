@@ -188,7 +188,7 @@ export default function AdmissionCtaManagementPage() {
           <Grid container spacing={2.5}>
             <Grid item xs={12} lg={4}>
               <Stack spacing={2.5}>
-                <Paper variant="outlined" sx={{ borderRadius: 4, p: 3 }}>
+                <Paper variant="outlined" sx={{ borderRadius: '6px', p: 3 }}>
                   <Stack direction="row" justifyContent="space-between" alignItems="center">
                     <Box>
                       <Typography variant="h5" fontWeight={900}>
@@ -217,7 +217,7 @@ export default function AdmissionCtaManagementPage() {
                   />
                 </Paper>
 
-                <Paper variant="outlined" sx={{ borderRadius: 4, p: 3 }}>
+                <Paper variant="outlined" sx={{ borderRadius: '6px', p: 3 }}>
                   <Typography variant="h5" fontWeight={900} sx={{ mb: 1 }}>
                     Tugma linki
                   </Typography>
@@ -243,7 +243,7 @@ export default function AdmissionCtaManagementPage() {
                 <Paper
                   variant="outlined"
                   sx={{
-                    borderRadius: 4,
+                    borderRadius: '6px',
                     overflow: 'hidden'
                   }}
                 >
@@ -268,7 +268,7 @@ export default function AdmissionCtaManagementPage() {
                       elevation={0}
                       sx={{
                         p: 3,
-                        borderRadius: 4,
+                        borderRadius: '6px',
                         color: '#fff',
                         background: 'linear-gradient(135deg, #082e69 0%, #0f4a9d 60%, #1b67d9 100%)'
                       }}
@@ -295,7 +295,7 @@ export default function AdmissionCtaManagementPage() {
 
             <Grid item xs={12} lg={8}>
               <Stack spacing={2.5}>
-                <Paper variant="outlined" sx={{ borderRadius: 4, overflow: 'hidden' }}>
+                <Paper variant="outlined" sx={{ borderRadius: '6px', overflow: 'hidden' }}>
                   <Box
                     sx={{
                       p: 3,
@@ -329,7 +329,7 @@ export default function AdmissionCtaManagementPage() {
                   </Box>
                 </Paper>
 
-                <Paper variant="outlined" sx={{ borderRadius: 4, overflow: 'hidden' }}>
+                <Paper variant="outlined" sx={{ borderRadius: '6px', overflow: 'hidden' }}>
                   <Box
                     sx={{
                       p: 3,
@@ -365,7 +365,7 @@ export default function AdmissionCtaManagementPage() {
                   </Box>
                 </Paper>
 
-                <Paper variant="outlined" sx={{ borderRadius: 4, overflow: 'hidden' }}>
+                <Paper variant="outlined" sx={{ borderRadius: '6px', overflow: 'hidden' }}>
                   <Box
                     sx={{
                       p: 3,

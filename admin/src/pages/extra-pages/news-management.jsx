@@ -278,7 +278,7 @@ export default function NewsManagementPage() {
               <Paper
                 variant="outlined"
                 sx={{
-                  borderRadius: 2,
+                  borderRadius: '6px',
                   p: { xs: 2, md: 3 },
                   bgcolor: '#fafafa'
                 }}
@@ -307,7 +307,7 @@ export default function NewsManagementPage() {
                   onDragOver={(e) => e.preventDefault()}
                   sx={{
                     minHeight: 320,
-                    borderRadius: 3,
+                    borderRadius: '6px',
                     border: '2px dashed',
                     borderColor: form.image ? 'primary.main' : 'divider',
                     bgcolor: 'background.paper',
@@ -429,7 +429,7 @@ export default function NewsManagementPage() {
               <Paper
                 variant="outlined"
                 sx={{
-                  borderRadius: 2,
+                  borderRadius: '6px',
                   p: { xs: 2, md: 3 },
                   bgcolor: '#fafafa'
                 }}
@@ -488,7 +488,7 @@ export default function NewsManagementPage() {
               <Paper
                 variant="outlined"
                 sx={{
-                  borderRadius: 2,
+                  borderRadius: '6px',
                   p: { xs: 2, md: 3 },
                   bgcolor: '#fafafa'
                 }}
@@ -525,7 +525,7 @@ export default function NewsManagementPage() {
               <Paper
                 variant="outlined"
                 sx={{
-                  borderRadius: 2,
+                  borderRadius: '6px',
                   p: { xs: 2, md: 3 },
                   bgcolor: '#fafafa'
                 }}
@@ -546,7 +546,7 @@ export default function NewsManagementPage() {
                       key={lang.key}
                       variant="outlined"
                       sx={{
-                        borderRadius: 2,
+                        borderRadius: '6px',
                         overflow: 'hidden',
                         bgcolor: 'background.paper'
                       }}
@@ -576,7 +576,7 @@ export default function NewsManagementPage() {
 
                           '& .tox-tinymce': {
                             minHeight: '420px !important',
-                            borderRadius: '8px !important'
+                            borderRadius: '6px !important'
                           },
 
                           '& .tox-editor-header': {
@@ -616,7 +616,7 @@ export default function NewsManagementPage() {
               <Paper
                 variant="outlined"
                 sx={{
-                  borderRadius: 2,
+                  borderRadius: '6px',
                   overflow: 'hidden'
                 }}
               >
@@ -634,7 +634,7 @@ export default function NewsManagementPage() {
                   <Box
                     sx={{
                       maxWidth: 420,
-                      borderRadius: 3,
+                      borderRadius: '6px',
                       overflow: 'hidden',
                       border: '1px solid',
                       borderColor: 'divider',
@@ -756,7 +756,7 @@ export default function NewsManagementPage() {
                     sx={{
                       width: 120,
                       height: 70,
-                      borderRadius: 1.5,
+                      borderRadius: '6px',
                       overflow: 'hidden',
                       border: '1px solid',
                       borderColor: 'divider',

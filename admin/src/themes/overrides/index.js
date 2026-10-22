@@ -52,6 +52,13 @@ import Typography from './Typography';
 
 export default function ComponentsOverrides(theme) {
   return merge(
+    {
+      MuiPaper: {
+        styleOverrides: {
+          root: { borderRadius: '6px' }
+        }
+      }
+    },
     Accordion(theme),
     AccordionDetails(theme),
     AccordionSummary(theme),

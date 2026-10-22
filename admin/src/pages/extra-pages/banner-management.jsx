@@ -442,7 +442,7 @@ export default function BannerManagementPage() {
 
                 sx={{
 
-                  borderRadius: 2,
+                  borderRadius: '6px',
 
                   overflow: 'hidden'
 
@@ -624,7 +624,7 @@ export default function BannerManagementPage() {
                               color: '#fff',
                               px: 3,
                               py: 1.5,
-                              borderRadius: 1,
+                              borderRadius: '6px',
                               fontWeight: 800,
                               boxShadow: '0 10px 22px rgba(8, 46, 105, 0.25)',
                               '&:hover': { bgcolor: '#061f49' }
@@ -649,7 +649,7 @@ export default function BannerManagementPage() {
               <Paper
                 variant="outlined"
                 sx={{
-                  borderRadius: 2,
+                  borderRadius: '6px',
                   p: { xs: 2, md: 3 },
                   bgcolor: 'background.paper'
                 }}
@@ -673,7 +673,7 @@ export default function BannerManagementPage() {
                       sx={{
                         width: { xs: '100%', md: 320 },
                         height: 180,
-                        borderRadius: 2,
+                        borderRadius: '6px',
                         overflow: 'hidden',
                         border: '1px dashed',
                         borderColor: form.image ? 'divider' : 'primary.light',
@@ -815,7 +815,7 @@ export default function BannerManagementPage() {
                 sx={{
                   border: '1px solid',
                   borderColor: 'divider',
-                  borderRadius: '10px !important',
+                  borderRadius: '6px !important',
                   overflow: 'hidden',
                   '&:before': { display: 'none' }
                 }}
@@ -845,7 +845,7 @@ export default function BannerManagementPage() {
                       <Paper
                         key={lang.key}
                         variant="outlined"
-                        sx={{ borderRadius: 2, p: { xs: 2, md: 2.5 } }}
+                        sx={{ borderRadius: '6px', p: { xs: 2, md: 2.5 } }}
                       >
                         <Typography variant="h6" fontWeight={800} sx={{ mb: 2 }}>
                           {lang.label}
@@ -903,7 +903,7 @@ export default function BannerManagementPage() {
 
                 sx={{
 
-                  borderRadius: 2,
+                  borderRadius: '6px',
 
                   p: { xs: 2, md: 3 },
 
@@ -1081,7 +1081,7 @@ export default function BannerManagementPage() {
 
                       height: 90,
 
-                      borderRadius: 1.5,
+                      borderRadius: '6px',
 
                       overflow: 'hidden',
 

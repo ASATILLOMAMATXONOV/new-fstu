@@ -490,7 +490,7 @@
   padding: 8px 12px;
 
   border: 1px solid var(--news-border);
-  border-radius: 3px;
+  border-radius: var(--box-radius);
 
   background: #ffffff;
   color: var(--news-text);

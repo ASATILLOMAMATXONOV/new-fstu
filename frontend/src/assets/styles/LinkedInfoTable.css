@@ -55,7 +55,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 14px;
+  border-radius: var(--box-radius);
   background: var(--surface-tint);
   color: var(--brand-primary);
   font-size: 13px;
@@ -68,7 +68,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 14px;
+  border-radius: var(--box-radius);
   background: linear-gradient(135deg, var(--brand-primary-dark) 0%, var(--brand-primary) 100%);
   color: #ffffff;
   box-shadow: 0 10px 22px rgba(var(--theme-primary-rgb), 0.2);
@@ -105,7 +105,7 @@
   gap: 8px;
   min-height: 40px;
   padding: 0 16px;
-  border-radius: 999px;
+  border-radius: var(--box-radius);
   background: #ffffff;
   color: var(--brand-primary);
   font-size: 13px;

@@ -58,7 +58,7 @@ export default function TinyMceField({
             maxHeight: height,
             position: 'relative',
             overflow: 'hidden',
-            borderRadius: 2,
+            borderRadius: '6px',
 
             '& .tox': {
               width: '100% !important',
@@ -71,7 +71,7 @@ export default function TinyMceField({
               height: `${height}px !important`,
               minHeight: `${height}px !important`,
               maxHeight: `${height}px !important`,
-              borderRadius: '10px !important',
+              borderRadius: '6px !important',
               borderColor: '#dbe0e6 !important',
               position: 'relative !important',
               overflow: 'hidden !important'

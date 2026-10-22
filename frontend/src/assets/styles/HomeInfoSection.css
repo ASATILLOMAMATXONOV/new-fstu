@@ -337,7 +337,7 @@ article.home-info-link {
 
   margin-top: 12px;
 
-  border-radius: 50%;
+  border-radius: var(--box-radius);
 
   display: grid;
   place-items: center;

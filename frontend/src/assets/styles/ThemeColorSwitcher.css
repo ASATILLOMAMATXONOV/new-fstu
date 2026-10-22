@@ -7,7 +7,7 @@
   gap: 12px;
   padding: 12px 10px;
   border: 1px solid rgba(15, 23, 42, 0.08);
-  border-radius: 4px;
+  border-radius: var(--box-radius);
   background: #ffffff;
   box-shadow:
     0 12px 28px rgba(15, 23, 42, 0.12),
@@ -36,7 +36,7 @@
   width: 34px;
   height: 42px;
   border: 1px solid rgba(15, 23, 42, 0.08);
-  border-radius: 4px;
+  border-radius: var(--box-radius);
   background: #ffffff;
   color: var(--brand-primary-dark);
   box-shadow:
@@ -79,7 +79,7 @@
   width: 20px;
   height: 20px;
   border: 0;
-  border-radius: 50%;
+  border-radius: var(--box-radius);
   background: var(--swatch-color);
   box-shadow: none;
   cursor: pointer;

@@ -320,14 +320,14 @@ export default function AdminUsersManagementPage() {
 
             <Grid item xs={12} lg={4}>
               <Stack spacing={2.5}>
-                <Paper variant="outlined" sx={{ borderRadius: 4, overflow: 'hidden' }}>
+                <Paper variant="outlined" sx={{ borderRadius: '6px', overflow: 'hidden' }}>
                   <Box sx={{ p: 3, background: 'linear-gradient(135deg, #082e69 0%, #0f4a9d 100%)', color: '#fff' }}>
                     <Stack direction="row" spacing={1.5} alignItems="center">
                       <Box
                         sx={{
                           width: 48,
                           height: 48,
-                          borderRadius: 2.5,
+                          borderRadius: '6px',
                           bgcolor: 'rgba(255,255,255,0.16)',
                           display: 'flex',
                           alignItems: 'center',
@@ -428,7 +428,7 @@ export default function AdminUsersManagementPage() {
                         ))}
                       </TextField>
 
-                      <Paper variant="outlined" sx={{ borderRadius: 3, p: 2, bgcolor: '#fafafa' }}>
+                      <Paper variant="outlined" sx={{ borderRadius: '6px', p: 2, bgcolor: '#fafafa' }}>
                         <Stack direction="row" justifyContent="space-between" alignItems="center">
                           <Box>
                             <Typography variant="subtitle1" fontWeight={900}>
@@ -448,7 +448,7 @@ export default function AdminUsersManagementPage() {
                   </Box>
                 </Paper>
 
-                <Paper variant="outlined" sx={{ borderRadius: 4, p: 3, bgcolor: '#f8fbff' }}>
+                <Paper variant="outlined" sx={{ borderRadius: '6px', p: 3, bgcolor: '#f8fbff' }}>
                   <Stack spacing={1}>
                     <Typography variant="h5" fontWeight={900} color="#082e69">
                       Ruxsatlar soni
@@ -468,7 +468,7 @@ export default function AdminUsersManagementPage() {
             </Grid>
 
             <Grid item xs={12} lg={8}>
-              <Paper variant="outlined" sx={{ borderRadius: 4, overflow: 'hidden' }}>
+              <Paper variant="outlined" sx={{ borderRadius: '6px', overflow: 'hidden' }}>
                 <Box sx={{ p: 3, bgcolor: '#f8fbff', borderBottom: '1px solid', borderColor: 'divider' }}>
                   <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} justifyContent="space-between" alignItems={{ xs: 'stretch', sm: 'center' }}>
                     <Box>
@@ -499,7 +499,7 @@ export default function AdminUsersManagementPage() {
                       const allSelected = selectedCount === groupKeys.length;
 
                       return (
-                        <Paper key={group.id} variant="outlined" sx={{ borderRadius: 3, overflow: 'hidden', bgcolor: '#fafafa' }}>
+                        <Paper key={group.id} variant="outlined" sx={{ borderRadius: '6px', overflow: 'hidden', bgcolor: '#fafafa' }}>
                           <Box sx={{ px: 2.5, py: 2, bgcolor: '#fff', borderBottom: '1px solid', borderColor: 'divider' }}>
                             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} justifyContent="space-between" alignItems={{ xs: 'stretch', sm: 'center' }}>
                               <Box>
@@ -526,7 +526,7 @@ export default function AdminUsersManagementPage() {
 
                                 return (
                                   <Grid item xs={12} md={6} key={menu.key}>
-                                    <Paper variant="outlined" sx={{ p: 1.5, borderRadius: 2.5, bgcolor: checked ? '#eef4ff' : '#fff', borderColor: checked ? '#082e69' : 'divider' }}>
+                                    <Paper variant="outlined" sx={{ p: 1.5, borderRadius: '6px', bgcolor: checked ? '#eef4ff' : '#fff', borderColor: checked ? '#082e69' : 'divider' }}>
                                       <FormControlLabel
                                         sx={{ m: 0, width: '100%' }}
                                         control={<Checkbox checked={checked} disabled={disabled} onChange={() => toggleMenuAccess(menu.key)} />}

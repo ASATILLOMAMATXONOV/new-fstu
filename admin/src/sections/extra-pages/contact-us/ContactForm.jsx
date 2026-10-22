@@ -114,7 +114,7 @@ export default function ContactForm() {
             alignItems={{ xs: 'stretch', sm: 'center' }}
           >
             <Stack direction="row" alignItems="center" sx={{ ml: -1 }}>
-              <Checkbox sx={{ '& .css-1vjb4cj': { borderRadius: '2px' } }} defaultChecked />
+              <Checkbox sx={{ '& .css-1vjb4cj': { borderRadius: '6px' } }} defaultChecked />
               <Typography>
                 By submitting this, you agree to the{' '}
                 <Typography sx={{ cursor: 'pointer' }} component="span" color="primary.main">

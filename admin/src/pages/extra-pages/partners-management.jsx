@@ -204,7 +204,7 @@ export default function PartnersManagementPage() {
               <Paper
                 variant="outlined"
                 sx={{
-                  borderRadius: 2,
+                  borderRadius: '6px',
                   p: { xs: 2, md: 3 },
                   bgcolor: '#fafafa'
                 }}
@@ -233,7 +233,7 @@ export default function PartnersManagementPage() {
                   onDragOver={(e) => e.preventDefault()}
                   sx={{
                     minHeight: 260,
-                    borderRadius: 3,
+                    borderRadius: '6px',
                     border: '2px dashed',
                     borderColor: form.image ? 'primary.main' : 'divider',
                     bgcolor: 'background.paper',
@@ -357,7 +357,7 @@ export default function PartnersManagementPage() {
               <Paper
                 variant="outlined"
                 sx={{
-                  borderRadius: 2,
+                  borderRadius: '6px',
                   p: { xs: 2, md: 3 },
                   bgcolor: '#fafafa'
                 }}
@@ -437,7 +437,7 @@ export default function PartnersManagementPage() {
               <Paper
                 variant="outlined"
                 sx={{
-                  borderRadius: 2,
+                  borderRadius: '6px',
                   overflow: 'hidden'
                 }}
               >
@@ -456,7 +456,7 @@ export default function PartnersManagementPage() {
                     sx={{
                       maxWidth: 320,
                       minHeight: 180,
-                      borderRadius: 3,
+                      borderRadius: '6px',
                       overflow: 'hidden',
                       border: '1px solid',
                       borderColor: 'divider',
@@ -474,7 +474,7 @@ export default function PartnersManagementPage() {
                       sx={{
                         width: 140,
                         height: 80,
-                        borderRadius: 2,
+                        borderRadius: '6px',
                         bgcolor: '#f8fafc',
                         border: '1px solid',
                         borderColor: 'divider',
@@ -573,7 +573,7 @@ export default function PartnersManagementPage() {
       <Paper
         variant="outlined"
         sx={{
-          borderRadius: 2,
+          borderRadius: '6px',
           p: { xs: 2, md: 3 },
           mb: 3,
           bgcolor: '#fafafa'
@@ -607,7 +607,7 @@ export default function PartnersManagementPage() {
               onClick={() => openLink(partner.link)}
               sx={{
                 minHeight: 170,
-                borderRadius: 3,
+                borderRadius: '6px',
                 bgcolor: '#fff',
                 border: '1px solid',
                 borderColor: 'divider',
@@ -632,7 +632,7 @@ export default function PartnersManagementPage() {
                 sx={{
                   width: 140,
                   height: 80,
-                  borderRadius: 2,
+                  borderRadius: '6px',
                   bgcolor: '#f8fafc',
                   border: '1px solid',
                   borderColor: 'divider',
@@ -705,7 +705,7 @@ export default function PartnersManagementPage() {
                     sx={{
                       width: 100,
                       height: 58,
-                      borderRadius: 1.5,
+                      borderRadius: '6px',
                       overflow: 'hidden',
                       border: '1px solid',
                       borderColor: 'divider',

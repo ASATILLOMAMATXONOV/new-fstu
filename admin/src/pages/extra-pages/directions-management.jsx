@@ -308,7 +308,7 @@ export default function DirectionsManagementPage() {
         <form onSubmit={handleSubmit}>
           <Grid container spacing={2.5}>
             <Grid item xs={12}>
-              <Paper variant="outlined" sx={{ borderRadius: 3, p: { xs: 2, md: 3 }, bgcolor: '#fafafa' }}>
+              <Paper variant="outlined" sx={{ borderRadius: '6px', p: { xs: 2, md: 3 }, bgcolor: '#fafafa' }}>
                 <Stack spacing={0.5} sx={{ mb: 2.5 }}>
                   <Typography variant="h5" fontWeight={800}>
                     Biriktirish
@@ -360,7 +360,7 @@ export default function DirectionsManagementPage() {
             </Grid>
 
             <Grid item xs={12}>
-              <Paper variant="outlined" sx={{ borderRadius: 3, p: { xs: 2, md: 3 }, bgcolor: '#fafafa' }}>
+              <Paper variant="outlined" sx={{ borderRadius: '6px', p: { xs: 2, md: 3 }, bgcolor: '#fafafa' }}>
                 <Stack spacing={0.5} sx={{ mb: 2.5 }}>
                   <Typography variant="h5" fontWeight={800}>
                     Asosiy sozlamalar
@@ -413,7 +413,7 @@ export default function DirectionsManagementPage() {
             </Grid>
 
             <Grid item xs={12}>
-              <Paper variant="outlined" sx={{ borderRadius: 3, p: { xs: 2, md: 3 }, bgcolor: '#fafafa' }}>
+              <Paper variant="outlined" sx={{ borderRadius: '6px', p: { xs: 2, md: 3 }, bgcolor: '#fafafa' }}>
                 <Stack spacing={0.5} sx={{ mb: 2.5 }}>
                   <Typography variant="h5" fontWeight={800}>
                     {"Yo'nalish nomlari"}
@@ -440,7 +440,7 @@ export default function DirectionsManagementPage() {
             </Grid>
 
             <Grid item xs={12}>
-              <Paper variant="outlined" sx={{ borderRadius: 3, p: { xs: 2, md: 3 }, bgcolor: '#fafafa' }}>
+              <Paper variant="outlined" sx={{ borderRadius: '6px', p: { xs: 2, md: 3 }, bgcolor: '#fafafa' }}>
                 <Stack spacing={0.5} sx={{ mb: 2.5 }}>
                   <Typography variant="h5" fontWeight={800}>
                     {"Yo'nalish contentlari"}
@@ -456,7 +456,7 @@ export default function DirectionsManagementPage() {
                       key={lang.key}
                       variant="outlined"
                       sx={{
-                        borderRadius: 3,
+                        borderRadius: '6px',
                         overflow: 'hidden',
                         borderColor: 'divider'
                       }}

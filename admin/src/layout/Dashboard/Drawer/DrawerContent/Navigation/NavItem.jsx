@@ -91,7 +91,7 @@ export default function NavItem({ item, level, isParents = false }) {
                   minWidth: 28,
                   color: isSelected ? iconSelectedColor : textColor,
                   ...(!drawerOpen && {
-                    borderRadius: 1.5,
+                    borderRadius: '6px',
                     width: 36,
                     height: 36,
                     alignItems: 'center',
@@ -190,7 +190,7 @@ export default function NavItem({ item, level, isParents = false }) {
               sx={{
                 minWidth: 28,
                 ...(!drawerOpen && {
-                  borderRadius: 1.5,
+                  borderRadius: '6px',
                   width: 28,
                   height: 28,
                   alignItems: 'center',
@@ -209,7 +209,7 @@ export default function NavItem({ item, level, isParents = false }) {
               sx={{
                 color: isSelected ? 'primary.main' : 'secondary.dark',
                 ...(!drawerOpen && {
-                  borderRadius: 1.5,
+                  borderRadius: '6px',
                   alignItems: 'center',
                   justifyContent: 'flex-start',
                   '&:hover': { bgcolor: 'transparent' }

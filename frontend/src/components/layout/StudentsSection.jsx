@@ -339,37 +339,39 @@ export default function StudentsSection() {
   const canSlide = maxIndex > 0;
 
   // Responsive kartalar soni
-  useEffect(() => {
-    function updateVisibleCount() {
-      const width = window.innerWidth;
 
-      if (width <= 480) {
-        setVisibleCount(1);
-      } else if (width <= 700) {
-        setVisibleCount(2);
-      } else if (width <= 1050) {
-        setVisibleCount(3);
-      } else if (width < 1600) {
-        setVisibleCount(5);
-      } else {
-        setVisibleCount(6);
-      }
+useEffect(() => {
+  function updateVisibleCount() {
+    const width = window.innerWidth;
+
+    if (width <= 560) {
+      setVisibleCount(1);
+    } else if (width <= 800) {
+      setVisibleCount(2);
+    } else if (width <= 1199) {
+      setVisibleCount(3);
+    } else if (width < 1700) {
+      setVisibleCount(4);
+    } else {
+      setVisibleCount(5);
     }
+  }
 
-    updateVisibleCount();
+  updateVisibleCount();
 
-    window.addEventListener(
+  window.addEventListener(
+    'resize',
+    updateVisibleCount
+  );
+
+  return () => {
+    window.removeEventListener(
       'resize',
       updateVisibleCount
     );
+  };
+}, []);
 
-    return () => {
-      window.removeEventListener(
-        'resize',
-        updateVisibleCount
-      );
-    };
-  }, []);
 
   // Kartani ko'rsatish
   const goTo = useCallback(

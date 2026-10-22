@@ -559,7 +559,7 @@ export default function MenuManagementPage({
                         top: 2,
                         bottom: 2,
                         width: 2,
-                        borderRadius: 999,
+                        borderRadius: '6px',
                         bgcolor: '#dbe7f7'
                       }
                     : undefined
@@ -797,7 +797,7 @@ export default function MenuManagementPage({
             </Grid>
 
             <Grid item xs={12}>
-              <Paper variant="outlined" sx={{ borderRadius: 2, p: { xs: 2, md: 3 }, bgcolor: '#fafafa' }}>
+              <Paper variant="outlined" sx={{ borderRadius: '6px', p: { xs: 2, md: 3 }, bgcolor: '#fafafa' }}>
                 <Stack spacing={0.5} sx={{ mb: 2.5 }}>
                   <Typography variant="h5" fontWeight={800}>
                     Titlelar
@@ -825,7 +825,7 @@ export default function MenuManagementPage({
             </Grid>
 
             <Grid item xs={12}>
-              <Paper variant="outlined" sx={{ borderRadius: 2, p: { xs: 2, md: 3 }, bgcolor: '#fafafa' }}>
+              <Paper variant="outlined" sx={{ borderRadius: '6px', p: { xs: 2, md: 3 }, bgcolor: '#fafafa' }}>
                 <Stack spacing={0.5} sx={{ mb: 2.5 }}>
                   <Typography variant="h5" fontWeight={800}>
                     Contentlar
@@ -841,7 +841,7 @@ export default function MenuManagementPage({
                     <Paper
                       key={lang.key}
                       variant="outlined"
-                      sx={{ borderRadius: 2, overflow: 'hidden', bgcolor: 'background.paper' }}
+                      sx={{ borderRadius: '6px', overflow: 'hidden', bgcolor: 'background.paper' }}
                     >
                       <Box
                         sx={{
@@ -867,7 +867,7 @@ export default function MenuManagementPage({
                           width: '100%',
                           '& .tox-tinymce': {
                             minHeight: '320px !important',
-                            borderRadius: '8px !important'
+                            borderRadius: '6px !important'
                           }
                         }}
                       >
@@ -927,7 +927,7 @@ export default function MenuManagementPage({
         component={Paper}
         variant="outlined"
         sx={{
-          borderRadius: 3,
+          borderRadius: '6px',
           overflow: 'hidden',
           borderColor: '#dfe8f5',
           boxShadow: '0 14px 34px rgba(15, 35, 70, 0.06)'

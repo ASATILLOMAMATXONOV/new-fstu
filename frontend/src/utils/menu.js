@@ -1,7 +1,11 @@
 import { getCurrentLanguageCode } from './language';
 
 export function sortMenuNodes(list = []) {
-  return [...list].sort((left, right) => Number(left.order || 0) - Number(right.order || 0));
+  const orderOf = node => {
+    const value = Number(node?.order ?? node?.sortOrder ?? 0);
+    return Number.isFinite(value) ? value : 0;
+  };
+  return [...list].sort((left, right) => orderOf(left) - orderOf(right));
 }
 
 export function buildMenuTree(items = []) {
@@ -36,7 +40,11 @@ export function buildMenuTree(items = []) {
 }
 
 export function getRootMenuNodes(nodes = []) {
-  return nodes.filter((node) => node.nodeType === 'menu');
+  const visibleNodes = list => sortMenuNodes(list)
+    .filter(node => node && node.active !== false)
+    .map(node => ({ ...node, children: visibleNodes(node.children || []) }));
+
+  return visibleNodes(nodes.filter(node => node?.nodeType === 'menu' && !node.parentId));
 }
 
 export function getMenuNodeTitle(node, languageCode = getCurrentLanguageCode()) {

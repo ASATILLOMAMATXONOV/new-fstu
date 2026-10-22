@@ -1,22 +1,22 @@
 
-/* ==========================================
-   STUDENTS — PREMIUM SLIDER
-========================================== */
+/* =========================================
+   FSTU — STUDENTS MODERN EDITORIAL DESIGN
+   Animated / Responsive / 6px Radius
+========================================= */
 
 .st-section {
-  --st-primary: var(--brand-primary, #077fae);
-  --st-dark: var(--brand-primary-dark, #075d82);
-  --st-text: var(--text-primary, #172b42);
-  --st-muted: var(--text-secondary, #718096);
-  --st-border: var(--surface-border, #e1e7ed);
+  --st-primary: var(--brand-primary, #12659c);
+  --st-ink: #172b40;
+  --st-muted: #66798b;
+  --st-border: #dde7ee;
+  --st-gap: 18px;
+  --st-visible: 4;
+  --st-radius: 6px;
 
-  --st-gap: 14px;
-  --st-visible: 5;
-
-  width: 100%;
-  padding: 24px 0 32px;
+  position: relative;
+  padding: 64px 0 72px;
   overflow: hidden;
-  background: transparent;
+  background: linear-gradient(180deg, #f7fafd, #fff);
 }
 
 .st-section *,
@@ -25,166 +25,140 @@
   box-sizing: border-box;
 }
 
-.st-container {
-  width: 100%;
-  min-width: 0;
-  margin: 0 auto;
+.st-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.22;
+  background-image:
+    linear-gradient(#c9dce8 1px, transparent 1px),
+    linear-gradient(90deg, #c9dce8 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: linear-gradient(180deg, #000, transparent 76%);
 }
 
-/* ==========================================
-   HEADER
-========================================== */
+.st-container {
+  position: relative;
+  z-index: 1;
+  width: min(1480px, calc(100% - 64px));
+  margin-inline: auto;
+}
+
+/* HEADER */
 
 .st-header {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
-  gap: 18px;
-
-  margin-bottom: 24px;
-  padding-bottom: 16px;
-
-  border-bottom: 1px solid var(--st-border);
+  gap: 24px;
+  margin-bottom: 23px;
 }
 
 .st-heading {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 15px;
   min-width: 0;
 }
 
 .st-heading-line {
-  display: block;
+  width: 5px;
+  height: 42px;
   flex-shrink: 0;
-
-  width: 4px;
-  height: 30px;
-
+  border-radius: 3px;
   background: var(--st-primary);
 }
 
 .st-heading h2 {
   margin: 0;
-  color: var(--st-text);
-
-  font-size: clamp(21px, 2.2vw, 28px);
-  font-weight: 850;
-  line-height: 1.3;
+  color: var(--st-ink);
+  font-size: clamp(24px, 2.4vw, 34px);
+  font-weight: 780;
+  line-height: 1.2;
+  letter-spacing: -0.85px;
 }
-
-/* ==========================================
-   HEADER ACTIONS
-========================================== */
 
 .st-header-actions {
   display: flex;
   align-items: center;
-  gap: 18px;
   flex-shrink: 0;
+  gap: 18px;
 }
-
-.st-see-all {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-
-  color: var(--st-primary);
-  font-size: 12px;
-  font-weight: 800;
-  text-decoration: none;
-  white-space: nowrap;
-
-  transition:
-    gap 0.3s ease,
-    color 0.3s ease;
-}
-
-.st-see-all:hover {
-  gap: 13px;
-  color: var(--st-dark);
-}
-
-.st-see-all span {
-  font-size: 16px;
-}
-
-/* ==========================================
-   SLIDER NAVIGATION
-========================================== */
 
 .st-navigation {
   display: flex;
-  align-items: center;
-  gap: 7px;
+  gap: 8px;
 }
 
 .st-nav-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 39px;
-  height: 39px;
-  padding: 0;
-
+  display: grid;
+  place-items: center;
+  width: 43px;
+  height: 43px;
   border: 1px solid var(--st-border);
-  border-radius: 0;
-
-  background: #ffffff;
-  color: var(--st-text);
-
+  border-radius: 6px;
+  color: var(--st-primary);
+  background: #fff;
   cursor: pointer;
-
   transition:
-    transform 0.3s ease,
-    background 0.3s ease,
-    border-color 0.3s ease,
-    color 0.3s ease,
-    box-shadow 0.3s ease;
+    background 0.25s,
+    color 0.25s,
+    transform 0.25s,
+    border-color 0.25s;
 }
 
 .st-nav-btn:hover {
+  color: #fff;
   background: var(--st-primary);
   border-color: var(--st-primary);
-  color: #ffffff;
-
-  transform: translateY(-3px);
-
-  box-shadow: 0 7px 18px rgba(
-    var(--theme-primary-rgb, 7,127,174),
-    0.17
-  );
+  transform: translateY(-2px);
 }
 
 .st-nav-btn:active {
   transform: translateY(0);
 }
 
-/* ==========================================
-   SLIDER
-========================================== */
+.st-see-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--st-primary);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 750;
+  white-space: nowrap;
+}
+
+.st-see-all span {
+  display: grid;
+  place-items: center;
+  width: 31px;
+  height: 31px;
+  border: 1px solid #cfe0ea;
+  background: #eef6fa;
+  border-radius: 6px;
+  transition: transform 0.25s, background 0.25s;
+}
+
+.st-see-all:hover span {
+  transform: translate(3px, -3px);
+  background: #dceef7;
+}
+
+/* SLIDER */
 
 .st-slider {
   display: flex;
-  align-items: stretch;
   gap: var(--st-gap);
-
-  width: 100%;
-  padding: 5px 2px 22px;
-
   overflow-x: auto;
   overflow-y: hidden;
-
+  padding: 13px 0 26px;
   scroll-snap-type: x mandatory;
-  scroll-padding-inline: 2px;
   scroll-behavior: smooth;
-
-  overscroll-behavior-x: contain;
-  -webkit-overflow-scrolling: touch;
-
   scrollbar-width: none;
-  -ms-overflow-style: none;
+  overscroll-behavior-inline: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
 .st-slider::-webkit-scrollbar {
@@ -192,670 +166,504 @@
 }
 
 .st-slide {
-  display: flex;
-  flex:
-    0 0 calc(
-      (100% - (var(--st-visible) - 1) * var(--st-gap))
-      / var(--st-visible)
-    );
-
+  flex: 0 0 calc(
+    (100% - (var(--st-visible) - 1) * var(--st-gap))
+    / var(--st-visible)
+  );
   min-width: 0;
   scroll-snap-align: start;
-  scroll-snap-stop: always;
+  animation: st-rise 0.65s both;
+  animation-delay: calc(var(--st-index, 0) * 65ms);
 }
 
-/* ==========================================
-   STUDENT CARD
-========================================== */
+@keyframes st-rise {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* CARD */
 
 .st-card {
   position: relative;
-
-  display: flex;
-  flex-direction: column;
-
-  width: 100%;
+  height: 340px;
   min-width: 0;
-  height: 100%;
-
+  border-radius: 6px;
+  border: 1px solid #d6e2e9;
+  background: #dce8ef;
   overflow: hidden;
-
-  background: #ffffff;
-  border: 1px solid var(--st-border);
-  border-radius: 0;
-
-  box-shadow: 0 6px 22px rgba(
-    var(--theme-dark-rgb, 20,42,64),
-    0.065
-  );
-
+  isolation: isolate;
+  box-shadow: 0 4px 14px rgba(25, 51, 74, 0.055);
   transition:
-    transform 0.4s cubic-bezier(.22,1,.36,1),
-    border-color 0.35s ease,
-    box-shadow 0.4s ease;
-
-  animation: stCardReveal 0.7s ease both;
-  animation-delay: calc(var(--st-index, 0) * 80ms);
-}
-
-/* TOP LINE */
-
-.st-card::before {
-  content: "";
-
-  position: absolute;
-  top: 0;
-  left: 0;
-
-  width: 100%;
-  height: 3px;
-
-  background: var(--st-primary);
-
-  transform: scaleX(0);
-  transform-origin: left;
-
-  transition: transform 0.4s ease;
-  z-index: 5;
+    transform 0.4s cubic-bezier(.2, .8, .2, 1),
+    box-shadow 0.4s,
+    border-color 0.4s;
 }
 
 .st-card:hover {
-  transform: translateY(-5px);
-
-  border-color: var(--st-primary);
-
-  box-shadow: 0 18px 42px rgba(
-    var(--theme-dark-rgb, 20,42,64),
-    0.15
-  );
+  transform: translateY(-7px);
+  border-color: #a5c8da;
+  box-shadow: 0 18px 38px rgba(24, 66, 101, 0.17);
 }
 
-.st-card:hover::before {
-  transform: scaleX(1);
-}
-
-/* ==========================================
-   IMAGE LINK
-========================================== */
+/* IMAGE */
 
 .st-card-image-link {
-  position: relative;
-
+  position: absolute;
+  inset: 0;
   display: block;
-  flex-shrink: 0;
-
-  width: 100%;
-
   overflow: hidden;
-  text-decoration: none;
+  z-index: 0;
+  background: #dce8ef;
 }
-
-/* ==========================================
-   IMAGE CONTAINER
-========================================== */
 
 .st-image {
   position: relative;
-  isolation: isolate;
-
-  width: 100%;
-  aspect-ratio: 16 / 10;
-
-  overflow: hidden;
-
-  background: var(--surface-soft, #edf2f6);
-}
-
-/* ==========================================
-   BOTH IMAGES
-========================================== */
-
-.st-image .st-img-primary,
-.st-image .st-img-secondary {
-  position: absolute;
-  inset: 0;
-
-  display: block;
-
   width: 100%;
   height: 100%;
-
-  object-fit: cover;
-  object-position: center 25%;
-
-  backface-visibility: hidden;
-
-  transition:
-    opacity 0.65s cubic-bezier(.22,1,.36,1),
-    transform 0.8s cubic-bezier(.22,1,.36,1),
-    filter 0.65s ease;
+  isolation: isolate;
 }
 
-/* ==========================================
-   FIRST IMAGE
-========================================== */
+.st-img-primary,
+.st-img-secondary {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 26%;
+  transition:
+    opacity 0.7s,
+    transform 1s cubic-bezier(.2, .7, .2, 1);
+}
 
 .st-img-primary {
   z-index: 1;
-
   opacity: 1;
-  transform: scale(1);
 }
-
-/* ==========================================
-   SECOND IMAGE
-========================================== */
 
 .st-img-secondary {
   z-index: 2;
-
   opacity: 0;
-  transform: scale(1.12);
-
-  pointer-events: none;
-}
-
-/* ==========================================
-   HOVER — FIRST IMAGE FADE OUT
-========================================== */
-
-.st-card:hover
-.st-image.has-second-image
-.st-img-primary,
-
-.st-card:focus-within
-.st-image.has-second-image
-.st-img-primary {
-  opacity: 0;
-
   transform: scale(1.08);
-  filter: blur(3px);
 }
 
-/* ==========================================
-   HOVER — SECOND IMAGE FADE IN
-========================================== */
+.st-card:hover .st-img-primary {
+  transform: scale(1.07);
+}
 
-.st-card:hover
-.st-image.has-second-image
-.st-img-secondary,
+.st-card:hover .has-second-image .st-img-primary {
+  opacity: 0;
+}
 
-.st-card:focus-within
-.st-image.has-second-image
-.st-img-secondary {
+.st-card:hover .has-second-image .st-img-secondary {
   opacity: 1;
-
   transform: scale(1);
-  filter: blur(0);
 }
-
-/* ==========================================
-   SINGLE IMAGE HOVER
-========================================== */
-
-.st-card:hover
-.st-image:not(.has-second-image)
-.st-img-primary {
-  transform: scale(1.06);
-  filter: saturate(1.08);
-}
-
-/* ==========================================
-   IMAGE GRADIENT OVERLAY
-========================================== */
 
 .st-image-overlay {
   position: absolute;
   inset: 0;
   z-index: 3;
-
   pointer-events: none;
-
   background: linear-gradient(
     180deg,
-    transparent 60%,
-    rgba(5,25,45,0.2) 100%
+    rgba(6, 27, 46, 0.05) 0%,
+    transparent 45%,
+    rgba(8, 29, 48, 0.3) 100%
   );
-
-  opacity: 0;
-
-  transition: opacity 0.45s ease;
 }
-
-.st-card:hover .st-image-overlay {
-  opacity: 1;
-}
-
-/* ==========================================
-   IMAGE LIGHT SHINE
-========================================== */
 
 .st-image-shine {
   position: absolute;
-  inset: 0;
   z-index: 4;
-
-  pointer-events: none;
-
+  top: -50%;
+  left: -130%;
+  width: 50%;
+  height: 200%;
+  transform: rotate(20deg);
   background: linear-gradient(
-    115deg,
-    transparent 20%,
-    rgba(255,255,255,0.16) 48%,
-    transparent 75%
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.17),
+    transparent
   );
-
-  transform: translateX(-150%);
-
-  transition: transform 0.9s ease;
+  pointer-events: none;
 }
 
 .st-card:hover .st-image-shine {
-  transform: translateX(150%);
+  animation: st-shine 0.95s ease-out;
 }
 
-/* ==========================================
-   IMAGE PLACEHOLDER
-========================================== */
+@keyframes st-shine {
+  to {
+    left: 180%;
+  }
+}
 
 .st-placeholder {
-  position: absolute;
-  inset: 0;
-
   display: grid;
   place-items: center;
-
-  background: linear-gradient(
-    135deg,
-    var(--surface-soft, #edf2f6),
-    var(--surface-tint, #dcebf4)
-  );
-
-  color: var(--st-primary);
+  width: 100%;
+  height: 100%;
+  color: #7d9db3;
+  background: linear-gradient(145deg, #e5eff6, #c7dce9);
 }
 
 .st-placeholder svg {
-  width: 65px;
-  height: 65px;
-  opacity: 0.5;
+  width: 70px;
+  height: 70px;
 }
 
-/* ==========================================
-   CARD CONTENT
-========================================== */
+/* SLIDING INFORMATION PANEL */
 
 .st-content {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-
+  position: absolute;
+  z-index: 5;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
   min-width: 0;
-  padding: 12px;
+  min-height: 116px;
+  padding: 18px 18px 17px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 6px 24px rgba(9, 31, 52, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  transition:
+    transform 0.4s cubic-bezier(.2, .8, .2, 1),
+    background 0.4s;
+}
+
+.st-content::before {
+  content: "";
+  position: absolute;
+  left: 18px;
+  top: 0;
+  height: 3px;
+  width: 36px;
+  background: var(--st-primary);
+  border-radius: 0 0 3px 3px;
+  transition: width 0.45s;
+}
+
+.st-card:hover .st-content::before {
+  width: calc(100% - 36px);
+}
+
+.st-card:hover .st-content {
+  transform: translateY(-5px);
+  background: #fff;
 }
 
 .st-content h3 {
-  margin: 0 0 10px;
+  margin: 0 0 7px;
+  color: var(--st-ink);
+  font-size: 17px;
+  line-height: 1.4;
+  letter-spacing: -0.3px;
+  font-weight: 800;
 
-  color: var(--st-text);
-
-  font-size: 15px;
-  font-weight: 850;
-  line-height: 1.5;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 .st-content h3 a {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-
-  overflow: hidden;
-  overflow-wrap: anywhere;
-
   color: inherit;
   text-decoration: none;
-
-  transition: color 0.3s ease;
+  transition: color 0.25s;
 }
 
-.st-card:hover .st-content h3 a {
+.st-content h3 a:hover {
   color: var(--st-primary);
 }
 
-/* DESCRIPTION */
-
 .st-content p {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-
-  overflow: hidden;
-  overflow-wrap: anywhere;
-
-  margin: 0 0 10px;
-
+  margin: 0;
   color: var(--st-muted);
+  line-height: 1.55;
+  font-size: 12.5px;
 
-  font-size: 12px;
-  font-weight: 400;
-  line-height: 1.7;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(5px);
+
+  transition:
+    max-height 0.4s,
+    opacity 0.35s,
+    transform 0.35s,
+    margin 0.35s;
 }
 
-/* ==========================================
-   DETAILS LINK
-========================================== */
+.st-card:hover .st-content p,
+.st-card:focus-within .st-content p {
+  max-height: 70px;
+  opacity: 1;
+  transform: translateY(0);
+  margin-bottom: 11px;
+}
 
 .st-details {
   display: inline-flex;
   align-items: center;
-  gap: 9px;
-
   align-self: flex-start;
-
-  margin-top: auto;
-  padding-top: 8px;
+  gap: 7px;
 
   color: var(--st-primary);
-  font-size: 11px;
-  font-weight: 850;
   text-decoration: none;
-
-  transition:
-    gap 0.3s ease,
-    color 0.3s ease;
-}
-
-.st-details:hover {
-  gap: 15px;
-  color: var(--st-dark);
+  font-size: 12px;
+  font-weight: 780;
+  transition: gap 0.25s;
 }
 
 .st-details svg {
-  width: 17px;
-  height: 17px;
+  width: 15px;
+  height: 15px;
+  transition: transform 0.25s;
+}
 
-  transition: transform 0.3s ease;
+.st-details:hover {
+  gap: 12px;
 }
 
 .st-details:hover svg {
-  transform: translateX(4px);
+  transform: translateX(3px);
 }
 
-/* ==========================================
-   FOOTER
-========================================== */
+/* SLIDER FOOTER */
 
 .st-slider-footer {
   display: flex;
   align-items: center;
   justify-content: center;
-
   gap: 16px;
-  margin-top: 6px;
+  padding-top: 3px;
 }
-
-/* DOTS */
 
 .st-dots {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
 }
 
 .st-dot {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
   padding: 0;
-
-  border: none;
-  border-radius: 50%;
-
-  background: #c9d5df;
+  border: 0;
+  border-radius: 3px;
+  background: #becfdc;
   cursor: pointer;
+  transition: width 0.3s, background 0.3s;
+}
 
-  transition:
-    width 0.3s ease,
-    background 0.3s ease,
-    border-radius 0.3s ease;
+.st-dot:hover {
+  background: #7daec9;
 }
 
 .st-dot.active {
-  width: 26px;
-  border-radius: 10px;
+  width: 28px;
   background: var(--st-primary);
 }
 
-/* PROGRESS */
-
 .st-progress {
-  width: 80px;
+  width: 100px;
   height: 3px;
-
+  border-radius: 2px;
+  background: #dbe6ed;
   overflow: hidden;
-  background: #e1e7ee;
 }
 
 .st-progress span {
   display: block;
   height: 100%;
-
   background: var(--st-primary);
-
-  transition: width 0.4s ease;
+  transition: width 0.4s;
 }
 
-/* COUNTER */
-
 .st-counter {
-  color: var(--st-muted);
-
-  font-size: 11px;
+  color: #708397;
+  font-size: 12px;
   font-weight: 750;
   font-variant-numeric: tabular-nums;
 }
 
-/* ==========================================
-   LOADING / EMPTY
-========================================== */
+/* STATUS */
 
 .st-status {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  min-height: 230px;
-  padding: 35px 20px;
-
-  background: #ffffff;
-  border: 1px dashed var(--st-border);
-
-  color: var(--st-muted);
-  font-size: 13px;
+  padding: 55px 20px;
   text-align: center;
+  border: 1px dashed #bed2e0;
+  border-radius: 6px;
+  background: #fff;
+  color: var(--st-muted);
 }
 
 .st-status h3 {
   margin: 0 0 8px;
-
-  color: var(--st-text);
-  font-size: 16px;
+  color: var(--st-ink);
 }
 
 .st-status p {
   margin: 0;
-  line-height: 1.6;
 }
 
-/* ==========================================
-   ENTRY ANIMATION
-========================================== */
+/* ACCESSIBILITY */
 
-@keyframes stCardReveal {
-  from {
-    opacity: 0;
-    transform: translateY(22px) scale(0.98);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+.st-nav-btn:focus-visible,
+.st-dot:focus-visible,
+.st-see-all:focus-visible,
+.st-details:focus-visible,
+.st-slider:focus-visible,
+.st-card-image-link:focus-visible,
+.st-content h3 a:focus-visible {
+  outline: 3px solid #3194cb;
+  outline-offset: 3px;
 }
 
-/* ==========================================
-   LAPTOP / TABLET
-========================================== */
+/* RESPONSIVE */
 
-@media (min-width: 1600px) {
+@media (min-width: 1700px) {
   .st-section {
-    --st-visible: 6;
+    --st-visible: 5;
+  }
+
+  .st-container {
+    width: min(1640px, calc(100% - 100px));
   }
 }
 
-@media (max-width: 1050px) {
+@media (max-width: 1199px) {
   .st-section {
     --st-visible: 3;
     --st-gap: 16px;
+    padding: 55px 0 65px;
   }
 
-  .st-content {
-    padding: 12px;
+  .st-card {
+    height: 430px;
   }
 }
 
-/* ==========================================
-   SMALL TABLET
-========================================== */
-
-@media (max-width: 700px) {
+@media (max-width: 800px) {
   .st-section {
     --st-visible: 2;
-    --st-gap: 13px;
   }
 
-  .st-header-actions {
-    gap: 12px;
+  .st-card {
+    height: 440px;
   }
 
-  .st-nav-btn {
-    width: 35px;
-    height: 35px;
-  }
-
-  .st-content h3 {
-    font-size: 14px;
-  }
-
-  .st-content p {
-    font-size: 11px;
+  .st-container {
+    width: calc(100% - 44px);
   }
 }
 
-/* ==========================================
-   MOBILE
-========================================== */
-
-@media (max-width: 480px) {
+@media (max-width: 560px) {
   .st-section {
     --st-visible: 1;
     --st-gap: 12px;
+    padding: 38px 0 48px;
+  }
 
-    padding: 24px 0 35px;
+  .st-container {
+    width: calc(100% - 32px);
   }
 
   .st-header {
-    gap: 9px;
-    margin-bottom: 18px;
-  }
-
-  .st-heading {
-    gap: 8px;
-  }
-
-  .st-heading-line {
-    width: 3px;
-    height: 26px;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 17px;
   }
 
   .st-heading h2 {
-    font-size: 19px;
+    font-size: 24px;
+  }
+
+  .st-heading-line {
+    height: 34px;
   }
 
   .st-header-actions {
-    gap: 9px;
-  }
-
-  .st-navigation {
-    gap: 5px;
+    justify-content: space-between;
+    width: 100%;
   }
 
   .st-nav-btn {
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
   }
 
-  .st-nav-btn svg {
-    width: 15px;
-    height: 15px;
+  .st-card {
+    height: 460px;
   }
 
-  .st-see-all {
-    gap: 4px;
-    font-size: 10px;
+  .st-content p {
+    max-height: 70px;
+    opacity: 1;
+    transform: none;
+    margin-bottom: 10px;
   }
 
-  .st-image {
-    aspect-ratio: 16 / 10;
+  .st-slider {
+    padding-bottom: 20px;
+  }
+
+  .st-progress {
+    width: 65px;
+  }
+}
+
+@media (max-width: 360px) {
+  .st-card {
+    height: 420px;
   }
 
   .st-content {
-    padding: 12px;
+    padding: 16px 14px;
   }
 
   .st-content h3 {
     font-size: 16px;
   }
 
+  .st-progress {
+    display: none;
+  }
+}
+
+@media (hover: none) {
+  .st-card:hover {
+    transform: none;
+  }
+
   .st-content p {
-    font-size: 12px;
+    max-height: 70px;
+    opacity: 1;
+    transform: none;
+    margin-bottom: 10px;
   }
-
-  .st-slider {
-    padding-bottom: 16px;
-  }
-}
-
-/* ==========================================
-   VERY SMALL MOBILE
-========================================== */
-
-@media (max-width: 360px) {
-  .st-heading h2 {
-    font-size: 17px;
-  }
-
-  .st-header-actions {
-    gap: 5px;
-  }
-
-  .st-nav-btn {
-    width: 28px;
-    height: 28px;
-  }
-
-  .st-see-all {
-    font-size: 9px;
-  }
-}
-
-/* ==========================================
-   ACCESSIBILITY
-========================================== */
-
-.st-section a:focus-visible,
-.st-section button:focus-visible,
-.st-slider:focus-visible {
-  outline: 3px solid var(--st-primary);
-  outline-offset: 3px;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -865,9 +673,5 @@
     animation: none !important;
     transition: none !important;
     scroll-behavior: auto !important;
-  }
-
-  .st-image-shine {
-    display: none;
   }
 }

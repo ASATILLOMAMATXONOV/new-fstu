@@ -419,7 +419,7 @@ export default function AdvantagesManagementPage() {
                 <Paper
                   variant="outlined"
                   sx={{
-                    borderRadius: 2,
+                    borderRadius: '6px',
                     p: 2,
                     bgcolor: '#fafafa'
                   }}
@@ -429,7 +429,7 @@ export default function AdvantagesManagementPage() {
                       sx={{
                         width: 64,
                         height: 64,
-                        borderRadius: 2,
+                        borderRadius: '6px',
                         border: '1px solid',
                         borderColor: 'divider',
                         bgcolor: 'background.paper',
@@ -489,7 +489,7 @@ export default function AdvantagesManagementPage() {
               <Paper
                 variant="outlined"
                 sx={{
-                  borderRadius: 2,
+                  borderRadius: '6px',
                   p: { xs: 2, md: 3 },
                   bgcolor: '#fafafa'
                 }}
@@ -526,7 +526,7 @@ export default function AdvantagesManagementPage() {
               <Paper
                 variant="outlined"
                 sx={{
-                  borderRadius: 2,
+                  borderRadius: '6px',
                   overflow: 'hidden'
                 }}
               >
@@ -559,7 +559,7 @@ export default function AdvantagesManagementPage() {
                       },
                       bgcolor: '#082d63',
                       color: '#fff',
-                      borderRadius: 1.5,
+                      borderRadius: '6px',
                       overflow: 'hidden',
                       boxShadow: '0 18px 35px rgba(8, 45, 99, 0.22)'
                     }}
@@ -583,7 +583,7 @@ export default function AdvantagesManagementPage() {
                         sx={{
                           width: 46,
                           height: 46,
-                          borderRadius: 2,
+                          borderRadius: '6px',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
@@ -669,7 +669,7 @@ export default function AdvantagesManagementPage() {
       <Paper
         variant="outlined"
         sx={{
-          borderRadius: 2,
+          borderRadius: '6px',
           p: { xs: 2, md: 3 },
           mb: 3,
           bgcolor: '#fafafa'
@@ -698,7 +698,7 @@ export default function AdvantagesManagementPage() {
             },
             bgcolor: '#082d63',
             color: '#fff',
-            borderRadius: 1.5,
+            borderRadius: '6px',
             overflow: 'hidden',
             boxShadow: '0 18px 35px rgba(8, 45, 99, 0.22)'
           }}
@@ -723,7 +723,7 @@ export default function AdvantagesManagementPage() {
                 sx={{
                   width: 46,
                   height: 46,
-                  borderRadius: 2,
+                  borderRadius: '6px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -780,7 +780,7 @@ export default function AdvantagesManagementPage() {
                       sx={{
                         width: 44,
                         height: 44,
-                        borderRadius: 2,
+                        borderRadius: '6px',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',

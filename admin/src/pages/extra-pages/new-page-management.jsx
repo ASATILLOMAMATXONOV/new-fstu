@@ -339,7 +339,7 @@ export default function NewPageManagementPage() {
               <Paper
                 variant="outlined"
                 sx={{
-                  borderRadius: 3,
+                  borderRadius: '6px',
                   p: { xs: 2, md: 3 },
                   bgcolor: '#fafafa'
                 }}
@@ -405,7 +405,7 @@ export default function NewPageManagementPage() {
               <Paper
                 variant="outlined"
                 sx={{
-                  borderRadius: 3,
+                  borderRadius: '6px',
                   p: { xs: 2, md: 3 },
                   bgcolor: '#fafafa'
                 }}
@@ -442,7 +442,7 @@ export default function NewPageManagementPage() {
               <Paper
                 variant="outlined"
                 sx={{
-                  borderRadius: 3,
+                  borderRadius: '6px',
                   p: { xs: 2, md: 3 },
                   bgcolor: '#fafafa'
                 }}
@@ -463,7 +463,7 @@ export default function NewPageManagementPage() {
                       key={lang.key}
                       variant="outlined"
                       sx={{
-                        borderRadius: 2,
+                        borderRadius: '6px',
                         overflow: 'hidden',
                         bgcolor: 'background.paper'
                       }}
@@ -493,7 +493,7 @@ export default function NewPageManagementPage() {
 
                           '& .tox-tinymce': {
                             minHeight: '420px !important',
-                            borderRadius: '8px !important'
+                            borderRadius: '6px !important'
                           },
 
                           '& .tox-editor-header': {

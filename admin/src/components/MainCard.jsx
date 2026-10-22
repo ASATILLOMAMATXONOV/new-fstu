@@ -48,7 +48,7 @@ function MainCard(
       sx={{
         position: 'relative',
         border: border ? '1px solid' : 'none',
-        borderRadius: 1,
+        borderRadius: '6px',
         borderColor: theme.palette.mode === ThemeMode.DARK ? 'divider' : 'grey.A800',
         boxShadow: boxShadow && (!border || theme.palette.mode === ThemeMode.DARK) ? shadow || theme.customShadows.z1 : 'inherit',
         ':hover': {

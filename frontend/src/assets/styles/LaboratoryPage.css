@@ -143,7 +143,7 @@
   height: 38px;
   margin-left: auto;
   border: 1px solid #dce5ec;
-  border-radius: 50%;
+  border-radius: var(--box-radius);
   background: rgba(255,255,255,.6);
   color: #335873;
   font-size: 20px;
@@ -176,7 +176,7 @@
   height: 104px;
   padding: 0;
   border: 1px solid rgba(255,255,255,.9);
-  border-radius: 16px;
+  border-radius: var(--box-radius);
   background: #27465e;
   box-shadow: 0 4px 12px rgba(24,46,64,.09);
   cursor: pointer;
@@ -225,7 +225,7 @@
   height: 23px;
   padding-inline: 6px;
   border: 1px solid rgba(255,255,255,.4);
-  border-radius: 6px;
+  border-radius: var(--box-radius);
   background: rgba(255,255,255,.17);
   color: #fff;
   font-size: 10px;
@@ -264,7 +264,7 @@
   width: 26px;
   height: 26px;
   border: 1px solid rgba(255,255,255,.5);
-  border-radius: 50%;
+  border-radius: var(--box-radius);
   background: rgba(255,255,255,.14);
   color: #fff;
   font-size: 17px;
@@ -324,7 +324,7 @@
   padding: 22px;
   overflow: hidden;
   border: 1px solid rgba(216,228,237,.9);
-  border-radius: 18px;
+  border-radius: var(--box-radius);
   background: rgba(255,255,255,.95);
   box-shadow: 0 12px 36px rgba(24,46,64,.06);
 }
@@ -335,7 +335,7 @@
   width: 24px;
   height: 3px;
   margin-bottom: 13px;
-  border-radius: 3px;
+  border-radius: var(--box-radius);
   background: var(--lab-color);
 }
 
@@ -391,7 +391,7 @@
 .laboratory-item__more:focus-visible {
   outline: 2px solid #356bb2;
   outline-offset: 3px;
-  border-radius: 3px;
+  border-radius: var(--box-radius);
 }
 
 .laboratory-dialog {
@@ -401,7 +401,7 @@
   padding: 0;
   overflow: auto;
   border: 0;
-  border-radius: 20px;
+  border-radius: var(--box-radius);
   background: #fff;
   box-shadow: 0 24px 90px rgba(12,30,47,.3);
   color: #203a4e;
@@ -421,7 +421,7 @@
 .laboratory-dialog__body { padding: 26px; border-top: 3px solid var(--lab-color); }
 .laboratory-dialog__body h2 { margin: 8px 0 12px; font-size: clamp(20px,3vw,26px); line-height: 1.3; overflow-wrap: anywhere; }
 .laboratory-dialog__body p { margin: 0; color: #536b80; font-size: 14px; line-height: 1.8; overflow-wrap: anywhere; }
-.laboratory-dialog__close { position: absolute; top: 12px; right: 12px; display: grid; place-items: center; width: 38px; height: 38px; padding: 0; border: 1px solid #e2e8f0; border-radius: 50%; background: #fff; color: #203a4e; font-size: 26px; cursor: pointer; }
+.laboratory-dialog__close { position: absolute; top: 12px; right: 12px; display: grid; place-items: center; width: 38px; height: 38px; padding: 0; border: 1px solid #e2e8f0; border-radius: var(--box-radius); background: #fff; color: #203a4e; font-size: 26px; cursor: pointer; }
 .laboratory-dialog__close:focus-visible { outline: 3px solid #356bb2; outline-offset: 3px; }
 
 @keyframes laboratory-dialog-in {
@@ -456,7 +456,7 @@
   .laboratory-intro .laboratory-intro__eyebrow { margin-bottom: 12px; font-size: 8px; letter-spacing: 1px; }
   .laboratory-timeline__items { gap: 12px; }
   .laboratory-item { --lab-card-width: 132px; display: grid; grid-template-columns: var(--lab-card-width) minmax(0,1fr); gap: 12px; min-height: 112px; }
-  .laboratory-card { height: 112px; border-radius: 13px; }
+  .laboratory-card { height: 112px; border-radius: var(--box-radius); }
   .laboratory-card__inner { inset: 10px; }
   .laboratory-card__body { align-items: flex-end; gap: 6px; }
   .laboratory-card__title { font-size: 11px; }
@@ -464,7 +464,7 @@
   .laboratory-item.is-active .laboratory-card { transform: translateY(-2px); }
   .laboratory-item__details { position: relative; top: auto; left: auto; width: 100%; max-width: none; max-height: 0; overflow: hidden; transform: translateY(8px); transition: opacity .3s ease, transform .3s ease, max-height .4s ease, visibility .3s; }
   .laboratory-item.is-active .laboratory-item__details { max-height: 540px; padding: 6px 0; transform: translateY(0); }
-  .laboratory-item__details-inner { padding: 14px 12px; border-radius: 13px; }
+  .laboratory-item__details-inner { padding: 14px 12px; border-radius: var(--box-radius); }
   .laboratory-item__details-inner::before { width: 20px; height: 2px; margin-bottom: 10px; }
   .laboratory-item__label { font-size: 8px; letter-spacing: .7px; }
   .laboratory-item__details h3 { font-size: 13px; }

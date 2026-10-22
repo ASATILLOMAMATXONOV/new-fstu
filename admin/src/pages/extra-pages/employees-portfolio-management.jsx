@@ -636,7 +636,7 @@ export default function EmployeesPortfolioManagementPage() {
         <form onSubmit={handleSubmit}>
           <Grid container spacing={2.5}>
             <Grid item xs={12} lg={4}>
-              <Paper variant="outlined" sx={{ borderRadius: 3, p: { xs: 2, md: 3 }, bgcolor: '#fafafa' }}>
+              <Paper variant="outlined" sx={{ borderRadius: '6px', p: { xs: 2, md: 3 }, bgcolor: '#fafafa' }}>
                 <Stack spacing={0.5} sx={{ mb: 2.5 }}>
                   <Typography variant="h5" fontWeight={800}>
                     Hodim rasmi
@@ -654,7 +654,7 @@ export default function EmployeesPortfolioManagementPage() {
                   onDragOver={(event) => event.preventDefault()}
                   sx={{
                     minHeight: 360,
-                    borderRadius: 3,
+                    borderRadius: '6px',
                     border: '2px dashed',
                     borderColor: form.image ? 'primary.main' : 'divider',
                     bgcolor: 'background.paper',
@@ -720,7 +720,7 @@ export default function EmployeesPortfolioManagementPage() {
 
             <Grid item xs={12} lg={8}>
               <Stack spacing={2.5}>
-                <Paper variant="outlined" sx={{ borderRadius: 3, p: { xs: 2, md: 3 }, bgcolor: '#fafafa' }}>
+                <Paper variant="outlined" sx={{ borderRadius: '6px', p: { xs: 2, md: 3 }, bgcolor: '#fafafa' }}>
                   <Grid container spacing={2}>
                     <Grid item xs={12} md={8}>
                       <TextField
@@ -748,7 +748,7 @@ export default function EmployeesPortfolioManagementPage() {
                   </Grid>
                 </Paper>
 
-                <Paper variant="outlined" sx={{ borderRadius: 3, p: { xs: 2, md: 3 }, bgcolor: '#fafafa' }}>
+                <Paper variant="outlined" sx={{ borderRadius: '6px', p: { xs: 2, md: 3 }, bgcolor: '#fafafa' }}>
                   <Stack
                     direction={{ xs: 'column', sm: 'row' }}
                     spacing={1.5}
@@ -779,7 +779,7 @@ export default function EmployeesPortfolioManagementPage() {
                         <Paper
                           key={assignment.id}
                           variant="outlined"
-                          sx={{ borderRadius: 3, p: { xs: 2, md: 2.5 }, bgcolor: 'background.paper' }}
+                          sx={{ borderRadius: '6px', p: { xs: 2, md: 2.5 }, bgcolor: 'background.paper' }}
                         >
                           <Stack
                             direction={{ xs: 'column', sm: 'row' }}
@@ -936,7 +936,7 @@ export default function EmployeesPortfolioManagementPage() {
                   </Stack>
                 </Paper>
 
-                <Paper variant="outlined" sx={{ borderRadius: 3, p: { xs: 2, md: 3 }, bgcolor: '#fafafa' }}>
+                <Paper variant="outlined" sx={{ borderRadius: '6px', p: { xs: 2, md: 3 }, bgcolor: '#fafafa' }}>
                   <Grid container spacing={2}>
                     <Grid item xs={12} md={4}>
                       <TextField fullWidth label="Telegram" name="telegram" value={form.telegram} onChange={handleBaseChange} placeholder="@username yoki https://t.me/username" />
@@ -959,10 +959,10 @@ export default function EmployeesPortfolioManagementPage() {
             </Grid>
 
             <Grid item xs={12}>
-              <Paper variant="outlined" sx={{ borderRadius: 3, p: { xs: 2, md: 3 }, bgcolor: '#fafafa' }}>
+              <Paper variant="outlined" sx={{ borderRadius: '6px', p: { xs: 2, md: 3 }, bgcolor: '#fafafa' }}>
                 <Stack spacing={3}>
                   {langList.map((lang) => (
-                    <Paper key={lang.key} variant="outlined" sx={{ borderRadius: 3, overflow: 'hidden', bgcolor: 'background.paper' }}>
+                    <Paper key={lang.key} variant="outlined" sx={{ borderRadius: '6px', overflow: 'hidden', bgcolor: 'background.paper' }}>
                       <Box
                         sx={{
                           px: { xs: 2, md: 3 },
@@ -997,7 +997,7 @@ export default function EmployeesPortfolioManagementPage() {
                                   width: '100%',
                                   '& .tox-tinymce': {
                                     minHeight: '320px !important',
-                                    borderRadius: '8px !important'
+                                    borderRadius: '6px !important'
                                   }
                                 }}
                               >

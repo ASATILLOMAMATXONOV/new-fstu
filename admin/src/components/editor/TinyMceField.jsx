@@ -345,7 +345,7 @@ export default function TinyMceField({ label, value, onChange, disabled = false,
             overflow: 'hidden',
             border: '1px solid',
             borderColor: 'divider',
-            borderRadius: 2,
+            borderRadius: '6px',
             bgcolor: 'background.paper',
             '& .tox-tinymce': {
               border: 'none',

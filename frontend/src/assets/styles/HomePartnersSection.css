@@ -33,7 +33,7 @@
 .home-partners-link {
   min-height: 40px;
   padding: 0 16px;
-  border-radius: 12px;
+  border-radius: var(--box-radius);
   color: var(--brand-primary-dark);
   text-decoration: none;
   font-size: 12px;
@@ -72,7 +72,7 @@
   min-width: 260px;
   min-height: 74px;
   padding: 8px;
-  border-radius: 12px;
+  border-radius: var(--box-radius);
   display: flex;
   align-items: center;
   justify-content: center;

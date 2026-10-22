@@ -66,7 +66,7 @@
 .partners-secondary-btn {
   min-height: 44px;
   padding: 0 20px;
-  border-radius: 12px;
+  border-radius: var(--box-radius);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -156,7 +156,7 @@
 .partner-new-card {
   background: #ffffff;
   border: 1px solid var(--surface-border);
-  border-radius: 20px;
+  border-radius: var(--box-radius);
   overflow: hidden;
   opacity: 0;
   transform: translateY(24px);
@@ -245,7 +245,7 @@
 
 .partners-format-card {
   padding: 22px;
-  border-radius: 18px;
+  border-radius: var(--box-radius);
   background: var(--surface-soft);
   border: 1px solid var(--surface-border);
   opacity: 0;

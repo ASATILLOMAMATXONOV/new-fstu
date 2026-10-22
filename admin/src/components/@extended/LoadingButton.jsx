@@ -129,14 +129,14 @@ const LoadingButtonStyle = styled(MuiLoadingButton, { shouldForwardProp: (prop) 
       top: 0,
       width: '100%',
       height: '100%',
-      borderRadius: shape === 'rounded' ? '50%' : 4,
+      borderRadius: '6px',
       opacity: 0,
       transition: 'all 0.5s'
     },
 
     ':active::after': {
       position: 'absolute',
-      borderRadius: shape === 'rounded' ? '50%' : 4,
+      borderRadius: '6px',
       left: 0,
       top: 0,
       opacity: 1,
@@ -169,7 +169,7 @@ const LoadingButtonStyle = styled(MuiLoadingButton, { shouldForwardProp: (prop) 
         height: 44
       },
       ...(shape === 'rounded' && {
-        borderRadius: '50%'
+        borderRadius: '6px'
       })
     }),
 

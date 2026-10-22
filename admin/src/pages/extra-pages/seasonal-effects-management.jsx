@@ -378,7 +378,7 @@ export default function SeasonalEffectsManagementPage() {
           <Grid container spacing={2.5}>
             <Grid item xs={12} xl={4}>
               <Stack spacing={2.5}>
-                <Paper variant="outlined" sx={{ borderRadius: 4, p: 3 }}>
+                <Paper variant="outlined" sx={{ borderRadius: '6px', p: 3 }}>
                   <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
                     <Box>
                       <Typography variant="h5" fontWeight={900}>
@@ -402,7 +402,7 @@ export default function SeasonalEffectsManagementPage() {
                   />
                 </Paper>
 
-                <Paper variant="outlined" sx={{ borderRadius: 4, p: 3 }}>
+                <Paper variant="outlined" sx={{ borderRadius: '6px', p: 3 }}>
                   <Typography variant="h5" fontWeight={900} sx={{ mb: 2 }}>
                     Fasl tanlash
                   </Typography>
@@ -443,7 +443,7 @@ export default function SeasonalEffectsManagementPage() {
                   </Stack>
                 </Paper>
 
-                <Paper variant="outlined" sx={{ borderRadius: 4, overflow: 'hidden' }}>
+                <Paper variant="outlined" sx={{ borderRadius: '6px', overflow: 'hidden' }}>
                   <Box
                     sx={{
                       p: 3,
@@ -468,7 +468,7 @@ export default function SeasonalEffectsManagementPage() {
                           variant="outlined"
                           sx={{
                             p: 1.5,
-                            borderRadius: 3,
+                            borderRadius: '6px',
                             display: 'flex',
                             justifyContent: 'space-between',
                             alignItems: 'center',
@@ -501,7 +501,7 @@ export default function SeasonalEffectsManagementPage() {
                   const seasonConfig = form.seasons[season.key];
 
                   return (
-                    <Paper key={season.key} variant="outlined" sx={{ borderRadius: 4, overflow: 'hidden' }}>
+                    <Paper key={season.key} variant="outlined" sx={{ borderRadius: '6px', overflow: 'hidden' }}>
                       <Box
                         sx={{
                           p: 3,
@@ -578,7 +578,7 @@ export default function SeasonalEffectsManagementPage() {
                                       onClick={() => applyPreset(season.key, option.key)}
                                       sx={{
                                         p: 1.25,
-                                        borderRadius: 3,
+                                        borderRadius: '6px',
                                         cursor: 'pointer',
                                         height: '100%',
                                         borderColor: isActive ? '#0f4a9d' : 'divider',
@@ -710,7 +710,7 @@ export default function SeasonalEffectsManagementPage() {
                                 variant="outlined"
                                 sx={{
                                   p: 2,
-                                  borderRadius: 3,
+                                  borderRadius: '6px',
                                   display: 'flex',
                                   alignItems: 'center',
                                   gap: 2,
@@ -721,7 +721,7 @@ export default function SeasonalEffectsManagementPage() {
                                   sx={{
                                     width: 72,
                                     height: 72,
-                                    borderRadius: 3,
+                                    borderRadius: '6px',
                                     border: '1px solid',
                                     borderColor: 'divider',
                                     bgcolor: '#fff',

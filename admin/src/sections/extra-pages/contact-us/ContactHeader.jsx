@@ -47,7 +47,7 @@ export default function ContactHeader() {
               : 'linear-gradient(329.36deg, rgb(0, 0, 0) 14.79%, rgba(67, 67, 67, 0.28) 64.86%)'
         },
         border: 'transparent',
-        borderRadius: 0,
+        borderRadius: '6px',
         m: 0,
         height: { xs: '100%', sm: 280, md: 380, lg: 480 }
       }}

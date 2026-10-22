@@ -60,7 +60,7 @@
   min-height: 338px;
   background: #ffffff;
   border: 1px solid var(--surface-border);
-  border-radius: 24px;
+  border-radius: var(--box-radius);
   text-decoration: none;
   overflow: hidden;
   box-shadow: 0 14px 34px rgba(var(--theme-dark-rgb), 0.06);
@@ -138,7 +138,7 @@
   padding: 0 12px;
   align-items: center;
   justify-content: center;
-  border-radius: 12px;
+  border-radius: var(--box-radius);
   background: var(--surface-tint);
   color: var(--brand-primary);
   font-size: 13px;
@@ -152,7 +152,7 @@
   align-items: center;
   gap: 8px;
   padding: 0 14px;
-  border-radius: 999px;
+  border-radius: var(--box-radius);
   background: var(--surface-tint);
   color: var(--brand-primary);
   font-size: 11px;
@@ -181,7 +181,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  border-radius: 16px;
+  border-radius: var(--box-radius);
   background: var(--surface-tint);
   border: 1px solid var(--surface-border);
   color: var(--brand-primary);
@@ -219,7 +219,7 @@
   height: 44px;
   padding: 0 16px;
   border: 1px solid var(--surface-border);
-  border-radius: 14px;
+  border-radius: var(--box-radius);
   background: #ffffff;
   color: var(--brand-primary);
   font-size: 14px;
@@ -247,7 +247,7 @@
 
 .sections-empty-state {
   padding: 34px 26px;
-  border-radius: 24px;
+  border-radius: var(--box-radius);
   background: #ffffff;
   border: 1px solid var(--surface-border);
   text-align: center;

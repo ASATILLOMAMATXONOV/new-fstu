@@ -235,6 +235,10 @@ export function getCachedContentList(resource, query = {}) {
   return data?.items || null;
 }
 
+export function isCmsContentLoading() {
+  return pendingRequests.size > 0;
+}
+
 export function getCachedContentTree(resource, query = {}) {
   const data = readCachedResponse(API_ENDPOINTS.contentTree(resource, query));
   return data?.items || null;

@@ -239,7 +239,7 @@ export default function RectorSpeechManagementPage() {
                 <Paper
                   variant="outlined"
                   sx={{
-                    borderRadius: 4,
+                    borderRadius: '6px',
                     overflow: 'hidden',
                     bgcolor: '#f8fbff'
                   }}
@@ -256,7 +256,7 @@ export default function RectorSpeechManagementPage() {
                         sx={{
                           width: 42,
                           height: 42,
-                          borderRadius: 2,
+                          borderRadius: '6px',
                           bgcolor: '#082e69',
                           color: '#fff',
                           display: 'flex',
@@ -295,7 +295,7 @@ export default function RectorSpeechManagementPage() {
                       onDragOver={(e) => e.preventDefault()}
                       sx={{
                         height: 360,
-                        borderRadius: 4,
+                        borderRadius: '6px',
                         border: '2px dashed',
                         borderColor: form.image ? '#082e69' : 'divider',
                         bgcolor: '#fff',
@@ -399,7 +399,7 @@ export default function RectorSpeechManagementPage() {
                 <Paper
                   variant="outlined"
                   sx={{
-                    borderRadius: 4,
+                    borderRadius: '6px',
                     p: 3,
                     bgcolor: '#fff'
                   }}
@@ -440,7 +440,7 @@ export default function RectorSpeechManagementPage() {
                 <Paper
                   variant="outlined"
                   sx={{
-                    borderRadius: 4,
+                    borderRadius: '6px',
                     overflow: 'hidden',
                     bgcolor: '#fff'
                   }}
@@ -498,7 +498,7 @@ export default function RectorSpeechManagementPage() {
                 <Paper
                   variant="outlined"
                   sx={{
-                    borderRadius: 4,
+                    borderRadius: '6px',
                     overflow: 'hidden',
                     bgcolor: '#fff'
                   }}
@@ -545,7 +545,7 @@ export default function RectorSpeechManagementPage() {
               <Paper
                 variant="outlined"
                 sx={{
-                  borderRadius: 4,
+                  borderRadius: '6px',
                   overflow: 'hidden',
                   bgcolor: '#fff'
                 }}
@@ -574,7 +574,7 @@ export default function RectorSpeechManagementPage() {
                         key={lang.key}
                         variant="outlined"
                         sx={{
-                          borderRadius: 3,
+                          borderRadius: '6px',
                           overflow: 'hidden',
                           bgcolor: '#fafafa'
                         }}
@@ -699,7 +699,7 @@ export default function RectorSpeechManagementPage() {
                       sx={{
                         width: 72,
                         height: 72,
-                        borderRadius: 2,
+                        borderRadius: '6px',
                         objectFit: 'cover',
                         display: 'block',
                         border: '1px solid',
@@ -784,7 +784,7 @@ function TinyMceWrapper({ children }) {
 
         '& .tox-tinymce': {
           minHeight: '320px !important',
-          borderRadius: '10px !important'
+          borderRadius: '6px !important'
         },
 
         '& .tox-editor-header': {

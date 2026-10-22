@@ -83,14 +83,14 @@ function SectionFallback({ minHeight = 320 }) {
 
 function HomePage() {
   return (
-    <>
+    <main className="home-page">
       <HeroBanner />
 
       <div className="app-content-shell">
         <HomeInfoSection />
         <HomeFacultyOrbit />
         <HomeFacultyConstellation />
-         <RektorMurojaati />
+        <RektorMurojaati />
         <NewsPageHome />
         <StudentsSection />
         <LaboratoryPage />
@@ -111,7 +111,7 @@ function HomePage() {
           <StatisticsSection />
         </Suspense>
       </div>
-    </>
+    </main>
   );
 }
 

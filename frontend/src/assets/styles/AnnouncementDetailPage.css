@@ -45,7 +45,7 @@
   display: inline-flex;
   align-items: center;
   padding: 8px 14px;
-  border-radius: 999px;
+  border-radius: var(--box-radius);
   background: var(--surface-tint);
   color: var(--brand-primary);
   font-size: 13px;
@@ -68,7 +68,7 @@
   display: inline-flex;
   margin-bottom: 14px;
   padding: 7px 13px;
-  border-radius: 999px;
+  border-radius: var(--box-radius);
   background: var(--surface-soft);
   color: var(--brand-primary);
   font-size: 12px;
@@ -117,7 +117,7 @@
   gap: 10px;
   margin: 6px 0;
   padding: 10px 14px;
-  border-radius: 999px;
+  border-radius: var(--box-radius);
   background: var(--surface-tint);
   border: 1px solid var(--surface-border);
   box-shadow: 0 10px 22px rgba(var(--theme-primary-rgb), 0.08);
@@ -136,7 +136,7 @@
   min-width: 44px;
   height: 24px;
   padding: 0 8px;
-  border-radius: 999px;
+  border-radius: var(--box-radius);
   background: var(--brand-primary);
   color: #fff;
   font-size: 10px;
@@ -168,7 +168,7 @@
   max-width: 760px;
   margin: 0 auto;
   padding: 44px;
-  border-radius: 24px;
+  border-radius: var(--box-radius);
   background: #ffffff;
   border: 1px solid var(--surface-border);
   text-align: center;

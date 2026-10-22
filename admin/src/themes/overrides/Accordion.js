@@ -5,7 +5,7 @@ export default function Accordion(theme) {
     MuiAccordion: {
       defaultProps: {
         disableGutters: true,
-        square: true,
+        square: false,
         elevation: 0
       },
       styleOverrides: {
