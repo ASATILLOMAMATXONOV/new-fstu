@@ -18,7 +18,7 @@
   width: 100%;
   max-width: 1260px;
 
-  margin: -78px auto 34px;
+  margin: -60px auto 34px;
   padding: 0;
 
   box-sizing: border-box;
@@ -77,12 +77,12 @@
   align-items: center;
   justify-content: center;
 
-  color: #ffffff;
+  color: var(--text-on-brand);
   text-align: center;
   text-decoration: none;
 
   border-right:
-    1px solid rgba(255, 255, 255, 0.32);
+    var(--border-width) solid var(--border-on-brand);
 
   background: transparent;
 
@@ -183,7 +183,7 @@ article.home-info-link {
   }
 
   .home-info-link:hover .home-info-desc {
-    color: rgba(255, 255, 255, 0.9);
+    color: var(--text-on-brand-secondary);
   }
 
   .home-info-link.is-featured:hover {
@@ -223,7 +223,7 @@ article.home-info-link {
   align-items: center;
   justify-content: center;
 
-  color: #ffffff;
+  color: var(--text-on-brand);
 
   transform: translateY(0) scale(1);
 
@@ -255,9 +255,9 @@ article.home-info-link {
 .home-info-title {
   margin-top: 13px;
 
-  color: #ffffff;
+  color: var(--text-on-brand);
 
-  font-size: clamp(11px, 0.92vw, 14px);
+  font-size: var(--font-size-meta);
   font-weight: 900;
   line-height: 1.22;
 
@@ -278,9 +278,9 @@ article.home-info-link {
 .home-info-desc {
   margin-top: 8px;
 
-  color: rgba(255, 255, 255, 0.65);
+  color: var(--text-on-brand-secondary);
 
-  font-size: clamp(9px, 0.74vw, 11px);
+  font-size: var(--font-size-label);
   font-weight: 700;
   line-height: 1.35;
 
@@ -319,12 +319,12 @@ article.home-info-link {
 .home-info-desc,
 .home-info-link.is-featured
 .home-info-icon {
-  color: #ffffff;
+  color: var(--text-on-brand);
 }
 
 .home-info-link.is-featured
 .home-info-desc {
-  color: rgba(255, 255, 255, 0.88);
+  color: var(--text-on-brand-secondary);
 }
 
 /* ==========================================
@@ -391,11 +391,11 @@ article.home-info-link {
   }
 
   .home-info-title {
-    font-size: 10px;
+    font-size: var(--font-size-meta);
   }
 
   .home-info-desc {
-    font-size: 9px;
+    font-size: var(--font-size-label);
   }
 }
 
@@ -454,11 +454,11 @@ article.home-info-link {
   }
 
   .home-info-title {
-    font-size: 11px;
+    font-size: var(--font-size-meta);
   }
 
   .home-info-desc {
-    font-size: 10px;
+    font-size: var(--font-size-label);
     line-height: 1.4;
   }
 
@@ -493,11 +493,11 @@ article.home-info-link {
   }
 
   .home-info-title {
-    font-size: 10px;
+    font-size: var(--font-size-meta);
   }
 
   .home-info-desc {
-    font-size: 9px;
+    font-size: var(--font-size-label);
   }
 }
 

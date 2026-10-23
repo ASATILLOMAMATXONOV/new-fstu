@@ -26,7 +26,7 @@
   align-items: center;
   color: var(--brand-primary);
   text-decoration: none;
-  font-size: 13px;
+  font-size: var(--font-size-meta);
   font-weight: 800;
 }
 
@@ -36,7 +36,7 @@
 
 .student-detail-profile-card {
   background: #ffffff;
-  border: 1px solid var(--surface-border);
+  border: var(--border-width) solid var(--surface-border);
   box-shadow: 0 18px 48px rgba(var(--theme-dark-rgb), 0.08);
   overflow: hidden;
   animation: studentDetailFadeRight 0.6s ease both;
@@ -78,24 +78,25 @@
 
 .student-detail-profile-copy span {
   color: var(--brand-primary);
-  font-size: 12px;
+  font-size: var(--font-size-meta);
   font-weight: 900;
   letter-spacing: 1px;
 }
 
 .student-detail-profile-copy h3 {
   margin: 0;
-  color: var(--text-primary);
-  font-size: 28px;
-  line-height: 1.16;
-  font-weight: 900;
+  color: var(--heading-color);
+  font-size: var(--font-size-card-title);
+  line-height: var(--heading-line-height);
+  font-weight: var(--heading-weight);
+  letter-spacing: 0;
 }
 
 .student-detail-profile-copy p {
   margin: 0;
   color: var(--text-secondary);
-  font-size: 14px;
-  line-height: 1.65;
+  font-size: var(--font-size-body);
+  line-height: var(--body-line-height);
   font-weight: 700;
 }
 
@@ -103,7 +104,7 @@
 .student-detail-empty,
 .student-detail-sidecard {
   background: #ffffff;
-  border: 1px solid var(--surface-border);
+  border: var(--border-width) solid var(--surface-border);
   box-shadow: 0 18px 48px rgba(var(--theme-dark-rgb), 0.08);
 }
 
@@ -127,13 +128,13 @@
 .student-detail-content-head {
   padding: 28px 30px 24px;
   background: linear-gradient(180deg, #ffffff 0%, var(--surface-soft) 100%);
-  border-bottom: 1px solid var(--surface-border);
+  border-bottom: var(--border-width) solid var(--surface-border);
 }
 
 .student-detail-empty span,
 .student-detail-sidecard span {
   color: var(--brand-primary);
-  font-size: 12px;
+  font-size: var(--font-size-meta);
   font-weight: 900;
   letter-spacing: 1px;
 }
@@ -142,21 +143,25 @@
 .student-detail-empty h1,
 .student-detail-sidecard h3 {
   margin: 12px 0 10px;
-  color: var(--text-primary);
-  font-size: clamp(26px, 3vw, 38px);
-  line-height: 1.15;
-  font-weight: 900;
+  color: var(--heading-color);
+  font-size: var(--font-size-card-title);
+  line-height: var(--heading-line-height);
+  font-weight: var(--heading-weight);
+  letter-spacing: 0;
 }
 
 .student-detail-sidecard h3 {
-  font-size: 26px;
+  font-size: var(--font-size-card-title);
+  font-weight: var(--heading-weight);
+  line-height: var(--heading-line-height);
+  letter-spacing: 0;
 }
 
 .student-detail-content-head p {
   margin: 0;
   color: var(--text-secondary);
-  font-size: 15px;
-  line-height: 1.7;
+  font-size: var(--font-size-body);
+  line-height: var(--body-line-height);
   font-weight: 700;
 }
 
@@ -174,7 +179,7 @@
   padding: 0 14px;
   background: var(--surface-tint);
   color: var(--brand-primary);
-  font-size: 11px;
+  font-size: var(--font-size-meta);
   font-weight: 900;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -186,16 +191,16 @@
 
 .student-detail-content {
   color: var(--text-secondary);
-  font-size: 16px;
-  line-height: 1.85;
+  font-size: var(--font-size-body);
+  line-height: var(--body-line-height);
 }
 
 .student-detail-sidecard p,
 .student-detail-empty p {
   margin: 0;
   color: var(--text-secondary);
-  font-size: 15px;
-  line-height: 1.8;
+  font-size: var(--font-size-body);
+  line-height: var(--body-line-height);
 }
 
 .student-detail-content > *:first-child {
@@ -270,7 +275,7 @@
   padding: 10px 14px;
   border-radius: var(--box-radius);
   background: var(--surface-tint);
-  border: 1px solid var(--surface-border);
+  border: var(--border-width) solid var(--surface-border);
   box-shadow: 0 10px 22px rgba(var(--theme-primary-rgb), 0.08);
   color: var(--brand-primary);
   font-weight: 800;
@@ -290,14 +295,14 @@
   border-radius: var(--box-radius);
   background: var(--brand-primary);
   color: #fff;
-  font-size: 10px;
+  font-size: var(--font-size-meta);
   font-weight: 900;
   letter-spacing: 0.8px;
 }
 
 .student-detail-content a.content-file-link--file-name::after {
   content: '↓';
-  font-size: 16px;
+  font-size: var(--font-size-meta);
   font-weight: 900;
 }
 
@@ -311,7 +316,7 @@
 
 .student-detail-sidebar .academic-sidebar {
   background: #ffffff;
-  border: 1px solid var(--surface-border);
+  border: var(--border-width) solid var(--surface-border);
   box-shadow: 0 18px 48px rgba(var(--theme-dark-rgb), 0.08);
 }
 
@@ -328,7 +333,7 @@
   align-items: center;
   padding: 12px;
   background: var(--surface-soft);
-  border: 1px solid var(--surface-border);
+  border: var(--border-width) solid var(--surface-border);
   text-decoration: none;
   opacity: 0;
   transform: translateY(14px);
@@ -371,7 +376,7 @@
 .student-detail-related-copy strong {
   display: block;
   color: var(--brand-primary-dark);
-  font-size: 14px;
+  font-size: var(--font-size-meta);
   font-weight: 900;
   line-height: 1.35;
 }
@@ -380,7 +385,7 @@
   display: block;
   margin-top: 4px;
   color: var(--text-secondary);
-  font-size: 12px;
+  font-size: var(--font-size-meta);
   font-weight: 700;
   letter-spacing: 0;
 }

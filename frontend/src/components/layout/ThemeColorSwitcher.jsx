@@ -9,8 +9,8 @@ const THEMES = [
   {
     id: 'blue',
     label: "Ko'k",
-    primary: '#275fdaff',
-    dark: '#29bfecff',
+    primary: '#2563eb',
+    dark: '#1d4ed8',
     deep: '#172554',
     soft: '#dbeafe',
     muted: '#eff6ff',
@@ -152,28 +152,21 @@ function applyTheme(theme) {
   root.style.setProperty('--theme-primary-rgb', theme.rgb);
   root.style.setProperty('--theme-dark-rgb', theme.darkRgb);
   root.style.setProperty('--theme-deep-rgb', theme.deepRgb);
-  root.style.setProperty('--text-primary', theme.deep);
-  root.style.setProperty('--text-secondary', `rgba(${theme.deepRgb}, 0.76)`);
-  root.style.setProperty('--text-muted', `rgba(${theme.deepRgb}, 0.58)`);
   root.style.setProperty('--text-on-brand', '#ffffff');
   root.style.setProperty('--heading-color', theme.deep);
-  root.style.setProperty('--link-color', theme.primary);
-  root.style.setProperty('--hover-color', theme.primary);
+  root.style.setProperty('--link-color', theme.dark);
+  root.style.setProperty('--hover-color', theme.deep);
   root.style.setProperty('--surface', '#ffffff');
-  root.style.setProperty('--surface-soft', theme.muted);
-  root.style.setProperty('--surface-tint', theme.soft);
-  root.style.setProperty('--surface-border', `rgba(${theme.rgb}, 0.18)`);
-  root.style.setProperty('--surface-border-strong', `rgba(${theme.rgb}, 0.34)`);
+  root.style.setProperty('--surface-tint', theme.muted);
   root.style.setProperty('--page-bg-start', '#ffffff');
-  root.style.setProperty('--page-bg-end', theme.muted);
   root.style.setProperty('--shadow-brand', `rgba(${theme.rgb}, 0.14)`);
   root.style.setProperty('--color-primary', theme.primary);
   root.style.setProperty('--color-primary-dark', theme.dark);
   root.style.setProperty('--color-primary-light', theme.soft);
   root.style.setProperty('--color-accent', theme.primary);
-  root.style.setProperty('--color-text', theme.deep);
-  root.style.setProperty('--color-text-light', `rgba(${theme.deepRgb}, 0.62)`);
-  root.style.setProperty('--color-border', `rgba(${theme.rgb}, 0.18)`);
+  root.style.setProperty('--color-text', 'var(--text-primary)');
+  root.style.setProperty('--color-text-light', 'var(--text-secondary)');
+  root.style.setProperty('--color-border', 'var(--surface-border)');
   root.dataset.themeColor = theme.id;
 }
 

@@ -74,29 +74,29 @@
 .np-eyebrow {
   margin: 0 0 10px;
   color: var(--np-cyan);
-  font-size: 10px;
+  font-size: var(--font-size-label);
   font-weight: 800;
   line-height: 1.5;
   letter-spacing: 2.4px;
   text-transform: uppercase;
 }
 
-.np-header h1 {
+.np-header h2 {
   margin: 0 0 12px;
-  color: var(--np-navy);
-  font-size: clamp(30px, 3.2vw, 43px);
-  font-weight: 900;
-  letter-spacing: -0.8px;
-  line-height: 1.15;
+  color: var(--heading-color);
+  font-size: var(--font-size-section);
+  font-weight: var(--heading-weight);
+  letter-spacing: 0;
+  line-height: var(--heading-line-height);
 }
 
 .np-intro {
   max-width: 650px;
   margin: 0 auto;
   color: var(--np-muted);
-  font-size: 13px;
+  font-size: var(--font-size-body);
   font-weight: 400;
-  line-height: 1.8;
+  line-height: var(--body-line-height);
 }
 
 /* ==========================================
@@ -126,14 +126,14 @@
   min-height: 34px;
   padding: 7px 14px;
 
-  border: 1px solid var(--np-border);
+  border: var(--border-width) solid var(--surface-border);
   border-radius: var(--box-radius);
 
   background: rgba(255, 255, 255, 0.85);
   color: var(--np-muted);
 
   font-family: inherit;
-  font-size: 11px;
+  font-size: var(--font-size-meta);
   font-weight: 650;
   line-height: 1.4;
 
@@ -155,7 +155,7 @@
 .np-filter.is-active {
   background: var(--np-cyan);
   border-color: var(--np-cyan);
-  color: #ffffff;
+  color: var(--text-on-brand);
 }
 
 .np-filter.is-active:hover {
@@ -172,7 +172,7 @@
   min-height: 38px;
   padding: 9px 12px;
 
-  border: 1px solid var(--np-border);
+  border: var(--border-width) solid var(--surface-border);
   border-radius: var(--box-radius);
 
   background: #ffffff;
@@ -198,7 +198,7 @@
 
   color: var(--np-navy);
   font-family: inherit;
-  font-size: 12px;
+  font-size: var(--font-size-meta);
 }
 
 .np-search input::placeholder {
@@ -245,7 +245,7 @@
 
   overflow: hidden;
 
-  border: 1px solid var(--np-border);
+  border: var(--border-width) solid var(--surface-border);
   border-radius: var(--box-radius);
 
   background: linear-gradient(
@@ -362,7 +362,7 @@
     var(--brand-primary-deep, #064b6c) 70%
   );
 
-  color: rgba(255, 255, 255, 0.32);
+  color: var(--text-on-brand-secondary);
 }
 
 .np-placeholder-icon {
@@ -419,14 +419,14 @@
   margin-bottom: 11px;
 
   color: var(--text-muted, #8493a2);
-  font-size: 10px;
+  font-size: var(--font-size-meta);
   line-height: 1.5;
 }
 
 .np-category {
   color: var(--np-cyan);
 
-  font-size: 10px;
+  font-size: var(--font-size-label);
   font-weight: 800;
 
   text-transform: uppercase;
@@ -435,7 +435,7 @@
 
 .np-meta time {
   color: var(--text-muted, #8493a2);
-  font-size: 10px;
+  font-size: var(--font-size-meta);
   font-weight: 600;
   white-space: nowrap;
 }
@@ -446,17 +446,18 @@
   display: -webkit-box;
 
   margin: 0 0 10px;
-  min-height: 44px;
+  min-height: 2.6em;
 
   overflow: hidden;
 
-  color: var(--np-navy);
-  font-size: 15px;
-  font-weight: 800;
-  line-height: 1.45;
+  color: var(--heading-color);
+  font-size: var(--font-size-card-title);
+  font-weight: var(--heading-weight);
+  line-height: var(--heading-line-height);
 
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+  letter-spacing: 0;
 }
 
 .np-card-title a {
@@ -485,9 +486,9 @@
   overflow: hidden;
 
   color: var(--np-muted);
-  font-size: 11px;
+  font-size: var(--font-size-body);
   font-weight: 400;
-  line-height: 1.65;
+  line-height: var(--body-line-height);
 
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
@@ -505,7 +506,7 @@
   margin-top: auto;
   padding-top: 12px;
 
-  border-top: 1px solid var(--np-border);
+  border-top: var(--border-width) solid var(--surface-border);
 }
 
 .np-more {
@@ -515,7 +516,7 @@
 
   color: var(--np-navy);
 
-  font-size: 10px;
+  font-size: var(--font-size-meta);
   font-weight: 800;
   line-height: 1.5;
   letter-spacing: 0.6px;
@@ -578,7 +579,7 @@
   padding: 45px 20px;
 
   color: var(--np-muted);
-  font-size: 13px;
+  font-size: var(--font-size-meta);
   line-height: 1.7;
   text-align: center;
 }
@@ -611,14 +612,14 @@
 
   overflow: hidden;
 
-  border: 1px solid var(--np-cyan);
+  border: var(--border-width) solid var(--surface-border);
   border-radius: var(--box-radius);
 
   background: var(--np-cyan);
-  color: #ffffff;
+  color: var(--text-on-brand);
 
   font-family: inherit;
-  font-size: 12px;
+  font-size: var(--font-size-meta);
   font-weight: 800;
   line-height: 1.4;
   letter-spacing: 0.35px;
@@ -639,7 +640,7 @@
 
   background: var(--brand-primary-dark, #06678d);
   border-color: var(--brand-primary-dark, #06678d);
-  color: #ffffff;
+  color: var(--text-on-brand);
 
   box-shadow: 0 10px 25px rgba(
     var(--theme-primary-rgb, 7, 127, 174),
@@ -726,7 +727,10 @@
   }
 
   .np-card-title {
-    font-size: 14px;
+    font-size: var(--font-size-card-title);
+    font-weight: var(--heading-weight);
+    line-height: var(--heading-line-height);
+    letter-spacing: 0;
   }
 }
 
@@ -757,7 +761,10 @@
   }
 
   .np-card-title {
-    font-size: 15px;
+    font-size: var(--font-size-card-title);
+    font-weight: var(--heading-weight);
+    line-height: var(--heading-line-height);
+    letter-spacing: 0;
   }
 
   .np-photo {
@@ -798,7 +805,10 @@
   }
 
   .np-card-title {
-    font-size: 14px;
+    font-size: var(--font-size-card-title);
+    font-weight: var(--heading-weight);
+    line-height: var(--heading-line-height);
+    letter-spacing: 0;
   }
 }
 
@@ -825,19 +835,21 @@
   }
 
   .np-eyebrow {
-    font-size: 9px;
+    font-size: var(--font-size-label);
     letter-spacing: 1.8px;
   }
 
-  .np-header h1 {
-    font-size: 31px;
-    letter-spacing: -0.5px;
+  .np-header h2 {
+    font-size: var(--font-size-section);
+    letter-spacing: 0;
+    font-weight: var(--heading-weight);
+    line-height: var(--heading-line-height);
   }
 
   .np-intro {
     max-width: 420px;
-    font-size: 12px;
-    line-height: 1.7;
+    font-size: var(--font-size-body);
+    line-height: var(--body-line-height);
   }
 
   .np-grid {
@@ -871,17 +883,19 @@
   }
 
   .np-card-title {
-    min-height: auto;
+    min-height: 2.6em;
     margin-bottom: 9px;
 
-    font-size: 15px;
-    line-height: 1.5;
+    font-size: var(--font-size-card-title);
+    line-height: var(--heading-line-height);
+    font-weight: var(--heading-weight);
+    letter-spacing: 0;
   }
 
   .np-excerpt {
     min-height: auto;
     margin-bottom: 15px;
-    font-size: 11px;
+    font-size: var(--font-size-body);
   }
 
   .np-card-footer {
@@ -908,8 +922,11 @@
     padding: 24px 0 32px;
   }
 
-  .np-header h1 {
-    font-size: 28px;
+  .np-header h2 {
+    font-size: var(--font-size-section);
+    font-weight: var(--heading-weight);
+    line-height: var(--heading-line-height);
+    letter-spacing: 0;
   }
 
   .np-grid {
@@ -921,12 +938,15 @@
   }
 
   .np-card-title {
-    font-size: 14px;
+    font-size: var(--font-size-card-title);
+    font-weight: var(--heading-weight);
+    line-height: var(--heading-line-height);
+    letter-spacing: 0;
   }
 
   .np-filter {
     padding: 7px 11px;
-    font-size: 10px;
+    font-size: var(--font-size-meta);
   }
 }
 

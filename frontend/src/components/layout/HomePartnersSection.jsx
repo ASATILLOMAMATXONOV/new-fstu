@@ -52,7 +52,7 @@ function HomePartnersSection() {
     <section className="home-partners-section" aria-label={texts.ariaLabel}>
       <div className="home-partners-panel">
         <div className="home-partners-header">
-          <h3>{texts.sectionTitle}</h3>
+          <h2>{texts.sectionTitle}</h2>
 
           <AppLink href="/partners" className="home-partners-link">
             {texts.seeAll} →

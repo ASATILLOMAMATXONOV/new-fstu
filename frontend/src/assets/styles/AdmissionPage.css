@@ -27,7 +27,7 @@
   background:
     linear-gradient(135deg, rgba(var(--theme-deep-rgb), 0.98), rgba(var(--theme-dark-rgb), 0.92)),
     var(--brand-primary-deep);
-  color: #ffffff;
+  color: var(--text-on-brand);
 }
 
 .admission-page-hero > div:first-child::after {
@@ -47,8 +47,8 @@
   align-items: center;
   padding: 0 13px;
   background: rgba(255, 255, 255, 0.13);
-  color: #ffffff;
-  font-size: 11px;
+  color: var(--text-on-brand);
+  font-size: var(--font-size-meta);
   font-weight: 900;
   letter-spacing: 0.15em;
 }
@@ -56,25 +56,26 @@
 .admission-page-hero h1 {
   max-width: 720px;
   margin: 22px 0 14px;
-  color: #ffffff;
-  font-size: clamp(40px, 5.8vw, 76px);
-  line-height: 0.95;
-  font-weight: 950;
+  color: var(--text-on-brand);
+  font-size: var(--font-size-section);
+  line-height: var(--heading-line-height);
+  font-weight: var(--heading-weight);
+  letter-spacing: 0;
 }
 
 .admission-page-hero p {
   max-width: 660px;
   margin: 0;
-  color: rgba(255, 255, 255, 0.78);
-  font-size: 17px;
-  line-height: 1.75;
+  color: var(--text-on-brand-secondary);
+  font-size: var(--font-size-body);
+  line-height: var(--body-line-height);
 }
 
 .admission-page-orbit {
   position: relative;
   min-height: 360px;
   background: #ffffff;
-  border: 1px solid var(--surface-border);
+  border: var(--border-width) solid var(--surface-border);
   box-shadow: 0 18px 46px rgba(var(--theme-dark-rgb), 0.08);
   overflow: hidden;
 }
@@ -84,7 +85,7 @@
   content: '';
   position: absolute;
   inset: 46px;
-  border: 1px solid rgba(var(--theme-primary-rgb), 0.22);
+  border: var(--border-width) solid var(--surface-border);
   transform: rotate(45deg);
 }
 
@@ -104,7 +105,7 @@
   align-items: center;
   justify-content: center;
   background: var(--brand-primary);
-  color: #ffffff;
+  color: var(--text-on-brand);
   border: 8px solid #ffffff;
   box-shadow: 0 16px 26px rgba(var(--theme-dark-rgb), 0.16);
   font-size: 18px;
@@ -132,7 +133,7 @@
   grid-template-columns: 300px minmax(0, 1fr);
   align-items: start;
   background: #ffffff;
-  border: 1px solid var(--surface-border);
+  border: var(--border-width) solid var(--surface-border);
   box-shadow: 0 18px 46px rgba(var(--theme-dark-rgb), 0.08);
   overflow: hidden;
 }
@@ -154,7 +155,7 @@
   gap: 12px;
   align-items: center;
   padding: 18px 0;
-  border-bottom: 1px solid var(--surface-border);
+  border-bottom: var(--border-width) solid var(--surface-border);
 }
 
 .admission-page-step:last-child {
@@ -168,14 +169,14 @@
   align-items: center;
   justify-content: center;
   background: var(--brand-primary-dark);
-  color: #ffffff;
-  font-size: 12px;
+  color: var(--text-on-brand);
+  font-size: var(--font-size-meta);
   font-weight: 950;
 }
 
 .admission-page-step strong {
   color: var(--text-primary);
-  font-size: 14px;
+  font-size: var(--font-size-meta);
   line-height: 1.35;
 }
 
@@ -186,8 +187,8 @@
 .admission-page-body {
   padding: 34px;
   color: var(--text-secondary);
-  font-size: 16px;
-  line-height: 1.9;
+  font-size: var(--font-size-body);
+  line-height: var(--body-line-height);
 }
 
 .admission-page-body > *:first-child {
@@ -201,8 +202,8 @@
 .admission-page-body p {
   margin: 0 0 18px;
   color: inherit;
-  font-size: 16px;
-  line-height: 1.9;
+  font-size: var(--font-size-body);
+  line-height: var(--body-line-height);
 }
 
 .admission-page-body h1,
@@ -257,7 +258,7 @@
   margin: 6px 0;
   padding: 10px 14px;
   background: var(--surface-tint);
-  border: 1px solid var(--surface-border);
+  border: var(--border-width) solid var(--surface-border);
   box-shadow: 0 10px 22px rgba(var(--theme-primary-rgb), 0.08);
   color: var(--brand-primary);
   font-weight: 800;
@@ -276,14 +277,14 @@
   padding: 0 8px;
   background: var(--brand-primary);
   color: #fff;
-  font-size: 10px;
+  font-size: var(--font-size-meta);
   font-weight: 900;
   letter-spacing: 0.8px;
 }
 
 .admission-page-body a.content-file-link--file-name::after {
   content: '↓';
-  font-size: 16px;
+  font-size: var(--font-size-meta);
   font-weight: 900;
 }
 
@@ -298,9 +299,9 @@
   min-height: 52px;
   padding: 0 24px;
   background: var(--brand-primary-deep);
-  color: #ffffff;
+  color: var(--text-on-brand);
   text-decoration: none;
-  font-size: 14px;
+  font-size: var(--font-size-meta);
   font-weight: 900;
   box-shadow: 0 16px 32px rgba(var(--theme-dark-rgb), 0.2);
   transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
@@ -327,7 +328,7 @@
     grid-template-columns: 1fr;
     align-items: start;
     border-bottom: 0;
-    border-right: 1px solid var(--surface-border);
+    border-right: var(--border-width) solid var(--surface-border);
   }
 
   .admission-page-step:last-child {
@@ -351,7 +352,7 @@
   .admission-page-step {
     grid-template-columns: 44px 1fr;
     border-right: 0;
-    border-bottom: 1px solid var(--surface-border);
+    border-bottom: var(--border-width) solid var(--surface-border);
   }
 
   .admission-page-body,

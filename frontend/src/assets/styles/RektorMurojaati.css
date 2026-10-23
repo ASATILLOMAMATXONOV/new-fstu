@@ -66,7 +66,7 @@
 
   color: var(--rektor-primary);
 
-  font-size: 11px;
+  font-size: var(--font-size-label);
   font-weight: 800;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -90,12 +90,12 @@
 
   margin: 24px 0 0;
 
-  color: #12273c;
+  color: var(--heading-color);
 
-  font-size: clamp(30px, 3.6vw, 47px);
-  font-weight: 800;
-  line-height: 1.19;
-  letter-spacing: -1.5px;
+  font-size: var(--font-size-section);
+  font-weight: var(--heading-weight);
+  line-height: var(--heading-line-height);
+  letter-spacing: 0;
 
   overflow-wrap: anywhere;
 }
@@ -128,7 +128,7 @@
   max-width: 570px;
   padding-left: 23px;
 
-  border-left: 1px solid #d9e2e9;
+  border-left: var(--border-width) solid var(--surface-border);
 }
 
 .rektor-quote-mark {
@@ -143,11 +143,11 @@
 .rektor-message p {
   margin: 0;
 
-  color: #536476;
+  color: var(--text-secondary);
 
-  font-size: 15px;
+  font-size: var(--font-size-body);
   font-weight: 400;
-  line-height: 1.95;
+  line-height: var(--body-line-height);
 
   overflow-wrap: anywhere;
 }
@@ -174,12 +174,12 @@
   gap: 28px;
   padding: 7px 7px 7px 22px;
 
-  color: white;
+  color: var(--text-on-brand);
   background: var(--rektor-primary);
 
   text-decoration: none;
 
-  font-size: 13px;
+  font-size: var(--font-size-meta);
   font-weight: 700;
   letter-spacing: 0.2px;
 
@@ -208,7 +208,7 @@
 }
 
 .rektor-button:hover {
-  color: #ffffff;
+  color: var(--text-on-brand);
   background: var(--rektor-deep);
 
   transform: translateY(-3px);
@@ -251,8 +251,8 @@
 
   margin-top: 36px;
 
-  color: #92a0ad;
-  font-size: 10px;
+  color: var(--text-secondary);
+  font-size: var(--font-size-label);
   font-weight: 700;
   letter-spacing: 1.2px;
   text-transform: uppercase;
@@ -438,7 +438,7 @@
 
   padding: 22px 25px;
 
-  color: #ffffff;
+  color: var(--text-on-brand);
   background: var(--rektor-deep);
 
   box-shadow:
@@ -495,21 +495,23 @@
 .rektor-info-content h3 {
   margin: 0 0 6px;
 
-  color: #ffffff;
+  color: var(--text-on-brand);
 
-  font-size: clamp(16px, 1.7vw, 20px);
-  font-weight: 800;
-  line-height: 1.35;
+  font-size: var(--font-size-card-title);
+  font-weight: var(--heading-weight);
+  line-height: var(--heading-line-height);
 
   overflow-wrap: anywhere;
+
+  letter-spacing: 0;
 }
 
 .rektor-info-content p {
   margin: 0;
 
-  color: #c0d6e5;
+  color: var(--text-on-brand-secondary);
 
-  font-size: 12px;
+  font-size: var(--font-size-meta);
   line-height: 1.6;
 }
 
@@ -523,9 +525,9 @@
   width: 35px;
   height: 35px;
 
-  border: 1px solid rgba(255,255,255,0.25);
+  border: var(--border-width) solid var(--border-on-brand);
 
-  color: #ffffff;
+  color: var(--text-on-brand);
 
   transition:
     background 0.3s ease,
@@ -549,7 +551,7 @@
   top: -18px;
   right: -18px;
 
-  border: 1px solid rgba(var(--theme-primary-rgb), 0.18);
+  border: var(--border-width) solid var(--surface-border);
 
   pointer-events: none;
 }
@@ -571,7 +573,7 @@
   top: -180px;
   left: -130px;
 
-  border: 1px solid rgba(var(--theme-primary-rgb), 0.09);
+  border: var(--border-width) solid var(--surface-border);
 
   border-radius: 50%;
 
@@ -585,7 +587,7 @@
   bottom: -140px;
   right: 5%;
 
-  border: 1px solid rgba(var(--theme-primary-rgb), 0.09);
+  border: var(--border-width) solid var(--surface-border);
 
   border-radius: 50%;
 
@@ -658,7 +660,10 @@
   }
 
   .rektor-heading {
-    font-size: clamp(29px, 3.5vw, 40px);
+    font-size: var(--font-size-section);
+    font-weight: var(--heading-weight);
+    line-height: var(--heading-line-height);
+    letter-spacing: 0;
   }
 
   .rektor-image-wrapper {
@@ -690,7 +695,10 @@
   }
 
   .rektor-heading {
-    font-size: clamp(30px, 5vw, 39px);
+    font-size: var(--font-size-section);
+    font-weight: var(--heading-weight);
+    line-height: var(--heading-line-height);
+    letter-spacing: 0;
   }
 
   .rektor-message {
@@ -732,7 +740,7 @@
   }
 
   .rektor-eyebrow {
-    font-size: 10px;
+    font-size: var(--font-size-label);
     letter-spacing: 1.4px;
   }
 
@@ -743,9 +751,10 @@
   .rektor-heading {
     margin-top: 18px;
 
-    font-size: clamp(27px, 7vw, 33px);
-    line-height: 1.25;
-    letter-spacing: -0.7px;
+    font-size: var(--font-size-section);
+    line-height: var(--heading-line-height);
+    letter-spacing: 0;
+    font-weight: var(--heading-weight);
   }
 
   .rektor-heading-divider {
@@ -757,8 +766,8 @@
   }
 
   .rektor-message p {
-    font-size: 14px;
-    line-height: 1.85;
+    font-size: var(--font-size-body);
+    line-height: var(--body-line-height);
   }
 
   .rektor-actions {
@@ -767,7 +776,7 @@
 
   .rektor-button {
     min-height: 49px;
-    font-size: 12px;
+    font-size: var(--font-size-meta);
   }
 
   .rektor-bottom-line {
@@ -791,11 +800,14 @@
   }
 
   .rektor-info-content h3 {
-    font-size: 16px;
+    font-size: var(--font-size-card-title);
+    font-weight: var(--heading-weight);
+    line-height: var(--heading-line-height);
+    letter-spacing: 0;
   }
 
   .rektor-info-content p {
-    font-size: 11px;
+    font-size: var(--font-size-meta);
   }
 
   .rektor-visual-outline {

@@ -6,12 +6,12 @@
 
 .st-section {
   --st-primary: var(--brand-primary, #12659c);
-  --st-ink: #172b40;
-  --st-muted: #66798b;
-  --st-border: #dde7ee;
+  --st-ink: var(--heading-color);
+  --st-muted: var(--text-secondary);
+  --st-border: var(--surface-border);
   --st-gap: 18px;
   --st-visible: 4;
-  --st-radius: 6px;
+  --st-radius: var(--box-radius);
 
   position: relative;
   padding: 64px 0 72px;
@@ -66,17 +66,17 @@
   width: 5px;
   height: 42px;
   flex-shrink: 0;
-  border-radius: 3px;
+  border-radius: var(--box-radius);
   background: var(--st-primary);
 }
 
 .st-heading h2 {
   margin: 0;
-  color: var(--st-ink);
-  font-size: clamp(24px, 2.4vw, 34px);
-  font-weight: 780;
-  line-height: 1.2;
-  letter-spacing: -0.85px;
+  color: var(--heading-color);
+  font-size: var(--font-size-section);
+  font-weight: var(--heading-weight);
+  line-height: var(--heading-line-height);
+  letter-spacing: 0;
 }
 
 .st-header-actions {
@@ -96,8 +96,8 @@
   place-items: center;
   width: 43px;
   height: 43px;
-  border: 1px solid var(--st-border);
-  border-radius: 6px;
+  border: var(--border-width) solid var(--surface-border);
+  border-radius: var(--box-radius);
   color: var(--st-primary);
   background: #fff;
   cursor: pointer;
@@ -109,7 +109,7 @@
 }
 
 .st-nav-btn:hover {
-  color: #fff;
+  color: var(--text-on-brand);
   background: var(--st-primary);
   border-color: var(--st-primary);
   transform: translateY(-2px);
@@ -125,7 +125,7 @@
   gap: 9px;
   color: var(--st-primary);
   text-decoration: none;
-  font-size: 13px;
+  font-size: var(--font-size-meta);
   font-weight: 750;
   white-space: nowrap;
 }
@@ -135,9 +135,9 @@
   place-items: center;
   width: 31px;
   height: 31px;
-  border: 1px solid #cfe0ea;
+  border: var(--border-width) solid var(--surface-border);
   background: #eef6fa;
-  border-radius: 6px;
+  border-radius: var(--box-radius);
   transition: transform 0.25s, background 0.25s;
 }
 
@@ -193,8 +193,8 @@
   position: relative;
   height: 340px;
   min-width: 0;
-  border-radius: 6px;
-  border: 1px solid #d6e2e9;
+  border-radius: var(--box-radius);
+  border: var(--border-width) solid var(--surface-border);
   background: #dce8ef;
   overflow: hidden;
   isolation: isolate;
@@ -207,7 +207,7 @@
 
 .st-card:hover {
   transform: translateY(-7px);
-  border-color: #a5c8da;
+  border-color: var(--brand-primary);
   box-shadow: 0 18px 38px rgba(24, 66, 101, 0.17);
 }
 
@@ -312,7 +312,7 @@
   place-items: center;
   width: 100%;
   height: 100%;
-  color: #7d9db3;
+  color: var(--text-secondary);
   background: linear-gradient(145deg, #e5eff6, #c7dce9);
 }
 
@@ -337,9 +337,9 @@
   flex-direction: column;
   justify-content: center;
 
-  border-radius: 6px;
+  border-radius: var(--box-radius);
   background: rgba(255, 255, 255, 0.96);
-  border: 1px solid rgba(255, 255, 255, 0.8);
+  border: var(--border-width) solid var(--border-on-brand);
   box-shadow: 0 6px 24px rgba(9, 31, 52, 0.1);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -357,7 +357,7 @@
   height: 3px;
   width: 36px;
   background: var(--st-primary);
-  border-radius: 0 0 3px 3px;
+  border-radius: var(--box-radius);
   transition: width 0.45s;
 }
 
@@ -372,11 +372,11 @@
 
 .st-content h3 {
   margin: 0 0 7px;
-  color: var(--st-ink);
-  font-size: 17px;
-  line-height: 1.4;
-  letter-spacing: -0.3px;
-  font-weight: 800;
+  color: var(--heading-color);
+  font-size: var(--font-size-card-title);
+  line-height: var(--heading-line-height);
+  letter-spacing: 0;
+  font-weight: var(--heading-weight);
 
   overflow: hidden;
   display: -webkit-box;
@@ -397,8 +397,8 @@
 .st-content p {
   margin: 0;
   color: var(--st-muted);
-  line-height: 1.55;
-  font-size: 12.5px;
+  line-height: var(--body-line-height);
+  font-size: var(--font-size-body);
 
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -432,7 +432,7 @@
 
   color: var(--st-primary);
   text-decoration: none;
-  font-size: 12px;
+  font-size: var(--font-size-meta);
   font-weight: 780;
   transition: gap 0.25s;
 }
@@ -472,7 +472,7 @@
   height: 7px;
   padding: 0;
   border: 0;
-  border-radius: 3px;
+  border-radius: var(--box-radius);
   background: #becfdc;
   cursor: pointer;
   transition: width 0.3s, background 0.3s;
@@ -490,7 +490,7 @@
 .st-progress {
   width: 100px;
   height: 3px;
-  border-radius: 2px;
+  border-radius: var(--box-radius);
   background: #dbe6ed;
   overflow: hidden;
 }
@@ -503,7 +503,7 @@
 }
 
 .st-counter {
-  color: #708397;
+  color: var(--text-secondary);
   font-size: 12px;
   font-weight: 750;
   font-variant-numeric: tabular-nums;
@@ -514,8 +514,8 @@
 .st-status {
   padding: 55px 20px;
   text-align: center;
-  border: 1px dashed #bed2e0;
-  border-radius: 6px;
+  border: var(--border-width) dashed var(--surface-border);
+  border-radius: var(--box-radius);
   background: #fff;
   color: var(--st-muted);
 }
@@ -598,7 +598,10 @@
   }
 
   .st-heading h2 {
-    font-size: 24px;
+    font-size: var(--font-size-section);
+    font-weight: var(--heading-weight);
+    line-height: var(--heading-line-height);
+    letter-spacing: 0;
   }
 
   .st-heading-line {
@@ -645,7 +648,10 @@
   }
 
   .st-content h3 {
-    font-size: 16px;
+    font-size: var(--font-size-card-title);
+    font-weight: var(--heading-weight);
+    line-height: var(--heading-line-height);
+    letter-spacing: 0;
   }
 
   .st-progress {

@@ -20,7 +20,7 @@
 .ann-header {
   margin: 0 0 34px;
   padding-bottom: 18px;
-  border-bottom: 1px solid var(--surface-border);
+  border-bottom: var(--border-width) solid var(--surface-border);
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
@@ -29,22 +29,24 @@
 
 .ann-header span {
   color: var(--brand-primary);
-  font-size: 12px;
+  font-size: var(--font-size-meta);
   font-weight: 900;
   letter-spacing: 1.2px;
 }
 
 .ann-header h1 {
   margin: 8px 0 0;
-  font-size: 34px;
-  font-weight: 900;
-  color: var(--text-primary);
+  font-size: var(--font-size-section);
+  font-weight: var(--heading-weight);
+  color: var(--heading-color);
+  line-height: var(--heading-line-height);
+  letter-spacing: 0;
 }
 
 .ann-header p {
   margin: 0;
   color: var(--text-muted);
-  font-size: 14px;
+  font-size: var(--font-size-body);
 }
 
 .ann-grid {
@@ -59,7 +61,7 @@
   display: flex;
   flex-direction: column;
   background: #ffffff;
-  border: 1px solid var(--surface-border);
+  border: var(--border-width) solid var(--surface-border);
   border-radius: var(--box-radius);
   overflow: hidden;
   box-shadow: 0 14px 36px rgba(var(--theme-dark-rgb), 0.06);
@@ -92,16 +94,17 @@
   display: block;
   margin-bottom: 10px;
   color: var(--text-secondary);
-  font-size: 13px;
+  font-size: var(--font-size-meta);
   font-weight: 600;
 }
 
 .ann-body h3 {
   margin: 0 0 16px;
   min-height: 58px;
-  font-size: 18px;
-  font-weight: 800;
-  line-height: 1.4;
+  font-size: var(--font-size-card-title);
+  font-weight: var(--heading-weight);
+  line-height: var(--heading-line-height);
+  letter-spacing: 0;
 }
 
 .ann-title-link {
@@ -127,10 +130,10 @@
   align-items: center;
   justify-content: center;
   background: var(--brand-primary);
-  color: #ffffff;
+  color: var(--text-on-brand);
   text-decoration: none;
   border-radius: var(--box-radius);
-  font-size: 13px;
+  font-size: var(--font-size-meta);
   font-weight: 700;
   transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
 }
@@ -168,7 +171,7 @@
   background: #ffffff;
   border-radius: var(--box-radius);
   overflow: hidden;
-  border: 1px solid var(--surface-border);
+  border: var(--border-width) solid var(--surface-border);
   box-shadow: 0 14px 40px rgba(var(--theme-dark-rgb), 0.07);
 }
 
@@ -176,18 +179,18 @@
   min-width: 38px;
   height: 38px;
   padding: 0 13px;
-  border: 1px solid var(--surface-border);
+  border: var(--border-width) solid var(--surface-border);
   background: #ffffff;
   color: var(--brand-primary);
   border-radius: var(--box-radius);
   cursor: pointer;
-  font-size: 13px;
+  font-size: var(--font-size-meta);
   font-weight: 800;
 }
 
 .ann-pagination button.active {
   background: var(--brand-primary);
-  color: #ffffff;
+  color: var(--text-on-brand);
   border-color: var(--brand-primary);
 }
 
@@ -229,7 +232,10 @@
   }
 
   .ann-header h1 {
-    font-size: 28px;
+    font-size: var(--font-size-section);
+    font-weight: var(--heading-weight);
+    line-height: var(--heading-line-height);
+    letter-spacing: 0;
   }
 
   .ann-pagination {

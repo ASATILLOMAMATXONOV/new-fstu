@@ -231,7 +231,7 @@ export default function NewsPageHome({
             UNIVERSITET AXBOROT MARKAZI
           </p>
 
-          <h1>Yangiliklar</h1>
+          <h2>Yangiliklar</h2>
 
           <p className="np-intro">
             Universitet hayotidagi so‘nggi yangiliklar,

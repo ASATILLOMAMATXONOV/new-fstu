@@ -23,7 +23,7 @@
   display: grid;
   grid-template-columns: 245px 1fr;
   background: #ffffff;
-  border: 1px solid var(--surface-border);
+  border: var(--border-width) solid var(--surface-border);
   overflow: hidden;
   opacity: 0;
   transform: translateY(26px);
@@ -60,28 +60,30 @@
 
 .faculties-card-body span {
   color: var(--brand-primary);
-  font-size: 12px;
+  font-size: var(--font-size-meta);
   font-weight: 900;
 }
 
 .faculties-card-body h3 {
   margin: 9px 0 10px;
-  color: var(--text-primary);
-  font-size: 22px;
-  font-weight: 900;
+  color: var(--heading-color);
+  font-size: var(--font-size-card-title);
+  font-weight: var(--heading-weight);
+  line-height: var(--heading-line-height);
+  letter-spacing: 0;
 }
 
 .faculties-card-body p {
   margin: 0 0 18px;
   color: var(--text-secondary);
-  font-size: 14px;
-  line-height: 1.7;
+  font-size: var(--font-size-body);
+  line-height: var(--body-line-height);
 }
 
 .faculties-card-link {
   color: var(--brand-primary);
   text-decoration: none;
-  font-size: 14px;
+  font-size: var(--font-size-meta);
   font-weight: 900;
 }
 
@@ -89,29 +91,31 @@
   padding: 24px;
   border-radius: var(--box-radius);
   background: #ffffff;
-  border: 1px solid var(--surface-border);
+  border: var(--border-width) solid var(--surface-border);
   box-shadow: 0 16px 36px rgba(var(--theme-dark-rgb), 0.08);
 }
 
 .faculties-sections-head span {
   color: var(--brand-primary);
-  font-size: 12px;
+  font-size: var(--font-size-meta);
   font-weight: 900;
   letter-spacing: 1px;
 }
 
 .faculties-sections-head h2 {
   margin: 10px 0 8px;
-  color: var(--text-primary);
-  font-size: 28px;
-  font-weight: 900;
+  color: var(--heading-color);
+  font-size: var(--font-size-section);
+  font-weight: var(--heading-weight);
+  line-height: var(--heading-line-height);
+  letter-spacing: 0;
 }
 
 .faculties-sections-head p {
   margin: 0;
   color: var(--text-secondary);
-  font-size: 14px;
-  line-height: 1.8;
+  font-size: var(--font-size-body);
+  line-height: var(--body-line-height);
 }
 
 .faculties-sections-grid {
@@ -126,7 +130,7 @@
   padding: 18px;
   border-radius: var(--box-radius);
   background: var(--surface-soft);
-  border: 1px solid var(--surface-border);
+  border: var(--border-width) solid var(--surface-border);
   text-decoration: none;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
@@ -148,7 +152,7 @@
   display: block;
   margin-top: 10px;
   color: var(--text-secondary);
-  font-size: 13px;
+  font-size: var(--font-size-meta);
   font-weight: 600;
   line-height: 1.7;
 }

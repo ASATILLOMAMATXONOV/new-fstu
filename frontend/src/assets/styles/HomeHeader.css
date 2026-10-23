@@ -11,10 +11,10 @@
 }
 
 .fstu-header--home:has(~ .home-page .hero-slider) {
-  --home-nav-ink: #0d336b;
-  --home-nav-muted: #0d336b;
-  --home-nav-accent: #0d336b;
-  --home-nav-border: #0d336b26;
+  --home-nav-ink: var(--heading-color);
+  --home-nav-muted: var(--text-secondary);
+  --home-nav-accent: var(--brand-primary);
+  --home-nav-border: var(--surface-border);
   background: transparent;
   color: var(--home-nav-ink);
   -webkit-backdrop-filter: none;

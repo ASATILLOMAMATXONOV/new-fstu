@@ -15,7 +15,7 @@ import { LanguageProvider } from './context/LanguageContext';
 import Navbar from './components/layout/Navbar';
 import HeroBanner from './components/layout/HeroBanner';
 import HomeInfoSection from './components/layout/HomeInfoSection';
-import HomeFacultyOrbit from './components/layout/HomeFacultyOrbit';
+import UniversityRankings from './components/layout/UniversityRankings';
 import NewsPageHome from './components/layout/NewsPageHome';
 import StudentsSection from './components/layout/StudentsSection';
 import LaboratoryPage from './components/layout/LaboratoryPage';
@@ -88,7 +88,7 @@ function HomePage() {
 
       <div className="app-content-shell">
         <HomeInfoSection />
-        <HomeFacultyOrbit />
+        <UniversityRankings />
         <HomeFacultyConstellation />
         <RektorMurojaati />
         <NewsPageHome />

@@ -21,29 +21,31 @@
   margin-bottom: 18px;
   padding: 24px 26px;
   background: #ffffff;
-  border: 1px solid var(--surface-border);
+  border: var(--border-width) solid var(--surface-border);
   box-shadow: 0 16px 36px rgba(var(--theme-dark-rgb), 0.08);
 }
 
 .sections-head span {
   color: var(--brand-primary);
-  font-size: 12px;
+  font-size: var(--font-size-meta);
   font-weight: 900;
   letter-spacing: 1px;
 }
 
 .sections-head h1 {
   margin: 10px 0 8px;
-  color: var(--text-primary);
-  font-size: clamp(28px, 3.5vw, 38px);
-  font-weight: 900;
+  color: var(--heading-color);
+  font-size: var(--font-size-section);
+  font-weight: var(--heading-weight);
+  line-height: var(--heading-line-height);
+  letter-spacing: 0;
 }
 
 .sections-head p {
   margin: 0;
   color: var(--text-secondary);
-  font-size: 15px;
-  line-height: 1.8;
+  font-size: var(--font-size-body);
+  line-height: var(--body-line-height);
 }
 
 .sections-grid {
@@ -59,7 +61,7 @@
   height: 100%;
   min-height: 338px;
   background: #ffffff;
-  border: 1px solid var(--surface-border);
+  border: var(--border-width) solid var(--surface-border);
   border-radius: var(--box-radius);
   text-decoration: none;
   overflow: hidden;
@@ -72,7 +74,7 @@
 
 .sections-card:hover {
   transform: translateY(-6px);
-  border-color: #cff5f2;
+  border-color: var(--brand-primary);
   box-shadow: 0 24px 44px rgba(var(--theme-dark-rgb), 0.12);
 }
 
@@ -83,7 +85,7 @@
   min-height: 162px;
   overflow: hidden;
   background: linear-gradient(135deg, var(--surface-tint) 0%, var(--surface-tint) 100%);
-  border-bottom: 1px solid var(--surface-border);
+  border-bottom: var(--border-width) solid var(--surface-border);
 }
 
 .sections-card-media img,
@@ -141,7 +143,7 @@
   border-radius: var(--box-radius);
   background: var(--surface-tint);
   color: var(--brand-primary);
-  font-size: 13px;
+  font-size: var(--font-size-meta);
   font-weight: 900;
   letter-spacing: 0.8px;
 }
@@ -155,7 +157,7 @@
   border-radius: var(--box-radius);
   background: var(--surface-tint);
   color: var(--brand-primary);
-  font-size: 11px;
+  font-size: var(--font-size-label);
   font-weight: 900;
   letter-spacing: 0.8px;
 }
@@ -167,11 +169,12 @@
 
 .sections-card h3 {
   margin: 0;
-  color: var(--brand-primary-dark);
-  font-size: 20px;
-  line-height: 1.4;
-  font-weight: 900;
+  color: var(--heading-color);
+  font-size: var(--font-size-card-title);
+  line-height: var(--heading-line-height);
+  font-weight: var(--heading-weight);
   min-height: auto;
+  letter-spacing: 0;
 }
 
 .sections-card-action {
@@ -183,9 +186,9 @@
   gap: 12px;
   border-radius: var(--box-radius);
   background: var(--surface-tint);
-  border: 1px solid var(--surface-border);
+  border: var(--border-width) solid var(--surface-border);
   color: var(--brand-primary);
-  font-size: 14px;
+  font-size: var(--font-size-meta);
   font-weight: 900;
   transition: 0.25s ease;
 }
@@ -218,11 +221,11 @@
   min-width: 44px;
   height: 44px;
   padding: 0 16px;
-  border: 1px solid var(--surface-border);
+  border: var(--border-width) solid var(--surface-border);
   border-radius: var(--box-radius);
   background: #ffffff;
   color: var(--brand-primary);
-  font-size: 14px;
+  font-size: var(--font-size-meta);
   font-weight: 800;
   cursor: pointer;
   transition: 0.25s ease;
@@ -236,7 +239,7 @@
 .sections-pagination button.active {
   background: var(--brand-primary);
   border-color: var(--brand-primary);
-  color: #ffffff;
+  color: var(--text-on-brand);
   box-shadow: 0 12px 24px rgba(var(--theme-primary-rgb), 0.18);
 }
 
@@ -249,23 +252,25 @@
   padding: 34px 26px;
   border-radius: var(--box-radius);
   background: #ffffff;
-  border: 1px solid var(--surface-border);
+  border: var(--border-width) solid var(--surface-border);
   text-align: center;
   box-shadow: 0 16px 36px rgba(var(--theme-dark-rgb), 0.08);
 }
 
 .sections-empty-state h2 {
   margin: 0 0 12px;
-  color: var(--text-primary);
-  font-size: 28px;
-  font-weight: 900;
+  color: var(--heading-color);
+  font-size: var(--font-size-section);
+  font-weight: var(--heading-weight);
+  line-height: var(--heading-line-height);
+  letter-spacing: 0;
 }
 
 .sections-empty-state p {
   margin: 0;
   color: var(--text-secondary);
-  font-size: 15px;
-  line-height: 1.75;
+  font-size: var(--font-size-body);
+  line-height: var(--body-line-height);
 }
 
 .sections-sidebar {

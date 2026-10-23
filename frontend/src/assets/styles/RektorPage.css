@@ -51,26 +51,26 @@
   border-radius: var(--box-radius);
   background: rgba(var(--theme-primary-rgb), 0.12);
   color: var(--brand-primary);
-  font-size: 12px;
+  font-size: var(--font-size-meta);
   font-weight: 900;
   letter-spacing: 1.4px;
 }
 
 .rector-text-block h1 {
   margin: 18px 0 14px;
-  color: var(--brand-primary);
-  font-size: clamp(30px, 4vw, 44px);
-  line-height: 1.12;
-  font-weight: 900;
-  letter-spacing: -0.8px;
+  color: var(--heading-color);
+  font-size: var(--font-size-section);
+  line-height: var(--heading-line-height);
+  font-weight: var(--heading-weight);
+  letter-spacing: 0;
 }
 
 .rector-text-block p {
   max-width: 650px;
   margin: 0 0 16px;
   color: var(--text-secondary);
-  font-size: 16px;
-  line-height: 1.8;
+  font-size: var(--font-size-body);
+  line-height: var(--body-line-height);
 }
 
 .rector-photo-block {
@@ -103,15 +103,17 @@
 
 .rector-name-card h2 {
   margin: 0;
-  color: var(--brand-primary);
-  font-size: 20px;
-  font-weight: 900;
+  color: var(--heading-color);
+  font-size: var(--font-size-card-title);
+  font-weight: var(--heading-weight);
+  line-height: var(--heading-line-height);
+  letter-spacing: 0;
 }
 
 .rector-name-card p {
   margin: 7px 0 0;
   color: var(--text-muted);
-  font-size: 14px;
+  font-size: var(--font-size-body);
   font-weight: 700;
 }
 
@@ -129,7 +131,7 @@
 .rector-main-text,
 .rector-note {
   background: #ffffff;
-  border: 1px solid var(--surface-border);
+  border: var(--border-width) solid var(--surface-border);
   border-radius: var(--box-radius);
   padding: 34px;
   box-shadow: 0 20px 55px rgba(var(--theme-dark-rgb), 0.08);
@@ -143,16 +145,18 @@
 .rector-main-text h2,
 .rector-note h3 {
   margin: 0 0 18px;
-  color: var(--brand-primary);
-  font-size: 26px;
-  font-weight: 900;
+  color: var(--heading-color);
+  font-size: var(--font-size-section);
+  font-weight: var(--heading-weight);
+  line-height: var(--heading-line-height);
+  letter-spacing: 0;
 }
 
 .rector-main-text p {
   margin: 0 0 16px;
   color: var(--text-secondary);
-  font-size: 15px;
-  line-height: 1.8;
+  font-size: var(--font-size-body);
+  line-height: var(--body-line-height);
 }
 
 .rector-main-text a.content-file-link,
@@ -181,7 +185,7 @@
   padding: 10px 14px;
   border-radius: var(--box-radius);
   background: var(--surface-tint);
-  border: 1px solid var(--surface-border);
+  border: var(--border-width) solid var(--surface-border);
   box-shadow: 0 10px 22px rgba(var(--theme-primary-rgb), 0.08);
   color: var(--brand-primary);
   font-weight: 800;
@@ -201,14 +205,14 @@
   border-radius: var(--box-radius);
   background: var(--brand-primary);
   color: #fff;
-  font-size: 10px;
+  font-size: var(--font-size-meta);
   font-weight: 900;
   letter-spacing: 0.8px;
 }
 
 .rector-main-text a.content-file-link--file-name::after {
   content: '↓';
-  font-size: 16px;
+  font-size: var(--font-size-meta);
   font-weight: 900;
 }
 
@@ -222,9 +226,9 @@
   padding: 14px 0 14px 28px;
   position: relative;
   color: var(--text-primary);
-  font-size: 15px;
+  font-size: var(--font-size-meta);
   font-weight: 700;
-  border-bottom: 1px solid var(--surface-border);
+  border-bottom: var(--border-width) solid var(--surface-border);
 }
 
 .rector-note li:last-child {

@@ -23,7 +23,7 @@
   gap: 16px;
   margin-bottom: 18px;
   padding-bottom: 14px;
-  border-bottom: 1px solid var(--ann-border);
+  border-bottom: var(--border-width) solid var(--surface-border);
 }
 
 .ann-section .ann-heading {
@@ -50,11 +50,11 @@
 
 .ann-section .ann-heading h2 {
   margin: 0;
-  color: var(--ann-text);
-  font-size: clamp(23px, 2.2vw, 32px);
-  font-weight: 800;
-  line-height: 1.2;
-  letter-spacing: -.035em;
+  color: var(--heading-color);
+  font-size: var(--font-size-section);
+  font-weight: var(--heading-weight);
+  line-height: var(--heading-line-height);
+  letter-spacing: 0;
 }
 
 .ann-section .ann-see-all,
@@ -63,7 +63,7 @@
   align-items: center;
   gap: 12px;
   color: var(--ann-primary);
-  font-size: 12px;
+  font-size: var(--font-size-meta);
   font-weight: 700;
   line-height: 1.4;
   text-decoration: none;
@@ -80,7 +80,7 @@
   place-items: center;
   width: 30px;
   height: 30px;
-  border: 1px solid var(--ann-border);
+  border: var(--border-width) solid var(--surface-border);
   border-radius: var(--box-radius);
   background: var(--surface-soft, #f5f8ff);
 }
@@ -119,7 +119,7 @@
   flex-direction: column;
   min-width: 0;
   overflow: hidden;
-  border: 1px solid var(--ann-border);
+  border: var(--border-width) solid var(--surface-border);
   border-radius: var(--box-radius);
   background: #fff;
   box-shadow: 0 8px 24px rgba(var(--theme-dark-rgb, 25, 41, 79), .045);
@@ -198,11 +198,11 @@
   align-items: center;
   gap: 6px;
   padding: 5px 8px;
-  border: 1px solid #ffffffb3;
+  border: var(--border-width) solid var(--border-on-brand);
   border-radius: var(--box-radius);
   background: #fffffff2;
   color: var(--ann-primary);
-  font-size: 10px;
+  font-size: var(--font-size-label);
   font-weight: 700;
   line-height: 1;
 }
@@ -230,7 +230,7 @@
   align-items: center;
   gap: 6px;
   color: var(--ann-muted);
-  font-size: 11px;
+  font-size: var(--font-size-meta);
   font-weight: 500;
   line-height: 1.4;
 }
@@ -245,11 +245,11 @@
   width: 100%;
   min-height: 2.9em;
   margin: 0;
-  color: var(--ann-text);
-  font-size: clamp(14px, 1.05vw, 16px);
-  font-weight: 750;
-  line-height: 1.45;
-  letter-spacing: -.02em;
+  color: var(--heading-color);
+  font-size: var(--font-size-card-title);
+  font-weight: var(--heading-weight);
+  line-height: var(--heading-line-height);
+  letter-spacing: 0;
 }
 
 .ann-section .ann-compact-title a,
@@ -272,8 +272,8 @@
   margin: 0 0 2px;
   -webkit-line-clamp: 1;
   color: var(--ann-muted);
-  font-size: 11px;
-  line-height: 1.6;
+  font-size: var(--font-size-body);
+  line-height: var(--body-line-height);
 }
 
 .ann-section .ann-card-footer {
@@ -284,7 +284,7 @@
   width: 100%;
   margin-top: auto;
   padding-top: 9px;
-  border-top: 1px solid var(--ann-border);
+  border-top: var(--border-width) solid var(--surface-border);
 }
 
 .ann-section .ann-carousel-controls {
@@ -301,7 +301,7 @@
   width: 34px;
   height: 34px;
   padding: 0;
-  border: 1px solid var(--ann-border);
+  border: var(--border-width) solid var(--surface-border);
   border-radius: var(--box-radius);
   background: #fff;
   color: var(--ann-primary);
@@ -318,18 +318,21 @@
   place-content: center;
   min-height: 160px;
   padding: 28px;
-  border: 1px dashed var(--ann-border);
+  border: var(--border-width) dashed var(--surface-border);
   border-radius: var(--box-radius);
   background: #fff;
   color: var(--ann-muted);
-  font-size: 13px;
+  font-size: var(--font-size-meta);
   text-align: center;
 }
 
 .ann-section .ann-status h3 {
   margin: 0 0 8px;
-  color: var(--ann-text);
-  font-size: 17px;
+  color: var(--heading-color);
+  font-size: var(--font-size-card-title);
+  font-weight: var(--heading-weight);
+  line-height: var(--heading-line-height);
+  letter-spacing: 0;
 }
 
 .ann-section .ann-status p {
@@ -369,10 +372,10 @@
   .ann-section .ann-header { gap: 10px; margin-bottom: 14px; padding-bottom: 12px; }
   .ann-section .ann-heading { gap: 10px; }
   .ann-section .ann-heading-icon { flex-basis: 36px; height: 36px; border-radius: var(--box-radius); }
-  .ann-section .ann-see-all { gap: 7px; font-size: 11px; }
+  .ann-section .ann-see-all { gap: 7px; font-size: var(--font-size-meta); }
   .ann-section .ann-carousel-viewport { --ann-visible: 1; }
   .ann-section .ann-compact-content { gap: 8px; padding: 14px; }
-  .ann-section .ann-compact-title { min-height: 0; font-size: 16px; }
+  .ann-section .ann-compact-title { min-height: 0; font-size: var(--font-size-card-title); font-weight: var(--heading-weight); line-height: var(--heading-line-height); letter-spacing: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -22,7 +22,7 @@
   overflow: hidden;
   background:
     linear-gradient(135deg, var(--brand-primary-deep) 0%, var(--brand-primary-dark) 56%, var(--brand-primary) 100%);
-  color: #ffffff;
+  color: var(--text-on-brand);
   isolation: isolate;
 }
 
@@ -30,7 +30,7 @@
   content: '';
   position: absolute;
   inset: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  border: var(--border-width) solid var(--border-on-brand);
   z-index: -1;
 }
 
@@ -50,8 +50,8 @@
   display: inline-flex;
   padding: 8px 12px;
   background: rgba(255, 255, 255, 0.13);
-  color: #ffffff;
-  font-size: 11px;
+  color: var(--text-on-brand);
+  font-size: var(--font-size-meta);
   font-weight: 900;
   letter-spacing: 0.16em;
 }
@@ -59,18 +59,19 @@
 .departments-hero-copy h1 {
   max-width: 720px;
   margin: 22px 0 14px;
-  color: #ffffff;
-  font-size: clamp(36px, 5vw, 70px);
-  line-height: 0.98;
-  font-weight: 950;
+  color: var(--text-on-brand);
+  font-size: var(--font-size-section);
+  line-height: var(--heading-line-height);
+  font-weight: var(--heading-weight);
+  letter-spacing: 0;
 }
 
 .departments-hero-copy p {
   max-width: 660px;
   margin: 0;
-  color: rgba(255, 255, 255, 0.78);
-  font-size: 16px;
-  line-height: 1.75;
+  color: var(--text-on-brand-secondary);
+  font-size: var(--font-size-body);
+  line-height: var(--body-line-height);
 }
 
 .departments-hero-stats {
@@ -85,7 +86,7 @@
   min-height: 0;
   padding: 28px;
   background: #ffffff;
-  border: 1px solid var(--surface-border);
+  border: var(--border-width) solid var(--surface-border);
   box-shadow: 0 18px 44px rgba(var(--theme-dark-rgb), 0.08);
 }
 
@@ -124,7 +125,7 @@
   position: relative;
   overflow: hidden;
   background: #ffffff;
-  border: 1px solid var(--surface-border);
+  border: var(--border-width) solid var(--surface-border);
   box-shadow: 0 18px 46px rgba(var(--theme-dark-rgb), 0.07);
   animation: departmentCardIn 0.5s ease both;
   animation-delay: calc(var(--department-card-index, 0) * 70ms);
@@ -172,10 +173,11 @@
 .departments-faculty-meta h2 {
   max-width: 720px;
   margin: 0;
-  color: var(--text-primary);
-  font-size: clamp(22px, 2.7vw, 34px);
-  line-height: 1.14;
-  font-weight: 950;
+  color: var(--heading-color);
+  font-size: var(--font-size-card-title);
+  line-height: var(--heading-line-height);
+  font-weight: var(--heading-weight);
+  letter-spacing: 0;
 }
 
 .departments-faculty-meta p {
@@ -185,7 +187,7 @@
   padding: 8px 12px;
   background: var(--surface-tint);
   color: var(--brand-primary-dark);
-  font-size: 12px;
+  font-size: var(--font-size-meta);
   font-weight: 900;
 }
 
@@ -195,7 +197,7 @@
   margin: 0 0 12px;
   color: var(--brand-primary-dark);
   text-decoration: none;
-  font-size: 13px;
+  font-size: var(--font-size-meta);
   font-weight: 900;
 }
 
@@ -215,7 +217,7 @@
   background:
     linear-gradient(90deg, rgba(var(--theme-primary-rgb), 0.08), rgba(var(--theme-primary-rgb), 0.02)),
     #ffffff;
-  border: 1px solid var(--surface-border);
+  border: var(--border-width) solid var(--surface-border);
   text-decoration: none;
   transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
   overflow: hidden;
@@ -245,7 +247,7 @@
   height: 54px;
   background: #ffffff;
   overflow: hidden;
-  border: 1px solid var(--surface-border);
+  border: var(--border-width) solid var(--surface-border);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -264,16 +266,17 @@
 
 .departments-item-content h4 {
   margin: 0;
-  color: var(--text-primary);
-  font-size: 16px;
-  line-height: 1.35;
-  font-weight: 900;
+  color: var(--heading-color);
+  font-size: var(--font-size-card-title);
+  line-height: var(--heading-line-height);
+  font-weight: var(--heading-weight);
+  letter-spacing: 0;
 }
 
 .departments-item-content p {
   margin: 4px 0 0;
   color: var(--text-secondary);
-  font-size: 12px;
+  font-size: var(--font-size-body);
   font-weight: 700;
 }
 

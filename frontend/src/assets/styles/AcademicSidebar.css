@@ -11,7 +11,7 @@
 .academic-pages-box,
 .academic-sidebar-announcements {
   background: #ffffff;
-  border: 1px solid #e3f2f1;
+  border: var(--border-width) solid var(--surface-border);
   box-shadow: 0 18px 45px rgba(var(--theme-dark-rgb), 0.08);
   overflow: hidden;
 }
@@ -25,10 +25,12 @@
 .academic-sidebar-announcements-head {
   margin: 0;
   padding: 18px 20px;
-  color: var(--text-primary);
-  font-size: 17px;
-  font-weight: 900;
-  border-bottom: 1px solid var(--surface-border);
+  color: var(--heading-color);
+  font-size: var(--font-size-card-title);
+  font-weight: var(--heading-weight);
+  border-bottom: var(--border-width) solid var(--surface-border);
+  line-height: var(--heading-line-height);
+  letter-spacing: 0;
 }
 
 .academic-dean-photo-wrap {
@@ -60,17 +62,18 @@
 
 .academic-dean-body h4 {
   margin: 0;
-  color: var(--text-primary);
-  font-size: 18px;
-  line-height: 1.35;
-  font-weight: 900;
+  color: var(--heading-color);
+  font-size: var(--font-size-card-title);
+  line-height: var(--heading-line-height);
+  font-weight: var(--heading-weight);
+  letter-spacing: 0;
 }
 
 .academic-dean-body p {
   margin: 6px 0 0;
   color: var(--text-muted);
-  font-size: 14px;
-  line-height: 1.45;
+  font-size: var(--font-size-body);
+  line-height: var(--body-line-height);
   font-weight: 600;
 }
 
@@ -101,21 +104,23 @@
 
 .academic-dean-social a:hover {
   background: var(--brand-primary);
-  color: #ffffff;
+  color: var(--text-on-brand);
   transform: translateY(-3px);
 }
 
 .academic-dean-info {
   margin: 0 20px 20px;
   padding-top: 18px;
-  border-top: 1px solid var(--surface-border);
+  border-top: var(--border-width) solid var(--surface-border);
 }
 
 .academic-dean-info h4 {
   margin: 0 0 14px;
-  color: var(--text-primary);
-  font-size: 15px;
-  font-weight: 900;
+  color: var(--heading-color);
+  font-size: var(--font-size-card-title);
+  font-weight: var(--heading-weight);
+  line-height: var(--heading-line-height);
+  letter-spacing: 0;
 }
 
 .academic-dean-info-row {
@@ -146,8 +151,8 @@
 .academic-dean-info-row p {
   margin: 0;
   color: var(--text-secondary);
-  font-size: 13px;
-  line-height: 1.45;
+  font-size: var(--font-size-body);
+  line-height: var(--body-line-height);
   font-weight: 600;
   word-break: break-word;
 }
@@ -166,14 +171,14 @@
   justify-content: center;
   gap: 7px;
   text-decoration: none;
-  font-size: 13px;
+  font-size: var(--font-size-meta);
   font-weight: 800;
   transition: 0.25s ease;
 }
 
 .academic-dean-btn:hover {
   background: var(--brand-primary);
-  color: #ffffff;
+  color: var(--text-on-brand);
 }
 
 .academic-search-box {
@@ -185,18 +190,18 @@
 .academic-search-box input {
   min-height: 44px;
   padding: 0 14px;
-  border: 1px solid var(--surface-border);
+  border: var(--border-width) solid var(--surface-border);
   border-right: 0;
   outline: none;
   color: var(--text-primary);
-  font-size: 13px;
+  font-size: var(--font-size-meta);
 }
 
 .academic-search-box button {
   border: 0;
   background: var(--brand-primary);
-  color: #ffffff;
-  font-size: 12px;
+  color: var(--text-on-brand);
+  font-size: var(--font-size-meta);
   font-weight: 800;
   cursor: pointer;
 }
@@ -219,7 +224,7 @@
   min-height: 54px;
   padding: 0 18px;
   border: 0;
-  border-bottom: 1px solid var(--surface-border);
+  border-bottom: var(--border-width) solid var(--surface-border);
   background: #ffffff;
   text-decoration: none;
   cursor: pointer;
@@ -252,7 +257,7 @@
 
 .academic-sidebar-link strong {
   color: var(--text-primary);
-  font-size: 15px;
+  font-size: var(--font-size-meta);
   font-weight: 900;
   line-height: 1.35;
   transition: 0.25s ease;
@@ -265,7 +270,7 @@
 
 .academic-sidebar-link:hover strong,
 .academic-sidebar-link.is-active strong {
-  color: #ffffff;
+  color: var(--text-on-brand);
 }
 
 .academic-sidebar-link:hover .academic-sidebar-icon,
@@ -278,9 +283,9 @@
 .academic-sidebar-empty {
   padding: 14px;
   background: var(--surface-soft);
-  border: 1px dashed var(--surface-border);
+  border: var(--border-width) dashed var(--surface-border);
   color: var(--text-secondary);
-  font-size: 13px;
+  font-size: var(--font-size-meta);
 }
 
 /* ELONLAR */
@@ -297,15 +302,17 @@
 
 .academic-sidebar-announcements-head h4 {
   margin: 0;
-  color: var(--text-primary);
-  font-size: 17px;
-  font-weight: 900;
+  color: var(--heading-color);
+  font-size: var(--font-size-card-title);
+  font-weight: var(--heading-weight);
+  line-height: var(--heading-line-height);
+  letter-spacing: 0;
 }
 
 .academic-sidebar-announcements-all {
   color: var(--brand-primary);
   text-decoration: none;
-  font-size: 12px;
+  font-size: var(--font-size-meta);
   font-weight: 900;
 }
 
@@ -325,7 +332,7 @@
   align-items: center;
   min-height: 88px;
   padding: 12px 14px;
-  border-bottom: 1px solid var(--surface-border);
+  border-bottom: var(--border-width) solid var(--surface-border);
   background: #ffffff;
   text-decoration: none;
   transition: 0.25s ease;
@@ -368,7 +375,7 @@
 
 .academic-sidebar-announcement-card strong {
   color: var(--text-primary);
-  font-size: 13px;
+  font-size: var(--font-size-meta);
   line-height: 1.45;
   font-weight: 900;
   transition: 0.25s ease;
@@ -381,9 +388,9 @@
 .academic-sidebar-announcement-empty {
   padding: 14px;
   background: var(--surface-soft);
-  border: 1px dashed var(--surface-border);
+  border: var(--border-width) dashed var(--surface-border);
   color: var(--text-secondary);
-  font-size: 13px;
+  font-size: var(--font-size-meta);
   line-height: 1.6;
 }
 
@@ -420,7 +427,7 @@
   }
 
   .academic-search-box input {
-    border-right: 1px solid var(--surface-border);
+    border-right: var(--border-width) solid var(--surface-border);
   }
 
   .academic-search-box button {
