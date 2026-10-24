@@ -1,279 +1,595 @@
+
+/* ================================================
+   FSTU — REKTOR PAGE
+   Modern University Profile + Full Message
+   Responsive / Clean / Animated
+================================================ */
+
 .rector-page {
-  background: var(--surface-soft);
-  overflow: hidden;
+  --rp-primary: var(--brand-primary, #087fae);
+  --rp-primary-dark: var(--brand-primary-dark, #075887);
+  --rp-heading: var(--heading-color, #18364b);
+  --rp-text: var(--text-secondary, #526879);
+  --rp-muted: #718699;
+  --rp-border: #dfe7ee;
+  --rp-bg: #f5f8fa;
+  --rp-white: #ffffff;
+  --rp-radius: 6px;
+  --rp-ease: cubic-bezier(.22, 1, .36, 1);
+
+  width: 100%;
+  min-height: 100vh;
+  background: var(--rp-bg);
+  color: var(--rp-heading);
 }
 
-.rector-hero-animated {
+.rector-page *,
+.rector-page *::before,
+.rector-page *::after {
+  box-sizing: border-box;
+}
+
+/* ================================================
+   TOP PROFILE SECTION
+================================================ */
+
+.rector-profile-section {
   position: relative;
-  min-height: 0;
-  padding: 30px 6% 20px;
+  padding: 45px 24px 22px;
+}
+
+.rector-profile-card {
   display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
-  gap: 55px;
+  grid-template-columns:
+    minmax(210px, 280px)
+    minmax(0, 1fr)
+    minmax(220px, 290px);
+
   align-items: center;
-  background: linear-gradient(135deg, rgba(var(--theme-primary-rgb), 0.08) 0%, rgba(var(--theme-primary-rgb), 0.03) 58%, #ffffff 58%);
+  gap: clamp(22px, 3vw, 42px);
+
+  width: min(100%, 1220px);
+  min-width: 0;
+  margin: 0 auto;
+  padding: 30px;
+
+  background: var(--rp-white);
+  border: 1px solid var(--rp-border);
+  border-radius: var(--rp-radius);
+
+  box-shadow:
+    0 12px 35px rgba(21, 54, 75, .055);
+
+  animation: rectorProfileEnter .75s var(--rp-ease) both;
 }
 
-.rector-circle {
-  position: absolute;
-  border-radius: 50%;
-  pointer-events: none;
-  animation: floatCircle 6s ease-in-out infinite;
+/* ================================================
+   RECTOR PHOTO
+   FULL IMAGE — NO CROPPING
+================================================ */
+
+.rector-profile-photo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  min-width: 0;
 }
 
-.circle-1 {
-  width: 220px;
-  height: 220px;
-  left: -80px;
-  top: 60px;
-  background: rgba(var(--theme-primary-rgb), 0.08);
-}
-
-.circle-2 {
-  width: 320px;
-  height: 320px;
-  right: -120px;
-  bottom: -100px;
-  background: rgba(var(--theme-primary-rgb), 0.12);
-  animation-delay: 1.5s;
-}
-
-.rector-text-block {
+.rector-profile-photo-frame {
   position: relative;
-  z-index: 2;
-  max-width: 700px;
-  animation: fadeLeft 0.9s ease both;
+
+  width: 100%;
+  max-width: 280px;
+  height: auto;
+
+  overflow: hidden;
+
+  background: #edf3f6;
+  border: 1px solid #dbe6ec;
+  border-radius: var(--rp-radius);
+
+  box-shadow:
+    0 12px 30px rgba(20, 55, 80, .09);
+
+  transition:
+    transform .4s var(--rp-ease),
+    box-shadow .4s ease;
 }
 
-.rector-text-block span {
-  display: inline-block;
-  padding: 9px 16px;
-  border-radius: var(--box-radius);
-  background: rgba(var(--theme-primary-rgb), 0.12);
-  color: var(--brand-primary);
-  font-size: var(--font-size-meta);
-  font-weight: 900;
-  letter-spacing: 1.4px;
-}
+.rector-profile-photo-frame img {
+  display: block;
 
-.rector-text-block h1 {
-  margin: 18px 0 14px;
-  color: var(--heading-color);
-  font-size: var(--font-size-section);
-  line-height: var(--heading-line-height);
-  font-weight: var(--heading-weight);
-  letter-spacing: 0;
-}
-
-.rector-text-block p {
-  max-width: 650px;
-  margin: 0 0 16px;
-  color: var(--text-secondary);
-  font-size: var(--font-size-body);
-  line-height: var(--body-line-height);
-}
-
-.rector-photo-block {
-  position: relative;
-  z-index: 2;
-  width: min(390px, 100%);
-  justify-self: center;
-  animation: fadeRight 0.9s ease both;
-}
-
-.rector-photo-block img {
   width: 100%;
   height: auto;
-  /* object-fit: cover; */
-  border-radius: var(--box-radius);
-  display: block;
-  box-shadow: 0 35px 80px rgba(var(--theme-dark-rgb), 0.25);
+  max-width: 100%;
+
+  object-fit: contain;
+  object-position: center;
+
+  border-radius: 0;
 }
 
-.rector-name-card {
-  width: calc(100% - 40px);
-  margin: -62px auto 0;
-  position: relative;
-  padding: 22px;
-  border-radius: var(--box-radius);
-  background: rgba(255, 255, 255, 0.92);
-  text-align: center;
-  box-shadow: 0 18px 45px rgba(var(--theme-dark-rgb), 0.16);
+/* Photo hover */
+
+@media (hover: hover) and (pointer: fine) {
+  .rector-profile-photo-frame:hover {
+    transform: translateY(-4px);
+    box-shadow:
+      0 18px 38px rgba(20, 55, 80, .15);
+  }
 }
 
-.rector-name-card h2 {
-  margin: 0;
-  color: var(--heading-color);
-  font-size: var(--font-size-card-title);
-  font-weight: var(--heading-weight);
-  line-height: var(--heading-line-height);
-  letter-spacing: 0;
+/* ================================================
+   RECTOR NAME AND POSITION
+================================================ */
+
+.rector-profile-info {
+  min-width: 0;
+  align-self: center;
 }
 
-.rector-name-card p {
-  margin: 7px 0 0;
-  color: var(--text-muted);
-  font-size: var(--font-size-body);
-  font-weight: 700;
-}
-
-.rector-content {
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: 0 4% 70px;
-  position: relative;
-  z-index: 5;
-  display: grid;
-  grid-template-columns: 1.45fr 0.8fr;
-  gap: 22px;
-}
-
-.rector-main-text,
-.rector-note {
-  background: #ffffff;
-  border: var(--border-width) solid var(--surface-border);
-  border-radius: var(--box-radius);
-  padding: 34px;
-  box-shadow: 0 20px 55px rgba(var(--theme-dark-rgb), 0.08);
-  animation: fadeUp 0.9s ease both;
-}
-
-.rector-note {
-  animation-delay: 0.15s;
-}
-
-.rector-main-text h2,
-.rector-note h3 {
-  margin: 0 0 18px;
-  color: var(--heading-color);
-  font-size: var(--font-size-section);
-  font-weight: var(--heading-weight);
-  line-height: var(--heading-line-height);
-  letter-spacing: 0;
-}
-
-.rector-main-text p {
-  margin: 0 0 16px;
-  color: var(--text-secondary);
-  font-size: var(--font-size-body);
-  line-height: var(--body-line-height);
-}
-
-.rector-main-text a.content-file-link,
-.rector-main-text a[download]:not(.attached-files-item),
-.rector-main-text a[href^='data:'] {
-  color: var(--brand-primary);
-  font-weight: inherit;
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-
-.rector-main-text a.content-file-link::before,
-.rector-main-text a.content-file-link::after,
-.rector-main-text a[download]:not(.attached-files-item)::before,
-.rector-main-text a[download]:not(.attached-files-item)::after,
-.rector-main-text a[href^='data:']::before,
-.rector-main-text a[href^='data:']::after {
-  content: none;
-}
-
-.rector-main-text a.content-file-link--file-name {
+.rector-profile-label {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  margin: 6px 0;
-  padding: 10px 14px;
-  border-radius: var(--box-radius);
-  background: var(--surface-tint);
-  border: var(--border-width) solid var(--surface-border);
-  box-shadow: 0 10px 22px rgba(var(--theme-primary-rgb), 0.08);
-  color: var(--brand-primary);
+
+  margin-bottom: 15px;
+
+  color: var(--rp-primary);
+
+  font-size: 11px;
   font-weight: 800;
-  text-decoration: none;
-  line-height: 1.4;
-  vertical-align: middle;
+  line-height: 1.5;
+  letter-spacing: 1.1px;
+  text-transform: uppercase;
 }
 
-.rector-main-text a.content-file-link--file-name::before {
-  content: 'FILE';
-  display: inline-flex;
+.rector-profile-label::before {
+  content: '';
+
+  width: 27px;
+  height: 2px;
+  background: var(--rp-primary);
+}
+
+.rector-profile-info h1 {
+  margin: 0 0 15px;
+
+  color: var(--rp-heading);
+  font-size: clamp(25px, 2.3vw, 34px);
+  font-weight: 750;
+  line-height: 1.22;
+  letter-spacing: -.4px;
+
+  overflow-wrap: break-word;
+}
+
+.rector-profile-position {
+  max-width: 550px;
+  margin: 0;
+
+  color: var(--rp-text);
+  font-size: clamp(15px, 1.2vw, 17px);
+  font-weight: 450;
+  line-height: 1.75;
+  overflow-wrap: break-word;
+}
+
+/* ================================================
+   CONTACT INFORMATION
+================================================ */
+
+.rector-profile-contacts {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  min-width: 0;
+  padding-left: 24px;
+  border-left: 1px solid var(--rp-border);
+}
+
+.rector-contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+
+  min-width: 0;
+
+  color: var(--rp-heading);
+  text-decoration: none;
+
+  transition:
+    color .25s ease,
+    transform .25s ease;
+}
+
+.rector-contact-icon {
+  display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 44px;
+
+  width: 24px;
   height: 24px;
-  padding: 0 8px;
-  border-radius: var(--box-radius);
-  background: var(--brand-primary);
-  color: #fff;
-  font-size: var(--font-size-meta);
-  font-weight: 900;
-  letter-spacing: 0.8px;
+  flex: 0 0 24px;
+
+  color: var(--rp-primary);
 }
 
-.rector-main-text a.content-file-link--file-name::after {
-  content: '↓';
-  font-size: var(--font-size-meta);
-  font-weight: 900;
+.rector-contact-icon svg {
+  display: block;
+  width: 22px;
+  height: 22px;
 }
 
-.rector-note ul {
+.rector-contact-text {
+  min-width: 0;
+  color: #334f66;
+  font-size: 14px;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+
+a.rector-contact-item:hover {
+  color: var(--rp-primary);
+  transform: translateX(3px);
+}
+
+a.rector-contact-item:hover .rector-contact-text {
+  color: var(--rp-primary);
+}
+
+a.rector-contact-item:focus-visible {
+  outline: 2px solid var(--rp-primary);
+  outline-offset: 4px;
+  border-radius: 3px;
+}
+
+/* ================================================
+   FULL MESSAGE SECTION
+================================================ */
+
+.rector-message-section {
+  padding: 28px 24px 90px;
+
+  background: var(--rp-bg);
+}
+
+.rector-message-container {
+  width: min(100%, 1220px);
+  margin: 0 auto;
+
+  padding: clamp(27px, 4vw, 55px);
+
+  background: var(--rp-white);
+  border: 1px solid var(--rp-border);
+  border-radius: var(--rp-radius);
+
+  box-shadow:
+    0 12px 35px rgba(21, 54, 75, .045);
+
+  animation: rectorMessageEnter .8s var(--rp-ease) both;
+}
+
+/* ================================================
+   MESSAGE HEADER
+================================================ */
+
+.rector-message-header {
+  width: min(100%, 940px);
+  margin: 0 auto 34px;
+}
+
+.rector-message-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+
+  margin-bottom: 17px;
+
+  color: var(--rp-primary);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.1px;
+  text-transform: uppercase;
+}
+
+.rector-message-line {
+  display: block;
+  width: 28px;
+  height: 2px;
+  background: var(--rp-primary);
+}
+
+.rector-message-header h2 {
   margin: 0;
-  padding: 0;
-  list-style: none;
+
+  color: var(--rp-heading);
+  font-size: clamp(25px, 2.5vw, 36px);
+  font-weight: 750;
+  line-height: 1.3;
+  letter-spacing: -.5px;
+
+  overflow-wrap: break-word;
 }
 
-.rector-note li {
-  padding: 14px 0 14px 28px;
-  position: relative;
-  color: var(--text-primary);
-  font-size: var(--font-size-meta);
-  font-weight: 700;
-  border-bottom: var(--border-width) solid var(--surface-border);
-}
-
-.rector-note li:last-child {
-  border-bottom: none;
-}
-
-.rector-note li::before {
+.rector-message-header::after {
   content: '';
-  position: absolute;
-  left: 0;
-  top: 20px;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--brand-primary);
+
+  display: block;
+  width: 100%;
+  height: 1px;
+
+  margin-top: 25px;
+  background: var(--rp-border);
 }
 
-@keyframes fadeLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-35px);
-  }
+/* ================================================
+   MESSAGE ARTICLE
+================================================ */
 
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+.rector-message-article {
+  width: min(100%, 940px);
+  min-width: 0;
+  margin: 0 auto;
+
+  color: #41576b;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.95;
+
+  overflow-wrap: break-word;
 }
 
-@keyframes fadeRight {
-  from {
-    opacity: 0;
-    transform: translateX(35px);
-  }
+.rector-rich-content {
+  width: 100%;
+  min-width: 0;
 
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+  font: inherit;
+  color: inherit;
 }
 
-@keyframes fadeUp {
+/* Paragraphs */
+
+.rector-message-article p,
+.rector-rich-content p {
+  margin: 0 0 22px;
+
+  color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+}
+
+.rector-message-article p:last-child,
+.rector-rich-content p:last-child {
+  margin-bottom: 0;
+}
+
+/* Headings */
+
+.rector-rich-content h1,
+.rector-rich-content h2,
+.rector-rich-content h3,
+.rector-rich-content h4 {
+  margin: 30px 0 15px;
+
+  color: var(--rp-heading);
+  font-weight: 750;
+  line-height: 1.4;
+
+  overflow-wrap: break-word;
+}
+
+.rector-rich-content h1 {
+  font-size: 29px;
+}
+
+.rector-rich-content h2 {
+  font-size: 25px;
+}
+
+.rector-rich-content h3 {
+  font-size: 21px;
+}
+
+.rector-rich-content h4 {
+  font-size: 18px;
+}
+
+/* Lists */
+
+.rector-rich-content ul,
+.rector-rich-content ol {
+  margin: 16px 0 25px;
+  padding-left: 28px;
+}
+
+.rector-rich-content li {
+  margin-bottom: 10px;
+  padding-left: 4px;
+}
+
+.rector-rich-content li::marker {
+  color: var(--rp-primary);
+}
+
+/* Blockquote */
+
+.rector-rich-content blockquote {
+  margin: 28px 0;
+  padding: 20px 24px;
+
+  color: #36566b;
+  background: #f0f7fb;
+
+  border-left: 3px solid var(--rp-primary);
+  border-radius: 0 6px 6px 0;
+
+  font-style: italic;
+}
+
+/* Links */
+
+.rector-rich-content a {
+  color: var(--rp-primary);
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+
+  overflow-wrap: anywhere;
+
+  transition: color .25s ease;
+}
+
+.rector-rich-content a:hover {
+  color: var(--rp-primary-dark);
+}
+
+/* Download / file links */
+
+.rector-rich-content a.content-file-link--file-name {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  max-width: 100%;
+  margin: 7px 0;
+  padding: 10px 15px;
+
+  color: var(--rp-primary);
+  background: #edf6fb;
+
+  border: 1px solid #d9e9f2;
+  border-radius: 6px;
+
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.5;
+  text-decoration: none;
+
+  transition:
+    background .25s ease,
+    border-color .25s ease;
+}
+
+.rector-rich-content a.content-file-link--file-name:hover {
+  background: #e2f1f8;
+  border-color: #b8d8e8;
+}
+
+.rector-rich-content a.content-file-link--file-name::before {
+  content: 'FILE';
+
+  display: inline-grid;
+  place-items: center;
+
+  min-width: 43px;
+  height: 23px;
+  padding: 0 7px;
+
+  color: #ffffff;
+  background: var(--rp-primary);
+
+  border-radius: 4px;
+
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .5px;
+}
+
+.rector-rich-content a.content-file-link--file-name::after {
+  content: '↓';
+  color: var(--rp-primary);
+  font-weight: 800;
+}
+
+/* Embedded images */
+
+.rector-rich-content img {
+  display: block;
+
+  max-width: 100%;
+  height: auto;
+  margin: 22px auto;
+
+  border-radius: 6px;
+}
+
+/* Videos and embeds */
+
+.rector-rich-content video,
+.rector-rich-content iframe {
+  max-width: 100%;
+  border-radius: 6px;
+}
+
+/* Tables */
+
+.rector-rich-content table {
+  width: 100%;
+  margin: 24px 0;
+
+  border-collapse: collapse;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.rector-rich-content th,
+.rector-rich-content td {
+  padding: 12px 14px;
+
+  border: 1px solid var(--rp-border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.rector-rich-content th {
+  background: #edf6fb;
+  color: var(--rp-heading);
+  font-weight: 750;
+}
+
+/* ================================================
+   MESSAGE FOOTER
+================================================ */
+
+.rector-message-footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  width: min(100%, 940px);
+  margin: 38px auto 0;
+  padding-top: 20px;
+
+  border-top: 1px solid var(--rp-border);
+
+  color: var(--rp-muted);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.3px;
+  text-transform: uppercase;
+}
+
+.rector-message-footer-line {
+  display: block;
+  width: 29px;
+  height: 2px;
+  background: var(--rp-primary);
+}
+
+/* ================================================
+   ENTRY ANIMATIONS
+================================================ */
+
+@keyframes rectorProfileEnter {
   from {
     opacity: 0;
-    transform: translateY(28px);
+    transform: translateY(18px);
   }
 
   to {
@@ -282,40 +598,261 @@
   }
 }
 
-@keyframes floatCircle {
-  0%,
-  100% {
+@keyframes rectorMessageEnter {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  to {
+    opacity: 1;
     transform: translateY(0);
   }
+}
 
-  50% {
-    transform: translateY(-18px);
+/* ================================================
+   LAPTOP / TABLET
+================================================ */
+
+@media (max-width: 1100px) {
+  .rector-profile-card {
+    grid-template-columns:
+      minmax(180px, 245px)
+      minmax(0, 1fr);
+
+    gap: 25px;
+    padding: 25px;
+  }
+
+  .rector-profile-photo-frame {
+    max-width: 245px;
+  }
+
+  .rector-profile-contacts {
+    grid-column: 1 / -1;
+
+    display: grid;
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap: 16px 25px;
+
+    padding: 20px 0 0;
+
+    border-left: none;
+    border-top: 1px solid var(--rp-border);
+  }
+
+  .rector-message-section {
+    padding-top: 24px;
   }
 }
 
-@media (max-width: 1000px) {
-  .rector-hero-animated {
-    grid-template-columns: 1fr;
-    background: linear-gradient(180deg, rgba(var(--theme-primary-rgb), 0.08) 0%, rgba(var(--theme-primary-rgb), 0.03) 72%, #ffffff 72%);
+/* ================================================
+   MOBILE
+================================================ */
+
+@media (max-width: 768px) {
+  .rector-profile-section {
+    padding: 22px 16px 14px;
   }
 
-  .rector-content {
+  .rector-profile-card {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+
+    gap: 22px;
+    padding: 22px;
+  }
+
+  /* Photo first */
+
+  .rector-profile-photo {
+    order: 1;
+    justify-content: center;
+  }
+
+  .rector-profile-photo-frame {
+    width: min(100%, 380px);
+    max-width: 380px;
+    height: auto;
+  }
+
+  .rector-profile-photo-frame img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+
+  /* Name second */
+
+  .rector-profile-info {
+    order: 2;
+    width: 100%;
+    text-align: center;
+  }
+
+  .rector-profile-label {
+    justify-content: center;
+  }
+
+  .rector-profile-info h1 {
+    font-size: clamp(24px, 5vw, 30px);
+  }
+
+  .rector-profile-position {
+    max-width: 100%;
+    font-size: 15px;
+  }
+
+  /* Contacts third */
+
+  .rector-profile-contacts {
+    order: 3;
+
+    width: 100%;
+    grid-column: auto;
+
     grid-template-columns: 1fr;
-    margin-top: 0;
+
+    gap: 15px;
+
+    padding-top: 20px;
+    border-top: 1px solid var(--rp-border);
+  }
+
+  .rector-message-section {
+    padding: 14px 16px 55px;
+  }
+
+  .rector-message-container {
+    padding: 30px 24px;
+  }
+
+  .rector-message-article {
+    font-size: 15px;
+    line-height: 1.9;
   }
 }
 
-@media (max-width: 576px) {
-  .rector-hero-animated {
-    padding: 22px 18px 12px;
+/* ================================================
+   SMALL MOBILE
+================================================ */
+
+@media (max-width: 480px) {
+  .rector-profile-section {
+    padding: 16px 12px 12px;
   }
 
-  .rector-photo-block img {
-    height: 360px;
+  .rector-profile-card {
+    padding: 16px;
+    gap: 20px;
   }
 
-  .rector-main-text,
-  .rector-note {
-    padding: 24px;
+  .rector-profile-photo-frame {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .rector-profile-info h1 {
+    font-size: 24px;
+    line-height: 1.3;
+  }
+
+  .rector-profile-position {
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  .rector-contact-text {
+    font-size: 13px;
+  }
+
+  .rector-contact-icon {
+    width: 22px;
+    height: 22px;
+    flex-basis: 22px;
+  }
+
+  .rector-contact-icon svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .rector-message-section {
+    padding: 12px 12px 42px;
+  }
+
+  .rector-message-container {
+    padding: 25px 18px;
+  }
+
+  .rector-message-header {
+    margin-bottom: 25px;
+  }
+
+  .rector-message-header h2 {
+    font-size: 24px;
+  }
+
+  .rector-message-article {
+    font-size: 14px;
+    line-height: 1.85;
+  }
+
+  .rector-rich-content p {
+    margin-bottom: 19px;
+  }
+
+  .rector-rich-content blockquote {
+    padding: 16px 17px;
+  }
+
+  .rector-message-footer {
+    margin-top: 28px;
+  }
+}
+
+/* ================================================
+   VERY SMALL SCREENS
+================================================ */
+
+@media (max-width: 360px) {
+  .rector-profile-card {
+    padding: 13px;
+  }
+
+  .rector-profile-info h1 {
+    font-size: 22px;
+  }
+
+  .rector-message-container {
+    padding: 21px 15px;
+  }
+
+  .rector-message-header h2 {
+    font-size: 22px;
+  }
+}
+
+/* ================================================
+   ACCESSIBILITY
+================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .rector-page *,
+  .rector-page *::before,
+  .rector-page *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .rector-profile-card,
+  .rector-message-container,
+  .rector-profile-photo-frame {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }

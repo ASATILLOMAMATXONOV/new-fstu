@@ -253,16 +253,17 @@
 }
 
 :where(.fstu-header--mobile ~ .home-page) .slider-controls {
-  position: absolute;
-  inset: 10px 10px auto auto;
-  width: fit-content;
-  max-width: calc(100% - 20px);
-  margin: 0;
-  padding: 4px 6px;
+  display: none;
 }
 
 :where(.fstu-header--mobile ~ .home-page) .hero-slider + .app-content-shell .home-info-section {
   margin-top: 18px;
+}
+
+@media (max-width: 768px) {
+  .hero-slider .slider-controls {
+    display: none;
+  }
 }
 
 @media (max-width: 640px) {
@@ -281,20 +282,6 @@
     margin: 0 0 12px;
     font-size: var(--font-size-body);
     letter-spacing: 1.5px;
-  }
-
-  .slider-controls {
-    gap: 10px;
-  }
-
-  .slider-dots {
-    min-width: 0;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .slider-arrow {
-    flex: 0 0 30px;
   }
 }
 
