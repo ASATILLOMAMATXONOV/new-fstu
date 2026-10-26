@@ -183,10 +183,12 @@ function AcademicCard({
   const children = getChildren(item, level);
   const isLink = level === 2 && Boolean(item.url);
   const interactive = level < 2 || isLink;
+  const longTitle = String(item?.name || '').length > 48;
 
   const className = [
     'ae-card',
-    interactive ? 'ae-card--interactive' : 'ae-card--static'
+    interactive ? 'ae-card--interactive' : 'ae-card--static',
+    longTitle ? 'ae-card--long-title' : ''
   ].join(' ');
 
   const cardContent = (
@@ -200,7 +202,7 @@ function AcademicCard({
       </span>
 
       <span className="ae-card-content">
-        <strong className="ae-card-title">
+        <strong className="ae-card-title" title={item.name}>
           {item.name}
         </strong>
 
@@ -210,6 +212,17 @@ function AcademicCard({
             : 'Ta’lim yo‘nalishi'}
         </span>
       </span>
+
+      {longTitle && (
+        <span
+          className="ae-card-full-title"
+          aria-hidden="true"
+          onClick={event => event.stopPropagation()}
+          onWheel={event => event.stopPropagation()}
+        >
+          {item.name}
+        </span>
+      )}
 
       <span className="ae-card-bottom">
         <span className="ae-card-category">

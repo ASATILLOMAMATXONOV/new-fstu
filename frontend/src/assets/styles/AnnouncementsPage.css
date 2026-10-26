@@ -1,152 +1,461 @@
+
+/* ==========================================
+   FSTU — ANNOUNCEMENTS PAGE
+   Modern / Responsive / Full Width Images
+========================================== */
+
 .ann-page {
+  --ann-primary: var(--brand-primary, #087eaa);
+  --ann-primary-dark: var(--brand-primary-dark, #06648a);
+  --ann-text: var(--text-primary, #172b42);
+  --ann-muted: var(--text-secondary, #718096);
+  --ann-border: var(--surface-border, #e4eaf0);
+  --ann-radius: 6px;
+
   width: 100%;
-  padding: 46px 4% 60px;
-  background: var(--surface-soft);
+  padding: 46px 4% 65px;
+  background: var(--surface-soft, #f8fafc);
 }
 
+.ann-page *,
+.ann-page *::before,
+.ann-page *::after {
+  box-sizing: border-box;
+}
+
+/* ==========================================
+   LAYOUT
+========================================== */
+
 .ann-layout {
-  max-width: 1320px;
-  margin: 0 auto;
   display: grid;
   grid-template-columns: minmax(0, 1fr) 330px;
   gap: 28px;
   align-items: start;
+
+  width: 100%;
+  max-width: 1320px;
+  margin: 0 auto;
 }
 
 .ann-main {
   min-width: 0;
 }
 
+/* ==========================================
+   HEADER
+========================================== */
+
 .ann-header {
-  margin: 0 0 34px;
-  padding-bottom: 18px;
-  border-bottom: var(--border-width) solid var(--surface-border);
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
   gap: 20px;
+
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+
+  border-bottom: 1px solid var(--ann-border);
 }
 
-.ann-header span {
-  color: var(--brand-primary);
-  font-size: var(--font-size-meta);
-  font-weight: 900;
-  letter-spacing: 1.2px;
+.ann-header-content {
+  min-width: 0;
+}
+
+.ann-eyebrow {
+  display: inline-block;
+  margin-bottom: 9px;
+
+  color: var(--ann-primary);
+
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.3px;
+  text-transform: uppercase;
 }
 
 .ann-header h1 {
-  margin: 8px 0 0;
-  font-size: var(--font-size-section);
-  font-weight: var(--heading-weight);
-  color: var(--heading-color);
-  line-height: var(--heading-line-height);
-  letter-spacing: 0;
+  margin: 0;
+
+  color: var(--heading-color, #172b42);
+
+  font-size: var(--font-size-section, 32px);
+  font-weight: var(--heading-weight, 800);
+  line-height: 1.2;
 }
 
-.ann-header p {
+.ann-description {
+  max-width: 310px;
   margin: 0;
-  color: var(--text-muted);
-  font-size: var(--font-size-body);
+
+  color: var(--text-muted, #718096);
+
+  font-size: var(--font-size-body, 14px);
+  line-height: 1.7;
 }
+
+/* ==========================================
+   GRID
+========================================== */
 
 .ann-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 22px;
   align-items: stretch;
 }
 
+/* ==========================================
+   ANNOUNCEMENT CARD
+========================================== */
+
 .ann-card {
-  height: 100%;
+  position: relative;
+
   display: flex;
   flex-direction: column;
-  background: #ffffff;
-  border: var(--border-width) solid var(--surface-border);
-  border-radius: var(--box-radius);
+
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+
   overflow: hidden;
-  box-shadow: 0 14px 36px rgba(var(--theme-dark-rgb), 0.06);
-  transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+
+  background: #ffffff;
+
+  border: 1px solid var(--ann-border);
+  border-radius: var(--ann-radius);
+
+  box-shadow: 0 8px 24px rgba(15, 39, 62, 0.045);
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+
   animation: annCardReveal 0.55s ease both;
 }
 
 .ann-card:hover {
-  transform: translateY(-8px);
-  border-color: rgba(var(--theme-dark-rgb), 0.18);
-  box-shadow: 0 22px 48px rgba(var(--theme-dark-rgb), 0.12);
+  transform: translateY(-6px);
+
+  border-color: rgba(8, 126, 170, 0.25);
+
+  box-shadow: 0 18px 38px rgba(15, 39, 62, 0.11);
 }
+
+/* ==========================================
+   IMAGE CONTAINER
+========================================== */
 
 .ann-image {
   position: relative;
+
   display: block;
-  overflow: hidden;
+
+  width: 100%;
   height: 220px;
-  background: var(--surface-border);
+  min-height: 220px;
+  flex: 0 0 220px;
+
+  padding: 0;
+  margin: 0;
+
+  overflow: hidden;
+
+  background: #e9eef5;
+
+  text-decoration: none;
 }
 
+/* ==========================================
+   IMAGE INNER WRAPPER
+========================================== */
+
+.ann-image-inner {
+  position: relative;
+
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  padding: 0;
+  margin: 0;
+
+  overflow: hidden;
+}
+
+/* ==========================================
+   IMAGE COMPONENT WRAPPERS
+========================================== */
+
+.ann-image-inner > div,
+.ann-image-inner > picture,
+.ann-image-inner picture {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  padding: 0;
+  margin: 0;
+
+  overflow: hidden;
+}
+
+/* ==========================================
+   ACTUAL IMAGE
+========================================== */
+
+.ann-image img,
+.ann-image picture img,
+.ann-image-inner img {
+  display: block;
+
+  width: 100% !important;
+  height: 100% !important;
+
+  min-width: 100%;
+  min-height: 100%;
+
+  max-width: none;
+  max-height: none;
+
+  object-fit: cover !important;
+  object-position: center center;
+
+  padding: 0;
+  margin: 0;
+
+  border: none;
+  border-radius: 0;
+
+  transition:
+    transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* ==========================================
+   IMAGE HOVER
+========================================== */
+
+.ann-card:hover .ann-image img {
+  transform: scale(1.035);
+}
+
+/* ==========================================
+   CARD CONTENT
+========================================== */
+
 .ann-body {
-  flex: 1;
-  padding: 16px 18px 18px;
   display: flex;
+  flex: 1;
   flex-direction: column;
+
+  min-width: 0;
+  padding: 18px;
+}
+
+/* ==========================================
+   META / DATE
+========================================== */
+
+.ann-card-meta {
+  display: flex;
+  align-items: center;
+
+  margin-bottom: 12px;
 }
 
 .ann-date {
-  display: block;
-  margin-bottom: 10px;
-  color: var(--text-secondary);
-  font-size: var(--font-size-meta);
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  color: var(--ann-muted);
+
+  font-size: 12px;
   font-weight: 600;
+  line-height: 1.5;
 }
 
-.ann-body h3 {
-  margin: 0 0 16px;
-  min-height: 58px;
-  font-size: var(--font-size-card-title);
-  font-weight: var(--heading-weight);
-  line-height: var(--heading-line-height);
-  letter-spacing: 0;
+.ann-date svg {
+  flex-shrink: 0;
+  color: var(--ann-primary);
+}
+
+/* ==========================================
+   TITLE
+========================================== */
+
+.ann-card-title {
+  min-height: 62px;
+  margin: 0 0 22px;
+
+  font-size: 16px;
+  font-weight: 750;
+  line-height: 1.55;
+  letter-spacing: -0.2px;
 }
 
 .ann-title-link {
   display: -webkit-box;
+
   overflow: hidden;
+
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  color: var(--text-primary);
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+
+  color: var(--ann-text);
+
   text-decoration: none;
-  transition: color 0.25s ease, transform 0.25s ease;
+  overflow-wrap: anywhere;
+
+  transition: color 0.25s ease;
 }
 
-.ann-card:hover .ann-title-link {
-  color: var(--brand-primary-dark);
+.ann-title-link:hover {
+  color: var(--ann-primary);
+}
+
+/* ==========================================
+   DETAILS BUTTON
+========================================== */
+
+.ann-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+
+  width: 100%;
+  min-height: 42px;
+
+  margin-top: auto;
+  padding: 0 15px;
+
+  background: var(--ann-primary);
+  color: #ffffff;
+
+  border: 1px solid var(--ann-primary);
+  border-radius: var(--ann-radius);
+
+  text-decoration: none;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.ann-btn svg {
+  flex-shrink: 0;
+  transition: transform 0.25s ease;
+}
+
+.ann-btn:hover {
+  background: var(--ann-primary-dark);
+  border-color: var(--ann-primary-dark);
+
+  box-shadow: 0 7px 16px rgba(8, 126, 170, 0.18);
+}
+
+.ann-btn:hover svg {
   transform: translateX(4px);
 }
 
-.ann-btn {
-  margin-top: auto;
-  height: 38px;
-  padding: 0 18px;
+/* ==========================================
+   PAGINATION
+========================================== */
+
+.ann-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+
+  gap: 8px;
+  margin-top: 34px;
+}
+
+.ann-pagination button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: var(--brand-primary);
-  color: var(--text-on-brand);
-  text-decoration: none;
-  border-radius: var(--box-radius);
-  font-size: var(--font-size-meta);
+
+  min-width: 40px;
+  height: 40px;
+
+  padding: 0 13px;
+
+  background: #ffffff;
+  color: var(--ann-primary);
+
+  border: 1px solid var(--ann-border);
+  border-radius: var(--ann-radius);
+
+  font-size: 13px;
   font-weight: 700;
-  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
 }
 
-.ann-card:hover .ann-btn {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 22px rgba(var(--theme-dark-rgb), 0.2);
+.ann-pagination button:hover:not(:disabled) {
+  background: var(--ann-primary);
+  color: #ffffff;
+  border-color: var(--ann-primary);
 }
+
+.ann-pagination button.active {
+  background: var(--ann-primary);
+  color: #ffffff;
+  border-color: var(--ann-primary);
+}
+
+.ann-pagination button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ==========================================
+   SIDEBAR
+========================================== */
+
+.ann-sidebar {
+  position: sticky;
+  top: 95px;
+
+  min-width: 0;
+}
+
+.ann-sidebar .academic-sidebar {
+  overflow: hidden;
+
+  background: #ffffff;
+
+  border: 1px solid var(--ann-border);
+  border-radius: var(--ann-radius);
+
+  box-shadow: 0 10px 30px rgba(15, 39, 62, 0.05);
+}
+
+/* ==========================================
+   CARD ANIMATION
+========================================== */
 
 @keyframes annCardReveal {
   from {
     opacity: 0;
-    transform: translateY(22px);
+    transform: translateY(20px);
   }
 
   to {
@@ -155,91 +464,172 @@
   }
 }
 
-.ann-pagination {
-  margin: 34px 0 0;
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
-}
+/* ==========================================
+   RESPONSIVE — LAPTOP
+========================================== */
 
-.ann-sidebar {
-  position: sticky;
-  top: 95px;
-}
-
-.ann-sidebar .academic-sidebar {
-  background: #ffffff;
-  border-radius: var(--box-radius);
-  overflow: hidden;
-  border: var(--border-width) solid var(--surface-border);
-  box-shadow: 0 14px 40px rgba(var(--theme-dark-rgb), 0.07);
-}
-
-.ann-pagination button {
-  min-width: 38px;
-  height: 38px;
-  padding: 0 13px;
-  border: var(--border-width) solid var(--surface-border);
-  background: #ffffff;
-  color: var(--brand-primary);
-  border-radius: var(--box-radius);
-  cursor: pointer;
-  font-size: var(--font-size-meta);
-  font-weight: 800;
-}
-
-.ann-pagination button.active {
-  background: var(--brand-primary);
-  color: var(--text-on-brand);
-  border-color: var(--brand-primary);
-}
-
-.ann-pagination button:disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
-}
-
-@media (max-width: 992px) {
+@media (max-width: 1200px) {
   .ann-layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr) 290px;
+    gap: 22px;
   }
 
   .ann-grid {
-    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .ann-image {
+    height: 200px;
+    min-height: 200px;
+    flex-basis: 200px;
+  }
+
+  .ann-body {
+    padding: 15px;
+  }
+}
+
+/* ==========================================
+   RESPONSIVE — TABLET
+========================================== */
+
+@media (max-width: 992px) {
+  .ann-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .ann-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+
+  .ann-image {
+    height: 230px;
+    min-height: 230px;
+    flex-basis: 230px;
   }
 
   .ann-header {
-    flex-direction: column;
     align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .ann-description {
+    max-width: 600px;
   }
 
   .ann-sidebar {
     position: static;
+    width: 100%;
   }
 }
 
+/* ==========================================
+   RESPONSIVE — MOBILE
+========================================== */
+
 @media (max-width: 576px) {
   .ann-page {
-    padding: 34px 16px 48px;
+    padding: 30px 16px 48px;
   }
 
-  .ann-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .ann-image {
-    height: 210px;
+  .ann-header {
+    margin-bottom: 24px;
+    padding-bottom: 16px;
   }
 
   .ann-header h1 {
-    font-size: var(--font-size-section);
-    font-weight: var(--heading-weight);
-    line-height: var(--heading-line-height);
-    letter-spacing: 0;
+    font-size: 27px;
+    line-height: 1.3;
+  }
+
+  .ann-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+  }
+
+  .ann-card {
+    width: 100%;
+  }
+
+  .ann-image {
+    height: 220px;
+    min-height: 220px;
+    flex-basis: 220px;
+  }
+
+  .ann-body {
+    padding: 16px;
+  }
+
+  .ann-card-title {
+    min-height: auto;
+    margin-bottom: 20px;
+    font-size: 16px;
+  }
+
+  .ann-btn {
+    min-height: 44px;
   }
 
   .ann-pagination {
     justify-content: center;
-    flex-wrap: wrap;
+    margin-top: 28px;
+  }
+
+  .ann-pagination button {
+    min-width: 36px;
+    height: 36px;
+    padding: 0 10px;
+  }
+}
+
+/* ==========================================
+   RESPONSIVE — SMALL MOBILE
+========================================== */
+
+@media (max-width: 375px) {
+  .ann-page {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .ann-image {
+    height: 195px;
+    min-height: 195px;
+    flex-basis: 195px;
+  }
+
+  .ann-body {
+    padding: 14px;
+  }
+}
+
+/* ==========================================
+   ACCESSIBILITY
+========================================== */
+
+.ann-page a:focus-visible,
+.ann-page button:focus-visible {
+  outline: 2px solid var(--ann-primary);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ann-card {
+    animation: none;
+  }
+
+  .ann-card,
+  .ann-image img,
+  .ann-btn,
+  .ann-btn svg {
+    transition: none;
+  }
+
+  .ann-card:hover,
+  .ann-card:hover .ann-image img {
+    transform: none;
   }
 }
