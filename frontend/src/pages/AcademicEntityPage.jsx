@@ -156,23 +156,69 @@ function isOverviewPanel(panel = {}) {
   return panel?.variant === 'overview';
 }
 
-function isMenuForCurrentPage(menu, pageType, context) {
-  if (menu.active === false || (menu.pageType || 'faculty') !== pageType) {
-    return false;
-  }
-
-  if (pageType === 'faculty') {
-    return String(menu.facultyId || '') === String(context.facultyId || '');
-  }
-
-  if (pageType === 'department') {
-    return (
-      String(menu.facultyId || '') === String(context.facultyId || '') &&
-      String(menu.departmentId || '') === String(context.departmentId || '')
+function normalizeEntityId(value) {
+  if (value && typeof value === 'object') {
+    return normalizeEntityId(
+      value.id ?? value._id ?? value.value ?? value.facultyId ?? value.faculty_id ?? ''
     );
   }
+  return String(value ?? '').trim();
+}
 
-  return String(menu.sectionId || '') === String(context.sectionId || '');
+function matchesEntity(value, expected) {
+  const target = normalizeEntityId(expected);
+  if (!target || value == null) return false;
+
+  if (Array.isArray(value)) {
+    return value.some((entry) => matchesEntity(entry, target));
+  }
+
+  if (typeof value === 'string' && value.includes(',')) {
+    return value.split(',').some((entry) => matchesEntity(entry.trim(), target));
+  }
+
+  return normalizeEntityId(value) === target;
+}
+
+function isAcademicMenuActive(menu) {
+  if (menu.active === false || menu.isActive === false || menu.is_active === false) {
+    return false;
+  }
+  const status = String(menu.status || '').toLowerCase();
+  return status !== 'inactive' && status !== 'disabled';
+}
+
+function isMenuForCurrentPage(menu, pageType, context) {
+  if (!menu || !isAcademicMenuActive(menu)) return false;
+
+  const kind = String(menu.pageType ?? menu.page_type ?? 'faculty').trim().toLowerCase();
+  if (kind && kind !== pageType) return false;
+
+  const facultyIds = [
+    menu.facultyId, menu.faculty_id, menu.faculty,
+    menu.facultyIds, menu.faculty_ids, menu.faculties,
+    menu.context?.facultyId, menu.context?.faculty_id,
+    menu.attachments?.facultyIds, menu.associations?.faculties,
+    menu.entityId, menu.entity_id,
+    menu.targets?.faculties
+  ];
+  const departmentIds = [
+    menu.departmentId, menu.department_id, menu.department,
+    menu.context?.departmentId, menu.context?.department_id
+  ];
+  const sectionIds = [
+    menu.sectionId, menu.section_id, menu.section,
+    menu.context?.sectionId, menu.context?.section_id
+  ];
+
+  if (pageType === 'faculty') {
+    return facultyIds.some((value) => matchesEntity(value, context.facultyId));
+  }
+  if (pageType === 'department') {
+    return facultyIds.some((value) => matchesEntity(value, context.facultyId)) &&
+      departmentIds.some((value) => matchesEntity(value, context.departmentId));
+  }
+  return sectionIds.some((value) => matchesEntity(value, context.sectionId));
 }
 
 function createConfiguredPanels(pageType, menuEntries = [], texts) {
@@ -342,7 +388,7 @@ function AcademicEntityPage({ pageType = 'faculty' }) {
   const entity = pageType === 'faculty' ? faculty : pageType === 'department' ? department : section;
 
   const attachedMenus = React.useMemo(() => {
-    return menuItems
+    return (Array.isArray(menuItems) ? menuItems : [])
       .filter((menu) =>
         isMenuForCurrentPage(menu, pageType, {
           facultyId: contextFacultyId,
@@ -357,6 +403,20 @@ function AcademicEntityPage({ pageType = 'faculty' }) {
     () => createConfiguredPanels(pageType, attachedMenus, texts),
     [attachedMenus, pageType, texts]
   );
+
+  // Development diagnostics: show whether the CMS source is empty or ID filtering failed.
+  React.useEffect(() => {
+    if (process.env.NODE_ENV !== 'development' || menuLoading) return;
+    if (pageType !== 'faculty') return;
+
+    console.groupCollapsed('[AcademicEntityPage] Fakultet menyulari');
+    console.log('Fakultet ID:', contextFacultyId);
+    console.log('CMS menyular soni:', Array.isArray(menuItems) ? menuItems.length : 0);
+    console.log('CMS menyular:', menuItems);
+    console.log('Biriktirilgan menyular:', attachedMenus);
+    console.log('Ko‘rsatiladigan panellar:', configuredPanels);
+    console.groupEnd();
+  }, [pageType, contextFacultyId, menuItems, attachedMenus, configuredPanels, menuLoading]);
   const attachedDirections = React.useMemo(
     () => sortByOrder(directionItems || []),
     [directionItems]
@@ -1243,6 +1303,115 @@ const renderSidebarStack = () => (
       : texts.pageOverviewDescription(meta.label)
     : texts.activeMenuDescription;
   const showPanelHead = !showTopMenuTabs && !isFacultyShowcase && (!!selectedPanel || pageType !== 'faculty');
+
+  // Fakultet: faqat tanlangan menyuning kontenti ko‘rsatiladi.
+  // CMS orqali biriktirilgan menyular o‘ngdagi AcademicSidebar'da qoladi.
+  if (pageType === 'faculty') {
+    const facultyContent = getTranslatedField(entity, 'content') || '';
+    const availableMenus = configuredPanels.filter((panel) => !isLeaderPanel(panel));
+    const activeMenu = availableMenus.find((panel) => panel.key === activePanelKey);
+    const showingAbout = !activeMenu;
+    const displayedTitle = showingAbout ? texts.facultyAboutTitle : activeMenu.title;
+    const displayedContent = showingAbout
+      ? facultyContent
+      : getTranslatedField(activeMenu, 'content') || '';
+    const displayedFiles = showingAbout ? [] : (
+      Array.isArray(activeMenu.files) ? activeMenu.files : []
+    );
+
+    const sidebarItems = [
+      {
+        key: 'faculty-about',
+        label: texts.facultyAboutTitle,
+        isActive: showingAbout,
+        onClick: () => setActivePanelKey('page-overview')
+      },
+      ...availableMenus.map((panel) => ({
+        key: panel.key,
+        label: panel.title,
+        isActive: activeMenu?.key === panel.key,
+        onClick: () => setActivePanelKey(panel.key)
+      }))
+    ];
+
+    return (
+      <main className="academic-entity-page academic-entity-page--faculty academic-entity-page--information-only">
+        <div className="academic-entity-information-shell">
+          <article className="academic-entity-information-card" key={showingAbout ? 'faculty-about' : activeMenu.key}>
+            <header className="academic-entity-information-header">
+              <nav className="faculty-breadcrumb" aria-label="Sahifa navigatsiyasi">
+                <Link className="faculty-breadcrumb-link" to={meta.backTo}>
+                  {meta.backLabel || 'Fakultetlar'}
+                </Link>
+                <span className="faculty-breadcrumb-separator" aria-hidden="true">›</span>
+                {showingAbout ? (
+                  <span className="faculty-breadcrumb-current" aria-current="page">
+                    {texts.facultyAboutTitle}
+                  </span>
+                ) : (
+                  <>
+                    <button
+                      type="button"
+                      className="faculty-breadcrumb-link"
+                      onClick={() => setActivePanelKey('page-overview')}
+                    >
+                      {texts.facultyAboutTitle}
+                    </button>
+                    <span className="faculty-breadcrumb-separator" aria-hidden="true">›</span>
+                    <span className="faculty-breadcrumb-current" aria-current="page">
+                      {displayedTitle}
+                    </span>
+                  </>
+                )}
+              </nav>
+              <div className="faculty-heading-row">
+                <span className="academic-entity-information-accent" aria-hidden="true" />
+                <h2>{displayedTitle}</h2>
+              </div>
+            </header>
+
+            {stripHtml(displayedContent) ? (
+              <div
+                className="academic-entity-information-content academic-entity-rich"
+                dangerouslySetInnerHTML={createSafeMarkup(displayedContent)}
+              />
+            ) : null}
+
+            {displayedFiles.length > 0 ? (
+              <AttachedFilesList items={displayedFiles} />
+            ) : null}
+
+            {!stripHtml(displayedContent) && displayedFiles.length === 0 ? (
+              <div className="academic-entity-empty-state">{texts.emptyFacultyContent}</div>
+            ) : null}
+
+            {showingAbout && entity?.linkTable?.length > 0 ? (
+              <div className="academic-entity-information-links">
+                <LinkedInfoTable items={entity.linkTable} />
+              </div>
+            ) : null}
+          </article>
+
+          <aside className="academic-entity-information-sidebar">
+            <AcademicSidebar
+              title={texts.pageMenuTitle}
+              items={sidebarItems}
+              activeKey={showingAbout ? 'faculty-about' : activeMenu.key}
+              useProvidedItemsOnly
+              showSearch={false}
+              showLeaderCard
+              showMenuSection
+              showAnnouncements
+              pageType="faculty"
+              facultyId={contextFacultyId}
+              leader={leadEmployee}
+              leaderTitle={leaderCardTitle}
+            />
+          </aside>
+        </div>
+      </main>
+    );
+  }
 
   if (isFacultyShowcase) {
     return (

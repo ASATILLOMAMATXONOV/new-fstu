@@ -6,11 +6,13 @@
 
   top: 0;
 
-  z-index: 10000;
+  z-index: 99999;
 
   background: #ffffff;
 
   isolation: isolate;
+
+  transition: background-color 0.24s ease, box-shadow 0.24s ease;
 
 }
 
@@ -51,12 +53,9 @@
 .fstu-topbar {
 
   width: 100%;
-
-  background: linear-gradient(90deg, var(--brand-primary-deep) 0%, var(--brand-primary-dark) 58%, var(--brand-primary) 100%);
-
   color: #ffffff;
-
   font-size: 13px;
+  border-bottom: 1px solid #0d336b;
 
 }
 
@@ -203,7 +202,7 @@
   width: 124px;
   height: 74px;
   flex: 0 0 124px;
-  background: var(--brand-primary-dark);
+  background:  #0d336b;
   -webkit-mask: var(--brand-logo-image) left center / contain no-repeat;
   mask: var(--brand-logo-image) left center / contain no-repeat;
   transform-origin: left center;
@@ -2709,6 +2708,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .fstu-header,
   .stripe-dropdown-shell,
   .stripe-dropdown-content,
   .navbar-backdrop,
@@ -2752,7 +2752,7 @@
 .fstu-navbar .mega-content-heading,
 .fstu-navbar .mega-sub-link,
 .fstu-navbar .language-item {
-  color: var(--text-primary);
+   color: #0d336b;
 }
 
 .fstu-navbar .nav-link:hover,

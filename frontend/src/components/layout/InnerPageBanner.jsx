@@ -1,17 +1,31 @@
-import React from 'react';
+
+import React, { useMemo } from 'react';
 import { matchPath, useLocation } from 'react-router-dom';
 
 import '../../assets/styles/InnerPageBanner.css';
 import mainBanner from '../../assets/optimized/card-1.jpg';
+
 import AppLink from '../common/AppLink';
 import { useLanguage } from '../../context/LanguageContext';
 import { useContentList } from '../../hooks/useContentList';
 import { useContentItem } from '../../hooks/useContentItem';
 import { useSetting } from '../../hooks/useSetting';
 import { useEmployeePortfolioBySlug } from '../../hooks/useEmployeePortfolioBySlug';
+
 import { getSiteMessages } from '../../locales/site';
-import { findDepartmentById, normalizeFacultyItem } from '../../utils/academic';
-import { getHtmlExcerpt, getLocalizedValue, getTranslatedField } from '../../utils/cms';
+
+import {
+  findDepartmentById,
+  normalizeFacultyItem
+} from '../../utils/academic';
+
+import {
+  getHtmlExcerpt,
+  getLocalizedValue,
+  getTranslatedField,
+  stripHtml
+} from '../../utils/cms';
+
 import {
   findEmployeeAssignmentForContext,
   getEmployeePosition,
@@ -19,19 +33,20 @@ import {
   normalizeEmployeePortfolio,
   sortEmployees
 } from '../../utils/employees';
+
 import { getMenuNodeTitle } from '../../utils/menu';
 
-function withBannerImage(content = {}) {
-  return {
-    ...content,
-    image: mainBanner
-  };
-}
+/* ==========================================
+   HELPERS
+========================================== */
+
+const withBannerImage = (content = {}) => ({
+  ...content,
+  image: mainBanner
+});
 
 function getBannerBaseContent(pathname, texts) {
-  if (pathname === '/') {
-    return null;
-  }
+  if (pathname === '/') return null;
 
   if (matchPath('/news/page/:id', pathname)) {
     return withBannerImage(texts.newsDetail);
@@ -73,7 +88,10 @@ function getBannerBaseContent(pathname, texts) {
     return withBannerImage(texts.facultyDetail);
   }
 
-  if (matchPath('/departments/:facultyId/:departmentId', pathname)) {
+  if (matchPath(
+    '/departments/:facultyId/:departmentId',
+    pathname
+  )) {
     return withBannerImage(texts.departmentDetail);
   }
 
@@ -104,63 +122,229 @@ function getBannerBaseContent(pathname, texts) {
   return withBannerImage(texts.default);
 }
 
-function buildBannerDescription(item, fallbackText) {
-  const excerpt = getHtmlExcerpt(getTranslatedField(item, 'content') || '', 170);
-  return excerpt || fallbackText;
+/* ==========================================
+   TEXT NORMALIZATION
+========================================== */
+
+function normalizeText(value) {
+  return stripHtml(String(value || ''))
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toLocaleLowerCase();
 }
 
-function resolveLeaderRole(pageType = 'faculty') {
-  if (pageType === 'faculty') {
-    return 'dean';
+function shouldShowDescription(title, description) {
+  const heading = normalizeText(title);
+  const details = normalizeText(description)
+    .replace(/(?:\.{3}|…)+$/, '')
+    .trim();
+
+  if (!details) return false;
+  if (!heading) return true;
+
+  // Tavsif sarlavhani qayta takrorlasa yashiriladi.
+  if (
+    details.length >= 35 &&
+    (heading.includes(details) || details.includes(heading))
+  ) {
+    return false;
   }
 
-  if (pageType === 'department') {
-    return 'department_head';
+  const length = Math.min(
+    heading.length,
+    details.length,
+    100
+  );
+
+  if (
+    length >= 35 &&
+    heading.slice(0, length) === details.slice(0, length)
+  ) {
+    return false;
   }
 
-  if (pageType === 'section') {
-    return 'section_head';
-  }
+  return true;
+}
+
+function getTitleSizeClass(title) {
+  const length = String(title || '').trim().length;
+
+  if (length > 240) return 'inner-banner-xlong';
+  if (length > 120) return 'inner-banner-long';
+
+  return 'inner-banner-normal';
+}
+
+function buildBannerDescription(item, fallback = '') {
+  const content = getTranslatedField(
+    item,
+    'content',
+    ''
+  );
+
+  return getHtmlExcerpt(content || '', 170) || fallback;
+}
+
+/* ==========================================
+   ACADEMIC HELPERS
+========================================== */
+
+function getLeaderRole(pageType) {
+  if (pageType === 'faculty') return 'dean';
+  if (pageType === 'department') return 'department_head';
+  if (pageType === 'section') return 'section_head';
 
   return 'employee';
 }
 
-function findLeadEmployee(list = [], pageType = 'faculty') {
-  const preferredRole = resolveLeaderRole(pageType);
-  return list.find((employee) => employee.roleType === preferredRole) || list[0] || null;
+function findLeadEmployee(employees, pageType) {
+  const roleType = getLeaderRole(pageType);
+
+  return (
+    employees.find(
+      (employee) => employee.roleType === roleType
+    ) ||
+    employees[0] ||
+    null
+  );
 }
+
+/* ==========================================
+   BREADCRUMBS
+========================================== */
+
+function BannerBreadcrumbs({ items }) {
+  if (!items?.length) return null;
+
+  return (
+    <nav
+      className="inner-page-banner-breadcrumbs"
+      aria-label="Breadcrumb"
+    >
+      {items.map((item, index) => (
+        <React.Fragment key={`${item.label}-${index}`}>
+          {index > 0 && (
+            <span
+              className="inner-page-banner-breadcrumb-separator"
+              aria-hidden="true"
+            >
+              /
+            </span>
+          )}
+
+          {item.href ? (
+            <AppLink
+              href={item.href}
+              className="inner-page-banner-breadcrumb-link"
+            >
+              {item.label}
+            </AppLink>
+          ) : (
+            <span className="inner-page-banner-breadcrumb-current">
+              {item.label}
+            </span>
+          )}
+        </React.Fragment>
+      ))}
+    </nav>
+  );
+}
+
+/* ==========================================
+   MAIN COMPONENT
+========================================== */
 
 function InnerPageBanner() {
   const location = useLocation();
   const { currentLanguageCode } = useLanguage();
-  const pageTexts = React.useMemo(
+
+  const pageTexts = useMemo(
     () => getSiteMessages(currentLanguageCode).pages,
     [currentLanguageCode]
   );
+
   const texts = pageTexts.innerBanner;
   const academicTexts = pageTexts.academicEntity;
-  const menuMatch = matchPath('/menu/:id', location.pathname);
-  const pageMatch = matchPath('/pages/:id', location.pathname);
-  const facultyMatch = matchPath('/faculties/:id', location.pathname);
-  const departmentMatch = matchPath('/departments/:facultyId/:departmentId', location.pathname);
-  const sectionMatch = matchPath('/sections/:id', location.pathname);
-  const newsMatch = matchPath('/news/page/:id', location.pathname);
-  const announcementMatch = matchPath('/announcements/page/:id', location.pathname);
-  const employeeMatch = matchPath('/employees/:slug', location.pathname);
 
-  const { item: menuItem } = useContentItem('menus', menuMatch?.params?.id);
-  const { item: pageItem } = useContentItem('pages', pageMatch?.params?.id);
-  const { item: newsItem } = useContentItem('news', newsMatch?.params?.id);
+  /* ROUTES */
+
+  const pathname = location.pathname;
+
+  const menuMatch = matchPath('/menu/:id', pathname);
+  const pageMatch = matchPath('/pages/:id', pathname);
+
+  const facultyMatch = matchPath(
+    '/faculties/:id',
+    pathname
+  );
+
+  const departmentMatch = matchPath(
+    '/departments/:facultyId/:departmentId',
+    pathname
+  );
+
+  const sectionMatch = matchPath(
+    '/sections/:id',
+    pathname
+  );
+
+  const newsMatch = matchPath(
+    '/news/page/:id',
+    pathname
+  );
+
+  const announcementMatch = matchPath(
+    '/announcements/page/:id',
+    pathname
+  );
+
+  const employeeMatch = matchPath(
+    '/employees/:slug',
+    pathname
+  );
+
+  /* CMS DATA */
+
+  const { item: menuItem } = useContentItem(
+    'menus',
+    menuMatch?.params?.id
+  );
+
+  const { item: pageItem } = useContentItem(
+    'pages',
+    pageMatch?.params?.id
+  );
+
+  const { item: newsItem } = useContentItem(
+    'news',
+    newsMatch?.params?.id
+  );
+
   const { item: announcementItem } = useContentItem(
     'announcements',
     announcementMatch?.params?.id
   );
-  const { item: admissionItem } = useSetting('admission-cta');
-  const { item: employeeItem } = useEmployeePortfolioBySlug(employeeMatch?.params?.slug);
+
+  const { item: admissionItem } = useSetting(
+    'admission-cta'
+  );
+
+  const { item: employeeItem } = useEmployeePortfolioBySlug(
+    employeeMatch?.params?.slug
+  );
+
+  const academicId =
+    facultyMatch?.params?.id ||
+    departmentMatch?.params?.facultyId ||
+    sectionMatch?.params?.id;
+
   const { item: academicItem } = useContentItem(
     'faculties',
-    facultyMatch?.params?.id || departmentMatch?.params?.facultyId || sectionMatch?.params?.id
+    academicId
   );
+
+  /* ACADEMIC CONTEXT */
 
   const academicRouteType = facultyMatch
     ? 'faculty'
@@ -170,194 +354,267 @@ function InnerPageBanner() {
         ? 'section'
         : null;
 
-  const academicContext = React.useMemo(() => {
-    if (!academicRouteType) {
-      return null;
-    }
+  const academicContext = useMemo(() => {
+    if (!academicRouteType) return null;
 
     return {
       pageType: academicRouteType,
-      facultyId: facultyMatch?.params?.id || departmentMatch?.params?.facultyId || '',
-      departmentId: departmentMatch?.params?.departmentId || '',
-      sectionId: sectionMatch?.params?.id || ''
+      facultyId:
+        facultyMatch?.params?.id ||
+        departmentMatch?.params?.facultyId ||
+        '',
+      departmentId:
+        departmentMatch?.params?.departmentId || '',
+      sectionId:
+        sectionMatch?.params?.id || ''
     };
-  }, [academicRouteType, departmentMatch, facultyMatch, sectionMatch]);
-  const { items: employeeItems } = useContentList('employees-portfolios', {
-    summaryOnly: false,
-    enabled: Boolean(academicRouteType)
-  });
+  }, [
+    academicRouteType,
+    facultyMatch?.params?.id,
+    departmentMatch?.params?.facultyId,
+    departmentMatch?.params?.departmentId,
+    sectionMatch?.params?.id
+  ]);
 
-  const academicEntity = React.useMemo(() => {
-    if (facultyMatch) {
-      return academicItem || null;
+  const { items: employeeItems = [] } = useContentList(
+    'employees-portfolios',
+    {
+      summaryOnly: false,
+      enabled: Boolean(academicRouteType)
     }
+  );
 
-    if (sectionMatch) {
+  /* ACADEMIC ENTITY */
+
+  const academicEntity = useMemo(() => {
+    if (facultyMatch || sectionMatch) {
       return academicItem || null;
     }
 
     if (departmentMatch) {
-      const normalizedFaculty = academicItem ? normalizeFacultyItem(academicItem) : null;
-
-      return normalizedFaculty
-        ? findDepartmentById(
-            [normalizedFaculty],
-            normalizedFaculty.id,
-            departmentMatch.params.departmentId
-          )
+      const faculty = academicItem
+        ? normalizeFacultyItem(academicItem)
         : null;
+
+      if (!faculty) return null;
+
+      return findDepartmentById(
+        [faculty],
+        faculty.id,
+        departmentMatch.params.departmentId
+      );
     }
 
     return null;
-  }, [academicItem, departmentMatch, facultyMatch, sectionMatch]);
+  }, [
+    academicItem,
+    facultyMatch?.params?.id,
+    sectionMatch?.params?.id,
+    departmentMatch?.params?.departmentId
+  ]);
 
-  const academicEmployees = React.useMemo(() => {
-    if (!academicContext) {
-      return [];
-    }
+  /* LEADER */
 
-    return sortEmployees(
-      employeeItems
-        .map(normalizeEmployeePortfolio)
-        .map((employee) => {
-          const currentAssignment = findEmployeeAssignmentForContext(employee, academicContext);
+  const academicEmployees = useMemo(() => {
+    if (!academicContext) return [];
 
-          if (!currentAssignment || !isEmployeeAttachedToContext(employee, academicContext)) {
-            return null;
-          }
+    const employees = (employeeItems || [])
+      .map(normalizeEmployeePortfolio)
+      .map((employee) => {
+        const currentAssignment =
+          findEmployeeAssignmentForContext(
+            employee,
+            academicContext
+          );
 
-          return normalizeEmployeePortfolio({
-            ...employee,
-            currentAssignment
-          });
-        })
-        .filter(Boolean)
-    );
-  }, [academicContext, employeeItems]);
+        if (
+          !currentAssignment ||
+          !isEmployeeAttachedToContext(
+            employee,
+            academicContext
+          )
+        ) {
+          return null;
+        }
 
-  const academicLeadEmployee = React.useMemo(
-    () => findLeadEmployee(academicEmployees, academicRouteType || 'faculty'),
+        return normalizeEmployeePortfolio({
+          ...employee,
+          currentAssignment
+        });
+      })
+      .filter(Boolean);
+
+    return sortEmployees(employees);
+  }, [employeeItems, academicContext]);
+
+  const academicLeadEmployee = useMemo(
+    () => findLeadEmployee(
+      academicEmployees,
+      academicRouteType
+    ),
     [academicEmployees, academicRouteType]
   );
 
-  const content = React.useMemo(() => {
-    const baseContent = getBannerBaseContent(location.pathname, texts);
+  /* ========================================
+     RESOLVE BANNER CONTENT
+  ======================================== */
 
-    if (!baseContent) {
-      return null;
-    }
+  const content = useMemo(() => {
+    const base = getBannerBaseContent(
+      pathname,
+      texts
+    );
+
+    if (!base) return null;
+
+    /* MENUS */
 
     if (menuMatch) {
       return {
-        ...baseContent,
-        title: getMenuNodeTitle(menuItem) || baseContent.title,
-        description: buildBannerDescription(menuItem, baseContent.description)
+        ...base,
+        title:
+          getMenuNodeTitle(menuItem) ||
+          base.title,
+        description: buildBannerDescription(
+          menuItem,
+          base.description
+        )
       };
     }
+
+    /* EMPLOYEE */
 
     if (employeeMatch) {
-      const employee = employeeItem ? normalizeEmployeePortfolio(employeeItem) : null;
+      const employee = employeeItem
+        ? normalizeEmployeePortfolio(employeeItem)
+        : null;
 
       return {
-        ...baseContent,
-        title: employee?.fullName || baseContent.title,
-        description: getEmployeePosition(employee) || baseContent.description
+        ...base,
+        title: employee?.fullName || base.title,
+        description:
+          getEmployeePosition(employee) ||
+          base.description
       };
     }
+
+    /* DYNAMIC PAGE */
 
     if (pageMatch) {
       return {
-        ...baseContent,
-        title: getTranslatedField(pageItem, 'title', pageItem?.title) || baseContent.title,
-        description: buildBannerDescription(pageItem, baseContent.description)
+        ...base,
+        title:
+          getTranslatedField(
+            pageItem,
+            'title',
+            pageItem?.title
+          ) || base.title,
+        description: buildBannerDescription(
+          pageItem,
+          base.description
+        )
       };
     }
+
+    /* NEWS */
 
     if (newsMatch) {
       return {
-        ...baseContent,
-        title: getTranslatedField(newsItem, 'title', newsItem?.title) || baseContent.title,
-        description: buildBannerDescription(newsItem, baseContent.description)
+        ...base,
+        title:
+          getTranslatedField(
+            newsItem,
+            'title',
+            newsItem?.title
+          ) || base.title,
+        description: buildBannerDescription(
+          newsItem,
+          base.description
+        )
       };
     }
+
+    /* ANNOUNCEMENTS */
 
     if (announcementMatch) {
       return {
-        ...baseContent,
+        ...base,
         title:
-          getTranslatedField(announcementItem, 'title', announcementItem?.title) || baseContent.title,
-        description: buildBannerDescription(announcementItem, baseContent.description)
+          getTranslatedField(
+            announcementItem,
+            'title',
+            announcementItem?.title
+          ) || base.title,
+        description: buildBannerDescription(
+          announcementItem,
+          base.description
+        )
       };
     }
 
-    if (location.pathname.startsWith('/admission')) {
+    /* ADMISSION */
+
+    if (pathname.startsWith('/admission')) {
       return {
-        ...baseContent,
-        title: getLocalizedValue(admissionItem?.title, baseContent.title),
+        ...base,
+        title: getLocalizedValue(
+          admissionItem?.title,
+          base.title
+        ),
         description:
-          getHtmlExcerpt(getLocalizedValue(admissionItem?.content) || '', 170) ||
-          baseContent.description
+          getHtmlExcerpt(
+            getLocalizedValue(
+              admissionItem?.content
+            ) || '',
+            170
+          ) || base.description
       };
     }
 
-    if (facultyMatch || sectionMatch) {
-      const entityTitle =
-        getTranslatedField(academicEntity, 'title', academicEntity?.title) || baseContent.title;
-      const leaderLabel =
-        academicTexts.leaderInlineLabels?.[academicRouteType] ||
-        academicTexts.leaderInlineLabels?.faculty ||
-        '';
+    /* ACADEMIC PAGES */
 
-      return {
-        ...baseContent,
-        image: academicEntity?.bannerImage || baseContent.image,
-        title: entityTitle,
-        description: '',
-        layout: 'academic',
-        showEyebrow: false,
-        subtitle:
-          academicLeadEmployee && leaderLabel
-            ? `${leaderLabel}: ${academicLeadEmployee.fullName}`
-            : '',
-        breadcrumbs: [
-          {
-            label:
-              texts.academicBreadcrumbs?.[academicRouteType] ||
-              academicTexts.meta?.[academicRouteType]?.backLabel ||
-              '',
-            href:
-              academicRouteType === 'faculty'
-                ? '/faculties'
-                : academicRouteType === 'department'
-                  ? '/departments'
-                  : '/sections'
-          },
-          {
-            label: entityTitle
-          }
-        ]
-      };
-    }
-
-    if (departmentMatch) {
-      const normalizedFaculty = academicItem ? normalizeFacultyItem(academicItem) : null;
-      const department = normalizedFaculty
-        ? findDepartmentById(
-            [normalizedFaculty],
-            normalizedFaculty.id,
-            departmentMatch.params.departmentId
-          )
+    if (academicRouteType) {
+      const faculty = academicItem
+        ? normalizeFacultyItem(academicItem)
         : null;
-      const entityTitle = getTranslatedField(department, 'title', department?.title) || baseContent.title;
+
+      const entityTitle =
+        getTranslatedField(
+          academicEntity,
+          'title',
+          academicEntity?.title
+        ) || base.title;
+
       const leaderLabel =
-        academicTexts.leaderInlineLabels?.department ||
+        academicTexts.leaderInlineLabels?.[
+          academicRouteType
+        ] ||
         academicTexts.leaderInlineLabels?.faculty ||
         '';
 
+      const backLabel =
+        texts.academicBreadcrumbs?.[
+          academicRouteType
+        ] ||
+        academicTexts.meta?.[
+          academicRouteType
+        ]?.backLabel ||
+        '';
+
+      const backHref =
+        academicRouteType === 'faculty'
+          ? '/faculties'
+          : academicRouteType === 'department'
+            ? '/departments'
+            : '/sections';
+
       return {
-        ...baseContent,
-        image: department?.bannerImage || normalizedFaculty?.bannerImage || baseContent.image,
+        ...base,
         title: entityTitle,
+        image:
+          academicEntity?.bannerImage ||
+          faculty?.bannerImage ||
+          base.image,
         description: '',
         layout: 'academic',
         showEyebrow: false,
@@ -367,11 +624,8 @@ function InnerPageBanner() {
             : '',
         breadcrumbs: [
           {
-            label:
-              texts.academicBreadcrumbs?.department ||
-              academicTexts.meta?.department?.backLabel ||
-              '',
-            href: '/departments'
+            label: backLabel,
+            href: backHref
           },
           {
             label: entityTitle
@@ -380,94 +634,141 @@ function InnerPageBanner() {
       };
     }
 
-    return baseContent;
+    return base;
   }, [
-    academicItem,
-    admissionItem,
-    academicEntity,
-    academicLeadEmployee,
-    academicRouteType,
-    academicTexts,
-    announcementMatch,
-    announcementItem,
-    departmentMatch,
-    employeeItem,
-    employeeMatch,
-    facultyMatch,
-    location.pathname,
+    pathname,
+    texts,
+    menuMatch?.params?.id,
     menuItem,
-    menuMatch,
-    newsItem,
-    newsMatch,
+    employeeMatch?.params?.slug,
+    employeeItem,
+    pageMatch?.params?.id,
     pageItem,
-    pageMatch,
-    sectionMatch,
-    texts
+    newsMatch?.params?.id,
+    newsItem,
+    announcementMatch?.params?.id,
+    announcementItem,
+    admissionItem,
+    academicRouteType,
+    academicEntity,
+    academicItem,
+    academicTexts,
+    academicLeadEmployee
   ]);
 
-  if (!content) {
-    return null;
-  }
+  if (!content) return null;
+
+  /* ========================================
+     TEXT DISPLAY RULES
+  ======================================== */
+
+  const bannerTitle = String(
+    content.title || ''
+  ).trim();
+
+  const bannerDescription = String(
+    content.description || ''
+  ).trim();
+
+  const titleSizeClass = getTitleSizeClass(
+    bannerTitle
+  );
+
+  const showDescription = shouldShowDescription(
+    bannerTitle,
+    bannerDescription
+  );
+
+  const isAcademic =
+    content.layout === 'academic';
+
+  /* ========================================
+     RENDER
+  ======================================== */
 
   return (
     <section
-      className={`inner-page-banner${
-        content.layout === 'academic' ? ' inner-page-banner--academic' : ''
-      }`}
+      className={[
+        'inner-page-banner',
+        isAcademic
+          ? 'inner-page-banner--academic'
+          : ''
+      ].filter(Boolean).join(' ')}
+      aria-label={bannerTitle}
     >
       <div className="inner-page-banner-shell">
         <div className="inner-page-banner-card">
+
+          {/* BACKGROUND */}
+
           <img
-            src={content.image}
-            alt={content.title}
+            src={content.image || mainBanner}
+            alt=""
             className="inner-page-banner-image"
             fetchPriority="high"
           />
 
-          <div className="inner-page-banner-overlay" aria-hidden="true" />
+          <div
+            className="inner-page-banner-overlay"
+            aria-hidden="true"
+          />
+
+          {/* CONTENT */}
 
           <div className="inner-page-banner-content">
             <div className="inner-page-banner-content-shell">
+
               <div
-                className={`inner-page-banner-copy${
-                  content.layout === 'academic' ? ' inner-page-banner-copy--academic' : ''
-                }`}
+                className={[
+                  'inner-page-banner-copy',
+                  isAcademic
+                    ? 'inner-page-banner-copy--academic'
+                    : '',
+                  titleSizeClass
+                ].filter(Boolean).join(' ')}
               >
-                {content.showEyebrow !== false ? <span>{content.eyebrow}</span> : null}
-                <h1>{content.title}</h1>
 
-                {content.subtitle ? (
-                  <p className="inner-page-banner-subtitle">{content.subtitle}</p>
-                ) : null}
+                {/* EYEBROW */}
 
-                {content.description ? (
-                  <p className="inner-page-banner-description">{content.description}</p>
-                ) : null}
+                {content.showEyebrow !== false &&
+                  content.eyebrow && (
+                    <span className="inner-page-banner-eyebrow">
+                      {content.eyebrow}
+                    </span>
+                  )}
 
-                {content.breadcrumbs?.length ? (
-                  <div className="inner-page-banner-breadcrumbs" aria-label="Breadcrumb">
-                    {content.breadcrumbs.map((item, index) => (
-                      <React.Fragment key={`${item.label}-${index}`}>
-                        {index > 0 ? (
-                          <span className="inner-page-banner-breadcrumb-separator" aria-hidden="true">
-                            /
-                          </span>
-                        ) : null}
+                {/* TITLE */}
 
-                        {item.href ? (
-                          <AppLink href={item.href} className="inner-page-banner-breadcrumb-link">
-                            {item.label}
-                          </AppLink>
-                        ) : (
-                          <span className="inner-page-banner-breadcrumb-current">{item.label}</span>
-                        )}
-                      </React.Fragment>
-                    ))}
-                  </div>
-                ) : null}
+                <h1 className="inner-page-banner-title">
+                  {bannerTitle}
+                </h1>
+
+                {/* SUBTITLE */}
+
+                {content.subtitle && (
+                  <p className="inner-page-banner-subtitle">
+                    {content.subtitle}
+                  </p>
+                )}
+
+                {/* DESCRIPTION */}
+
+                {showDescription && (
+                  <p className="inner-page-banner-description">
+                    {bannerDescription}
+                  </p>
+                )}
+
+                {/* BREADCRUMBS */}
+
+                <BannerBreadcrumbs
+                  items={content.breadcrumbs}
+                />
+
               </div>
             </div>
           </div>
+
         </div>
       </div>
     </section>

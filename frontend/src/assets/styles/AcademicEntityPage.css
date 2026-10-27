@@ -2243,3 +2243,213 @@
   font-weight: 900 !important;
   text-decoration: none !important;
 }
+
+
+/* ============================================
+   FACULTY: INFORMATION ONLY
+   Asosiy qismda fakultet ma’lumotlari, o‘ngda sidebar.
+============================================ */
+.academic-entity-page--information-only {
+  padding: 36px 4% 76px;
+  background: var(--surface-soft, #f5f8fc);
+}
+.academic-entity-information-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  align-items: start;
+  gap: 26px;
+  max-width: 1340px;
+  margin: 0 auto;
+  min-width: 0;
+}
+.academic-entity-information-sidebar { min-width: 0; }
+.academic-entity-information-sidebar .academic-sidebar { top: 94px; }
+#faculty-information-content { scroll-margin-top: 110px; }
+.academic-entity-information-card {
+  padding: clamp(22px, 3.5vw, 44px);
+  background: #fff;
+  border: 1px solid var(--surface-border, #e1e8ef);
+  border-radius: 6px;
+  box-shadow: 0 14px 36px rgba(19, 58, 91, 0.055);
+  animation: academicInformationEnter .55s ease both;
+}
+.academic-entity-information-header {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin-bottom: 26px;
+  padding-bottom: 17px;
+  border-bottom: 1px solid var(--surface-border, #e1e8ef);
+}
+.academic-entity-information-accent {
+  flex: 0 0 4px;
+  width: 4px;
+  height: 27px;
+  border-radius: 4px;
+  background: var(--brand-primary, #087eae);
+}
+.academic-entity-information-header h2 {
+  margin: 0;
+  color: var(--heading-color, #183751);
+  font-size: clamp(20px, 2.3vw, 28px);
+  font-weight: 800;
+  line-height: 1.3;
+}
+.academic-entity-information-content {
+  min-width: 0;
+  color: var(--text-primary, #263d53);
+  font-size: 15px;
+  line-height: 1.9;
+  overflow-wrap: anywhere;
+}
+.academic-entity-information-content p,
+.academic-entity-information-content li {
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+}
+.academic-entity-information-content > :last-child { margin-bottom: 0; }
+.academic-entity-information-content img {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+.academic-entity-information-content iframe,
+.academic-entity-information-content video { max-width: 100%; }
+.academic-entity-information-content table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+}
+.academic-entity-information-section {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid var(--surface-border, #e1e8ef);
+}
+.academic-entity-information-section:first-of-type {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+.academic-entity-information-section h3 {
+  margin: 0 0 14px;
+  color: var(--heading-color, #183751);
+  font-size: clamp(17px, 1.7vw, 21px);
+}
+.academic-entity-information-links { margin-top: 28px; }
+@keyframes academicInformationEnter {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (max-width: 1000px) {
+  .academic-entity-information-shell { grid-template-columns: 1fr; }
+  .academic-entity-information-sidebar .academic-sidebar { position: static; }
+}
+@media (max-width: 640px) {
+  .academic-entity-page--information-only { padding: 20px 12px 48px; }
+  .academic-entity-information-card { padding: 20px 16px; }
+  .academic-entity-information-content { font-size: 13px; line-height: 1.8; }
+  .academic-entity-information-header { margin-bottom: 19px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .academic-entity-information-card { animation: none; }
+}
+
+/* Faculty CMS menu sections: fixed header offset and clear active state */
+.academic-entity-page--information-only .academic-entity-information-section {
+  scroll-margin-top: 115px;
+}
+.academic-entity-page--information-only .academic-entity-information-sidebar {
+  position: sticky;
+  top: 100px;
+  align-self: start;
+}
+.academic-entity-page--information-only .academic-entity-information-sidebar .academic-sidebar {
+  position: static;
+  max-height: none;
+  overflow: visible;
+}
+@media (max-width: 1000px) {
+  .academic-entity-page--information-only .academic-entity-information-sidebar {
+    position: static;
+  }
+}
+
+/* Only one selected faculty panel is shown at any given time. */
+.academic-entity-page--information-only .academic-entity-information-card {
+  min-height: 290px;
+}
+
+
+/* Faculty location trail: clickable breadcrumb above the active CMS title */
+.academic-entity-page--information-only .academic-entity-information-header {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 14px;
+}
+.faculty-breadcrumb {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.faculty-breadcrumb-link {
+  padding: 0;
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: #2563eb;
+  font: inherit;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+}
+.faculty-breadcrumb-link:hover { color: #1d4ed8; text-decoration: underline; text-underline-offset: 3px; }
+.faculty-breadcrumb-link:focus-visible { outline: 2px solid #2563eb; outline-offset: 3px; border-radius: 2px; }
+.faculty-breadcrumb-separator { color: #94a3b8; font-size: 15px; }
+.faculty-breadcrumb-current { color: #2563eb; font-weight: 650; }
+.faculty-heading-row { display: flex; align-items: center; gap: 12px; }
+.faculty-heading-row h2 { margin: 0; }
+@media (max-width: 640px) {
+  .faculty-breadcrumb { gap: 5px; font-size: 11px; }
+}
+
+/* RIGHT SIDEBAR SCROLL RESTORATION — faculty detail page */
+@media (min-width: 1001px) {
+  .academic-entity-page--information-only .academic-entity-information-sidebar {
+    position: sticky;
+    top: 100px;
+    align-self: start;
+    max-height: calc(100dvh - 116px);
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    overscroll-behavior-y: contain;
+    scrollbar-width: thin;
+    scrollbar-color: #b5cce2 transparent;
+  }
+
+  .academic-entity-page--information-only .academic-entity-information-sidebar::-webkit-scrollbar {
+    width: 5px;
+  }
+  .academic-entity-page--information-only .academic-entity-information-sidebar::-webkit-scrollbar-thumb {
+    background: #b5cce2;
+    border-radius: 6px;
+  }
+  .academic-entity-page--information-only .academic-entity-information-sidebar .academic-sidebar {
+    position: static;
+    max-height: none;
+    overflow: visible;
+  }
+}
+
+@media (max-width: 1000px) {
+  .academic-entity-page--information-only .academic-entity-information-sidebar {
+    position: static;
+    max-height: none;
+    overflow: visible;
+  }
+}

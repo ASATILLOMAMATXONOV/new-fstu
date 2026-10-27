@@ -272,9 +272,17 @@ function Navbar() {
   const isHomePage = location.pathname === '/';
   const headerRef = React.useRef(null);
   const navigationMeasureRef = React.useRef(null);
+  const [scrolled, setScrolled] = useState(() => typeof window !== 'undefined' && window.scrollY > 8);
   const [mobileNavigation, setMobileNavigation] = useState(() =>
     typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches
   );
+
+  useEffect(() => {
+    const updateScroll = () => setScrolled(window.scrollY > 8);
+    updateScroll();
+    window.addEventListener('scroll', updateScroll, { passive: true });
+    return () => window.removeEventListener('scroll', updateScroll);
+  }, []);
 
   React.useLayoutEffect(() => {
     if (!isHomePage || !headerRef.current) return undefined;
@@ -607,7 +615,7 @@ function Navbar() {
     setLanguageOpen(false);
   };
 
-  const headerClassName = `fstu-header${isAcademicDetailPage ? ' fstu-header--overlay' : ''}${isHomePage ? ' fstu-header--home' : ''}`;
+  const headerClassName = `fstu-header${isAcademicDetailPage ? ' fstu-header--overlay' : ''}${isHomePage ? ' fstu-header--home' : ''}${scrolled ? ' fstu-header--scrolled' : ''}`;
 
   return (
     <>

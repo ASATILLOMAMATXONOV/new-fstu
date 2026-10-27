@@ -33,7 +33,7 @@
 
 .fstu-header--home:has(~ .home-page .hero-slider) .brand-logo-wrap::after,
 .fstu-header--home:has(~ .home-page .hero-slider) .brand:hover .brand-logo-wrap::after {
-  background: var(--home-nav-ink);
+  background: #0d336b;
   filter: none;
 }
 
@@ -47,13 +47,14 @@
 
 .fstu-header--home:has(~ .home-page .hero-slider) .topbar-entry,
 .fstu-header--home:has(~ .home-page .hero-slider) .lang-btn {
-  color: var(--home-nav-muted);
+  color: var(--header-chrome-color, var(--home-nav-muted));
   font-size: 11px;
 }
 
 .fstu-header--home:has(~ .home-page .hero-slider) .fstu-topbar,
-.fstu-header--home:has(~ .home-page .hero-slider) .fstu-topbar * {
-  color: var(--home-nav-ink);
+.fstu-header--home:has(~ .home-page .hero-slider) .topbar-entry,
+.fstu-header--home:has(~ .home-page .hero-slider) .lang-btn {
+  color: var(--header-chrome-color, var(--home-nav-ink));
 }
 
 .fstu-header--home:has(~ .home-page .hero-slider) .topbar-pipe {
@@ -137,7 +138,7 @@
   }
 
   .fstu-header--home:not(.fstu-header--mobile):has(~ .home-page .hero-slider) .nav-menu > .nav-item > .nav-link-group > :is(.nav-link, .nav-caret-btn) {
-    color: var(--home-nav-ink);
+    color: #0d336b;
   }
 
   .fstu-header--home:not(.fstu-header--mobile):has(~ .home-page .hero-slider) .nav-menu > .nav-item > .nav-link-group > .nav-link {
@@ -395,4 +396,50 @@
   .fstu-header--home:has(~ .home-page .hero-slider) .lang-btn {
     font-size: 10px;
   }
+}
+
+/* Keep the header distinct from the page while it is pinned during scrolling. */
+.fstu-header.fstu-header--scrolled,
+.fstu-header--home.fstu-header--scrolled:has(~ .home-page .hero-slider) {
+  --header-chrome-color: #ffffff;
+  background: #ffffff;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.28);
+}
+
+.fstu-header--scrolled .fstu-navbar,
+.fstu-header--scrolled .fstu-topbar {
+  background: transparent;
+}
+
+.fstu-header--scrolled .fstu-navbar {
+  border-bottom-color: rgba(255, 255, 255, 0.16);
+}
+
+.fstu-header--scrolled .topbar-entry,
+.fstu-header--scrolled .lang-btn,
+.fstu-header--scrolled:not(.fstu-header--mobile) .nav-menu > .nav-item > .nav-link-group > :is(.nav-link, .nav-caret-btn) {
+   color: #0d336b;
+}
+
+.fstu-header--scrolled .brand-logo-wrap::after,
+.fstu-header--scrolled .brand:hover .brand-logo-wrap::after {
+  background: #0d336b;
+}
+
+.fstu-header--scrolled .topbar-pipe {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.fstu-header--home.fstu-header--scrolled:has(~ .home-page .hero-slider) .nav-menu.active {
+  background: #f8fafc;
+}
+
+.fstu-header--home.fstu-header--scrolled:has(~ .home-page .hero-slider) .topbar-pipe {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.fstu-header--home.fstu-header--scrolled:has(~ .home-page .hero-slider) .mobile-btn {
+  background: #243650;
+  border-color: rgba(255, 255, 255, 0.24);
+  color: #ffffff;
 }
