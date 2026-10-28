@@ -2453,3 +2453,164 @@
     overflow: visible;
   }
 }
+
+/* =========================================================
+   FSTU — FACULTY + DEPARTMENT UNIFIED DESIGN
+   Mavjud CSS oxiriga moslab qo‘shilgan. Har ikkala sahifa
+   bir xil information-shell, breadcrumb va kontent dizaynida.
+   ========================================================= */
+.academic-entity-page--unified {
+  --unified-primary: var(--brand-primary, #215bc0);
+  --unified-border: var(--surface-border, #e4eaf2);
+  --unified-heading: var(--heading-color, #1b304d);
+  --unified-muted: var(--text-secondary, #7d8da3);
+  padding: 36px 4% 76px;
+  background: var(--surface-soft, #f5f8fc);
+}
+.academic-entity-page--unified .academic-entity-information-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 26px;
+  align-items: start;
+  width: 100%;
+  max-width: 1340px;
+  min-width: 0;
+  margin: 0 auto;
+}
+.academic-entity-page--unified .academic-entity-information-card {
+  min-width: 0;
+  min-height: 290px;
+  padding: clamp(22px, 3.5vw, 44px);
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid var(--unified-border);
+  border-radius: 6px;
+  box-shadow: 0 14px 36px rgba(19,58,91,.055);
+  animation: academicUnifiedEnter .38s ease both;
+}
+.academic-entity-page--unified .academic-entity-information-header {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 14px;
+  margin-bottom: 26px;
+  padding: 0 0 18px;
+  border-bottom: 1px solid var(--unified-border);
+  background: transparent;
+}
+.academic-entity-page--unified .faculty-breadcrumb {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.7;
+}
+.academic-entity-page--unified .faculty-breadcrumb-link {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--unified-primary);
+  font: inherit;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+}
+.academic-entity-page--unified .faculty-breadcrumb-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.academic-entity-page--unified .faculty-breadcrumb-entity { cursor: default; }
+.academic-entity-page--unified .faculty-breadcrumb-separator { color: #9eabc0; }
+.academic-entity-page--unified .faculty-breadcrumb-current {
+  color: var(--unified-primary);
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+.academic-entity-page--unified .faculty-heading-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-width: 0;
+}
+.academic-entity-page--unified .academic-entity-information-accent {
+  width: 4px;
+  min-height: 27px;
+  height: auto;
+  align-self: stretch;
+  flex: 0 0 4px;
+  background: var(--unified-primary);
+  border-radius: 4px;
+}
+.academic-entity-page--unified .faculty-heading-row h2 {
+  margin: 0;
+  color: var(--unified-heading);
+  font-size: clamp(20px, 2.3vw, 28px);
+  font-weight: 800;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+.academic-entity-page--unified .academic-entity-information-content {
+  min-width: 0;
+  padding: 0;
+  font-size: 15px;
+  line-height: 1.9;
+  color: var(--text-primary, #263d53);
+  overflow-wrap: anywhere;
+}
+.academic-entity-page--unified .academic-unified-panel-content {
+  min-width: 0;
+  padding: 0;
+}
+.academic-entity-page--unified .academic-unified-panel-content .academic-entity-content-surface {
+  max-width: 100%;
+  min-width: 0;
+}
+.academic-entity-page--unified .academic-entity-information-card img,
+.academic-entity-page--unified .academic-entity-information-card video,
+.academic-entity-page--unified .academic-entity-information-card iframe { max-width: 100%; }
+.academic-entity-page--unified .academic-entity-information-card table {
+  max-width: 100%;
+}
+.academic-entity-page--unified .academic-entity-information-links {
+  margin-top: 24px;
+  padding: 0;
+}
+.academic-entity-page--unified .academic-entity-information-sidebar {
+  min-width: 0;
+  align-self: start;
+}
+.academic-entity-page--unified .academic-entity-information-sidebar .academic-sidebar {
+  max-height: none;
+}
+@keyframes academicUnifiedEnter {
+  from { opacity: 0; transform: translateY(9px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (max-width: 1000px) {
+  .academic-entity-page--unified .academic-entity-information-shell {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+  }
+  .academic-entity-page--unified .academic-entity-information-sidebar {
+    position: static;
+    max-height: none;
+    overflow: visible;
+  }
+}
+@media (max-width: 640px) {
+  .academic-entity-page--unified { padding: 20px 12px 48px; }
+  .academic-entity-page--unified .academic-entity-information-card { padding: 20px 16px; }
+  .academic-entity-page--unified .academic-entity-information-header {
+    margin-bottom: 19px;
+    padding-bottom: 15px;
+  }
+  .academic-entity-page--unified .faculty-breadcrumb { font-size: 11px; }
+  .academic-entity-page--unified .faculty-heading-row h2 { font-size: 20px; }
+  .academic-entity-page--unified .academic-entity-information-content { font-size: 13px; line-height: 1.8; }
+  .academic-entity-page--unified .academic-unified-panel-content .academic-entity-content-surface { padding: 14px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .academic-entity-page--unified .academic-entity-information-card { animation: none; }
+}

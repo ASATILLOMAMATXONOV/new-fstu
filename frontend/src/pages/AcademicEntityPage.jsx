@@ -1304,86 +1304,127 @@ const renderSidebarStack = () => (
     : texts.activeMenuDescription;
   const showPanelHead = !showTopMenuTabs && !isFacultyShowcase && (!!selectedPanel || pageType !== 'faculty');
 
-  // Fakultet: faqat tanlangan menyuning kontenti ko‘rsatiladi.
-  // CMS orqali biriktirilgan menyular o‘ngdagi AcademicSidebar'da qoladi.
-  if (pageType === 'faculty') {
-    const facultyContent = getTranslatedField(entity, 'content') || '';
+  // Fakultet va kafedra sahifalarida yagona ko‘rinish va navigatsiya.
+  // CMS panellari, maxsus bo‘limlar hamda xodimlar saqlanadi.
+  if (pageType === 'faculty' || pageType === 'department') {
+    const isFaculty = pageType === 'faculty';
+    const aboutKey = 'page-overview';
+    const aboutTitle = isFaculty
+      ? texts.facultyAboutTitle
+      : texts.defaultTabTitle;
+
     const availableMenus = configuredPanels.filter((panel) => !isLeaderPanel(panel));
-    const activeMenu = availableMenus.find((panel) => panel.key === activePanelKey);
+    const menuPanels = [
+      ...availableMenus,
+      ...(autoDirectionsPanel ? [autoDirectionsPanel] : [])
+    ];
+    const activeMenu = menuPanels.find((panel) => panel.key === activePanelKey) || null;
     const showingAbout = !activeMenu;
-    const displayedTitle = showingAbout ? texts.facultyAboutTitle : activeMenu.title;
+    const displayedTitle = showingAbout ? aboutTitle : activeMenu.title;
     const displayedContent = showingAbout
-      ? facultyContent
+      ? getTranslatedField(entity, 'content') || ''
       : getTranslatedField(activeMenu, 'content') || '';
-    const displayedFiles = showingAbout ? [] : (
-      Array.isArray(activeMenu.files) ? activeMenu.files : []
-    );
+    const displayedFiles = !showingAbout && Array.isArray(activeMenu.files)
+      ? activeMenu.files
+      : [];
+    const hasSpecialPanel = Boolean(activeMenu && [
+      'departments', 'sections', 'employees', 'directions', 'faculty'
+    ].includes(activeMenu.variant));
 
     const sidebarItems = [
       {
-        key: 'faculty-about',
-        label: texts.facultyAboutTitle,
-        isActive: showingAbout,
-        onClick: () => setActivePanelKey('page-overview')
+        key: aboutKey,
+        label: aboutTitle,
+        onClick: () => setActivePanelKey(aboutKey)
       },
-      ...availableMenus.map((panel) => ({
+      ...menuPanels.map((panel) => ({
         key: panel.key,
         label: panel.title,
-        isActive: activeMenu?.key === panel.key,
         onClick: () => setActivePanelKey(panel.key)
       }))
     ];
 
+    const currentSidebarKey = showingAbout ? aboutKey : activeMenu.key;
+    const parentFacultyName = getTranslatedField(faculty, 'title', faculty?.title) || 'Fakultet';
+
     return (
-      <main className="academic-entity-page academic-entity-page--faculty academic-entity-page--information-only">
+      <main className={`academic-entity-page academic-entity-page--${pageType} academic-entity-page--information-only academic-entity-page--unified`}>
         <div className="academic-entity-information-shell">
-          <article className="academic-entity-information-card" key={showingAbout ? 'faculty-about' : activeMenu.key}>
+          <article
+            className="academic-entity-information-card"
+            key={`${pageType}-${currentSidebarKey}`}
+          >
             <header className="academic-entity-information-header">
               <nav className="faculty-breadcrumb" aria-label="Sahifa navigatsiyasi">
-                <Link className="faculty-breadcrumb-link" to={meta.backTo}>
-                  {meta.backLabel || 'Fakultetlar'}
+                <Link className="faculty-breadcrumb-link" to="/faculties">
+                  {texts.meta?.faculty?.backLabel || 'Fakultetlar'}
                 </Link>
                 <span className="faculty-breadcrumb-separator" aria-hidden="true">›</span>
-                {showingAbout ? (
-                  <span className="faculty-breadcrumb-current" aria-current="page">
-                    {texts.facultyAboutTitle}
-                  </span>
-                ) : (
+
+                {!isFaculty ? (
+                  <>
+                    <Link
+                      className="faculty-breadcrumb-link"
+                      to={`/faculties/${contextFacultyId}`}
+                    >
+                      {parentFacultyName}
+                    </Link>
+                    <span className="faculty-breadcrumb-separator" aria-hidden="true">›</span>
+                    <span className="faculty-breadcrumb-link faculty-breadcrumb-entity">
+                      {getTranslatedField(entity, 'title', entity?.title)}
+                    </span>
+                    <span className="faculty-breadcrumb-separator" aria-hidden="true">›</span>
+                  </>
+                ) : null}
+
+                {!showingAbout ? (
                   <>
                     <button
                       type="button"
                       className="faculty-breadcrumb-link"
-                      onClick={() => setActivePanelKey('page-overview')}
+                      onClick={() => setActivePanelKey(aboutKey)}
                     >
-                      {texts.facultyAboutTitle}
+                      {aboutTitle}
                     </button>
                     <span className="faculty-breadcrumb-separator" aria-hidden="true">›</span>
-                    <span className="faculty-breadcrumb-current" aria-current="page">
-                      {displayedTitle}
-                    </span>
                   </>
-                )}
+                ) : null}
+
+                <span className="faculty-breadcrumb-current" aria-current="page">
+                  {displayedTitle}
+                </span>
               </nav>
+
               <div className="faculty-heading-row">
                 <span className="academic-entity-information-accent" aria-hidden="true" />
                 <h2>{displayedTitle}</h2>
               </div>
             </header>
 
-            {stripHtml(displayedContent) ? (
-              <div
-                className="academic-entity-information-content academic-entity-rich"
-                dangerouslySetInnerHTML={createSafeMarkup(displayedContent)}
-              />
-            ) : null}
+            {hasSpecialPanel ? (
+              <div className="academic-unified-panel-content">
+                {renderPanelContent(activeMenu)}
+              </div>
+            ) : (
+              <>
+                {stripHtml(displayedContent) ? (
+                  <div
+                    className="academic-entity-information-content academic-entity-rich"
+                    dangerouslySetInnerHTML={createSafeMarkup(displayedContent)}
+                  />
+                ) : null}
 
-            {displayedFiles.length > 0 ? (
-              <AttachedFilesList items={displayedFiles} />
-            ) : null}
+                {displayedFiles.length > 0 ? (
+                  <AttachedFilesList items={displayedFiles} />
+                ) : null}
 
-            {!stripHtml(displayedContent) && displayedFiles.length === 0 ? (
-              <div className="academic-entity-empty-state">{texts.emptyFacultyContent}</div>
-            ) : null}
+                {!stripHtml(displayedContent) && displayedFiles.length === 0 ? (
+                  <div className="academic-entity-empty-state">
+                    {isFaculty ? texts.emptyFacultyContent : texts.emptyPageContent}
+                  </div>
+                ) : null}
+              </>
+            )}
 
             {showingAbout && entity?.linkTable?.length > 0 ? (
               <div className="academic-entity-information-links">
@@ -1396,14 +1437,15 @@ const renderSidebarStack = () => (
             <AcademicSidebar
               title={texts.pageMenuTitle}
               items={sidebarItems}
-              activeKey={showingAbout ? 'faculty-about' : activeMenu.key}
+              activeKey={currentSidebarKey}
               useProvidedItemsOnly
               showSearch={false}
               showLeaderCard
               showMenuSection
               showAnnouncements
-              pageType="faculty"
+              pageType={pageType}
               facultyId={contextFacultyId}
+              departmentId={contextDepartmentId}
               leader={leadEmployee}
               leaderTitle={leaderCardTitle}
             />
