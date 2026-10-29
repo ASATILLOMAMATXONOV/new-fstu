@@ -24,7 +24,9 @@ import Footer from './components/layout/Footer';
 import InnerPageBanner from './components/layout/InnerPageBanner';
 import SeasonalEffectsOverlay from './components/layout/SeasonalEffectsOverlay';
 import ThemeColorSwitcher from './components/layout/ThemeColorSwitcher';
+
 const RobotAssistant = React.lazy(() => import('./components/assistant/RobotAssistant'));
+
 
 const RektorMurojaati = React.lazy(() => import('./components/layout/RektorMurojaati'));
 const StudentAnnouncementStats = React.lazy(() => import('./components/layout/StudentAnnouncementStats'));
@@ -48,6 +50,7 @@ const MenuContentPage = React.lazy(() => import('./pages/MenuContentPage'));
 const EmployeeProfilePage = React.lazy(() => import('./pages/EmployeeProfilePage'));
 const AcademicEntityPage = React.lazy(() => import('./pages/AcademicEntityPage'));
 const AdmissionPage = React.lazy(() => import('./pages/AdmissionPage'));
+const JournalIssuesPage = React.lazy(() => import('./pages/JournalIssuesPage'));
 
 function ScrollManager() {
   const location = useLocation();
@@ -98,18 +101,23 @@ function HomePage() {
 
 
       <div className="app-content-shell">
+
         <Suspense fallback={<SectionFallback minHeight={340} />}>
-          <StudentAnnouncementStats />
+          //  Student Announcement Stats Section
+          <StudentAnnouncementStats /> 
         </Suspense>
 
 
         <Suspense fallback={<SectionFallback minHeight={280} />}>
+        //  Home Partners Section
           <HomePartnersSection />
         </Suspense>
 
         <Suspense fallback={<SectionFallback minHeight={420} />}>
+        //  Statistics Section
           <StatisticsSection />
         </Suspense>
+
       </div>
     </main>
   );
@@ -127,6 +135,7 @@ function App() {
 
             <Route path="/" element={<HomePage />} />
 
+            //  ----  Partners Page Route  ------------ 
           <Route
             path="/partners"
             element={
@@ -136,6 +145,7 @@ function App() {
             }
           />
 
+          //  ----  News Page Route  ------------
           <Route
             path="/news"
             element={
@@ -145,6 +155,7 @@ function App() {
             }
           />
 
+            //  ----  News Detail Page Route  ------------
           <Route
             path="/news/page/:id"
             element={
@@ -154,6 +165,7 @@ function App() {
             }
           />
 
+            //  ----  Rektor Page Route  ------------
           <Route
             path="/rektor"
             element={
@@ -163,6 +175,7 @@ function App() {
             }
           />
 
+          //  ----  Faculties Page Route  ------------
           <Route
             path="/faculties"
             element={
@@ -172,6 +185,7 @@ function App() {
             }
           />
 
+            //  ----  Faculty Detail Page Route  ------------
           <Route
             path="/faculties/:id"
             element={
@@ -181,7 +195,7 @@ function App() {
             }
           />
 
-          
+          //  ----  Departments Page Route  ------------  
 
           <Route
             path="/departments"
@@ -192,6 +206,7 @@ function App() {
             }
           />
 
+              //  ----  Department Detail Page Route  ------------
           <Route
             path="/departments/:facultyId/:departmentId"
             element={
@@ -201,6 +216,7 @@ function App() {
             }
           />
 
+            //  ----  Sections Page Route  ------------
           <Route
             path="/sections"
             element={
@@ -210,6 +226,7 @@ function App() {
             }
           />
 
+            //  ----  Section Detail Page Route  ------------
           <Route
             path="/sections/:id"
             element={
@@ -219,6 +236,7 @@ function App() {
             }
           />
 
+            //  ----  Announcements Page Route  ------------  
           <Route
             path="/announcements"
             element={
@@ -228,6 +246,7 @@ function App() {
             }
           />
 
+            //  ----  Announcement Detail Page Route  ------------
           <Route
             path="/announcements/page/:id"
             element={
@@ -237,6 +256,7 @@ function App() {
             }
           />
 
+            //  ----  Students Page Route  ------------
           <Route
             path="/students"
             element={
@@ -255,6 +275,7 @@ function App() {
             }
           />
 
+          //  ----  Admission Page Route  ------------
           <Route
             path="/admission"
             element={
@@ -264,6 +285,8 @@ function App() {
             }
           />
 
+
+            //  ----  Dynamic Page Route  ------------
           <Route
             path="/pages/:id"
             element={
@@ -272,7 +295,8 @@ function App() {
               </Suspense>
             }
           />
-
+          
+            //  ----  Menu Content Page Route  ------------
           <Route
             path="/menu/:id"
             element={
@@ -282,6 +306,7 @@ function App() {
             }
           />
 
+            //  ----  Employee Profile Page Route  ------------
           <Route
             path="/employees/:slug"
             element={
@@ -291,7 +316,25 @@ function App() {
             }
           />
 
+
+            //  ----  Journal Issues Page Route  ------------
+          <Route
+            path="/journals"
+            element={
+              <Suspense fallback={<SectionFallback minHeight={960} />}> 
+               <JournalIssuesPage />
+              </Suspense>
+            }
+          />
+
+
+
+
+
+
+            //  ----  Catch-all Route for Undefined Paths  ------------
             <Route path="*" element={<Navigate to="/" replace />} />
+
           </Route>
         </Routes>
       </BrowserRouter>

@@ -1,0 +1,1055 @@
+
+/* ============================================
+   JOURNAL ISSUES PAGE
+   Clean • Modern • Responsive
+============================================ */
+
+.jar-page {
+  --jar-primary: #173b54;
+  --jar-accent: #087e90;
+  --jar-hover: #00f8ff;
+  --jar-text: #23394b;
+  --jar-muted: #7c8b99;
+  --jar-border: #e6ebef;
+  --jar-white: #ffffff;
+
+  width: 100%;
+  min-height: 100vh;
+  padding: 36px 24px 80px;
+  background: #f8fafb;
+  color: var(--jar-text);
+}
+
+.jar-page *,
+.jar-page *::before,
+.jar-page *::after {
+  box-sizing: border-box;
+}
+
+.jar-layout {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 260px;
+  align-items: start;
+  gap: 25px;
+}
+
+.jar-main {
+  width: 100%;
+  min-width: 0;
+}
+
+/* ============================================
+   HEADER
+============================================ */
+
+.jar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 24px;
+}
+
+.jar-header h1 {
+  margin: 0 0 9px;
+  color: var(--jar-primary);
+  font-size: clamp(26px, 2.7vw, 35px);
+  font-weight: 750;
+  letter-spacing: -0.7px;
+  line-height: 1.25;
+}
+
+.jar-header p {
+  margin: 0;
+  color: var(--jar-muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.jar-header-count {
+  flex-shrink: 0;
+  padding: 8px 13px;
+  border: 1px solid var(--jar-border);
+  border-radius: 8px;
+  background: var(--jar-white);
+  color: #64788a;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* ============================================
+   CONTENT
+============================================ */
+
+.jar-content {
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  background: var(--jar-white);
+  border: 1px solid var(--jar-border);
+  border-radius: 14px;
+}
+
+/* ============================================
+   FILTER TOOLBAR
+============================================ */
+
+.jar-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--jar-border);
+}
+
+.jar-tabs {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+  max-width: 100%;
+  padding: 4px;
+  background: #f5f7f9;
+  border-radius: 9px;
+}
+
+.jar-tab {
+  min-height: 38px;
+  padding: 10px 14px;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  background: transparent;
+  color: #66798a;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.jar-tab:hover {
+  color: var(--jar-primary);
+  background: #e9f2f5;
+}
+
+.jar-tab.active {
+  color: var(--jar-primary);
+  background: #ffffff;
+  border-color: #e4eaf0;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+/* ============================================
+   SEARCH
+============================================ */
+
+.jar-search {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  height: 42px;
+  max-width: 100%;
+  padding: 0 12px;
+  border: 1px solid var(--jar-border);
+  border-radius: 8px;
+  background: #ffffff;
+  color: #8a9baa;
+
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.jar-search:focus-within {
+  border-color: var(--jar-accent);
+  box-shadow: 0 0 0 3px rgba(8, 126, 144, 0.08);
+}
+
+.jar-search svg {
+  flex-shrink: 0;
+}
+
+.jar-search input {
+  width: 190px;
+  min-width: 0;
+  height: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--jar-text);
+  font-family: inherit;
+  font-size: 12px;
+}
+
+.jar-search input::placeholder {
+  color: #9aa8b3;
+}
+
+/* ============================================
+   YEAR SECTIONS
+============================================ */
+
+.jar-year-list {
+  padding: 0 20px 25px;
+}
+
+.jar-year-group {
+  min-width: 0;
+  padding-top: 24px;
+  animation: jarFadeUp 0.45s ease both;
+}
+
+.jar-year-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.jar-year-heading h2 {
+  margin: 0;
+  color: var(--jar-primary);
+  font-size: 22px;
+  font-weight: 750;
+  line-height: 1.3;
+}
+
+.jar-year-total {
+  color: var(--jar-muted);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Yillar orasidagi chiziq */
+
+.jar-year-divider {
+  display: block;
+  height: 1px;
+  margin: 32px 0 3px;
+  border: none;
+  background: #dfe7ec;
+}
+
+/* ============================================
+   JOURNAL TABLE
+============================================ */
+
+.jar-table-wrapper {
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--jar-border);
+  border-radius: 10px;
+}
+
+.jar-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  table-layout: fixed;
+  text-align: left;
+}
+
+/* Uchta ustun */
+
+.jar-table th:nth-child(1) {
+  width: 52%;
+}
+
+.jar-table th:nth-child(2) {
+  width: 17%;
+}
+
+.jar-table th:nth-child(3) {
+  width: 31%;
+}
+
+.jar-table th {
+  padding: 14px 16px;
+  background: #f7f9fa;
+  color: #738697;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.jar-table td {
+  padding: 16px;
+  border-top: 1px solid var(--jar-border);
+  vertical-align: middle;
+  overflow-wrap: anywhere;
+}
+
+.jar-table-row {
+  transition: background 0.25s ease;
+  animation: jarRowAppear 0.45s ease both;
+  animation-delay: var(--jar-delay, 0ms);
+}
+
+.jar-table-row:hover {
+  background: #f6fafb;
+}
+
+/* ============================================
+   JOURNAL IMAGE & DETAILS
+============================================ */
+
+.jar-journal {
+  display: flex;
+  align-items: center;
+  gap: 19px;
+  min-width: 0;
+  width: 100%;
+}
+
+/* Kattalashtirilgan muqova */
+
+.jar-cover {
+  flex: 0 0 115px;
+  width: 115px;
+  height: 158px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 4px;
+  overflow: hidden;
+
+  background: #f8fafc;
+  border: 1px solid #e4eaee;
+  border-radius: 7px;
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+/* Muqova kesilmaydi */
+
+.jar-cover img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+.jar-table-row:hover .jar-cover {
+  transform: translateY(-4px) scale(1.025);
+  box-shadow: 0 9px 22px rgba(20, 50, 70, 0.12);
+}
+
+/* ============================================
+   IMAGE FALLBACK
+============================================ */
+
+.jar-cover-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+
+  width: 100%;
+  height: 100%;
+  padding: 14px 7px;
+
+  background: linear-gradient(
+    150deg,
+    #163f5a,
+    #388496
+  );
+  color: white;
+  text-align: center;
+}
+
+.jar-cover-placeholder span {
+  font-size: 11px;
+  letter-spacing: 1px;
+}
+
+.jar-cover-placeholder strong {
+  font-family: Georgia, serif;
+  font-size: 13px;
+  line-height: 1.3;
+}
+
+.jar-cover-placeholder small {
+  font-size: 11px;
+}
+
+/* ============================================
+   JOURNAL TEXT
+============================================ */
+
+.jar-journal-details {
+  min-width: 0;
+  flex: 1;
+}
+
+.jar-journal-details h3 {
+  margin: 0 0 9px;
+  color: var(--jar-text);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.jar-journal-details p {
+  margin: 0 0 8px;
+  color: #677c8d;
+  font-size: 13px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.jar-journal-details > span {
+  color: #0d336b;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+/* ============================================
+   ISSUE TYPE
+============================================ */
+
+.jar-type {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  max-width: 100%;
+  padding: 8px 10px;
+  border-radius: 6px;
+
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.jar-type-regular {
+  background: #edf5f6;
+  color: #427b88;
+}
+
+.jar-type-special {
+  background: #f2eff7;
+  color: #806e9a;
+}
+
+/* ============================================
+   PDF ACTION BUTTONS
+============================================ */
+
+.jar-pdf-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.jar-pdf-actions a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  min-height: 38px;
+  padding: 10px 13px;
+
+  border-radius: 7px;
+  text-decoration: none;
+  white-space: nowrap;
+
+  font-size: 11px;
+  font-weight: 650;
+
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.jar-pdf-open {
+  color: #1a73e8;
+  background: #f2f6f8;
+  border: 1px solid #e5ecef;
+}
+
+.jar-pdf-open:hover {
+  color: var(--jar-accent);
+  background: #eaf4f6;
+  border-color: var(--jar-hover);
+}
+
+.jar-pdf-download {
+  color: #1a73e8;
+  background: #ffffff;
+  border: 1px solid #cbdce7;
+}
+
+.jar-pdf-download svg {
+  flex-shrink: 0;
+  transition: transform 0.25s ease;
+}
+
+.jar-pdf-download:hover {
+  color: #ffffff;
+  background: #11536a;
+  border-color: var(--jar-hover);
+  transform: translateY(-2px);
+}
+
+.jar-pdf-download:hover svg {
+  transform: translateY(3px);
+}
+
+.jar-pdf-empty {
+  color: #98a5af;
+  font-size: 11px;
+}
+
+/* ============================================
+   RIGHT SIDEBAR
+============================================ */
+
+.jar-sidebar {
+  position: sticky;
+  top: 100px;
+  min-width: 0;
+  max-height: calc(100vh - 115px);
+
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  scrollbar-width: thin;
+  scrollbar-color: #dce5eb transparent;
+}
+
+/* ============================================
+   EMPTY STATE
+============================================ */
+
+.jar-empty {
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.jar-empty h3 {
+  margin: 0 0 9px;
+  color: var(--jar-text);
+  font-size: 17px;
+}
+
+.jar-empty p {
+  margin: 0;
+  color: var(--jar-muted);
+  font-size: 12px;
+}
+
+/* ============================================
+   ANIMATIONS
+============================================ */
+
+@keyframes jarFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes jarRowAppear {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================
+   LAPTOP — 1200px
+============================================ */
+
+@media (max-width: 1200px) {
+  .jar-page {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .jar-layout {
+    grid-template-columns: minmax(0, 1fr) 235px;
+    gap: 18px;
+  }
+
+  .jar-table th,
+  .jar-table td {
+    padding: 12px;
+  }
+
+  .jar-table th:nth-child(1) {
+    width: 47%;
+  }
+
+  .jar-table th:nth-child(2) {
+    width: 20%;
+  }
+
+  .jar-table th:nth-child(3) {
+    width: 33%;
+  }
+
+  .jar-journal {
+    gap: 13px;
+  }
+
+  .jar-cover {
+    flex-basis: 95px;
+    width: 95px;
+    height: 132px;
+  }
+
+  .jar-journal-details h3 {
+    font-size: 14px;
+  }
+
+  .jar-journal-details p {
+    font-size: 12px;
+  }
+
+  .jar-pdf-actions a {
+    padding: 9px 10px;
+  }
+}
+
+/* ============================================
+   SMALL LAPTOP — 1024px
+============================================ */
+
+@media (max-width: 1024px) {
+  .jar-layout {
+    grid-template-columns: minmax(0, 1fr) 210px;
+    gap: 15px;
+  }
+
+  .jar-year-list {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .jar-table th:nth-child(1) {
+    width: 46%;
+  }
+
+  .jar-table th:nth-child(2) {
+    width: 22%;
+  }
+
+  .jar-table th:nth-child(3) {
+    width: 32%;
+  }
+
+  .jar-cover {
+    flex-basis: 80px;
+    width: 80px;
+    height: 112px;
+  }
+
+  .jar-journal {
+    gap: 10px;
+  }
+
+  .jar-type {
+    font-size: 10px;
+    padding: 7px 8px;
+  }
+
+  .jar-pdf-actions {
+    gap: 5px;
+  }
+
+  .jar-pdf-actions a {
+    padding: 8px;
+    font-size: 10px;
+  }
+}
+
+/* ============================================
+   TABLET — 900px
+============================================ */
+
+@media (max-width: 900px) {
+  .jar-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+
+  .jar-sidebar {
+    position: static;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .jar-cover {
+    flex-basis: 105px;
+    width: 105px;
+    height: 145px;
+  }
+
+  .jar-journal {
+    gap: 16px;
+  }
+
+  .jar-table th:nth-child(1) {
+    width: 52%;
+  }
+
+  .jar-table th:nth-child(2) {
+    width: 18%;
+  }
+
+  .jar-table th:nth-child(3) {
+    width: 30%;
+  }
+}
+
+/* ============================================
+   MOBILE — 600px
+   TABLE -> CARDS
+============================================ */
+
+@media (max-width: 600px) {
+  .jar-page {
+    padding: 24px 12px 60px;
+  }
+
+  .jar-header {
+    margin-bottom: 20px;
+  }
+
+  .jar-header h1 {
+    font-size: 27px;
+  }
+
+  .jar-header p {
+    font-size: 12px;
+  }
+
+  .jar-header-count {
+    padding: 7px 10px;
+    font-size: 11px;
+  }
+
+  .jar-content {
+    border-radius: 11px;
+  }
+
+  /* Filters */
+
+  .jar-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 11px;
+    padding: 12px;
+  }
+
+  .jar-tabs {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: 100%;
+    gap: 3px;
+  }
+
+  .jar-tab {
+    min-width: 0;
+    padding: 10px 4px;
+    font-size: 10px;
+    line-height: 1.4;
+  }
+
+  .jar-search {
+    width: 100%;
+  }
+
+  .jar-search input {
+    flex: 1;
+    width: 100%;
+  }
+
+  /* Year groups */
+
+  .jar-year-list {
+    padding: 0 12px 20px;
+  }
+
+  .jar-year-group {
+    padding-top: 22px;
+  }
+
+  .jar-year-heading {
+    margin-bottom: 15px;
+  }
+
+  .jar-year-heading h2 {
+    font-size: 21px;
+  }
+
+  .jar-year-total {
+    font-size: 11px;
+  }
+
+  .jar-year-divider {
+    margin: 25px 0 3px;
+  }
+
+  /* Reset table */
+
+  .jar-table-wrapper {
+    border: 0;
+    border-radius: 0;
+    overflow: visible;
+  }
+
+  .jar-table {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    table-layout: auto;
+  }
+
+  .jar-table thead {
+    display: none;
+  }
+
+  .jar-table tbody {
+    display: grid;
+    width: 100%;
+    gap: 12px;
+  }
+
+  .jar-table-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: 10px;
+    row-gap: 14px;
+
+    width: 100%;
+    min-width: 0;
+    padding: 14px;
+
+    background: #ffffff;
+    border: 1px solid var(--jar-border);
+    border-radius: 11px;
+  }
+
+  .jar-table td {
+    display: block;
+    min-width: 0;
+    width: auto;
+    padding: 0;
+    border: 0;
+  }
+
+  .jar-cell-journal {
+    grid-column: 1 / -1;
+  }
+
+  .jar-cell-type {
+    grid-column: 1;
+  }
+
+  .jar-cell-pdf {
+    grid-column: 2;
+    justify-self: end;
+  }
+
+  /* Larger mobile cover */
+
+  .jar-journal {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .jar-cover {
+    flex: 0 0 85px;
+    width: 85px;
+    height: 118px;
+    padding: 3px;
+  }
+
+  .jar-journal-details {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .jar-journal-details h3 {
+    margin-bottom: 6px;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .jar-journal-details p {
+    margin-bottom: 7px;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .jar-journal-details > span {
+    font-size: 10px;
+  }
+
+  /* Type */
+
+  .jar-type {
+    padding: 7px 9px;
+    font-size: 10px;
+  }
+
+  /* PDF */
+
+  .jar-pdf-actions {
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .jar-pdf-actions a {
+    min-height: 35px;
+    padding: 8px 10px;
+    font-size: 10px;
+  }
+
+  .jar-pdf-download svg {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+/* ============================================
+   SMALL MOBILE — 400px
+============================================ */
+
+@media (max-width: 400px) {
+  .jar-page {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .jar-year-list {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .jar-table-row {
+    padding: 12px;
+    row-gap: 12px;
+  }
+
+  .jar-journal {
+    gap: 11px;
+  }
+
+  .jar-cover {
+    flex-basis: 75px;
+    width: 75px;
+    height: 105px;
+  }
+
+  .jar-journal-details h3 {
+    font-size: 13px;
+  }
+
+  .jar-journal-details p {
+    font-size: 11px;
+  }
+
+  .jar-pdf-actions a {
+    padding: 8px;
+    font-size: 10px;
+  }
+}
+
+/* ============================================
+   VERY SMALL MOBILE — 340px
+============================================ */
+
+@media (max-width: 340px) {
+  .jar-page {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  .jar-year-list {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  .jar-table-row {
+    padding: 10px;
+    column-gap: 6px;
+  }
+
+  .jar-cover {
+    flex-basis: 65px;
+    width: 65px;
+    height: 92px;
+  }
+
+  .jar-journal {
+    gap: 9px;
+  }
+
+  .jar-pdf-actions {
+    gap: 4px;
+  }
+
+  .jar-pdf-actions a {
+    padding: 7px;
+    font-size: 9px;
+  }
+
+  .jar-type {
+    padding: 6px;
+    font-size: 9px;
+  }
+}
+
+/* ============================================
+   ACCESSIBILITY
+============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .jar-page *,
+  .jar-page *::before,
+  .jar-page *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
