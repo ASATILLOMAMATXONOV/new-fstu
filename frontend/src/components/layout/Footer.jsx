@@ -286,15 +286,18 @@ function Footer() {
 
         {/* XARITA */}
 
-        <div className="footer-map">
-          <iframe
-            title={texts.mapTitle}
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d24320.65589568446!2d71.76095963476561!3d40.362706399999986!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38bb85973cd93817%3A0xa7f152773a870be!2sO%27zbekiston%20Koreya%20Xalqaro%20Universiteti%20FSTU!5e0!3m2!1sru!2s!4v1779791595915!5m2!1sru!2s"
-            loading="lazy"
-            allowFullScreen
-            referrerPolicy="no-referrer-when-downgrade"
-          />
-        </div>
+       <div className="footer-map">
+  <iframe
+    title="Farg‘ona davlat texnika universiteti"
+    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d48598.631766038416!2d71.76371929999998!3d40.42182005!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38bb82d713bba655%3A0xd9b610b729b574fb!2z0KTQtdGA0LPQsNC90YHQutC40Lkg0LPQvtGB0YPQtNCw0YDRgdGC0LLQtdC90L3Ri9C5INGC0LXRhdC90LjRh9C10YHQutC40Lkg0YPQvdC40LLQtdGA0YHQuNGC0LXRgg!5e0!3m2!1sru!2s!4v1793343126202!5m2!1sru!2s"
+    width="100%"
+    height="100%"
+    style={{ border: 0 }}
+    allowFullScreen
+    loading="lazy"
+    referrerPolicy="strict-origin-when-cross-origin"
+  />
+</div>
       </div>
 
       <div className="footer-bottom">

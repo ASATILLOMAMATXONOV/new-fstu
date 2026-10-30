@@ -40,7 +40,7 @@ export function useMenuTree(resource = 'menus', options = {}) {
 
         setLoading(true);
         const nextMenus = await fetchContentTree(resource, {}, {
-          force: shouldRevalidate || forceRefresh
+          force: forceRefresh
         });
 
         if (!cancelled) {
@@ -61,7 +61,7 @@ export function useMenuTree(resource = 'menus', options = {}) {
 
     load();
 
-    const unsubscribe = shouldRevalidate
+    const unsubscribe = enabled && shouldRevalidate
       ? subscribeToCmsChanges(() => {
           load(true);
         })

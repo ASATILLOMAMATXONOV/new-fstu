@@ -4,79 +4,7 @@ import React, { useMemo, useState } from 'react';
 import AcademicSidebar from '../components/layout/AcademicSidebar';
 import '../assets/styles/JournalIssuesPage.css';
 
-// Namunaviy ma'lumotlar. Haqiqiy API bilan almashtiriladi.
-const DEMO_ISSUES = [
-  {
-    id: 1,
-    title: 'Scientific and Technical Journal',
-    number: 4,
-    year: 2026,
-    type: 'regular',
-    publishedAt: '2026-10-28',
-    image: '/images/journals/2026-4.jpg',
-    pdf: '/uploads/journals/2026-4.pdf'
-  },
-  {
-    id: 2,
-    title: 'Scientific and Technical Journal',
-    number: 3,
-    year: 2026,
-    type: 'regular',
-    publishedAt: '2026-07-15',
-    image: '/images/journals/2026-3.jpg',
-    pdf: '/uploads/journals/2026-3.pdf'
-  },
-  {
-    id: 3,
-    title: 'Scientific and Technical Journal',
-    number: 1,
-    year: 2026,
-    type: 'special',
-    publishedAt: '2026-06-05',
-    image: '/images/journals/special-2026.jpg',
-    pdf: '/uploads/journals/special-2026.pdf'
-  },
-  {
-    id: 4,
-    title: 'Scientific and Technical Journal',
-    number: 4,
-    year: 2025,
-    type: 'regular',
-    publishedAt: '2025-12-20',
-    image: '/images/journals/2025-4.jpg',
-    pdf: '/uploads/journals/2025-4.pdf'
-  },
-  {
-    id: 5,
-    title: 'Scientific and Technical Journal',
-    number: 3,
-    year: 2025,
-    type: 'regular',
-    publishedAt: '2025-09-10',
-    image: '/images/journals/2025-3.jpg',
-    pdf: '/uploads/journals/2025-3.pdf'
-  },
-  {
-    id: 6,
-    title: 'Scientific and Technical Journal',
-    number: 1,
-    year: 2025,
-    type: 'special',
-    publishedAt: '2025-06-01',
-    image: '/images/journals/special-2025.jpg',
-    pdf: '/uploads/journals/special-2025.pdf'
-  },
-  {
-    id: 7,
-    title: 'Scientific and Technical Journal',
-    number: 4,
-    year: 2024,
-    type: 'regular',
-    publishedAt: '2024-12-18',
-    image: '/images/journals/2024-4.jpg',
-    pdf: '/uploads/journals/2024-4.pdf'
-  }
-];
+const EMPTY_ISSUES = [];
 
 const ISSUE_TYPES = [
   { value: 'all', label: 'Barcha sonlar' },
@@ -231,7 +159,7 @@ function JournalYearGroup({ year, issues }) {
 }
 
 export default function JournalIssuesPage({
-  issues = DEMO_ISSUES
+  issues = EMPTY_ISSUES
 }) {
   const [type, setType] = useState('all');
   const [search, setSearch] = useState('');

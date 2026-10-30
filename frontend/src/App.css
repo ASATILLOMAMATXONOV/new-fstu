@@ -34,6 +34,14 @@
   }
 }
 
+.section-fallback--deferred {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section-fallback { animation: none; }
+}
+
 @media (max-width: 640px) {
   .section-fallback {
     border-radius: var(--box-radius);

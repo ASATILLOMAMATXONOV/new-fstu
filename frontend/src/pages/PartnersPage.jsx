@@ -167,11 +167,10 @@ export default function PartnersPage(){
     catch(e){if(!controller.signal.aborted){console.error(e);setMapStatus('error');}}})();
     return()=>controller.abort();
   },[]);
-  const partners=useMemo(()=>(Array.isArray(rawPartners)?rawPartners:[]).filter(Boolean).map((p,i)=>{const countryLabel=countryOf(p);return {...p,_id:String(p.id ?? i),countryLabel,countryKey:keyOf(countryLabel),displayTitle:getTranslatedField(p,'title',p.title || 'Partner')};}),[rawPartners,currentLanguageCode]);
+  const partners=useMemo(()=>(Array.isArray(rawPartners)?rawPartners:[]).filter(Boolean).map((p,i)=>{const countryLabel=countryOf(p);return {...p,_id:String(p.id ?? i),countryLabel,countryKey:keyOf(countryLabel),displayTitle:getTranslatedField(p,'title',p.title || 'Partner',currentLanguageCode)};}),[rawPartners,currentLanguageCode]);
   const counts=useMemo(()=>{const map=new Map();for(const p of partners){if(!p.countryKey)continue;const c=map.get(p.countryKey)||{key:p.countryKey,name:p.countryLabel,count:0};c.count++;map.set(p.countryKey,c);}return map;},[partners]);
   const countries=useMemo(()=>[...counts.values()].sort((a,b)=>a.name.localeCompare(b.name)),[counts]);
   const selectedName=features.find(f=>keyOf(f.properties?.name)===selected)?.properties?.name || countries.find(c=>c.key===selected)?.name;
-  const matching=useMemo(()=>{const q=search.trim().toLocaleLowerCase();return partners.filter(p=>(!selected||p.countryKey===selected)&&(!q||`${p.displayTitle} ${p.countryLabel} ${addressOf(p)}`.toLocaleLowerCase().includes(q)));},[partners,selected,search]);
   const selectedFeature=features.find(f=>keyOf(f.properties?.name)===selected);
   const visibleUniversities=partners.filter(p=>p.countryKey===selected);
   return <main className="partners-page" id="xalqaro">

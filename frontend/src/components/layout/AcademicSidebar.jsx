@@ -1,14 +1,7 @@
+import { FaInstagram as InstagramIcon, FaTelegramPlane as TelegramIcon } from 'react-icons/fa';
+import { MdArrowForwardIos as ArrowForwardIosIcon, MdOutlinePhone as PhoneOutlinedIcon, MdAccessTime as AccessTimeIcon, MdLink as LinkIcon, MdOutlineEmail as EmailOutlinedIcon, MdWork as WorkIcon, MdSearch as SearchIcon } from 'react-icons/md';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import TelegramIcon from '@mui/icons-material/Telegram';
-import PhoneOutlinedIcon from '@mui/icons-material/PhoneOutlined';
-import InstagramIcon from '@mui/icons-material/Instagram';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import LinkIcon from '@mui/icons-material/Link';
-import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
-import WorkIcon from '@mui/icons-material/Work';
-import SearchIcon from '@mui/icons-material/Search';
 
 import '../../assets/styles/AcademicSidebar.css';
 import { useContentList } from '../../hooks/useContentList';
@@ -224,9 +217,9 @@ function AcademicSidebar({
               const isSelected = item.isActive ?? (Boolean(item.key) && item.key === activeKey);
               const content = (
                 <>
-                  <span className="academic-sidebar-icon"><ArrowForwardIosIcon fontSize="small" /></span>
+                  <span className="academic-sidebar-icon"><ArrowForwardIosIcon size={20} /></span>
                   <strong title={item.label}>{item.label}</strong>
-                  <span className="academic-sidebar-end"><ArrowForwardIosIcon fontSize="small" /></span>
+                  <span className="academic-sidebar-end"><ArrowForwardIosIcon size={20} /></span>
                 </>
               );
               if (typeof item.onClick === 'function' && !item.to) {

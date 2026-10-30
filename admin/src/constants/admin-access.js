@@ -4,8 +4,8 @@ export const menuAccessGroups = [
     title: 'Asosiy boshqaruv',
     items: [
       { key: 'menu-management', title: 'Menyular', url: '/menu-management' },
-      { key: 'academic-menu-management', title: 'Akademik menyu', url: '/academic-menu-management' },
       { key: 'banner-management', title: 'Banner boshqaruvi', url: '/banner-management' },
+      { key: 'academic-menu-management', title: 'Akademik menyu', url: '/academic-menu-management' },
       { key: 'advantages-management', title: 'Afzalliklar boshqaruvi', url: '/advantages-management' },
       { key: 'statistics-management', title: 'Statistika boshqaruvi', url: '/statistics-management' }
     ]

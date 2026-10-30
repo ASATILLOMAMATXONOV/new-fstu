@@ -35,7 +35,7 @@ export function useContentItem(resource, id, options = {}) {
 
         setLoading(true);
         const nextItem = await fetchContentItem(resource, id, {
-          force: shouldRevalidate || forceRefresh
+          force: forceRefresh
         });
 
         if (!cancelled) {
@@ -56,7 +56,7 @@ export function useContentItem(resource, id, options = {}) {
 
     load();
 
-    const unsubscribe = shouldRevalidate
+    const unsubscribe = enabled && Boolean(id) && shouldRevalidate
       ? subscribeToCmsChanges(() => {
           load(true);
         })

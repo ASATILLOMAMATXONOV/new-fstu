@@ -63,6 +63,9 @@ const siteMessages = {
         defaultTitle: 'Fayl'
       },
       innerBanner: {
+        studentDetail: { eyebrow: 'FSTU TALABALARI', title: 'Talaba profili' },
+        journals: { eyebrow: 'ILMIY NASHRLAR', title: 'Ilmiy jurnal sonlari' },
+        leadership: { eyebrow: 'UNIVERSITET RAHBARIYATI', title: 'Rahbariyat' },
         newsDetail: { eyebrow: 'FSTU YANGILIKLARI', title: 'Yangilik tafsiloti' },
         announcementDetail: { eyebrow: 'FSTU E’LONLARI', title: 'E’lon tafsiloti' },
         dynamicPage: { eyebrow: 'FSTU SAHIFALARI', title: 'Sahifa tafsiloti' },
@@ -450,6 +453,9 @@ const siteMessages = {
         defaultTitle: 'Файл'
       },
       innerBanner: {
+        studentDetail: { eyebrow: 'СТУДЕНТЫ FSTU', title: 'Профиль студента' },
+        journals: { eyebrow: 'НАУЧНЫЕ ПУБЛИКАЦИИ', title: 'Выпуски научного журнала' },
+        leadership: { eyebrow: 'РУКОВОДСТВО УНИВЕРСИТЕТА', title: 'Руководство' },
         newsDetail: { eyebrow: 'НОВОСТИ FSTU', title: 'Подробности новости' },
         announcementDetail: { eyebrow: 'ОБЪЯВЛЕНИЯ FSTU', title: 'Подробности объявления' },
         dynamicPage: { eyebrow: 'СТРАНИЦЫ FSTU', title: 'Подробности страницы' },
@@ -837,6 +843,9 @@ const siteMessages = {
         defaultTitle: 'File'
       },
       innerBanner: {
+        studentDetail: { eyebrow: 'FSTU STUDENTS', title: 'Student profile' },
+        journals: { eyebrow: 'SCIENTIFIC PUBLICATIONS', title: 'Scientific journal issues' },
+        leadership: { eyebrow: 'UNIVERSITY LEADERSHIP', title: 'Leadership' },
         newsDetail: { eyebrow: 'FSTU NEWS', title: 'News details' },
         announcementDetail: { eyebrow: 'FSTU ANNOUNCEMENTS', title: 'Announcement details' },
         dynamicPage: { eyebrow: 'FSTU PAGES', title: 'Page details' },

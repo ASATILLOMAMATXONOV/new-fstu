@@ -35,7 +35,7 @@ export function useSetting(key, options = {}) {
 
         setLoading(true);
         const nextItem = await fetchSetting(key, {
-          force: shouldRevalidate || forceRefresh
+          force: forceRefresh
         });
 
         if (!cancelled) {
@@ -56,7 +56,7 @@ export function useSetting(key, options = {}) {
 
     load();
 
-    const unsubscribe = shouldRevalidate
+    const unsubscribe = enabled && Boolean(key) && shouldRevalidate
       ? subscribeToCmsChanges(() => {
           load(true);
         })

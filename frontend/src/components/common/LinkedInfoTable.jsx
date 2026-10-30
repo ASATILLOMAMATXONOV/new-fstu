@@ -1,6 +1,5 @@
+import { MdArrowOutward as ArrowOutwardRoundedIcon, MdOutlineDescription as DescriptionOutlinedIcon } from 'react-icons/md';
 import React from 'react';
-import ArrowOutwardRoundedIcon from '@mui/icons-material/ArrowOutwardRounded';
-import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 
 import '../../assets/styles/LinkedInfoTable.css';
 import { useLanguage } from '../../context/LanguageContext';
@@ -38,7 +37,7 @@ function LinkedInfoTable({ items = [] }) {
             <div className="linked-info-table-index">{index + 1}</div>
 
             <div className="linked-info-table-icon">
-              <DescriptionOutlinedIcon fontSize="small" />
+              <DescriptionOutlinedIcon size={20} />
             </div>
 
             <div className="linked-info-table-title">
@@ -49,7 +48,7 @@ function LinkedInfoTable({ items = [] }) {
             <div className="linked-info-table-action">
               <span className="linked-info-table-open">
                 {texts.action}
-                <ArrowOutwardRoundedIcon fontSize="inherit" />
+                <ArrowOutwardRoundedIcon size="1em" />
               </span>
             </div>
           </AppLink>

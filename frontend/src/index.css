@@ -55,10 +55,6 @@
   border-radius: var(--box-radius);
 }
 
-:root :is(.MuiPaper-root, .MuiInputBase-root, .MuiButton-root, .MuiChip-root, .MuiAlert-root, .MuiTooltip-tooltip) {
-  border-radius: var(--box-radius);
-}
-
 html,
 body {
   max-width: 100%;

@@ -41,7 +41,7 @@ export function useContentList(resource, options = {}) {
 
         setLoading(true);
         const nextItems = await fetchContentList(resource, query, {
-          force: shouldRevalidate || forceRefresh
+          force: forceRefresh
         });
 
         if (!cancelled) {
@@ -62,7 +62,7 @@ export function useContentList(resource, options = {}) {
 
     load();
 
-    const unsubscribe = shouldRevalidate
+    const unsubscribe = enabled && shouldRevalidate
       ? subscribeToCmsChanges(() => {
           load(true);
         })

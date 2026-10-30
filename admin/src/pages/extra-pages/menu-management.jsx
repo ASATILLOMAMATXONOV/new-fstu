@@ -189,26 +189,31 @@ const findRootMenuId = (nodes, nodeId, currentRootId = '') => {
   return '';
 };
 
-const collectDropdownOptionsByMenu = (menuNode, excludeId = null, level = 0, blocked = false) => {
+const collectDropdownOptionsByMenu = (menuNode, excludeId = null, level = 0, blocked = false, ancestors = []) => {
   let options = [];
+  const parentPath = [...ancestors, getNodeTitle(menuNode)];
 
-  (menuNode?.children || []).forEach((node) => {
+  sortByOrder(menuNode?.children || []).forEach((node) => {
     const isBlocked = blocked || String(node.id) === String(excludeId);
 
     if (!isBlocked && node.nodeType === 'dropdown') {
       options.push({
         value: String(node.id),
-        label: `${'— '.repeat(level)}${getNodeTitle(node)}`
+        label: getNodeTitle(node),
+        level,
+        parentPath: parentPath.join(' › '),
+        path: [...parentPath, getNodeTitle(node)]
       });
     }
 
     options = [
       ...options,
       ...collectDropdownOptionsByMenu(
-        { children: node.children || [] },
+        node,
         excludeId,
         level + 1,
-        isBlocked
+        isBlocked,
+        parentPath
       )
     ];
   });
@@ -241,6 +246,8 @@ export default function MenuManagementPage({
   const rootMenus = getRootMenus(menus);
   const selectedMenu = findNodeById(menus, form.menuId);
   const dropdownOptions = collectDropdownOptionsByMenu(selectedMenu, form.id);
+  const selectedDropdown = dropdownOptions.find((option) => option.value === String(form.dropdownId));
+  const selectedParentPath = selectedDropdown?.path || (selectedMenu ? [getNodeTitle(selectedMenu)] : []);
   const menuPagination = useTablePagination(menus);
 
   const syncOpenState = (nextMenus) => {
@@ -496,6 +503,7 @@ export default function MenuManagementPage({
       const hasChildren = Boolean(node.children?.length);
       const isMenu = node.nodeType === 'menu';
       const isNested = level > 0;
+      const nodeTitle = getNodeTitle(node);
 
       return (
         <Fragment key={node.id}>
@@ -516,7 +524,7 @@ export default function MenuManagementPage({
               }
             }}
           >
-            <TableCell width={56}>
+            <TableCell width={72}>
               {hasChildren ? (
                 <IconButton
                   size="small"
@@ -546,7 +554,7 @@ export default function MenuManagementPage({
               />
             </TableCell>
 
-            <TableCell>
+            <TableCell sx={{ overflow: 'hidden' }}>
               <Box
                 sx={{
                   pl: level * 3,
@@ -565,8 +573,15 @@ export default function MenuManagementPage({
                     : undefined
                 }}
               >
-                <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap">
-                  <Typography fontWeight={isMenu ? 900 : 700}>{getNodeTitle(node)}</Typography>
+                <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" sx={{ minWidth: 0, rowGap: 0.5 }}>
+                  <Typography
+                    noWrap
+                    title={nodeTitle}
+                    fontWeight={isMenu ? 900 : 700}
+                    sx={{ minWidth: 0, maxWidth: 'min(100%, 280px)' }}
+                  >
+                    {nodeTitle}
+                  </Typography>
 
                   {isMenu && !isNested ? (
                     <Chip size="small" color="secondary" label="Menu" />
@@ -597,7 +612,7 @@ export default function MenuManagementPage({
                   )}
                 </Stack>
 
-                <Typography variant="caption" color="text.secondary">
+                <Typography noWrap title={node.url || ''} variant="caption" color="text.secondary" sx={{ display: 'block' }}>
                   URL: {node.url || '-'}
                 </Typography>
               </Box>
@@ -670,7 +685,7 @@ export default function MenuManagementPage({
       >
         <form onSubmit={handleSubmit}>
           <Grid container spacing={2.5}>
-            <Grid item xs={12} md={3}>
+            <Grid item xs={12} md={isMenu ? 3 : 2}>
               {allowDropdowns ? (
                 <TextField
                   select
@@ -707,8 +722,8 @@ export default function MenuManagementPage({
                   helperText="Dropdown qaysi menu ichida bo‘lishini tanlang."
                 >
                   {rootMenus.map((menu) => (
-                    <MenuItem key={menu.id} value={menu.id}>
-                      {getNodeTitle(menu)}
+                    <MenuItem key={menu.id} value={menu.id} title={getNodeTitle(menu)} sx={{ minWidth: 0 }}>
+                      <Typography noWrap>{getNodeTitle(menu)}</Typography>
                     </MenuItem>
                   ))}
                 </TextField>
@@ -716,7 +731,7 @@ export default function MenuManagementPage({
             )}
 
             {!isMenu && (
-              <Grid item xs={12} md={3}>
+              <Grid item xs={12} md={4}>
                 <TextField
                   select
                   fullWidth
@@ -726,12 +741,43 @@ export default function MenuManagementPage({
                   onChange={handleBaseChange}
                   disabled={!form.menuId}
                   helperText="Bo‘sh qoldirilsa, bevosita menu ichiga qo‘shiladi."
+                  InputLabelProps={{ shrink: true }}
+                  SelectProps={{
+                    displayEmpty: true,
+                    renderValue: () => (
+                      <Typography component="span" noWrap title={selectedParentPath.join(' › ')} sx={{ display: 'block' }}>
+                        {selectedDropdown?.label || 'Menu ichiga qo‘shish'}
+                      </Typography>
+                    ),
+                    MenuProps: {
+                      PaperProps: { sx: { maxHeight: 420, width: 440, maxWidth: 'calc(100vw - 32px)' } }
+                    }
+                  }}
                 >
-                  <MenuItem value="">Menu ichiga qo‘shish</MenuItem>
+                  <MenuItem value="" sx={{ py: 1.25, borderBottom: '1px solid', borderColor: 'divider' }}>
+                    <Box sx={{ minWidth: 0 }}>
+                      <Typography noWrap fontWeight={700}>{getNodeTitle(selectedMenu)}</Typography>
+                      <Typography noWrap variant="caption" color="text.secondary">Bevosita asosiy menu ichiga</Typography>
+                    </Box>
+                  </MenuItem>
 
                   {dropdownOptions.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.label}
+                    <MenuItem
+                      key={option.value}
+                      value={option.value}
+                      title={option.path.join(' › ')}
+                      sx={{ py: 1, pl: 1.5 + Math.min(option.level, 6) * 2, gap: 1 }}
+                    >
+                      <Box component="span" aria-hidden="true" sx={{ color: 'primary.main', flexShrink: 0 }}>
+                        {option.level > 0 ? '↳' : '•'}
+                      </Box>
+                      <Box sx={{ minWidth: 0, flex: 1 }}>
+                        <Typography noWrap fontWeight={600}>{option.label}</Typography>
+                        <Typography noWrap variant="caption" color="text.secondary" sx={{ display: 'block' }}>
+                          {option.parentPath}
+                        </Typography>
+                      </Box>
+                      <Chip size="small" variant="outlined" label={`${option.level + 1}-daraja`} sx={{ flexShrink: 0 }} />
                     </MenuItem>
                   ))}
                 </TextField>
@@ -749,6 +795,34 @@ export default function MenuManagementPage({
                 helperText="Ixtiyoriy. Link bo‘lmasa bo‘sh qoldiring."
               />
             </Grid>
+
+            {!isMenu && selectedMenu && (
+              <Grid item xs={12}>
+                <Box sx={{ p: 1.5, border: '1px solid', borderColor: 'divider', borderRadius: 1, bgcolor: '#f8fbff' }}>
+                  <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 0.75 }}>
+                    {form.id ? 'Dropdown joylashuvi' : 'Yangi dropdown shu joyga qo‘shiladi'}
+                  </Typography>
+                  <Stack direction="row" alignItems="center" flexWrap="wrap" gap={0.75}>
+                    {selectedParentPath.map((title, index) => (
+                      <Fragment key={index}>
+                        {index > 0 && <Box component="span" aria-hidden="true" sx={{ color: 'text.secondary' }}>›</Box>}
+                        <Typography variant="body2" noWrap title={title} sx={{ maxWidth: 220, fontWeight: index === 0 ? 700 : 500 }}>
+                          {title}
+                        </Typography>
+                      </Fragment>
+                    ))}
+                    <Box component="span" aria-hidden="true" sx={{ color: 'text.secondary' }}>›</Box>
+                    <Chip
+                      size="small"
+                      color="primary"
+                      label={form.uz.title.trim() || 'Yangi dropdown'}
+                      title={form.uz.title.trim() || 'Yangi dropdown'}
+                      sx={{ maxWidth: 240 }}
+                    />
+                  </Stack>
+                </Box>
+              </Grid>
+            )}
 
             <Grid item xs={12} md={2}>
               <TextField
@@ -928,12 +1002,12 @@ export default function MenuManagementPage({
         variant="outlined"
         sx={{
           borderRadius: '6px',
-          overflow: 'hidden',
+          overflowX: 'auto',
           borderColor: '#dfe8f5',
           boxShadow: '0 14px 34px rgba(15, 35, 70, 0.06)'
         }}
       >
-        <Table>
+        <Table sx={{ tableLayout: 'fixed', minWidth: 1040 }}>
           <TableHead
             sx={{
               '& th': {
@@ -945,7 +1019,7 @@ export default function MenuManagementPage({
             }}
           >
             <TableRow>
-              <TableCell width={56} />
+              <TableCell width={72} />
               <TableCell width={80}>Tartib</TableCell>
               <TableCell>Title</TableCell>
               <TableCell width={120}>Ichki</TableCell>

@@ -100,16 +100,16 @@ const MainRoutes = {
       element: <MenuManagementPage />
     },
     {
-      path: 'academic-menu-management',
-      element: <AcademicMenuManagementPage />
+      path: 'advantages-management',
+      element: <AdvantagesManagementPage />
     },
     {
       path: 'banner-management',
       element: <BannerManagementPage />
     },
     {
-      path: 'advantages-management',
-      element: <AdvantagesManagementPage />
+      path: 'academic-menu-management',
+      element: <AcademicMenuManagementPage />
     },
     {
       path: 'news-management',

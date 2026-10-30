@@ -22,7 +22,7 @@ import seasonalEffectsManagement from './seasonal-effects-management';
 // ==============================|| MENU ITEMS ||============================== //
 
 const menuItems = {
-  items: [menuManagement, bannerManagement, advantagesManagement, admissionCtaManagement, seasonalEffectsManagement, rectorSpeechManagement, newsManagement, announcementsManagement, studentsManagement, partnersManagement, statisticsManagement, newPageManagement, facultiesManagement, directionsManagement, facultyPageMenuManagement, employeesPortfolioManagement, adminUsersManagement, pages, other]
+  items: [menuManagement, bannerManagement, advantagesManagement,   admissionCtaManagement, seasonalEffectsManagement, rectorSpeechManagement, newsManagement, announcementsManagement, studentsManagement, partnersManagement, statisticsManagement, newPageManagement, facultiesManagement, directionsManagement, facultyPageMenuManagement, employeesPortfolioManagement, adminUsersManagement, pages, other]
 };
 
 export default menuItems;

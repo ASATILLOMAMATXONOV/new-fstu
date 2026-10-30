@@ -213,9 +213,7 @@ export function createSafeMarkup(html = '', fallback = '') {
   };
 }
 
-export function getTranslatedField(item, field, fallback = '') {
-  const languageCode = getCurrentLanguageCode();
-
+export function getTranslatedField(item, field, fallback = '', languageCode = getCurrentLanguageCode()) {
   return (
     item?.[languageCode]?.[field] ||
     item?.translations?.[languageCode]?.[field] ||

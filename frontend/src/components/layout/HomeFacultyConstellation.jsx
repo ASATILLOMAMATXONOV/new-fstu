@@ -576,8 +576,10 @@ export default function HomeFacultyConstellation({
 
   const level = history.length;
 
-  const current =
-    history[level - 1] || data || {};
+  const current = useMemo(
+    () => history[history.length - 1] || data || {},
+    [history, data]
+  );
 
   const items = useMemo(() => {
     if (level === 0) return current.faculties || [];

@@ -80,7 +80,8 @@ export default function DepartmentsPage() {
         displayTitle: getTranslatedField(
           faculty,
           'title',
-          faculty.title || ''
+          faculty.title || '',
+          currentLanguageCode
         ),
         departments: Array.isArray(faculty.departments)
           ? faculty.departments
@@ -120,7 +121,8 @@ export default function DepartmentsPage() {
             getTranslatedField(
               department,
               'title',
-              department.title || ''
+              department.title || '',
+              currentLanguageCode
             )
               .toLocaleLowerCase()
               .includes(query)

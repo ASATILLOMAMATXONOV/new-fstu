@@ -10,6 +10,7 @@ import { useLanguage } from '../../context/LanguageContext';
 import { useContentList } from '../../hooks/useContentList';
 import { useContentItem } from '../../hooks/useContentItem';
 import { useSetting } from '../../hooks/useSetting';
+import { useMenuTree } from '../../hooks/useMenuTree';
 import { useEmployeePortfolioBySlug } from '../../hooks/useEmployeePortfolioBySlug';
 
 import { getSiteMessages } from '../../locales/site';
@@ -34,7 +35,7 @@ import {
   sortEmployees
 } from '../../utils/employees';
 
-import { getMenuNodeTitle } from '../../utils/menu';
+import { findMenuPathById, getMenuNodeTitle } from '../../utils/menu';
 
 /* ==========================================
    HELPERS
@@ -66,6 +67,18 @@ function getBannerBaseContent(pathname, texts) {
 
   if (matchPath('/employees/:slug', pathname)) {
     return withBannerImage(texts.employeeProfile);
+  }
+
+  if (matchPath('/students/:id', pathname)) {
+    return withBannerImage(texts.studentDetail);
+  }
+
+  if (matchPath('/journals', pathname)) {
+    return withBannerImage(texts.journals);
+  }
+
+  if (matchPath('/leadership', pathname)) {
+    return withBannerImage(texts.leadership);
   }
 
   if (pathname.startsWith('/news')) {
@@ -271,45 +284,36 @@ function InnerPageBanner() {
 
   const pathname = location.pathname;
 
-  const menuMatch = matchPath('/menu/:id', pathname);
-  const pageMatch = matchPath('/pages/:id', pathname);
+  const matches = useMemo(() => ({
+    menu: matchPath('/menu/:id', pathname),
+    page: matchPath('/pages/:id', pathname),
+    faculty: matchPath('/faculties/:id', pathname),
+    department: matchPath('/departments/:facultyId/:departmentId', pathname),
+    section: matchPath('/sections/:id', pathname),
+    news: matchPath('/news/page/:id', pathname),
+    announcement: matchPath('/announcements/page/:id', pathname),
+    employee: matchPath('/employees/:slug', pathname),
+    student: matchPath('/students/:id', pathname)
+  }), [pathname]);
 
-  const facultyMatch = matchPath(
-    '/faculties/:id',
-    pathname
-  );
-
-  const departmentMatch = matchPath(
-    '/departments/:facultyId/:departmentId',
-    pathname
-  );
-
-  const sectionMatch = matchPath(
-    '/sections/:id',
-    pathname
-  );
-
-  const newsMatch = matchPath(
-    '/news/page/:id',
-    pathname
-  );
-
-  const announcementMatch = matchPath(
-    '/announcements/page/:id',
-    pathname
-  );
-
-  const employeeMatch = matchPath(
-    '/employees/:slug',
-    pathname
-  );
+  const {
+    menu: menuMatch, page: pageMatch, faculty: facultyMatch,
+    department: departmentMatch, section: sectionMatch, news: newsMatch,
+    announcement: announcementMatch, employee: employeeMatch, student: studentMatch
+  } = matches;
 
   /* CMS DATA */
 
-  const { item: menuItem } = useContentItem(
-    'menus',
-    menuMatch?.params?.id
-  );
+  const menuOptions = { enabled: Boolean(menuMatch) };
+  const { menus } = useMenuTree('menus', menuOptions);
+  const { menus: academicMenus } = useMenuTree('academic-menus', menuOptions);
+  const menuItem = useMemo(() => {
+    const id = menuMatch?.params?.id;
+    if (!id) return null;
+    const academicPath = findMenuPathById(academicMenus, id);
+    const path = academicPath.length ? academicPath : findMenuPathById(menus, id);
+    return path[path.length - 1] || null;
+  }, [menus, academicMenus, menuMatch?.params?.id]);
 
   const { item: pageItem } = useContentItem(
     'pages',
@@ -327,8 +331,11 @@ function InnerPageBanner() {
   );
 
   const { item: admissionItem } = useSetting(
-    'admission-cta'
+    'admission-cta',
+    { enabled: Boolean(matchPath('/admission', pathname)) }
   );
+
+  const { item: studentItem } = useContentItem('students', studentMatch?.params?.id);
 
   const { item: employeeItem } = useEmployeePortfolioBySlug(
     employeeMatch?.params?.slug
@@ -408,9 +415,9 @@ function InnerPageBanner() {
     return null;
   }, [
     academicItem,
-    facultyMatch?.params?.id,
-    sectionMatch?.params?.id,
-    departmentMatch?.params?.departmentId
+    facultyMatch,
+    sectionMatch,
+    departmentMatch
   ]);
 
   /* LEADER */
@@ -552,6 +559,16 @@ function InnerPageBanner() {
       };
     }
 
+    if (studentMatch) {
+      const student = studentItem?.active === false ? null : studentItem;
+      return {
+        ...base,
+        title: getTranslatedField(student, 'fullName', student?.fullName) ||
+          getTranslatedField(student, 'title', student?.title) || base.title,
+        description: getTranslatedField(student, 'direction', student?.direction) || ''
+      };
+    }
+
     /* ADMISSION */
 
     if (pathname.startsWith('/admission')) {
@@ -638,16 +655,18 @@ function InnerPageBanner() {
   }, [
     pathname,
     texts,
-    menuMatch?.params?.id,
+    menuMatch,
     menuItem,
-    employeeMatch?.params?.slug,
+    employeeMatch,
     employeeItem,
-    pageMatch?.params?.id,
+    pageMatch,
     pageItem,
-    newsMatch?.params?.id,
+    newsMatch,
     newsItem,
-    announcementMatch?.params?.id,
+    announcementMatch,
     announcementItem,
+    studentMatch,
+    studentItem,
     admissionItem,
     academicRouteType,
     academicEntity,

@@ -1,6 +1,5 @@
+import { MdDownload as DownloadRoundedIcon, MdInsertDriveFile as InsertDriveFileRoundedIcon } from 'react-icons/md';
 import React from 'react';
-import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
-import InsertDriveFileRoundedIcon from '@mui/icons-material/InsertDriveFileRounded';
 
 import '../../assets/styles/AttachedFilesList.css';
 import { useLanguage } from '../../context/LanguageContext';
@@ -47,7 +46,7 @@ function AttachedFilesList({ items = [] }) {
               style={{ animationDelay: `${index * 0.08}s` }}
             >
               <div className="attached-files-icon">
-                <InsertDriveFileRoundedIcon fontSize="small" />
+                <InsertDriveFileRoundedIcon size={20} />
               </div>
 
               <div className="attached-files-copy">
@@ -69,7 +68,7 @@ function AttachedFilesList({ items = [] }) {
               <div className="attached-files-action">
                 <span>
                   {texts.action}
-                  <DownloadRoundedIcon fontSize="inherit" />
+                  <DownloadRoundedIcon size="1em" />
                 </span>
               </div>
             </a>

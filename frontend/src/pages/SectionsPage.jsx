@@ -74,7 +74,8 @@ function SectionsPage() {
         getTranslatedField(
           section,
           'title',
-          section.title || ''
+          section.title || '',
+          currentLanguageCode
         ) || '',
       displayImage: section.image || ''
     }));

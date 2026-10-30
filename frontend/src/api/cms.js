@@ -6,7 +6,9 @@ const PERSISTED_CACHE_STORAGE_KEY = 'fstu_frontend_api_cache_v1';
 const REVISION_STORAGE_KEY = 'fstu_frontend_content_revision_v1';
 const MAX_PERSISTED_CACHE_ENTRIES = 40;
 const MAX_PERSISTED_ENTRY_BYTES = 512 * 1024;
-const REVISION_POLL_INTERVAL_MS = 3000;
+const REVISION_POLL_INTERVAL_MS = 30000;
+const MAX_PERSISTED_CACHE_BYTES = 1024 * 1024;
+let cachePersistTimer = null;
 let persistedCacheLoaded = false;
 let currentRevisionSignature = '';
 let revisionPollTimer = null;
@@ -29,7 +31,11 @@ function getCacheTtl(path = '') {
 }
 
 function canUseSessionStorage() {
-  return typeof window !== 'undefined' && typeof window.sessionStorage !== 'undefined';
+  try {
+    return typeof window !== 'undefined' && typeof window.sessionStorage !== 'undefined';
+  } catch (_error) {
+    return false;
+  }
 }
 
 function canUseDom() {
@@ -68,7 +74,7 @@ function ensurePersistedCacheLoaded() {
         typeof path === 'string' &&
         value &&
         typeof value === 'object' &&
-        Number.isFinite(value.expiresAt)
+        Number.isFinite(value.expiresAt) && value.expiresAt > Date.now()
       ) {
         responseCache.set(path, value);
       }
@@ -93,7 +99,16 @@ function persistCacheSnapshot() {
       .sort((left, right) => Number(right[1]?.updatedAt || 0) - Number(left[1]?.updatedAt || 0))
       .slice(0, MAX_PERSISTED_CACHE_ENTRIES);
 
-    window.sessionStorage.setItem(PERSISTED_CACHE_STORAGE_KEY, JSON.stringify(serializableEntries));
+    const entries = [];
+    let bytes = 2;
+    for (const entry of serializableEntries) {
+      const serialized = JSON.stringify(entry);
+      const entryBytes = serialized.length * 2 + 2;
+      if (bytes + entryBytes > MAX_PERSISTED_CACHE_BYTES) continue;
+      entries.push(serialized);
+      bytes += entryBytes;
+    }
+    window.sessionStorage.setItem(PERSISTED_CACHE_STORAGE_KEY, `[${entries.join(',')}]`);
   } catch (_error) {
     try {
       window.sessionStorage.removeItem(PERSISTED_CACHE_STORAGE_KEY);
@@ -101,6 +116,15 @@ function persistCacheSnapshot() {
       // ignore
     }
   }
+}
+
+function scheduleCachePersist() {
+  if (!canUseDom() || cachePersistTimer !== null) return;
+  // Batch concurrent responses instead of serializing the entire cache for each one.
+  cachePersistTimer = window.setTimeout(() => {
+    cachePersistTimer = null;
+    persistCacheSnapshot();
+  }, 250);
 }
 
 function readStoredRevisionSignature() {
@@ -154,7 +178,7 @@ function readCachedResponse(path) {
 
   if (cached.expiresAt <= Date.now()) {
     responseCache.delete(path);
-    persistCacheSnapshot();
+    scheduleCachePersist();
     return undefined;
   }
 
@@ -162,6 +186,10 @@ function readCachedResponse(path) {
 }
 
 export function clearCmsCache() {
+  if (cachePersistTimer !== null) {
+    window.clearTimeout(cachePersistTimer);
+    cachePersistTimer = null;
+  }
   responseCache.clear();
   pendingRequests.clear();
   persistedCacheLoaded = false;
@@ -193,7 +221,7 @@ function writeCachedResponse(path, data, ttlMs = getCacheTtl(path)) {
     persist: shouldPersist
   });
 
-  persistCacheSnapshot();
+  scheduleCachePersist();
 
   return data;
 }
