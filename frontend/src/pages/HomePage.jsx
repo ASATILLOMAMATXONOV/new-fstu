@@ -19,8 +19,8 @@ export default function HomePage() {
       <HeroBanner />
       <div className="app-content-shell">
         <DeferredSection><HomeInfoSection /></DeferredSection>
-        <DeferredSection><UniversityRankings /></DeferredSection>
-        <DeferredSection minHeight={720}><HomeFacultyConstellation /></DeferredSection>
+        <DeferredSection minHeight={0}><UniversityRankings /></DeferredSection>
+        <DeferredSection minHeight={0}><HomeFacultyConstellation /></DeferredSection>
         <DeferredSection><RektorMurojaati /></DeferredSection>
         <DeferredSection minHeight={600}><NewsPageHome /></DeferredSection>
         <DeferredSection minHeight={480}><StudentsSection /></DeferredSection>

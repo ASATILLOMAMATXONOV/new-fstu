@@ -90,6 +90,10 @@
    MAIN GRID
 =============================================== */
 
+.pr-layout.pr-layout--cards-only {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 .pr-layout {
   display: grid;
   grid-template-columns:
@@ -250,6 +254,11 @@
   }
 }
 
+.pr-card:focus-visible {
+  outline: 3px solid var(--pr-primary);
+  outline-offset: 3px;
+}
+
 /* Logo */
 
 .pr-card-logo {
@@ -406,20 +415,6 @@
   .pr-card:hover .pr-card-accent {
     transform: scaleX(1);
   }
-}
-
-/* Empty */
-
-.pr-empty {
-  grid-column: 1 / -1;
-  padding: 28px;
-
-  border: 1px dashed var(--pr-border);
-  border-radius: var(--pr-radius);
-
-  color: var(--pr-muted);
-  font-size: 12px;
-  text-align: center;
 }
 
 /* ===============================================

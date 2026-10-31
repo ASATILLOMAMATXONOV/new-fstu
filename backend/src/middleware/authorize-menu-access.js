@@ -18,6 +18,8 @@ const contentResourceAccessMap = {
 };
 
 const settingAccessMap = {
+  'university-rankings': 'rankings-management',
+  'academic-structure': 'academic-structure-management',
   'rector-speech': 'rector-speech-management',
   'admission-cta': 'admission-cta-management',
   'seasonal-effects': 'seasonal-effects-management'

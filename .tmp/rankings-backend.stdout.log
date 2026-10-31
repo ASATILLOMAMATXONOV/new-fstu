@@ -1,0 +1,185 @@
+✅ OpenAI API key yuklangan
+✅ PostgreSQL bazaga muvaffaqiyatli ulandi
+Synced default admin "admin" (id: 1).
+✅ Default admin tekshirildi / tayyor
+🚀 FSTU backend listening on port 8564 (development)
+[0mPOST /api/account/login [32m200[0m 242.313 ms - 650[0m
+[0mPUT /api/settings/university-rankings [32m200[0m 15.366 ms - 550[0m
+[0mGET /api/settings/university-rankings [32m200[0m 1.539 ms - 550[0m
+[0mGET /api/settings/university-rankings [32m200[0m 0.735 ms - 550[0m
+[0mDELETE /api/settings/university-rankings [32m204[0m 3.220 ms - -[0m
+[0mGET /api/content/__revision [32m200[0m 38.722 ms - 68[0m
+[0mGET /api/settings/seasonal-effects [32m200[0m 10.394 ms - 13[0m
+[0mGET /api/content/advantages?activeOnly=true&imageMode=separate&summaryOnly=true [32m200[0m 28.088 ms - 3092[0m
+[0mGET /api/content/directions?activeOnly=true&imageMode=separate&summaryOnly=true [32m200[0m 5.161 ms - 3454[0m
+[0mGET /api/settings/rector-speech [32m200[0m 24.873 ms - 432962[0m
+[0mGET /api/content/news?activeOnly=true&imageMode=separate&summaryOnly=true&orderBy=recent&limit=8 [32m200[0m 2.985 ms - 7208[0m
+[0mGET /api/settings/site-theme [32m200[0m 85.245 ms - 1284[0m
+[0mGET /api/settings/university-rankings [32m200[0m 74.103 ms - 13[0m
+[0mGET /api/content/banners?activeOnly=true&imageMode=separate&summaryOnly=true [32m200[0m 83.783 ms - 2903[0m
+[0mGET /api/content/faculties?activeOnly=true&imageMode=separate&summaryOnly=true [32m200[0m 89.321 ms - 321906[0m
+[0mGET /api/content/menus/tree?activeOnly=true [32m200[0m 207.965 ms - 8073485[0m
+[0mGET /api/account/me [32m200[0m 4.057 ms - 372[0m
+[0mGET /api/settings/university-rankings [32m200[0m 3.135 ms - 13[0m
+[0mGET /api/account/me [32m200[0m 1.694 ms - 372[0m
+[0mGET /api/account/me [32m200[0m 1.782 ms - 372[0m
+[0mGET /api/account/me [32m200[0m 2.002 ms - 372[0m
+[0mGET /api/settings/university-rankings [32m200[0m 2.258 ms - 13[0m
+[0mPUT /api/settings/university-rankings [32m200[0m 4.416 ms - 628[0m
+[0mGET /api/content/__revision [32m200[0m 2.033 ms - 68[0m
+[0mGET /api/settings/seasonal-effects [32m200[0m 0.812 ms - 13[0m
+[0mGET /api/settings/site-theme [32m200[0m 3.981 ms - 1284[0m
+[0mGET /api/content/advantages?activeOnly=true&imageMode=separate&summaryOnly=true [32m200[0m 15.918 ms - 3092[0m
+[0mGET /api/settings/rector-speech [32m200[0m 11.399 ms - 432962[0m
+[0mGET /api/content/news?activeOnly=true&imageMode=separate&summaryOnly=true&orderBy=recent&limit=8 [32m200[0m 2.417 ms - 7208[0m
+[0mGET /api/settings/university-rankings [32m200[0m 57.080 ms - 628[0m
+[0mGET /api/content/banners?activeOnly=true&imageMode=separate&summaryOnly=true [32m200[0m 66.747 ms - 2903[0m
+[0mGET /api/content/directions?activeOnly=true&imageMode=separate&summaryOnly=true [32m200[0m 61.797 ms - 3454[0m
+[0mGET /api/content/faculties?activeOnly=true&imageMode=separate&summaryOnly=true [32m200[0m 72.737 ms - 321906[0m
+[0mGET /api/content/menus/tree?activeOnly=true [32m200[0m 265.824 ms - 8073485[0m
+[0mGET /api/content/__revision [32m200[0m 2.388 ms - 68[0m
+[0mGET /api/content/menus/tree?activeOnly=true [32m200[0m 95.942 ms - 8073485[0m
+[0mGET /api/settings/rector-speech [32m200[0m 8.868 ms - 432962[0m
+[0mPUT /api/settings/university-rankings [32m200[0m 61.563 ms - 681536[0m
+[0mPUT /api/settings/university-rankings [32m200[0m 174.975 ms - 1362440[0m
+[0mGET /api/content/__revision [32m200[0m 2.125 ms - 68[0m
+[0mGET /api/settings/seasonal-effects [32m200[0m 4.260 ms - 13[0m
+[0mGET /api/content/banners?activeOnly=true&imageMode=separate&summaryOnly=true [32m200[0m 8.937 ms - 2903[0m
+[0mGET /api/content/directions?activeOnly=true&imageMode=separate&summaryOnly=true [32m200[0m 2.107 ms - 3454[0m
+[0mGET /api/settings/rector-speech [32m200[0m 11.540 ms - 432962[0m
+[0mGET /api/content/news?activeOnly=true&imageMode=separate&summaryOnly=true&orderBy=recent&limit=8 [32m200[0m 3.042 ms - 7208[0m
+[0mGET /api/settings/site-theme [32m200[0m 49.406 ms - 1284[0m
+[0mGET /api/content/faculties?activeOnly=true&imageMode=separate&summaryOnly=true [32m200[0m 67.832 ms - 321906[0m
+[0mGET /api/settings/university-rankings [32m200[0m 88.539 ms - 1362440[0m
+[0mGET /api/content/advantages?activeOnly=true&imageMode=separate&summaryOnly=true [32m200[0m 97.704 ms - 3092[0m
+[0mGET /api/content/menus/tree?activeOnly=true [32m200[0m 185.261 ms - 8073485[0m
+[0mPUT /api/settings/university-rankings [32m200[0m 195.371 ms - 2043346[0m
+[0mPUT /api/settings/university-rankings [32m200[0m 67.888 ms - 2724254[0m
+[0mPUT /api/settings/university-rankings [32m200[0m 114.537 ms - 3405164[0m
+[0mPUT /api/settings/university-rankings [32m200[0m 101.709 ms - 3405494[0m
+[0mPUT /api/settings/university-rankings [32m200[0m 92.202 ms - 3405828[0m
+[0mGET /api/content/__revision [32m200[0m 2.893 ms - 68[0m
+[0mGET /api/settings/seasonal-effects [32m200[0m 5.464 ms - 13[0m
+[0mGET /api/content/faculties?activeOnly=true&imageMode=separate&summaryOnly=true [32m200[0m 20.404 ms - 321906[0m
+[0mGET /api/content/directions?activeOnly=true&imageMode=separate&summaryOnly=true [32m200[0m 1.713 ms - 3454[0m
+[0mGET /api/settings/rector-speech [32m200[0m 11.160 ms - 432962[0m
+[0mGET /api/content/news?activeOnly=true&imageMode=separate&summaryOnly=true&orderBy=recent&limit=8 [32m200[0m 2.503 ms - 7208[0m
+[0mGET /api/settings/site-theme [32m200[0m 57.140 ms - 1284[0m
+[0mGET /api/content/advantages?activeOnly=true&imageMode=separate&summaryOnly=true [32m200[0m 68.186 ms - 3092[0m
+[0mGET /api/content/banners?activeOnly=true&imageMode=separate&summaryOnly=true [32m200[0m 70.803 ms - 2903[0m
+[0mGET /api/settings/university-rankings [32m200[0m 102.606 ms - 3405828[0m
+[0mGET /api/content/menus/tree?activeOnly=true [32m200[0m 200.741 ms - 8073485[0m
+[0mGET /api/content/__revision [32m200[0m 3.628 ms - 68[0m
+[0mGET /api/content/__revision [32m200[0m 0.758 ms - 68[0m
+[0mGET /api/content/__revision [32m200[0m 32.862 ms - 68[0m
+[0mPUT /api/settings/university-rankings [32m200[0m 95.869 ms - 3405498[0m
+[0mPUT /api/settings/university-rankings [32m200[0m 65.460 ms - 2724588[0m
+[0mPUT /api/settings/university-rankings [32m200[0m 79.669 ms - 2724254[0m
+[0mGET /api/content/__revision [32m200[0m 0.725 ms - 68[0m
+[0mGET /api/settings/seasonal-effects [32m200[0m 4.679 ms - 13[0m
+[0mGET /api/content/faculties?activeOnly=true&imageMode=separate&summaryOnly=true [32m200[0m 21.258 ms - 321906[0m
+[0mGET /api/content/directions?activeOnly=true&imageMode=separate&summaryOnly=true [32m200[0m 1.773 ms - 3454[0m
+[0mGET /api/settings/rector-speech [32m200[0m 8.354 ms - 432962[0m
+[0mGET /api/content/news?activeOnly=true&imageMode=separate&summaryOnly=true&orderBy=recent&limit=8 [32m200[0m 2.298 ms - 7208[0m
+[0mGET /api/settings/site-theme [32m200[0m 53.049 ms - 1284[0m
+[0mGET /api/content/banners?activeOnly=true&imageMode=separate&summaryOnly=true [32m200[0m 62.097 ms - 2903[0m
+[0mGET /api/content/advantages?activeOnly=true&imageMode=separate&summaryOnly=true [32m200[0m 70.392 ms - 3092[0m
+[0mGET /api/settings/university-rankings [32m200[0m 93.980 ms - 2724254[0m
+[0mGET /api/content/menus/tree?activeOnly=true [32m200[0m 177.736 ms - 8073485[0m
+[0mGET /api/content/__revision [32m200[0m 37.574 ms - 68[0m
+[0mGET /api/content/__revision [32m200[0m 0.830 ms - 68[0m
+[0mGET /api/content/__revision [32m200[0m 0.687 ms - 68[0m
+[0mGET /api/content/__revision [32m200[0m 0.742 ms - 68[0m
+[0mGET /api/content/__revision [32m200[0m 0.722 ms - 68[0m
+[0mGET /api/content/__revision [32m200[0m 0.675 ms - 68[0m
+[0mGET /api/content/__revision [32m200[0m 56.070 ms - 68[0m
+[0mGET /api/content/__revision [32m200[0m 0.680 ms - 68[0m
+[0mGET /api/content/__revision [32m200[0m 0.751 ms - 68[0m
+[0mGET /api/content/__revision [32m200[0m 0.815 ms - 68[0m
+[0mGET /api/content/__revision [32m200[0m 0.748 ms - 68[0m
+[0mGET /api/content/__revision [32m200[0m 0.668 ms - 68[0m
+[0mGET /api/content/__revision [32m200[0m 60.791 ms - 68[0m
+[0mGET /api/content/__revision [32m200[0m 0.663 ms - 68[0m
+[0mGET /api/content/__revision [32m200[0m 58.540 ms - 68[0m
+[0mGET /api/content/__revision [32m200[0m 44.175 ms - 68[0m
+Changes detected. Restarting backend...
+✅ OpenAI API key yuklangan
+✅ PostgreSQL bazaga muvaffaqiyatli ulandi
+Synced default admin "admin" (id: 1).
+✅ Default admin tekshirildi / tayyor
+🚀 FSTU backend listening on port 8564 (development)
+[0mGET /api/content/faculties?activeOnly=true&imageMode=separate&summaryOnly=true [32m200[0m 28.827 ms - 321906[0m
+[0mGET /api/content/directions?activeOnly=true&imageMode=separate&summaryOnly=true [32m200[0m 38.751 ms - 3454[0m
+[0mGET /api/settings/academic-structure [32m200[0m 34.290 ms - 13[0m
+Changes detected. Restarting backend...
+✅ OpenAI API key yuklangan
+✅ PostgreSQL bazaga muvaffaqiyatli ulandi
+Synced default admin "admin" (id: 1).
+✅ Default admin tekshirildi / tayyor
+🚀 FSTU backend listening on port 8564 (development)
+[0mGET /api/content/__revision [32m200[0m 15.447 ms - 68[0m
+[0mGET /api/content/__revision [32m200[0m 1.336 ms - 68[0m
+[0mGET /api/settings/academic-structure [32m200[0m 6.019 ms - 13[0m
+[0mGET /api/content/__revision [32m200[0m 40.508 ms - 68[0m
+[0mGET /api/content/__revision [32m200[0m 0.918 ms - 68[0m
+[0mPOST /api/account/login [32m200[0m 292.311 ms - 650[0m
+[0mPUT /api/settings/academic-structure [32m200[0m 6.389 ms - 871[0m
+[0mGET /api/settings/academic-structure [32m200[0m 2.363 ms - 871[0m
+[0mPUT /api/settings/academic-structure [32m200[0m 3.203 ms - 877[0m
+[0mPUT /api/settings/academic-structure [32m200[0m 3.225 ms - 519[0m
+[0mGET /api/settings/academic-structure [32m200[0m 1.283 ms - 519[0m
+[0mDELETE /api/settings/academic-structure [32m204[0m 3.999 ms - -[0m
+[0mGET /api/content/__revision [32m200[0m 151.947 ms - 68[0m
+[0mGET /api/settings/seasonal-effects [32m200[0m 8.152 ms - 13[0m
+[0mGET /api/settings/rector-speech [32m200[0m 11.443 ms - 432962[0m
+[0mGET /api/content/news?activeOnly=true&imageMode=separate&summaryOnly=true&orderBy=recent&limit=8 [32m200[0m 11.253 ms - 7208[0m
+[0mGET /api/settings/academic-structure [32m200[0m 0.910 ms - 13[0m
+[0mGET /api/settings/site-theme [32m200[0m 56.753 ms - 1284[0m
+[0mGET /api/content/banners?activeOnly=true&imageMode=separate&summaryOnly=true [32m200[0m 62.748 ms - 2903[0m
+[0mGET /api/content/advantages?activeOnly=true&imageMode=separate&summaryOnly=true [32m200[0m 73.308 ms - 3092[0m
+[0mGET /api/settings/university-rankings [32m200[0m 94.627 ms - 2724254[0m
+[0mGET /api/content/menus/tree?activeOnly=true [32m200[0m 165.317 ms - 8073485[0m
+[0mGET /api/content/__revision [32m200[0m 3.432 ms - 68[0m
+[0mPUT /api/settings/academic-structure [32m200[0m 36.294 ms - 1185[0m
+[0mPUT /api/settings/academic-structure [32m200[0m 69.424 ms - 916621[0m
+[0mGET /api/content/__revision [32m200[0m 2.111 ms - 68[0m
+[0mGET /api/settings/seasonal-effects [32m200[0m 3.938 ms - 13[0m
+[0mGET /api/content/banners?activeOnly=true&imageMode=separate&summaryOnly=true [32m200[0m 8.425 ms - 2903[0m
+[0mGET /api/content/news?activeOnly=true&imageMode=separate&summaryOnly=true&orderBy=recent&limit=8 [32m200[0m 4.005 ms - 7208[0m
+[0mGET /api/settings/academic-structure [32m200[0m 11.499 ms - 916621[0m
+[0mGET /api/settings/rector-speech [32m200[0m 52.272 ms - 432962[0m
+[0mGET /api/settings/university-rankings [32m200[0m 91.296 ms - 2724254[0m
+[0mGET /api/content/menus/tree?activeOnly=true [32m200[0m 171.258 ms - 8073485[0m
+[0mGET /api/content/directions?activeOnly=true&imageMode=separate&summaryOnly=true [32m200[0m 74.838 ms - 3454[0m
+[0mGET /api/content/faculties?activeOnly=true&imageMode=separate&summaryOnly=true [32m200[0m 83.757 ms - 321906[0m
+[0mGET /api/settings/site-theme [32m200[0m 191.503 ms - 1284[0m
+[0mGET /api/content/advantages?activeOnly=true&imageMode=separate&summaryOnly=true [32m200[0m 194.826 ms - 3092[0m
+[0mPUT /api/settings/academic-structure [32m200[0m 58.688 ms - 916975[0m
+[0mGET /api/content/__revision [32m200[0m 2.028 ms - 68[0m
+[0mGET /api/settings/seasonal-effects [32m200[0m 5.755 ms - 13[0m
+[0mGET /api/settings/rector-speech [32m200[0m 12.330 ms - 432962[0m
+[0mGET /api/content/news?activeOnly=true&imageMode=separate&summaryOnly=true&orderBy=recent&limit=8 [32m200[0m 6.886 ms - 7208[0m
+[0mGET /api/settings/academic-structure [32m200[0m 12.789 ms - 916975[0m
+[0mGET /api/content/faculties?activeOnly=true&imageMode=separate&summaryOnly=true [32m200[0m 14.497 ms - 321906[0m
+[0mGET /api/content/directions?activeOnly=true&imageMode=separate&summaryOnly=true [32m200[0m 1.642 ms - 3454[0m
+[0mGET /api/settings/site-theme [32m200[0m 69.898 ms - 1284[0m
+[0mGET /api/content/banners?activeOnly=true&imageMode=separate&summaryOnly=true [32m200[0m 76.147 ms - 2903[0m
+[0mGET /api/settings/university-rankings [32m200[0m 111.226 ms - 2724254[0m
+[0mGET /api/content/menus/tree?activeOnly=true [32m200[0m 186.573 ms - 8073485[0m
+[0mGET /api/content/advantages?activeOnly=true&imageMode=separate&summaryOnly=true [32m200[0m 209.285 ms - 3092[0m
+[0mGET /api/content/__revision [32m200[0m 31.424 ms - 68[0m
+[0mGET /api/content/__revision [32m200[0m 0.914 ms - 68[0m
+[0mGET /api/content/__revision [32m200[0m 46.423 ms - 68[0m
+[0mGET /api/content/__revision [32m200[0m 0.707 ms - 68[0m
+[0mGET /api/account/me [32m200[0m 142.394 ms - 372[0m
+[0mGET /api/settings/academic-structure [32m200[0m 13.011 ms - 916975[0m
+[0mGET /api/content/__revision [32m200[0m 1.907 ms - 68[0m
+[0mGET /api/content/__revision [32m200[0m 0.823 ms - 68[0m
+[0mGET /api/content/academic-menus [32m200[0m 85.476 ms - 12[0m
+[0mGET /api/content/menus [32m200[0m 159.070 ms - 8073471[0m
+[0mGET /api/content/directions?activeOnly=true&imageMode=separate&summaryOnly=true [32m200[0m 39.951 ms - 3454[0m
+[0mGET /api/content/faculties?activeOnly=true&imageMode=separate&summaryOnly=true [32m200[0m 51.156 ms - 321906[0m
+[0mGET /api/settings/academic-structure [32m200[0m 53.361 ms - 916975[0m
+[0mGET /api/content/menus [32m200[0m 168.243 ms - 8073471[0m
+[0mGET /api/content/directions?activeOnly=true&imageMode=separate&summaryOnly=true [32m200[0m 44.226 ms - 3454[0m
+[0mGET /api/content/faculties?activeOnly=true&imageMode=separate&summaryOnly=true [32m200[0m 148.308 ms - 321906[0m

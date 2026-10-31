@@ -4,8 +4,8 @@ import { getTranslatedField } from './cms';
 const DEFAULT_ROOT = {
   id: 'university',
   name: 'Universitet',
-  logo: '/images/logo.png',
-  backImage: '/images/banner/banner-1.png',
+  logo: '',
+  backImage: '',
   icon: 'university',
   faculties: []
 };
@@ -18,8 +18,8 @@ function isActive(item = {}) {
   return item.active !== false;
 }
 
-function getItemTitle(item = {}, fallback = '') {
-  return getTranslatedField(item, 'title', item.title || fallback);
+function getItemTitle(item = {}, fallback = '', language) {
+  return getTranslatedField(item, 'title', item.title || fallback, language);
 }
 
 function getItemIcon(item = {}, fallback = 'book') {
@@ -38,7 +38,7 @@ function createDirectionUrl(direction = {}, facultyId, departmentId) {
   );
 }
 
-export function buildAcademicTree(facultyItems = [], directionItems = []) {
+export function buildAcademicTree(facultyItems = [], directionItems = [], language) {
   const { faculties } = normalizeAcademicEntries(facultyItems);
   const activeDirections = sortByOrder(directionItems.filter(isActive));
   const directionsByDepartment = new Map();
@@ -59,7 +59,8 @@ export function buildAcademicTree(facultyItems = [], directionItems = []) {
 
         return {
           id: facultyId,
-          name: getItemTitle(faculty, 'Fakultet'),
+          kind: 'faculty',
+          name: getItemTitle(faculty, 'Fakultet', language),
           logo: getImage(faculty),
           backImage: faculty.bannerImage || getImage(faculty) || DEFAULT_ROOT.backImage,
           icon: getItemIcon(faculty, 'university'),
@@ -71,7 +72,8 @@ export function buildAcademicTree(facultyItems = [], directionItems = []) {
               const directionKey = `${facultyId}::${departmentId}`;
               const programs = (directionsByDepartment.get(directionKey) || []).map((direction) => ({
                 id: String(direction.id || `${departmentId}-direction`),
-                name: getItemTitle(direction, "Yo'nalish"),
+                kind: 'direction',
+                name: getItemTitle(direction, "Yo'nalish", language),
                 logo: getImage(direction),
                 icon: getItemIcon(direction, 'graduation'),
                 url: createDirectionUrl(direction, facultyId, departmentId)
@@ -79,8 +81,9 @@ export function buildAcademicTree(facultyItems = [], directionItems = []) {
 
               return {
                 id: departmentId,
+                kind: 'department',
                 facultyId,
-                name: getItemTitle(department, 'Kafedra'),
+                name: getItemTitle(department, 'Kafedra', language),
                 logo: getImage(department) || getImage(faculty),
                 backImage: department.bannerImage || getImage(department) || faculty.bannerImage || getImage(faculty),
                 icon: getItemIcon(department, 'book'),

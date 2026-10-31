@@ -596,22 +596,15 @@
   cursor: not-allowed;
 }
 
-.ae-nav-number {
-  display: grid;
-  place-items: center;
-  flex-shrink: 0;
-  width: 32px;
-  height: 32px;
-  background: #eef3f7;
-  color: var(--text-secondary);
-  border-radius: var(--box-radius);
-  font-size: var(--font-size-meta);
-  font-weight: 800;
+.ae-menu-content {
+  padding: 20px;
+  overflow-wrap: anywhere;
+  line-height: 1.7;
 }
 
-.ae-nav-item.active .ae-nav-number {
-  background: var(--ae-primary);
-  color: var(--text-on-brand);
+.ae-menu-content img {
+  max-width: 100%;
+  height: auto;
 }
 
 .ae-nav-info {
@@ -1109,7 +1102,8 @@
   margin-top: 20px;
 }
 
-.ae-actions button {
+.ae-actions button,
+.ae-actions a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1125,16 +1119,19 @@
   font-size: var(--font-size-meta);
   font-weight: 700;
   cursor: pointer;
+  text-decoration: none;
 
   transition: background .2s,transform .2s;
 }
 
-.ae-actions button svg {
+.ae-actions button svg,
+.ae-actions a svg {
   width: 15px;
   height: 15px;
 }
 
-.ae-actions button:hover {
+.ae-actions button:hover,
+.ae-actions a:hover {
   background: #eaf6fc;
   transform: translateY(-2px);
 }

@@ -7,50 +7,29 @@ import React, {
 } from 'react';
 
 import '../../assets/styles/UniversityRankings.css';
+import { useSetting } from '../../hooks/useSetting';
 
 /* ============================================
    FSTU — UNIVERSITY RANKINGS
    Responsive / Animated / Clean
 ============================================ */
 
-const DEFAULT_RANKINGS = [
-  {
-    id: 'national',
-    title: 'O‘zbekiston milliy reytingi',
-    result: 'TOP 5',
-    logo: '/images/rankings/uz-national.png'
-  },
-  {
-    id: 'impact',
-    title: 'THE Impact Rankings',
-    result: 'TOP 400+',
-    logo: '/images/rankings/the-impact.png'
-  },
-  {
-    id: 'world',
-    title: 'THE World University Rankings',
-    result: 'Reporter',
-    logo: '/images/rankings/the-world.png'
-  },
-  {
-    id: 'technical',
-    title: 'Texnika sohasi bo‘yicha milliy reyting',
-    result: 'TOP 3',
-    logo: '/images/rankings/uz-technical.png'
-  },
-  {
-    id: 'asia',
-    title: 'QS Asian University Rankings',
-    result: 'TOP 801+',
-    logo: '/images/rankings/qs-asia.png'
-  },
-  {
-    id: 'central',
-    title: 'QS Ranking Central Asia',
-    result: 'TOP 50',
-    logo: '/images/rankings/qs-central.png'
+const TEXT_FIELDS = ['title', 'titleAccent', 'description', 'heroTitle', 'heroTitleAccent', 'heroDescription'];
+
+function localizedText(value, language) {
+  if (typeof value === 'string') return value.trim();
+  return String(value?.[language]?.trim() || value?.uz || '').trim();
+}
+
+function safeCardLink(value) {
+  const href = String(value || '').trim();
+  if (/^\/(?!\/)/.test(href) && !/[\\\s]/.test(href)) return href;
+  try {
+    return /^https?:$/.test(new URL(href).protocol) ? href : '';
+  } catch {
+    return '';
   }
-];
+}
 
 /* ============================================
    REDUCED MOTION
@@ -247,7 +226,7 @@ function AnimatedRanking({
    HEADER WITH ENTRANCE ANIMATION
 ============================================ */
 
-function RankingHeader() {
+function RankingHeader({ text }) {
   const [headerRef, visible] = useInViewOnce(0.2);
 
   return (
@@ -257,14 +236,13 @@ function RankingHeader() {
         `pr-header ${visible ? 'is-visible' : ''}`
       }
     >
-      <h2 id="pr-heading" className="pr-header-title">
-        Reyting <span>ko‘rsatkichlari</span>
-      </h2>
+      {(text.title || text.titleAccent) && <h2 id="pr-heading" className="pr-header-title">
+        {text.title}{text.titleAccent && <> <span>{text.titleAccent}</span></>}
+      </h2>}
 
-      <p className="pr-header-description">
-        Universitetning milliy va xalqaro reytinglarda
-        qayd etilgan natijalari.
-      </p>
+      {text.description && <p className="pr-header-description">
+        {text.description}
+      </p>}
     </header>
   );
 }
@@ -273,7 +251,7 @@ function RankingHeader() {
    LEFT — TEXT ONLY
 ============================================ */
 
-function RankingHero() {
+function RankingHero({ text }) {
   const [heroRef, visible] = useInViewOnce(0.1);
 
   return (
@@ -282,18 +260,16 @@ function RankingHero() {
       className={`pr-hero ${visible ? 'is-visible' : ''}`}
     >
       <div className="pr-hero-text-showcase">
-        <h3 className="pr-hero-title">
-          Ilm-fan va
-          <span className="pr-hero-title-accent">
-            global e’tirof.
-          </span>
-        </h3>
+        {(text.heroTitle || text.heroTitleAccent) && <h3 className="pr-hero-title">
+          {text.heroTitle}
+          {text.heroTitleAccent && <span className="pr-hero-title-accent">
+            {text.heroTitleAccent}
+          </span>}
+        </h3>}
 
-        <p className="pr-hero-description">
-          Milliy va xalqaro reytinglardagi natijalar
-          universitet rivojlanishining muhim
-          ko‘rsatkichlaridan biridir.
-        </p>
+        {text.heroDescription && <p className="pr-hero-description">
+          {text.heroDescription}
+        </p>}
       </div>
     </div>
   );
@@ -342,8 +318,8 @@ function RankingCard({ item, index }) {
       <a
         {...sharedProps}
         href={item.sourceUrl}
-        target="_blank"
-        rel="noopener noreferrer"
+        target={item.sourceUrl.startsWith('/') ? undefined : '_blank'}
+        rel={item.sourceUrl.startsWith('/') ? undefined : 'noopener noreferrer'}
         aria-label={`${item.title}: ${item.result ?? item.value}`}
       >
         {content}
@@ -362,45 +338,47 @@ function RankingCard({ item, index }) {
    MAIN COMPONENT
 ============================================ */
 
-export default function UniversityRankings({ data }) {
+export default function UniversityRankings() {
+  const { item: setting, currentLanguageCode } = useSetting('university-rankings');
+  const text = Object.fromEntries(TEXT_FIELDS.map(key => [
+    key, localizedText(setting?.[key], currentLanguageCode)
+  ]));
   const rankings = useMemo(() => {
-    if (Array.isArray(data)) {
-      return data;
-    }
+    const cards = Array.isArray(setting?.rankings) ? setting.rankings : [];
+    return cards.filter(item => item && item.active !== false).map(item => ({
+      ...item,
+      title: localizedText(item.title, currentLanguageCode),
+      result: localizedText(item.result ?? item.value, currentLanguageCode),
+      logo: item.image ?? item.logo,
+      sourceUrl: safeCardLink(item.sourceUrl)
+    })).filter(item => item.title && item.result);
+  }, [setting, currentLanguageCode]);
 
-    if (Array.isArray(data?.rankings)) {
-      return data.rankings;
-    }
+  if (!setting || setting.active === false || !rankings.length) return null;
 
-    return DEFAULT_RANKINGS;
-  }, [data]);
+  const hasHeading = Boolean(text.title || text.titleAccent);
+  const hasHero = Boolean(text.heroTitle || text.heroTitleAccent || text.heroDescription);
 
   return (
     <section
       className="pr-section"
-      aria-labelledby="pr-heading"
+      aria-labelledby={hasHeading ? 'pr-heading' : undefined}
     >
       <div className="pr-container">
 
-        <RankingHeader />
+        {(hasHeading || text.description) && <RankingHeader text={text} />}
 
-        <div className="pr-layout">
-          <RankingHero />
+        <div className={`pr-layout${hasHero ? '' : ' pr-layout--cards-only'}`}>
+          {hasHero && <RankingHero text={text} />}
 
           <div className="pr-ranking-grid">
-            {rankings.length > 0 ? (
-              rankings.map((item, index) => (
+            {rankings.map((item, index) => (
                 <RankingCard
                   key={item.id ?? index}
                   item={item}
                   index={index}
                 />
-              ))
-            ) : (
-              <div className="pr-empty">
-                Hozircha reyting ma’lumotlari mavjud emas.
-              </div>
-            )}
+              ))}
           </div>
         </div>
 

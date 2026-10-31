@@ -24,6 +24,14 @@ const AdvantagesManagementPage = Loadable(
   lazy(() => import('pages/extra-pages/advantages-management'))
 );
 
+const RankingsManagementPage = Loadable(
+  lazy(() => import('pages/extra-pages/rankings-management'))
+);
+
+const AcademicStructureManagementPage = Loadable(
+  lazy(() => import('pages/extra-pages/academic-structure-management'))
+);
+
 const NewsManagementPage = Loadable(
   lazy(() => import('pages/extra-pages/news-management'))
 );
@@ -102,6 +110,14 @@ const MainRoutes = {
     {
       path: 'advantages-management',
       element: <AdvantagesManagementPage />
+    },
+    {
+      path: 'rankings-management',
+      element: <RankingsManagementPage />
+    },
+    {
+      path: 'academic-structure-management',
+      element: <AcademicStructureManagementPage />
     },
     {
       path: 'banner-management',

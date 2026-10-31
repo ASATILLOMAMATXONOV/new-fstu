@@ -7,6 +7,8 @@ export const menuAccessGroups = [
       { key: 'banner-management', title: 'Banner boshqaruvi', url: '/banner-management' },
       { key: 'academic-menu-management', title: 'Akademik menyu', url: '/academic-menu-management' },
       { key: 'advantages-management', title: 'Afzalliklar boshqaruvi', url: '/advantages-management' },
+      { key: 'rankings-management', title: 'Reyting ko‘rsatkichlari', url: '/rankings-management' },
+      { key: 'academic-structure-management', title: 'Akademik tuzilma', url: '/academic-structure-management' },
       { key: 'statistics-management', title: 'Statistika boshqaruvi', url: '/statistics-management' }
     ]
   },
