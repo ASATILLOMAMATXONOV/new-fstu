@@ -17,6 +17,7 @@ import {
   Grid,
   IconButton,
   InputAdornment,
+  MenuItem,
   Paper,
   Stack,
   Switch,
@@ -66,6 +67,22 @@ const settingFields = [
   ['catalogDescription', 'Katalog haqida matn']
 ];
 const localized = (value = '') => ({ uz: '', ru: '', en: '', ...(typeof value === 'string' ? { uz: value } : value || {}) });
+const normalizeCards = (cards) =>
+  (Array.isArray(cards) ? cards : []).filter(Boolean).map((card) => ({
+    ...card,
+    id: card.id || uuid(),
+    title: localized(card.title),
+    image: card.image || '',
+    url: card.url || ''
+  }));
+const validCardUrl = (value) => {
+  if (/^\/(?!\/)/.test(value) && !/[\\\s]/.test(value)) return true;
+  try {
+    return /^https?:$/.test(new URL(value).protocol);
+  } catch {
+    return false;
+  }
+};
 
 function normalizeSetting(value = {}) {
   return {
@@ -76,9 +93,9 @@ function normalizeSetting(value = {}) {
     menus: (Array.isArray(value.menus) ? value.menus : []).filter(Boolean).map((item, index) => ({
       id: item.id || uuid(),
       title: localized(item.title),
-      subtitle: localized(item.subtitle),
       sourceType: item.sourceType || 'faculty',
       menuId: item.menuId == null ? '' : String(item.menuId),
+      cards: normalizeCards(item.cards),
       order: Number(item.order || index + 1),
       active: item.active !== false
     }))
@@ -90,7 +107,10 @@ export default function AcademicStructureManagementPage() {
   const [siteMenus, setSiteMenus] = useState([]);
   const sourceOptions = useMemo(() => buildAcademicSourceOptions(siteMenus), [siteMenus]);
   const sourceLabel = useCallback(
-    (item) => sourceOptions.find((option) => option.value === academicSourceValue(item))?.label || '—',
+    (item) =>
+      item.sourceType === 'custom'
+        ? `Yangi menyu · ${item.cards.length} ta box`
+        : sourceOptions.find((option) => option.value === academicSourceValue(item))?.label || '—',
     [sourceOptions]
   );
   const [mode, setMode] = useState('table');
@@ -137,7 +157,7 @@ export default function AcademicStructureManagementPage() {
       .filter(
         (item) =>
           !query ||
-          [...Object.values(item.title), ...Object.values(item.subtitle), sourceLabel(item)].some((value) =>
+          [...Object.values(item.title), sourceLabel(item)].some((value) =>
             String(value || '')
               .toLocaleLowerCase()
               .includes(query)
@@ -158,14 +178,14 @@ export default function AcademicStructureManagementPage() {
         ? {
             ...item,
             title: localized(sourceOptions.find((option) => option.value === academicSourceValue(item))?.title || item.title),
-            subtitle: { ...item.subtitle }
+            cards: normalizeCards(item.cards)
           }
         : {
             id: uuid(),
             title: localized(),
-            subtitle: localized(),
             sourceType: '',
             menuId: '',
+            cards: [],
             order: Math.max(0, ...record.menus.map((menu) => menu.order)) + 1,
             active: true
           }
@@ -200,7 +220,21 @@ export default function AcademicStructureManagementPage() {
     clearFeedback();
     setForm((prev) => ({ ...prev, sourceType: option?.sourceType || '', menuId: option?.menuId || '', title: localized(option?.title) }));
   };
-  const upload = async (key, file) => {
+  const changeCard = (id, key, value) => {
+    clearFeedback();
+    setForm((prev) => ({
+      ...prev,
+      cards: prev.cards.map((card) =>
+        card.id === id
+          ? {
+              ...card,
+              [key]: key === 'title' ? { ...card.title, [language]: value } : value
+            }
+          : card
+      )
+    }));
+  };
+  const upload = async (key, file, cardId = null) => {
     if (!file) return;
     clearFeedback();
     if (!/^image\/(png|jpeg|webp|gif)$/.test(file.type) || file.size > 1024 * 1024) {
@@ -209,7 +243,9 @@ export default function AcademicStructureManagementPage() {
     }
     setUploading(true);
     try {
-      changeField(key, await fileToDataUrl(file));
+      const image = await fileToDataUrl(file);
+      if (cardId) changeCard(cardId, key, image);
+      else changeField(key, image);
     } catch (uploadFailure) {
       setError(uploadFailure.message || 'Rasmni yuklab bo‘lmadi.');
     } finally {
@@ -243,11 +279,38 @@ export default function AcademicStructureManagementPage() {
       return;
     }
     const selectedOption = sourceOptions.find((option) => option.value === academicSourceValue(form));
-    if (!selectedOption) {
+    const isCustom = form.sourceType === 'custom';
+    if (!isCustom && !selectedOption) {
       setError('Biriktiriladigan menyuni tanlang.');
       return;
     }
-    const menu = { ...form, title: localized(selectedOption.title), order: Math.max(1, Math.trunc(Number(form.order)) || 1) };
+    if (isCustom) {
+      if (!form.title.uz.trim()) {
+        setError('Menyu nomini o‘zbekcha kiriting.');
+        setLanguage('uz');
+        return;
+      }
+      if (!form.cards.length) {
+        setError('Kamida bitta box qo‘shing.');
+        return;
+      }
+      const invalidIndex = form.cards.findIndex(
+        (card) => !card.title.uz.trim() || !card.image.trim() || (card.url.trim() && !validCardUrl(card.url.trim()))
+      );
+      if (invalidIndex !== -1) {
+        setError(
+          `${invalidIndex + 1}-box uchun o‘zbekcha sarlavha va rasm kiriting. Havola ixtiyoriy; kiritilsa, /, https:// yoki http:// bilan boshlanishi kerak.`
+        );
+        setLanguage('uz');
+        return;
+      }
+    }
+    const menu = {
+      ...form,
+      title: isCustom ? localized(form.title) : localized(selectedOption.title),
+      cards: form.cards.map((card) => ({ ...card, image: card.image.trim(), url: card.url.trim() })),
+      order: Math.max(1, Math.trunc(Number(form.order)) || 1)
+    };
     const menus = editing ? record.menus.map((item) => (item.id === menu.id ? menu : item)) : [...record.menus, menu];
     if (await persist({ ...record, menus }, editing ? 'Menyu yangilandi.' : 'Yangi menyu qo‘shildi.')) {
       setSearch('');
@@ -320,46 +383,65 @@ export default function AcademicStructureManagementPage() {
                     ))
                   ) : (
                     <>
-                      <Grid item xs={12} md={6}>
+                      <Grid item xs={12}>
+                        <TextField
+                          select
+                          fullWidth
+                          label="Menyu turi"
+                          value={form.sourceType === 'custom' ? 'custom' : 'linked'}
+                          onChange={(event) => {
+                            clearFeedback();
+                            setForm((prev) => ({
+                              ...prev,
+                              sourceType: event.target.value === 'custom' ? 'custom' : '',
+                              menuId: '',
+                              title: localized()
+                            }));
+                          }}
+                        >
+                          <MenuItem value="linked">Mavjud menyuni biriktirish</MenuItem>
+                          <MenuItem value="custom">Yangi menyu va boxlar</MenuItem>
+                        </TextField>
+                      </Grid>
+                      <Grid item xs={12}>
                         <TextField
                           fullWidth
                           label="Menyu nomi"
                           value={form.title[language]}
-                          InputProps={{ readOnly: true }}
-                          helperText="Tanlangan menyuning nomi avtomatik olinadi."
+                          onChange={(event) => changeText('title', event.target.value)}
+                          InputProps={{ readOnly: form.sourceType !== 'custom' }}
+                          helperText={
+                            form.sourceType === 'custom'
+                              ? 'Yangi menyuning nomini kiriting.'
+                              : 'Tanlangan menyuning nomi avtomatik olinadi.'
+                          }
                         />
                       </Grid>
-                      <Grid item xs={12} md={6}>
-                        <TextField
-                          fullWidth
-                          label="Menyu ostidagi matn"
-                          value={form.subtitle[language]}
-                          onChange={(event) => changeText('subtitle', event.target.value)}
-                        />
-                      </Grid>
-                      <Grid item xs={12} md={8}>
-                        <Autocomplete
-                          options={sourceOptions}
-                          value={sourceOptions.find((option) => option.value === academicSourceValue(form)) || null}
-                          onChange={(_event, option) => changeSource(option)}
-                          groupBy={(option) => option.group}
-                          getOptionLabel={(option) => option.label}
-                          isOptionEqualToValue={(option, value) => option.value === value.value}
-                          renderOption={(props, option) => (
-                            <li {...props} key={option.value}>
-                              {option.label}
-                            </li>
-                          )}
-                          noOptionsText="Menyu topilmadi"
-                          renderInput={(params) => (
-                            <TextField
-                              {...params}
-                              label="Biriktiriladigan menyu"
-                              helperText="Barcha ma’lumot turlari va sayt menyularidan tanlang. Qidirish uchun yozing."
-                            />
-                          )}
-                        />
-                      </Grid>
+                      {form.sourceType !== 'custom' && (
+                        <Grid item xs={12} md={8}>
+                          <Autocomplete
+                            options={sourceOptions}
+                            value={sourceOptions.find((option) => option.value === academicSourceValue(form)) || null}
+                            onChange={(_event, option) => changeSource(option)}
+                            groupBy={(option) => option.group}
+                            getOptionLabel={(option) => option.label}
+                            isOptionEqualToValue={(option, value) => option.value === value.value}
+                            renderOption={(props, option) => (
+                              <li {...props} key={option.value}>
+                                {option.label}
+                              </li>
+                            )}
+                            noOptionsText="Menyu topilmadi"
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                label="Biriktiriladigan menyu"
+                                helperText="Barcha ma’lumot turlari va sayt menyularidan tanlang. Qidirish uchun yozing."
+                              />
+                            )}
+                          />
+                        </Grid>
+                      )}
                       <Grid item xs={12} md={4}>
                         <TextField
                           fullWidth
@@ -373,7 +455,9 @@ export default function AcademicStructureManagementPage() {
                       </Grid>
                       <Grid item xs={12}>
                         <Alert severity="info">
-                          Tanlangan menyuning ma’lumotlari saytda o‘ng tomonda ko‘rsatiladi. Menyu nomini alohida yozish shart emas.
+                          {form.sourceType === 'custom'
+                            ? 'Menyu tanlanganda uning boxlari o‘ng tomonda chiqadi. Har bir boxga rasm va sarlavha kiriting. Bosilganda ochiladigan havola ixtiyoriy.'
+                            : 'Tanlangan menyuning ma’lumotlari saytda o‘ng tomonda ko‘rsatiladi. Menyu nomini alohida yozish shart emas.'}
                         </Alert>
                       </Grid>
                     </>
@@ -386,6 +470,96 @@ export default function AcademicStructureManagementPage() {
                   </Grid>
                 </Grid>
               </Paper>
+              {mode === 'menu' && form.sourceType === 'custom' && (
+                <Stack spacing={2}>
+                  <Stack direction="row" justifyContent="space-between" alignItems="center">
+                    <Typography variant="h5">Boxlar ({form.cards.length})</Typography>
+                    <Button
+                      variant="outlined"
+                      startIcon={<PlusOutlined aria-hidden="true" />}
+                      onClick={() => changeField('cards', [...form.cards, { id: uuid(), title: localized(), image: '', url: '' }])}
+                    >
+                      Box qo‘shish
+                    </Button>
+                  </Stack>
+                  {!form.cards.length && <Alert severity="info">Box qo‘shish tugmasi orqali menyu ma’lumotlarini kiriting.</Alert>}
+                  {form.cards.map((card, index) => (
+                    <Paper key={card.id} variant="outlined" sx={{ p: { xs: 2, md: 3 } }}>
+                      <Stack spacing={2}>
+                        <Stack direction="row" justifyContent="space-between" alignItems="center">
+                          <Typography variant="h6">{index + 1}-box</Typography>
+                          <IconButton
+                            color="error"
+                            aria-label={`${index + 1}-boxni o‘chirish`}
+                            onClick={() =>
+                              changeField(
+                                'cards',
+                                form.cards.filter((item) => item.id !== card.id)
+                              )
+                            }
+                          >
+                            <DeleteOutlined aria-hidden="true" />
+                          </IconButton>
+                        </Stack>
+                        <TextField
+                          fullWidth
+                          label="Box sarlavhasi"
+                          value={card.title[language]}
+                          onChange={(event) => changeCard(card.id, 'title', event.target.value)}
+                        />
+                        <TextField
+                          fullWidth
+                          label="Box havolasi"
+                          value={card.url}
+                          onChange={(event) => changeCard(card.id, 'url', event.target.value)}
+                          placeholder="/pages/15 yoki https://example.com"
+                          InputLabelProps={{ shrink: true }}
+                          helperText="Ixtiyoriy. Havola kiritilsa, box bosilganda ochiladi."
+                        />
+                        {card.image && (
+                          <Box
+                            component="img"
+                            src={card.image}
+                            alt={`${index + 1}-box rasmi`}
+                            sx={{ width: '100%', height: 140, objectFit: 'contain', bgcolor: 'grey.50' }}
+                          />
+                        )}
+                        <TextField
+                          fullWidth
+                          label="Box rasmi manzili"
+                          value={card.image.startsWith('data:') ? '' : card.image}
+                          onChange={(event) => changeCard(card.id, 'image', event.target.value)}
+                          helperText={
+                            card.image.startsWith('data:') ? 'Yuklangan rasm biriktirilgan.' : 'Rasm manzilini kiriting yoki fayl yuklang.'
+                          }
+                        />
+                        <Stack direction="row" spacing={1}>
+                          <Button component="label" variant="outlined" startIcon={<UploadOutlined aria-hidden="true" />} disabled={busy}>
+                            Rasm yuklash
+                            <input
+                              hidden
+                              type="file"
+                              accept="image/png,image/jpeg,image/webp,image/gif"
+                              onChange={(event) => {
+                                upload('image', event.target.files?.[0], card.id);
+                                event.target.value = '';
+                              }}
+                            />
+                          </Button>
+                          {card.image && (
+                            <Button color="error" onClick={() => changeCard(card.id, 'image', '')}>
+                              Rasmni olib tashlash
+                            </Button>
+                          )}
+                        </Stack>
+                        <Typography variant="caption" color="text.secondary">
+                          JPG, PNG, WEBP yoki GIF. Eng katta hajm: 1 MB.
+                        </Typography>
+                      </Stack>
+                    </Paper>
+                  ))}
+                </Stack>
+              )}
               {mode === 'settings' && (
                 <Grid container spacing={3}>
                   {[
@@ -511,9 +685,6 @@ export default function AcademicStructureManagementPage() {
                   <TableCell>
                     <Typography variant="subtitle1" fontWeight={700}>
                       {item.title.uz || '—'}
-                    </Typography>
-                    <Typography variant="caption" color="text.secondary">
-                      {item.subtitle.uz}
                     </Typography>
                     <Typography variant="caption" display="block" color="text.secondary">
                       RU: {item.title.ru || '—'} | EN: {item.title.en || '—'}

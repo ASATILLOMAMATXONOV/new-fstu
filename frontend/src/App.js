@@ -40,6 +40,7 @@ const AcademicEntityPage = React.lazy(() => import('./pages/AcademicEntityPage')
 const AdmissionPage = React.lazy(() => import('./pages/AdmissionPage'));
 const JournalIssuesPage = React.lazy(() => import('./pages/JournalIssuesPage'));
 const LaboratoriesPage = React.lazy(() => import('./pages/LaboratoriesPage'));
+const LaboratoryDetailPage = React.lazy(() => import('./pages/LaboratoryDetailPage'));
 
 function SiteLayout() {
   const { pathname } = useLocation();
@@ -47,10 +48,36 @@ function SiteLayout() {
     <>
       <ScrollManager />
       <Navbar />
-      {pathname !== '/' && <InnerPageBanner key={pathname} />}
+      {pathname !== '/' && <InnerPageBanner />}
       <Outlet />
       <Footer />
     </>
+  );
+}
+
+function IdleRobotAssistant() {
+  const [isReady, setIsReady] = React.useState(false);
+
+  React.useEffect(() => {
+    const showAssistant = () => setIsReady(true);
+
+    if (typeof window.requestIdleCallback === 'function') {
+      const idleId = window.requestIdleCallback(showAssistant, { timeout: 2500 });
+      return () => window.cancelIdleCallback(idleId);
+    }
+
+    const timerId = window.setTimeout(showAssistant, 1500);
+    return () => window.clearTimeout(timerId);
+  }, []);
+
+  if (!isReady) {
+    return null;
+  }
+
+  return (
+    <Suspense fallback={null}>
+      <RobotAssistant />
+    </Suspense>
   );
 }
 
@@ -64,7 +91,7 @@ function App() {
       <BrowserRouter>
         <SeasonalEffectsOverlay />
         <ThemeColorSwitcher />
-        <Suspense fallback={null}><RobotAssistant /></Suspense>
+        <IdleRobotAssistant />
         <Routes>
           <Route element={<SiteLayout />}>
 
@@ -237,6 +264,14 @@ function App() {
             element={
               <Suspense fallback={<SectionFallback minHeight={960} />}>
                <LaboratoriesPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/laboratories/:id"
+            element={
+              <Suspense fallback={<SectionFallback minHeight={720} />}>
+                <LaboratoryDetailPage />
               </Suspense>
             }
           />

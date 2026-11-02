@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
 import '../../assets/styles/HomeFacultyConstellation.css';
 import { useContentList } from '../../hooks/useContentList';
@@ -8,6 +8,7 @@ import {
   STRUCTURE_RESOURCE_MAP,
   academicText,
   buildAcademicCollections,
+  buildCustomMenuCollection,
   buildLinkedMenuCollection,
   buildResourceCollection,
   getStructureMenus,
@@ -252,7 +253,7 @@ function UniversityBrand({ data }) {
    NAVIGATION ITEM
 ========================================== */
 
-function NavigationItem({ title, subtitle, active, onClick }) {
+function NavigationItem({ title, active, onClick }) {
   return (
     <button
       type="button"
@@ -262,7 +263,6 @@ function NavigationItem({ title, subtitle, active, onClick }) {
     >
       <span className="ae-nav-info">
         <strong>{title}</strong>
-        {subtitle && <small title={subtitle}>{subtitle}</small>}
       </span>
     </button>
   );
@@ -273,6 +273,45 @@ function NavigationItem({ title, subtitle, active, onClick }) {
 ========================================== */
 
 function AcademicSidebar({ menus, selectedId, text, loading, onSelect }) {
+  const navigationRef = useRef(null);
+  const scrollable = menus.length > 5;
+
+  useLayoutEffect(() => {
+    const navigation = navigationRef.current;
+    if (!navigation) return undefined;
+    if (!scrollable) {
+      navigation.style.removeProperty('max-height');
+      return undefined;
+    }
+
+    const visibleItems = Array.from(navigation.children).slice(0, 5);
+    const updateHeight = () => {
+      const first = visibleItems[0].getBoundingClientRect();
+      const last = visibleItems[4].getBoundingClientRect();
+      const styles = window.getComputedStyle(navigation);
+      navigation.style.maxHeight = `${last.bottom - first.top + parseFloat(styles.paddingTop) + parseFloat(styles.paddingBottom)}px`;
+    };
+    updateHeight();
+    const selectedItem = navigation.querySelector('[aria-current="step"]');
+    if (selectedItem) {
+      const selectedBounds = selectedItem.getBoundingClientRect();
+      const navigationBounds = navigation.getBoundingClientRect();
+      if (selectedBounds.bottom > navigationBounds.bottom) {
+        navigation.scrollTop += selectedBounds.bottom - navigationBounds.bottom + 3;
+      } else if (selectedBounds.top < navigationBounds.top) {
+        navigation.scrollTop -= navigationBounds.top - selectedBounds.top + 3;
+      }
+    }
+    const observer = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(updateHeight) : null;
+    observer?.observe(navigation);
+    visibleItems.forEach((item) => observer?.observe(item));
+    window.addEventListener('resize', updateHeight);
+    return () => {
+      observer?.disconnect();
+      window.removeEventListener('resize', updateHeight);
+    };
+  }, [menus, scrollable, selectedId]);
+
   return (
     <aside className="ae-sidebar">
       <div className="ae-sidebar-header">
@@ -287,12 +326,16 @@ function AcademicSidebar({ menus, selectedId, text, loading, onSelect }) {
       </div>
 
       <div className="ae-sidebar-scroll" role="region" aria-label="Akademik navigatsiya" tabIndex={0}>
-        <nav className="ae-navigation">
+        <nav
+          ref={navigationRef}
+          className={`ae-navigation${scrollable ? ' ae-navigation--scrollable' : ''}`}
+          aria-label="Tuzilma menyulari"
+          tabIndex={scrollable ? 0 : undefined}
+        >
           {menus.map((menu) => (
             <NavigationItem
               key={menu.id}
               title={menu.name}
-              subtitle={menu.subtitle}
               active={menu.id === selectedId}
               onClick={() => onSelect(menu.id)}
             />
@@ -323,7 +366,7 @@ function AcademicSidebar({ menus, selectedId, text, loading, onSelect }) {
    ANIMATED BANNER
 ========================================== */
 
-function AcademicBanner({ current, rootData, title, description, count }) {
+function AcademicBanner({ current, rootData, title, count }) {
   const image = current?.backImage || rootData?.backImage;
 
   const [failed, setFailed] = useState(false);
@@ -351,7 +394,6 @@ function AcademicBanner({ current, rootData, title, description, count }) {
 
         <h3>{current?.name || 'Universitet'}</h3>
 
-        <p>{description}</p>
       </div>
 
       <div className="ae-banner-count">
@@ -431,7 +473,6 @@ export default function HomeFacultyConstellation() {
   if (!selectedMenu) return null;
   return (
     <AcademicWorkspace
-      key={`${selectedMenu.id}:${structureSource(selectedMenu)}:${currentLanguageCode}`}
       setting={setting}
       currentLanguageCode={currentLanguageCode}
       menus={menus}
@@ -460,9 +501,11 @@ function AcademicWorkspace({ setting, currentLanguageCode, menus, selectedMenu, 
   });
   const sourceItems = useMemo(
     () =>
-      sourceType === 'menu'
-        ? buildLinkedMenuCollection(selectedMenu, siteMenus, currentLanguageCode)
-        : buildResourceCollection(sourceType, resourceItems, currentLanguageCode),
+      sourceType === 'custom'
+        ? buildCustomMenuCollection(selectedMenu, currentLanguageCode)
+        : sourceType === 'menu'
+          ? buildLinkedMenuCollection(selectedMenu, siteMenus, currentLanguageCode)
+          : buildResourceCollection(sourceType, resourceItems, currentLanguageCode),
     [sourceType, resourceItems, selectedMenu, siteMenus, currentLanguageCode]
   );
   const panelContent =
@@ -592,11 +635,9 @@ function AcademicWorkspace({ setting, currentLanguageCode, menus, selectedMenu, 
               ))}
             </nav>
             <AcademicBanner
-              key={pageKey}
               current={current}
               rootData={rootData}
               title={collectionTitle}
-              description={selectedMenu.subtitle}
               count={items.length}
             />
           </div>

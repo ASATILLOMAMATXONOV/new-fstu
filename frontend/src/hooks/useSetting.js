@@ -16,6 +16,7 @@ export function useSetting(key, options = {}) {
 
   React.useEffect(() => {
     let cancelled = false;
+    const hasCachedItem = cachedItem !== null;
 
     const load = async (forceRefresh = false) => {
       if (!enabled || !key) {
@@ -25,7 +26,7 @@ export function useSetting(key, options = {}) {
       }
 
       try {
-        if (cachedItem && !forceRefresh) {
+        if (hasCachedItem && !forceRefresh) {
           setItem(cachedItem);
           setLoading(false);
           if (!shouldRevalidate) {
@@ -33,7 +34,9 @@ export function useSetting(key, options = {}) {
           }
         }
 
-        setLoading(true);
+        if (!hasCachedItem && !forceRefresh) {
+          setLoading(true);
+        }
         const nextItem = await fetchSetting(key, {
           force: forceRefresh
         });
@@ -44,7 +47,7 @@ export function useSetting(key, options = {}) {
       } catch (error) {
         console.error(`Failed to load setting ${key}:`, error);
 
-        if (!cancelled) {
+        if (!cancelled && !hasCachedItem && !forceRefresh) {
           setItem(null);
         }
       } finally {

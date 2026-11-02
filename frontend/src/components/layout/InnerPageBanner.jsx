@@ -73,6 +73,10 @@ function getBannerBaseContent(pathname, texts) {
     return withBannerImage(texts.studentDetail);
   }
 
+  if (matchPath('/laboratories/:id', pathname)) {
+    return withBannerImage(texts.default);
+  }
+
   if (matchPath('/journals', pathname)) {
     return withBannerImage(texts.journals);
   }
@@ -293,13 +297,15 @@ function InnerPageBanner() {
     news: matchPath('/news/page/:id', pathname),
     announcement: matchPath('/announcements/page/:id', pathname),
     employee: matchPath('/employees/:slug', pathname),
-    student: matchPath('/students/:id', pathname)
+    student: matchPath('/students/:id', pathname),
+    laboratory: matchPath('/laboratories/:id', pathname)
   }), [pathname]);
 
   const {
     menu: menuMatch, page: pageMatch, faculty: facultyMatch,
     department: departmentMatch, section: sectionMatch, news: newsMatch,
-    announcement: announcementMatch, employee: employeeMatch, student: studentMatch
+    announcement: announcementMatch, employee: employeeMatch, student: studentMatch,
+    laboratory: laboratoryMatch
   } = matches;
 
   /* CMS DATA */
@@ -336,6 +342,8 @@ function InnerPageBanner() {
   );
 
   const { item: studentItem } = useContentItem('students', studentMatch?.params?.id);
+
+  const { item: laboratoryItem } = useContentItem('laboratories', laboratoryMatch?.params?.id);
 
   const { item: employeeItem } = useEmployeePortfolioBySlug(
     employeeMatch?.params?.slug
@@ -569,6 +577,18 @@ function InnerPageBanner() {
       };
     }
 
+    if (laboratoryMatch) {
+      const laboratory = laboratoryItem?.active === false ? null : laboratoryItem;
+      return {
+        ...base,
+        title: getTranslatedField(laboratory, 'title', laboratory?.title) || base.title,
+        description:
+          getTranslatedField(laboratory, 'direction', laboratory?.direction) ||
+          getTranslatedField(laboratory, 'category', laboratory?.category) ||
+          ''
+      };
+    }
+
     /* ADMISSION */
 
     if (pathname.startsWith('/admission')) {
@@ -667,6 +687,8 @@ function InnerPageBanner() {
     announcementItem,
     studentMatch,
     studentItem,
+    laboratoryMatch,
+    laboratoryItem,
     admissionItem,
     academicRouteType,
     academicEntity,

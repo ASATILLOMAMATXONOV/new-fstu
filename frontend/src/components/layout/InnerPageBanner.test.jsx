@@ -60,6 +60,15 @@ test('student profile uses the full name and changes language', () => {
   expect(screen.getByRole('heading', { level: 1 }).textContent).toBe('Ali Valiev');
 });
 
+test('laboratory detail uses its CMS title and direction', () => {
+  mockPathname = '/laboratories/12';
+  useContentItem.mockImplementation((resource) => ({ item: resource === 'laboratories'
+    ? { uz: { title: 'Energetika laboratoriyasi', direction: 'Energetika' } } : null }));
+  render(<InnerPageBanner />);
+  expect(screen.getByRole('heading', { level: 1 }).textContent).toBe('Energetika laboratoriyasi');
+  expect(screen.getByText('Energetika')).toBeTruthy();
+});
+
 test('academic menu uses the same tree as the menu content page', () => {
   mockPathname = '/menu/8';
   useMenuTree.mockImplementation((resource) => ({ menus: resource === 'academic-menus'

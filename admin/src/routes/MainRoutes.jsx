@@ -64,6 +64,10 @@ const FacultiesManagementPage = Loadable(
   lazy(() => import('pages/extra-pages/faculties-management'))
 );
 
+const LaboratoriesManagementPage = Loadable(
+  lazy(() => import('pages/extra-pages/laboratories-management'))
+);
+
 const DirectionsManagementPage = Loadable(
   lazy(() => import('pages/extra-pages/directions-management'))
 );
@@ -158,6 +162,10 @@ const MainRoutes = {
     {
       path: 'faculties-management',
       element: <FacultiesManagementPage />
+    },
+    {
+      path: 'laboratories-management',
+      element: <LaboratoriesManagementPage />
     },
     {
       path: 'directions-management',

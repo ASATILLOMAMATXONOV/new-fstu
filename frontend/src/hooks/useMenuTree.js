@@ -21,6 +21,7 @@ export function useMenuTree(resource = 'menus', options = {}) {
 
   React.useEffect(() => {
     let cancelled = false;
+    const hasCachedMenus = cachedMenus !== null;
 
     const load = async (forceRefresh = false) => {
       if (!enabled) {
@@ -30,7 +31,7 @@ export function useMenuTree(resource = 'menus', options = {}) {
       }
 
       try {
-        if (cachedMenus && !forceRefresh) {
+        if (hasCachedMenus && !forceRefresh) {
           setMenus(cachedMenus);
           setLoading(false);
           if (!shouldRevalidate) {
@@ -38,7 +39,9 @@ export function useMenuTree(resource = 'menus', options = {}) {
           }
         }
 
-        setLoading(true);
+        if (!hasCachedMenus && !forceRefresh) {
+          setLoading(true);
+        }
         const nextMenus = await fetchContentTree(resource, {}, {
           force: forceRefresh
         });
@@ -49,7 +52,7 @@ export function useMenuTree(resource = 'menus', options = {}) {
       } catch (error) {
         console.error(`Failed to load ${resource} tree:`, error);
 
-        if (!cancelled) {
+        if (!cancelled && !hasCachedMenus && !forceRefresh) {
           setMenus([]);
         }
       } finally {

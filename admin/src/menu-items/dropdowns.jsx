@@ -10,17 +10,9 @@ const icons = {
 
 const menuManagement = {
   id: 'menu-management-group',
-  title: 'Sayt boshqaruvi',
+  title: 'Akademik menyu',
   type: 'group',
   children: [
-    {
-      id: 'menu-management',
-      title: 'Menyular',
-      type: 'item',
-      url: '/menu-management',
-      icon: icons.MenuOutlined,
-      breadcrumbs: false
-    },
     {
       id: 'academic-menu-management',
       title: 'Akademik menyu',

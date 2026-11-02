@@ -18,7 +18,8 @@ export const ACADEMIC_SOURCE_LABELS = {
   statistics: { title: 'Statistika', singular: 'Statistika' },
   banners: { title: 'Bannerlar', singular: 'Banner' },
   advantages: { title: 'Afzalliklar', singular: 'Afzallik' },
-  menu: { title: 'Sayt menyulari', singular: 'Menyu' }
+  menu: { title: 'Sayt menyulari', singular: 'Menyu' },
+  custom: { title: 'Boxlar', singular: 'Box' }
 };
 
 export const STRUCTURE_RESOURCE_MAP = {
@@ -123,24 +124,38 @@ export function academicText(value, language = 'uz') {
   return typeof value === 'string' ? value.trim() : String(value?.[language] || value?.uz || '').trim();
 }
 
+export function buildCustomMenuCollection(menu, language = 'uz') {
+  return (Array.isArray(menu?.cards) ? menu.cards : [])
+    .filter((card) => card && card.active !== false)
+    .map((card, index) => ({
+      id: String(card.id || index),
+      kind: 'custom',
+      name: academicText(card.title, language),
+      logo: card.image || '',
+      icon: 'book',
+      url: safeHref(card.url)
+    }))
+    .filter((card) => card.name);
+}
+
 export function getStructureMenus(setting, language, siteMenus = []) {
   if (setting?.active === false) return [];
   return (Array.isArray(setting?.menus) ? setting.menus : [])
     .filter((menu) => menu && menu.active !== false && ACADEMIC_SOURCE_LABELS[menu.sourceType])
     .map((menu) => {
+      const menuWithoutSubtitle = Object.fromEntries(Object.entries(menu).filter(([key]) => key !== 'subtitle'));
       const node =
         menu.sourceType === 'menu'
           ? siteMenus.find((item) => String(item.id) === String(menu.menuId) && item.active !== false)
           : null;
       return {
-        ...menu,
+        ...menuWithoutSubtitle,
         node,
         id: String(menu.id),
         name:
           menu.sourceType === 'menu'
             ? node && (getMenuNodeTitle(node, language) || node.title || '')
-            : academicText(menu.title, language) || ACADEMIC_SOURCE_LABELS[menu.sourceType].title,
-        subtitle: academicText(menu.subtitle, language)
+            : academicText(menu.title, language) || ACADEMIC_SOURCE_LABELS[menu.sourceType].title
       };
     })
     .filter((menu) => menu.name)

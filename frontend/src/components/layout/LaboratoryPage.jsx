@@ -1,46 +1,12 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import "../../assets/styles/LaboratoryPage.css";
+import { useLanguage } from "../../context/LanguageContext";
+import { useContentList } from "../../hooks/useContentList";
+import { getTranslatedField } from "../../utils/cms";
 
-const laboratories = [
-  {
-    id: 1,
-    number: "01",
-    title: "Laboratoriya faoliyati",
-    details:
-      "Laboratoriyada zamonaviy uskunalar yordamida ilmiy tadqiqotlar, amaliy mashg'ulotlar va innovatsion loyihalar amalga oshiriladi.",
-    image: "/images/laboratory/lab-1.jpg",
-    color: "#f5d51c",
-  },
-  {
-    id: 2,
-    number: "02",
-    title: "Amaliy mashg'ulotlar",
-    details:
-      "Talabalar laboratoriya sharoitida amaliy tajribalar o'tkazadilar, nazariy bilimlarini mustahkamlaydilar va zamonaviy texnologiyalar bilan ishlashni o'rganadilar.",
-    image: "/images/laboratory/lab-2.jpg",
-    color: "#ed6331",
-  },
-  {
-    id: 3,
-    number: "03",
-    title: "Ilmiy tadqiqotlar",
-    details:
-      "Professor-o'qituvchilar va talabalar ilmiy tadqiqotlar o'tkazib, texnologik yechimlar va yangi ilmiy ishlanmalarni ishlab chiqadilar.",
-    image: "/images/laboratory/lab-3.jpg",
-    color: "#34a9c4",
-  },
-  {
-    id: 4,
-    number: "04",
-    title: "Innovatsion loyihalar",
-    details:
-      "Ilmiy faoliyat natijalari asosida innovatsion loyihalar ishlab chiqilib, ularni amaliyotga joriy etish imkoniyatlari yaratiladi.",
-    image: "/images/laboratory/lab-4.jpg",
-    color: "#2569a4",
-  },
-];
-
-function LabCard({ item, isActive, onHover, onLeave, onFocus, onBlur, onSelect, onMore }) {
+function LabCard({ item, isActive, onHover, onLeave, onFocus, onBlur, onOpen }) {
   return (
     <div
       className={`laboratory-item ${isActive ? "is-active" : ""}`}
@@ -56,11 +22,9 @@ function LabCard({ item, isActive, onHover, onLeave, onFocus, onBlur, onSelect, 
       <button
         type="button"
         className="laboratory-card"
-        onClick={onSelect}
+        onClick={() => onOpen(item)}
         onPointerEnter={(event) => event.pointerType === "mouse" && onHover()}
-        aria-expanded={isActive}
-        aria-controls={`laboratory-details-${item.id}`}
-        aria-label={item.title}
+        aria-label={`${item.title}: batafsil`}
       >
         <span className="laboratory-card__plate" aria-hidden="true">
           <img src={item.image} alt="" loading="lazy" decoding="async" />
@@ -80,85 +44,49 @@ function LabCard({ item, isActive, onHover, onLeave, onFocus, onBlur, onSelect, 
         </span>
       </button>
 
-      <div
-        id={`laboratory-details-${item.id}`}
-        className="laboratory-item__details"
-        aria-hidden={!isActive}
-      >
-        <div className="laboratory-item__details-inner">
-          <span className="laboratory-item__label">
-            YO‘NALISH {item.number}
-          </span>
-
-          <h3>{item.title}</h3>
-          <p>{item.details}</p>
-          <button
-            type="button"
-            className="laboratory-item__more"
-            onClick={() => onMore(item)}
-            tabIndex={isActive ? 0 : -1}
-            aria-label={`${item.title}: batafsil`}
-          >
-            Batafsil <span aria-hidden="true">→</span>
-          </button>
-        </div>
-      </div>
     </div>
   );
 }
 
-function LaboratoryDialog({ item, onClose }) {
-  const dialogRef = useRef(null);
-
-  useEffect(() => {
-    if (!item) return;
-    const dialog = dialogRef.current;
-    const previousOverflow = document.body.style.overflow;
-    dialog.showModal();
-    document.body.style.overflow = "hidden";
-    return () => {
-      dialog.close();
-      document.body.style.overflow = previousOverflow;
-    };
-  }, [item]);
-
-  return (
-    <dialog
-      ref={dialogRef}
-      className="laboratory-dialog"
-      aria-labelledby="laboratory-dialog-title"
-      onCancel={onClose}
-      onClick={(event) => {
-        if (event.target === event.currentTarget) onClose();
-      }}
-    >
-      {item && (
-        <article className="laboratory-dialog__content" style={{ "--lab-color": item.color }}>
-          <img className="laboratory-dialog__image" src={item.image} alt={item.title} />
-          <button type="button" className="laboratory-dialog__close" aria-label="Yopish" onClick={onClose}>×</button>
-          <div className="laboratory-dialog__body">
-            <span className="laboratory-item__label">YO‘NALISH {item.number}</span>
-            <h2 id="laboratory-dialog-title">{item.title}</h2>
-            <p>{item.details}</p>
-          </div>
-        </article>
-      )}
-    </dialog>
-  );
-}
-
 export default function LaboratoryPage() {
+  const navigate = useNavigate();
+  const { currentLanguageCode } = useLanguage();
+  const { items = [] } = useContentList("laboratories", { orderBy: "order" });
   const [hoveredId, setHoveredId] = useState(null);
   const [focusedId, setFocusedId] = useState(null);
-  const [selectedId, setSelectedId] = useState(null);
-  const [detailItem, setDetailItem] = useState(null);
-  const activeId = hoveredId ?? focusedId ?? selectedId;
+  const activeId = hoveredId ?? focusedId;
+
+  const laboratories = useMemo(() => {
+    const colors = ["#f5d51c", "#ed6331", "#34a9c4", "#2569a4"];
+    const cmsItems = items
+      .filter((item) => item && item.active !== false)
+      .sort((left, right) => Number(left.order || 0) - Number(right.order || 0))
+      .map((item, index) => {
+        return {
+          id: item.id,
+          number: String(index + 1).padStart(2, "0"),
+          title: getTranslatedField(item, "title", item.title, currentLanguageCode),
+          image: item.image || "/images/laboratory/lab-1.jpg",
+          color: colors[index % colors.length]
+        };
+      })
+      .filter((item) => item.title);
+
+    return cmsItems;
+  }, [currentLanguageCode, items]);
 
   const clearSelection = () => {
     setHoveredId(null);
     setFocusedId(null);
-    setSelectedId(null);
   };
+
+  if (!laboratories.length) {
+    return null;
+  }
+
+  const activeLaboratory = activeId
+    ? laboratories.find((item) => item.id === activeId)
+    : null;
 
   return (
     <section
@@ -172,13 +100,13 @@ export default function LaboratoryPage() {
       }}
     >
       <div className="laboratory-backdrops" aria-hidden="true">
-        {laboratories.map((item) => (
+        {activeLaboratory && (
           <div
-            key={item.id}
-            className={`laboratory-backdrop${activeId === item.id ? " is-visible" : ""}`}
-            style={{ backgroundImage: `url("${item.image}")` }}
+            key={activeLaboratory.id}
+            className="laboratory-backdrop is-visible"
+            style={{ backgroundImage: `url("${activeLaboratory.image}")` }}
           />
-        ))}
+        )}
       </div>
       <div className="laboratory-layout">
         <div className="laboratory-intro">
@@ -195,7 +123,14 @@ export default function LaboratoryPage() {
             <div className="laboratory-intro__meta">
               <span>{String(laboratories.length).padStart(2, "0")}</span>
               <p>Ilmiy va amaliy<br />yo‘nalish</p>
-              <span className="laboratory-intro__meta-arrow" aria-hidden="true">↗</span>
+              <button
+                type="button"
+                className="laboratory-intro__meta-arrow"
+                aria-label="Barcha laboratoriyalar"
+                onClick={() => navigate("/laboratories")}
+              >
+                ↗
+              </button>
             </div>
           </div>
         </div>
@@ -211,21 +146,12 @@ export default function LaboratoryPage() {
                 onLeave={() => setHoveredId(null)}
                 onFocus={() => setFocusedId(item.id)}
                 onBlur={() => setFocusedId(null)}
-                onSelect={(event) => {
-                  if (window.matchMedia("(hover: none)").matches) {
-                    setSelectedId((current) => current === item.id ? null : item.id);
-                    setFocusedId(null);
-                  } else if (event.detail === 0) {
-                    setFocusedId(item.id);
-                  }
-                }}
-                onMore={setDetailItem}
+                onOpen={(item) => navigate(`/laboratories/${item.id}`)}
               />
             ))}
           </div>
         </div>
       </div>
-      <LaboratoryDialog item={detailItem} onClose={() => setDetailItem(null)} />
     </section>
   );
 }

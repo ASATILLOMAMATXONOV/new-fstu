@@ -17,6 +17,7 @@ const supportedResources = new Set([
   'announcements',
   'students',
   'partners',
+  'laboratories',
   'statistics',
   'pages',
   'faculties',
@@ -34,6 +35,7 @@ const resourceAliases = {
   'announcements-management': 'announcements',
   'students-management': 'students',
   'partners-management': 'partners',
+  'laboratories-management': 'laboratories',
   'statistics-management': 'statistics',
   'new-page-management': 'pages',
   'faculties-management': 'faculties',
@@ -72,6 +74,10 @@ const managedImagePolicies = Object.freeze({
   announcements: {
     label: 'E’lon rasmi',
     maxStoredBytes: 700 * 1024
+  },
+  laboratories: {
+    label: 'Laboratoriya rasmi',
+    maxStoredBytes: 900 * 1024
   }
 });
 

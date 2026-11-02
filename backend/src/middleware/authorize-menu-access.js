@@ -9,6 +9,7 @@ const contentResourceAccessMap = {
   announcements: 'announcements-management',
   students: 'students-management',
   partners: 'partners-management',
+  laboratories: 'laboratories-management',
   statistics: 'statistics-management',
   pages: 'new-page-management',
   faculties: 'faculties-management',

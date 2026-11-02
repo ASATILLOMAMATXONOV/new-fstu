@@ -42,6 +42,23 @@ test.each(cases)('%s uses the shared cache without forcing a duplicate request',
   expect(refreshedArgs[refreshedArgs.length - 1]).toEqual({ force: true });
 });
 
+test.each(cases)('%s keeps cached content visible during background refresh', async (_name, useHook, cache, fetch, field, data) => {
+  let resolveRequest;
+  cms[cache].mockReturnValue(data);
+  cms[fetch].mockReturnValue(new Promise((resolve) => {
+    resolveRequest = resolve;
+  }));
+
+  const { result } = renderHook(useHook);
+
+  expect(result.current.loading).toBe(false);
+  expect(result.current[field]).toEqual(data);
+
+  await act(async () => {
+    resolveRequest(data);
+  });
+});
+
 test.each([
   () => useContentItem('news', undefined),
   () => useContentItem('news', '7', { enabled: false }),

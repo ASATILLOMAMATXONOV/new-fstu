@@ -22,6 +22,7 @@ export function useContentList(resource, options = {}) {
 
   React.useEffect(() => {
     let cancelled = false;
+    const hasCachedItems = cachedItems !== null;
 
     const load = async (forceRefresh = false) => {
       if (!enabled) {
@@ -31,7 +32,7 @@ export function useContentList(resource, options = {}) {
       }
 
       try {
-        if (cachedItems && !forceRefresh) {
+        if (hasCachedItems && !forceRefresh) {
           setItems(cachedItems);
           setLoading(false);
           if (!shouldRevalidate) {
@@ -39,7 +40,11 @@ export function useContentList(resource, options = {}) {
           }
         }
 
-        setLoading(true);
+        // Cached content remains visible while it is refreshed in the background.
+        // A CMS revision refresh should also avoid blanking an already rendered page.
+        if (!hasCachedItems && !forceRefresh) {
+          setLoading(true);
+        }
         const nextItems = await fetchContentList(resource, query, {
           force: forceRefresh
         });
@@ -50,7 +55,7 @@ export function useContentList(resource, options = {}) {
       } catch (error) {
         console.error(`Failed to load ${resource}:`, error);
 
-        if (!cancelled) {
+        if (!cancelled && !hasCachedItems && !forceRefresh) {
           setItems([]);
         }
       } finally {

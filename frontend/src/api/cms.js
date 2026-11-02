@@ -15,8 +15,8 @@ let revisionPollTimer = null;
 let pendingRevisionRequest = null;
 const revisionListeners = new Set();
 
-const DEFAULT_CACHE_TTL_MS = 60 * 1000;
-const LONG_CACHE_TTL_MS = 5 * 60 * 1000;
+const DEFAULT_CACHE_TTL_MS = 3 * 60 * 1000;
+const LONG_CACHE_TTL_MS = 10 * 60 * 1000;
 
 function getCacheTtl(path = '') {
   if (path.startsWith('/api/settings/')) {

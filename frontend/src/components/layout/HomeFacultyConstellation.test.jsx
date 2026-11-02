@@ -92,6 +92,26 @@ test('switches between news, announcements and students without stale content or
   expect(screen.queryByText('Ali Valiyev')).toBeNull();
 });
 
+test('switching a menu only replaces the boxes and preserves the surrounding page', () => {
+  const { container } = render(<HomeFacultyConstellation />);
+  const section = container.querySelector('.ae-section');
+  const brand = container.querySelector('.ae-brand-panel');
+  const banner = container.querySelector('.ae-banner');
+  const navigation = container.querySelector('.ae-navigation');
+  const toolbar = container.querySelector('.ae-toolbar');
+  const previousGrid = container.querySelector('.ae-card-grid');
+
+  selectMenu('Bo‘limlar');
+
+  expect(container.querySelector('.ae-section')).toBe(section);
+  expect(container.querySelector('.ae-brand-panel')).toBe(brand);
+  expect(container.querySelector('.ae-banner')).toBe(banner);
+  expect(container.querySelector('.ae-navigation')).toBe(navigation);
+  expect(container.querySelector('.ae-toolbar')).toBe(toolbar);
+  expect(container.querySelector('.ae-card-grid')).not.toBe(previousGrid);
+  expect(screen.getByRole('region', { name: 'Bo‘limlar ro‘yxati' })).toBeTruthy();
+});
+
 test('uses the current name and content of a linked website menu', () => {
   useSetting.mockReturnValue({ item: { menus: [{ id: 'custom', sourceType: 'menu', menuId: 101, title: { uz: 'Old title' } }] }, currentLanguageCode: 'uz' });
   render(<HomeFacultyConstellation />);
@@ -106,6 +126,54 @@ test('a site menu linked to news displays the news collection', () => {
   render(<HomeFacultyConstellation />);
   expect(within(sidebar()).getByRole('button', { name: 'Barcha yangiliklar' })).toBeTruthy();
   expect(screen.getByRole('link', { name: 'Universitet yangiligi sahifasiga o‘tish' })).toBeTruthy();
+});
+
+test('custom menus show their own box images, translated titles and destination links', () => {
+  const customSetting = {
+    menus: [
+      { id: 'faculties', sourceType: 'faculty', order: 1 },
+      { id: 'custom-boxes', sourceType: 'custom', title: { uz: 'Foydali havolalar', en: 'Useful links' }, subtitle: { uz: 'Ko‘rinmasligi kerak' }, order: 2, cards: [
+        { id: 'library', title: { uz: 'Kutubxona', en: 'Library' }, image: '/library.png', url: 'https://library.example.com' },
+        { id: 'admissions', title: { uz: 'Qabul' }, image: '/admissions.png', url: '/pages/15' },
+        { id: 'hidden', title: { uz: 'Yashirin box' }, active: false, url: '/hidden' }
+      ] },
+      { id: 'other', sourceType: 'custom', title: { uz: 'Boshqa menyu' }, order: 3, cards: [
+        { id: 'other-box', title: { uz: 'Boshqa box' }, url: '/other' }
+      ] }
+    ]
+  };
+  useSetting.mockReturnValue({ item: customSetting, currentLanguageCode: 'uz' });
+  const view = render(<HomeFacultyConstellation />);
+  selectMenu('Foydali havolalar');
+  expect(screen.queryByText('Ko‘rinmasligi kerak')).toBeNull();
+  const library = screen.getByRole('link', { name: 'Kutubxona sahifasiga o‘tish' });
+  expect(library.getAttribute('href')).toBe('https://library.example.com');
+  expect(library.querySelector('img').getAttribute('src')).toBe('/library.png');
+  expect(screen.getByRole('link', { name: 'Qabul sahifasiga o‘tish' }).getAttribute('href')).toBe('/pages/15');
+  expect(screen.queryByText('Yashirin box')).toBeNull();
+  expect(screen.queryByText('Boshqa box')).toBeNull();
+  useSetting.mockReturnValue({ item: customSetting, currentLanguageCode: 'en' });
+  view.rerender(<HomeFacultyConstellation />);
+  expect(within(sidebar()).getByRole('button', { name: 'Useful links' })).toBeTruthy();
+  expect(screen.getByRole('link', { name: 'Library sahifasiga o‘tish' })).toBeTruthy();
+  expect(screen.getByRole('link', { name: 'Qabul sahifasiga o‘tish' })).toBeTruthy();
+});
+
+test('custom boxes never render unsafe links and tolerate missing box data', () => {
+  useSetting.mockReturnValue({ item: { menus: [
+    { id: 'custom', sourceType: 'custom', title: { uz: 'Maxsus menyu' }, cards: [
+      null,
+      { id: 'unsafe', title: 'Xavfsiz box', url: 'javascript:alert(1)' },
+      { id: 'network', title: 'Tashqi manzil', url: '//example.com' },
+      { id: 'blank', title: '' }
+    ] },
+    { id: 'empty', sourceType: 'custom', title: { uz: 'Bo‘sh menyu' } }
+  ] }, currentLanguageCode: 'uz' });
+  render(<HomeFacultyConstellation />);
+  expect(screen.getByText('Xavfsiz box')).toBeTruthy();
+  expect(screen.queryByRole('link')).toBeNull();
+  selectMenu('Bo‘sh menyu');
+  expect(screen.queryByText('Xavfsiz box')).toBeNull();
 });
 
 test('clicking sections shows sections on the right with their detail links', () => {

@@ -1,6 +1,6 @@
 
 import React, { useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 import AcademicSidebar from '../components/layout/AcademicSidebar';
 import '../assets/styles/LaboratoriesPage.css';
@@ -20,8 +20,7 @@ const LABELS = {
     empty: 'Laboratoriyalar mavjud emas',
     loading: 'Laboratoriyalar yuklanmoqda...',
     prev: 'Oldingi',
-    next: 'Keyingi',
-    noDescription: 'Laboratoriya haqida batafsil ma’lumot.'
+    next: 'Keyingi'
   },
   ru: {
     category: 'Лаборатория',
@@ -31,8 +30,7 @@ const LABELS = {
     empty: 'Лаборатории не найдены',
     loading: 'Загрузка лабораторий...',
     prev: 'Назад',
-    next: 'Далее',
-    noDescription: 'Подробная информация о лаборатории.'
+    next: 'Далее'
   },
   en: {
     category: 'Laboratory',
@@ -42,8 +40,7 @@ const LABELS = {
     empty: 'No laboratories available',
     loading: 'Loading laboratories...',
     prev: 'Previous',
-    next: 'Next',
-    noDescription: 'Detailed information about the laboratory.'
+    next: 'Next'
   }
 };
 
@@ -90,6 +87,10 @@ function Icon({ name, size = 18 }) {
 function getLaboratoryData(item, ui) {
   const read = (field) =>
     getTranslatedField(item, field, item?.[field]) || '';
+  const firstPanel = (Array.isArray(item?.panels) ? item.panels : [])
+    .filter((panel) => panel?.active !== false)
+    .sort((left, right) => Number(left?.order || 0) - Number(right?.order || 0))[0];
+  const panelContent = getTranslatedField(firstPanel, 'content', '');
 
   return {
     id: item.id,
@@ -97,8 +98,8 @@ function getLaboratoryData(item, ui) {
     direction: read('direction') || read('category') || ui.category,
     description:
       getHtmlExcerpt(read('content'), 130) ||
-      read('description') ||
-      ui.noDescription,
+      getHtmlExcerpt(panelContent, 130) ||
+      read('description'),
     image: item.image || item.photo || '',
     location: read('location') || read('address'),
     manager: read('manager') || read('responsible')
@@ -135,9 +136,11 @@ function LaboratoryCard({ item, index, ui, onOpen }) {
       <div className="laboratory-card-content">
         <h2>{lab.title}</h2>
 
-        <p className="laboratory-description">
-          {lab.description}
-        </p>
+        {lab.description && (
+          <p className="laboratory-description">
+            {lab.description}
+          </p>
+        )}
 
         {(lab.location || lab.manager) && (
           <div className="laboratory-card-meta">
@@ -209,6 +212,10 @@ function LaboratoriesPage() {
     setPage(next);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  if (!loading && laboratories.length === 0) {
+    return <Navigate to="/" replace />;
+  }
 
   return (
     <main className="laboratories-page">

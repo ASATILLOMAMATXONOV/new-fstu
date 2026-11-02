@@ -24,7 +24,7 @@ export default function HomePage() {
         <DeferredSection><RektorMurojaati /></DeferredSection>
         <DeferredSection minHeight={600}><NewsPageHome /></DeferredSection>
         <DeferredSection minHeight={480}><StudentsSection /></DeferredSection>
-        <DeferredSection><LaboratoryPage /></DeferredSection>
+        <DeferredSection minHeight={0}><LaboratoryPage /></DeferredSection>
       </div>
       <div className="app-content-shell">
         <DeferredSection minHeight={340}><StudentAnnouncementStats /></DeferredSection>

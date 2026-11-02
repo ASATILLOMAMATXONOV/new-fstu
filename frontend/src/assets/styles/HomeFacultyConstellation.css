@@ -557,8 +557,19 @@
   height: auto;
 }
 
+.ae-navigation--scrollable {
+  padding: 3px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: var(--ae-primary) #eaf1f5;
+}
+
 .ae-nav-item {
   display: flex;
+  flex-shrink: 0;
   align-items: center;
   gap: 10px;
   width: 100%;
@@ -802,7 +813,7 @@
 .ae-card-grid {
   display: grid;
   grid-template-columns: repeat(
-    auto-fit,
+    auto-fill,
     minmax(
       min(100%, var(--ae-card-min-width)),
       1fr
@@ -888,6 +899,8 @@
 
 .ae-card-image {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
   place-items: center;
   flex-shrink: 0;
   width: 150px;
@@ -1485,6 +1498,7 @@
 .ae-section button:focus-visible,
 .ae-section a:focus-visible,
 .ae-sidebar-scroll:focus-visible,
+.ae-navigation:focus-visible,
 .ae-card-grid:focus-visible {
   outline: 2px solid var(--ae-primary);
   outline-offset: 3px;
@@ -1547,7 +1561,7 @@
   display: grid;
 
   grid-template-columns: repeat(
-    auto-fit,
+    auto-fill,
     minmax(min(100%, 210px), 1fr)
   );
 
@@ -1679,12 +1693,17 @@
   margin: 4px auto 11px;
   padding: 2px;
   flex-shrink: 0;
+  overflow: hidden;
 }
 
 .ae-card-image img {
   display: block;
   width: 100%;
   height: 100%;
+  min-width: 0;
+  min-height: 0;
+  max-width: 100%;
+  max-height: 100%;
   object-fit: contain;
 }
 

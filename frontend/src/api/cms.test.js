@@ -52,7 +52,7 @@ test('discards expired persisted data and refreshes expired memory entries', asy
   ]));
   expect(getCachedContentList('news')).toBeNull();
   await fetchContentList('news');
-  jest.advanceTimersByTime(61000);
+  jest.advanceTimersByTime(181000);
   await fetchContentList('news');
   expect(global.fetch).toHaveBeenCalledTimes(2);
 });

@@ -16,6 +16,7 @@ export function useContentItem(resource, id, options = {}) {
 
   React.useEffect(() => {
     let cancelled = false;
+    const hasCachedItem = cachedItem !== null;
 
     const load = async (forceRefresh = false) => {
       try {
@@ -25,7 +26,7 @@ export function useContentItem(resource, id, options = {}) {
           return;
         }
 
-        if (cachedItem && !forceRefresh) {
+        if (hasCachedItem && !forceRefresh) {
           setItem(cachedItem);
           setLoading(false);
           if (!shouldRevalidate) {
@@ -33,7 +34,9 @@ export function useContentItem(resource, id, options = {}) {
           }
         }
 
-        setLoading(true);
+        if (!hasCachedItem && !forceRefresh) {
+          setLoading(true);
+        }
         const nextItem = await fetchContentItem(resource, id, {
           force: forceRefresh
         });
@@ -44,7 +47,7 @@ export function useContentItem(resource, id, options = {}) {
       } catch (error) {
         console.error(`Failed to load ${resource}/${id}:`, error);
 
-        if (!cancelled) {
+        if (!cancelled && !hasCachedItem && !forceRefresh) {
           setItem(null);
         }
       } finally {

@@ -1,26 +1,31 @@
 export const menuAccessGroups = [
   {
-    id: 'main',
-    title: 'Asosiy boshqaruv',
+    id: 'home-page',
+    title: 'Bosh sahifa',
     items: [
-      { key: 'menu-management', title: 'Menyular', url: '/menu-management' },
-      { key: 'banner-management', title: 'Banner boshqaruvi', url: '/banner-management' },
-      { key: 'academic-menu-management', title: 'Akademik menyu', url: '/academic-menu-management' },
-      { key: 'advantages-management', title: 'Afzalliklar boshqaruvi', url: '/advantages-management' },
+      { key: 'menu-management', title: 'Navbar', url: '/menu-management' },
+      { key: 'banner-management', title: 'Banner', url: '/banner-management' },
+      { key: 'advantages-management', title: 'Afzalliklar bloki', url: '/advantages-management' },
       { key: 'rankings-management', title: 'Reyting ko‘rsatkichlari', url: '/rankings-management' },
       { key: 'academic-structure-management', title: 'Akademik tuzilma', url: '/academic-structure-management' },
-      { key: 'statistics-management', title: 'Statistika boshqaruvi', url: '/statistics-management' }
+      { key: 'rector-speech-management', title: 'Rektor murojaati', url: '/rector-speech-management' },
+      { key: 'news-management', title: 'Yangiliklar', url: '/news-management' },
+      { key: 'students-management', title: 'Bizning talabalarimiz', url: '/students-management' },
+      { key: 'laboratories-management', title: 'Laboratoriyalar', url: '/laboratories-management' },
+      { key: 'announcements-management', title: 'E’lonlar', url: '/announcements-management' },
+      { key: 'partners-management', title: 'Xalqaro hamkorlarimiz', url: '/partners-management' },
+      { key: 'statistics-management', title: 'Talabalar va xodimlar hajmi', url: '/statistics-management' }
     ]
+  },
+  {
+    id: 'site-menus',
+    title: 'Sayt menyulari',
+    items: [{ key: 'academic-menu-management', title: 'Akademik menyu', url: '/academic-menu-management' }]
   },
   {
     id: 'content',
     title: 'Kontent boshqaruvi',
-    items: [
-      { key: 'news-management', title: 'Yangiliklar', url: '/news-management' },
-      { key: 'announcements-management', title: 'E’lonlar', url: '/announcements-management' },
-      { key: 'new-page-management', title: 'Yangi sahifa', url: '/new-page-management' },
-      { key: 'partners-management', title: 'Hamkorlar', url: '/partners-management' }
-    ]
+    items: [{ key: 'new-page-management', title: 'Yangi sahifa', url: '/new-page-management' }]
   },
   {
     id: 'university',
@@ -29,8 +34,7 @@ export const menuAccessGroups = [
       { key: 'faculties-management', title: 'Fakultet / kafedra / bo‘lim', url: '/faculties-management' },
       { key: 'directions-management', title: "Yo'nalishlar", url: '/directions-management' },
       { key: 'faculty-page-menu-management', title: 'O‘ng menu sozlash', url: '/faculty-page-menu-management' },
-      { key: 'employees-portfolio-management', title: 'Hodimlar portfolio', url: '/employees-portfolio-management' },
-      { key: 'students-management', title: 'Talabalar', url: '/students-management' }
+      { key: 'employees-portfolio-management', title: 'Hodimlar portfolio', url: '/employees-portfolio-management' }
     ]
   },
   {
@@ -39,7 +43,6 @@ export const menuAccessGroups = [
     items: [
       { key: 'admission-cta-management', title: 'Qabul 2024', url: '/admission-cta-management' },
       { key: 'seasonal-effects-management', title: 'Fasl effektlari', url: '/seasonal-effects-management' },
-      { key: 'rector-speech-management', title: 'Rektor murojaati', url: '/rector-speech-management' },
       { key: 'admin-users-management', title: 'Adminlar boshqaruvi', url: '/admin-users-management', superAdminOnly: true }
     ]
   }

@@ -25,6 +25,15 @@ const IMAGE_POLICIES = Object.freeze({
     maxHeight: 720,
     quality: 0.8,
     mimeType: 'image/webp'
+  },
+  laboratories: {
+    label: 'Laboratoriya rasmi',
+    maxUploadBytes: 3 * 1024 * 1024,
+    maxStoredBytes: 900 * 1024,
+    maxWidth: 1600,
+    maxHeight: 1000,
+    quality: 0.82,
+    mimeType: 'image/webp'
   }
 });
 
