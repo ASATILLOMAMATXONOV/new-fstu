@@ -33,7 +33,15 @@
 
 .pp-sidebar {
   position:sticky;
-  top:95px
+  top:95px;
+  display:grid;
+  gap:20px
+}
+
+.pp-sidebar>.academic-sidebar {
+  position:static;
+  max-height:none;
+  overflow:visible
 }
 
 .pp-hero,.pp-world-container,.pp-directory,.pp-map-message {
@@ -89,7 +97,7 @@
   padding:12px 17px;
   border:1px solid #dfebf4;
   background:rgba(255,255,255,.8);
-  border-radius:12px;
+  border-radius:6px;
   min-width:108px
 }
 
@@ -288,7 +296,7 @@
   height:44px;
   padding:0 12px;
   border:1px solid #dce8f1;
-  border-radius:9px;
+  border-radius:6px;
   color:#8aa1b4;
   background:#fafcff
 }
@@ -379,7 +387,7 @@
   padding:17px;
   border:1px solid #e2eaf2;
   background:linear-gradient(140deg,#fff,#f9fcff);
-  border-radius:12px;
+  border-radius:6px;
   transition:transform .25s,box-shadow .25s,border-color .25s
 }
 
@@ -395,7 +403,7 @@
   width:76px;
   height:76px;
   border:1px solid #e4edf4;
-  border-radius:10px;
+  border-radius:6px;
   color:#79a3b8;
   background:#fff;
   flex-shrink:0;
@@ -471,7 +479,7 @@
   text-align:center;
   color:#7b91a5;
   border:1px dashed #d4e3ed;
-  border-radius:10px;
+  border-radius:6px;
   background:#f9fcff;
   font-size:13px
 }
@@ -610,7 +618,7 @@
 .pp-focus {
   border:1px solid #dce9e5;
   background:#fff;
-  border-radius:18px;
+  border-radius:6px;
   overflow:hidden;
   box-shadow:0 16px 48px #143f4010;
   animation:pp-focus-in .46s ease both
@@ -635,7 +643,7 @@
   background:#f4fbf7;
   color:#206f64;
   padding:11px 15px;
-  border-radius:10px;
+  border-radius:6px;
   font-weight:800;
   font-size:12px;
   cursor:pointer;
@@ -778,7 +786,7 @@
   min-width:36px;
   padding:7px 9px;
   text-align:center;
-  border-radius:9px;
+  border-radius:6px;
   background:#e5f7f0;
   color:#138371;
   font-weight:800
@@ -800,7 +808,7 @@
 
 .pp-focus__item .pp-university {
   background:#fff;
-  border-radius:12px
+  border-radius:6px
 }
 
 .pp-focus__item .pp-university:hover {

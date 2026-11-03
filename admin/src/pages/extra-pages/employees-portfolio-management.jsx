@@ -646,6 +646,7 @@ export default function EmployeesPortfolioManagementPage() {
                   </Typography>
                 </Stack>
 
+
                 <input ref={fileInputRef} type="file" hidden accept="image/*" onChange={handleImageUpload} />
 
                 <Box

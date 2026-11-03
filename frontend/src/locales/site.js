@@ -65,7 +65,8 @@ const siteMessages = {
       innerBanner: {
         studentDetail: { eyebrow: 'FSTU TALABALARI', title: 'Talaba profili' },
         journals: { eyebrow: 'ILMIY NASHRLAR', title: 'Ilmiy jurnal sonlari' },
-        leadership: { eyebrow: 'UNIVERSITET RAHBARIYATI', title: 'Rahbariyat' },
+        leadership: { eyebrow: 'UNIVERSITET MA’MURIYATI', title: 'Ma’muriyat' },
+        international: { eyebrow: 'XALQARO HAMKORLIK', title: 'Xalqaro bo‘lim' },
         newsDetail: { eyebrow: 'FSTU YANGILIKLARI', title: 'Yangilik tafsiloti' },
         announcementDetail: { eyebrow: 'FSTU E’LONLARI', title: 'E’lon tafsiloti' },
         dynamicPage: { eyebrow: 'FSTU SAHIFALARI', title: 'Sahifa tafsiloti' },
@@ -372,7 +373,7 @@ const siteMessages = {
       columns: [
         {
           title: 'Universitet',
-          links: ['Biz haqimizda', 'Rahbariyat', 'Tuzilma', 'Vakansiyalar']
+          links: ['Biz haqimizda', 'Ma’muriyat', 'Tuzilma', 'Vakansiyalar']
         }
       ],
       contactTitle: 'Aloqa',
@@ -455,7 +456,8 @@ const siteMessages = {
       innerBanner: {
         studentDetail: { eyebrow: 'СТУДЕНТЫ FSTU', title: 'Профиль студента' },
         journals: { eyebrow: 'НАУЧНЫЕ ПУБЛИКАЦИИ', title: 'Выпуски научного журнала' },
-        leadership: { eyebrow: 'РУКОВОДСТВО УНИВЕРСИТЕТА', title: 'Руководство' },
+        leadership: { eyebrow: 'АДМИНИСТРАЦИЯ УНИВЕРСИТЕТА', title: 'Администрация' },
+        international: { eyebrow: 'МЕЖДУНАРОДНОЕ СОТРУДНИЧЕСТВО', title: 'Международный отдел' },
         newsDetail: { eyebrow: 'НОВОСТИ FSTU', title: 'Подробности новости' },
         announcementDetail: { eyebrow: 'ОБЪЯВЛЕНИЯ FSTU', title: 'Подробности объявления' },
         dynamicPage: { eyebrow: 'СТРАНИЦЫ FSTU', title: 'Подробности страницы' },
@@ -762,7 +764,7 @@ const siteMessages = {
       columns: [
         {
           title: 'Университет',
-          links: ['О нас', 'Руководство', 'Структура', 'Вакансии']
+          links: ['О нас', 'Администрация', 'Структура', 'Вакансии']
         }
       ],
       contactTitle: 'Контакты',
@@ -845,7 +847,8 @@ const siteMessages = {
       innerBanner: {
         studentDetail: { eyebrow: 'FSTU STUDENTS', title: 'Student profile' },
         journals: { eyebrow: 'SCIENTIFIC PUBLICATIONS', title: 'Scientific journal issues' },
-        leadership: { eyebrow: 'UNIVERSITY LEADERSHIP', title: 'Leadership' },
+        leadership: { eyebrow: 'UNIVERSITY ADMINISTRATION', title: 'Administration' },
+        international: { eyebrow: 'INTERNATIONAL COOPERATION', title: 'International department' },
         newsDetail: { eyebrow: 'FSTU NEWS', title: 'News details' },
         announcementDetail: { eyebrow: 'FSTU ANNOUNCEMENTS', title: 'Announcement details' },
         dynamicPage: { eyebrow: 'FSTU PAGES', title: 'Page details' },
@@ -1152,7 +1155,7 @@ const siteMessages = {
       columns: [
         {
           title: 'University',
-          links: ['About us', 'Management', 'Structure', 'Vacancies']
+          links: ['About us', 'Administration', 'Structure', 'Vacancies']
         }
       ],
       contactTitle: 'Contact',

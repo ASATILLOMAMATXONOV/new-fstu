@@ -14,6 +14,14 @@ const employeesPortfolioManagement = {
   type: 'group',
   children: [
     {
+      id: 'leadership-management',
+      title: 'Ma’muriyat',
+      type: 'item',
+      url: '/leadership-management',
+      icon: icons.IdcardOutlined,
+      breadcrumbs: false
+    },
+    {
       id: 'employees-portfolio-management',
       title: 'Hodimlar portfolio',
       type: 'item',

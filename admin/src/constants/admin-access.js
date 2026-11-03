@@ -20,7 +20,11 @@ export const menuAccessGroups = [
   {
     id: 'site-menus',
     title: 'Sayt menyulari',
-    items: [{ key: 'academic-menu-management', title: 'Akademik menyu', url: '/academic-menu-management' }]
+    items: [
+      { key: 'international-department-management', title: 'Xalqaro bo‘lim', url: '/international-department-management' },
+      { key: 'international-universities-management', title: 'Global ta’lim hamkorlari', url: '/international-universities-management' },
+      { key: 'academic-menu-management', title: 'Akademik menyu', url: '/academic-menu-management' }
+    ]
   },
   {
     id: 'content',
@@ -31,6 +35,7 @@ export const menuAccessGroups = [
     id: 'university',
     title: 'Universitet sahifalari',
     items: [
+      { key: 'leadership-management', title: 'Ma’muriyat', url: '/leadership-management' },
       { key: 'faculties-management', title: 'Fakultet / kafedra / bo‘lim', url: '/faculties-management' },
       { key: 'directions-management', title: "Yo'nalishlar", url: '/directions-management' },
       { key: 'faculty-page-menu-management', title: 'O‘ng menu sozlash', url: '/faculty-page-menu-management' },
@@ -105,7 +110,7 @@ function filterChildren(children = [], user) {
   return children
     .map((child) => {
       if (child.type === 'item') {
-        const source = allMenuItems.find((item) => item.url === child.url || item.key === child.id);
+        const source = allMenuItems.find((item) => item.url === child.url || item.key === child.id || item.key === child.permissionKey);
         return source && canAccessMenuItem(user, source) ? child : null;
       }
 

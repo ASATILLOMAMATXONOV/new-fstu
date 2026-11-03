@@ -41,6 +41,15 @@ npm install
 npm run start
 ```
 
+## Ma’muriyat
+
+- Admin: `/leadership-management` — “Hodimlar boshqaruvi → Ma’muriyat”.
+- Frontend: `/leadership` — rasm chapda, ma’lumotlar o‘ngda; kartochka bosilganda ixtiyoriy matnlar pastida ochiladi.
+- Ism, familiya, lavozim va qabul vaqti o‘zbek, rus va ingliz tillarida kiritiladi. Email, telefon, ijtimoiy havolalar, ko‘rinish tartibi va faollik alohida sozlanadi.
+- “Matn qo‘shish” orqali sarlavhali yoki sarlavhasiz bir nechta qo‘shimcha matn kiritish mumkin.
+- Super admin bo‘lmagan foydalanuvchiga “Ma’muriyat” (`leadership-management`) ruxsati berilishi kerak.
+- Ma’lumotlar mavjud `content_entries` jadvalidagi `leadership` resursida saqlanadi; yangi migratsiya kerak emas.
+
 ## Render deployment
 
 Repo ichiga `render.yaml` qo'shildi. U quyidagi hosting sxemasiga tayyor:

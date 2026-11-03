@@ -75,7 +75,7 @@
   flex-shrink: 0;
   padding: 8px 13px;
   border: 1px solid var(--jar-border);
-  border-radius: 8px;
+  border-radius: 6px;
   background: var(--jar-white);
   color: #64788a;
   font-size: 12px;
@@ -92,7 +92,7 @@
   overflow: hidden;
   background: var(--jar-white);
   border: 1px solid var(--jar-border);
-  border-radius: 14px;
+  border-radius: 6px;
 }
 
 /* ============================================
@@ -117,14 +117,14 @@
   max-width: 100%;
   padding: 4px;
   background: #f5f7f9;
-  border-radius: 9px;
+  border-radius: 6px;
 }
 
 .jar-tab {
   min-height: 38px;
   padding: 10px 14px;
   border: 1px solid transparent;
-  border-radius: 7px;
+  border-radius: 6px;
   background: transparent;
   color: #66798a;
   font-family: inherit;
@@ -162,7 +162,7 @@
   max-width: 100%;
   padding: 0 12px;
   border: 1px solid var(--jar-border);
-  border-radius: 8px;
+  border-radius: 6px;
   background: #ffffff;
   color: #8a9baa;
 
@@ -252,7 +252,7 @@
   min-width: 0;
   overflow: hidden;
   border: 1px solid var(--jar-border);
-  border-radius: 10px;
+  border-radius: 6px;
 }
 
 .jar-table {
@@ -331,7 +331,7 @@
 
   background: #f8fafc;
   border: 1px solid #e4eaee;
-  border-radius: 7px;
+  border-radius: 6px;
 
   transition:
     transform 0.3s ease,
@@ -471,7 +471,7 @@
   min-height: 38px;
   padding: 10px 13px;
 
-  border-radius: 7px;
+  border-radius: 6px;
   text-decoration: none;
   white-space: nowrap;
 
@@ -764,7 +764,7 @@
   }
 
   .jar-content {
-    border-radius: 11px;
+    border-radius: 6px;
   }
 
   /* Filters */
@@ -863,7 +863,7 @@
 
     background: #ffffff;
     border: 1px solid var(--jar-border);
-    border-radius: 11px;
+    border-radius: 6px;
   }
 
   .jar-table td {

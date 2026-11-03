@@ -20,6 +20,7 @@ const routeLoaders = [
   [/^\/employees\/[^/]+\/?$/, () => import('../pages/EmployeeProfilePage')],
   [/^\/journals\/?$/, () => import('../pages/JournalIssuesPage')],
   [/^\/leadership\/?$/, () => import('../pages/public/LeadershipPage')],
+  [/^\/international(?:\/[^/]+)?\/?$/, () => import('../pages/InternationalDepartmentPage')],
   [/^\/laboratories\/?$/, () => import('../pages/LaboratoriesPage')],
   [/^\/laboratories\/[^/]+\/?$/, () => import('../pages/LaboratoryDetailPage')]
 ];

@@ -16,6 +16,9 @@ const supportedResources = new Set([
   'news',
   'announcements',
   'students',
+  'leadership',
+  'international-department',
+  'international-universities',
   'partners',
   'laboratories',
   'statistics',
@@ -34,6 +37,9 @@ const resourceAliases = {
   'news-management': 'news',
   'announcements-management': 'announcements',
   'students-management': 'students',
+  'leadership-management': 'leadership',
+  'international-department-management': 'international-department',
+  'international-universities-management': 'international-universities',
   'partners-management': 'partners',
   'laboratories-management': 'laboratories',
   'statistics-management': 'statistics',
@@ -63,6 +69,9 @@ const reservedKeys = new Set([
   'updatedAt'
 ]);
 const managedImagePolicies = Object.freeze({
+  leadership: {
+    label: 'Ma’muriyat rasmi'
+  },
   banners: {
     label: 'Banner rasmi',
     maxStoredBytes: 900 * 1024
@@ -180,7 +189,7 @@ function validateManagedImage(resource, imageUrl) {
 
   const payloadSize = getDataUrlPayloadSize(value);
 
-  if (payloadSize > policy.maxStoredBytes) {
+  if (Number.isFinite(policy.maxStoredBytes) && payloadSize > policy.maxStoredBytes) {
     throw new HttpError(
       400,
       `${policy.label} ${formatBytes(policy.maxStoredBytes)} dan katta bo‘lmasligi kerak.`

@@ -48,6 +48,8 @@ const getEmptyForm = () => ({
   image: '',
   imageFile: null,
   title: '',
+  countryName: '',
+  address: '',
   link: '',
   order: '',
   active: true
@@ -65,7 +67,10 @@ const openLink = (link) => {
   window.open(link, isExternalLink(link) ? '_blank' : '_self', 'noreferrer');
 };
 
-export default function PartnersManagementPage() {
+export default function PartnersManagementPage({
+  resource = 'partners',
+  international = false
+} = {}) {
   const fileInputRef = useRef(null);
 
   const [partners, setPartners] = useState(initialPartners);
@@ -77,7 +82,7 @@ export default function PartnersManagementPage() {
 
     const loadPartners = async () => {
       try {
-        const items = await fetchContentList('partners');
+        const items = await fetchContentList(resource);
 
         if (!cancelled) {
           setPartners(items);
@@ -92,7 +97,7 @@ export default function PartnersManagementPage() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [resource]);
 
   const sortedPartners = [...partners].sort(
     (a, b) => Number(a.order || 0) - Number(b.order || 0)
@@ -108,7 +113,10 @@ export default function PartnersManagementPage() {
 
   const openEdit = (partner) => {
     setForm({
+      ...getEmptyForm(),
       ...partner,
+      countryName: partner.countryName || partner.country || partner.countryCode || '',
+      address: partner.address || partner.universityAddress || '',
       imageFile: null
     });
 
@@ -147,7 +155,7 @@ export default function PartnersManagementPage() {
 
   const handleDelete = async (id) => {
     try {
-      await deleteContentItem('partners', id);
+      await deleteContentItem(resource, id);
       setPartners((prev) => prev.filter((item) => item.id !== id));
     } catch (error) {
       console.error('Failed to delete partner:', error);
@@ -161,6 +169,9 @@ export default function PartnersManagementPage() {
       ...form,
       imageFile: null,
       title: form.title.trim(),
+      countryName: form.countryName.trim(),
+      country: form.countryName.trim(),
+      address: form.address.trim(),
       image: form.image.trim(),
       link: form.link.trim(),
       order: form.order ? Number(form.order) : partners.length + 1
@@ -168,12 +179,12 @@ export default function PartnersManagementPage() {
 
     try {
       if (form.id) {
-        const updatedItem = await updateContentItem('partners', form.id, preparedForm);
+        const updatedItem = await updateContentItem(resource, form.id, preparedForm);
         setPartners((prev) =>
           prev.map((item) => (item.id === form.id ? updatedItem : item))
         );
       } else {
-        const createdItem = await createContentItem('partners', preparedForm);
+        const createdItem = await createContentItem(resource, preparedForm);
         setPartners((prev) => [createdItem, ...prev]);
       }
 
@@ -187,7 +198,9 @@ export default function PartnersManagementPage() {
   if (mode === 'form') {
     return (
       <MainCard
-        title={form.id ? 'Hamkor tahrirlash' : 'Yangi hamkor qo‘shish'}
+        title={international
+          ? (form.id ? 'Universitetni tahrirlash' : 'Yangi hamkor universitet qo‘shish')
+          : (form.id ? 'Hamkorni tahrirlash' : 'Yangi hamkor qo‘shish')}
         secondary={
           <Button
             startIcon={<ArrowLeftOutlined />}
@@ -211,13 +224,14 @@ export default function PartnersManagementPage() {
               >
                 <Stack spacing={0.5} sx={{ mb: 2.5 }}>
                   <Typography variant="h5" fontWeight={800}>
-                    Hamkor logosi / rasmi
+                    {international ? 'Universitet logosi' : 'Hamkor logosi / rasmi'}
                   </Typography>
 
                   <Typography variant="body2" color="text.secondary">
                     Rasm yuklash maydoniga bosing yoki rasmni shu joyga tashlang.
                   </Typography>
                 </Stack>
+
 
                 <input
                   ref={fileInputRef}
@@ -368,15 +382,17 @@ export default function PartnersManagementPage() {
                   </Typography>
 
                   <Typography variant="body2" color="text.secondary">
-                    Hamkor nomi, linki, tartibi va statusini kiriting.
+                    {international
+                      ? 'Universitet nomi, davlati, manzili, rasmiy sayti va statusini kiriting.'
+                      : 'Hamkor nomi, linki, tartibi va statusini kiriting.'}
                   </Typography>
                 </Stack>
 
                 <Grid container spacing={2}>
-                  <Grid item xs={12} md={5}>
+                  <Grid item xs={12} md={international ? 6 : 5}>
                     <TextField
                       fullWidth
-                      label="Title"
+                      label={international ? 'Universitet nomi' : 'Title'}
                       name="title"
                       value={form.title}
                       onChange={handleBaseChange}
@@ -385,10 +401,34 @@ export default function PartnersManagementPage() {
                     />
                   </Grid>
 
-                  <Grid item xs={12} md={5}>
+                  {international && <Grid item xs={12} md={6}>
                     <TextField
                       fullWidth
-                      label="Link"
+                      label="Davlat"
+                      name="countryName"
+                      value={form.countryName}
+                      onChange={handleBaseChange}
+                      placeholder="South Korea"
+                      helperText="Xaritada aniq chiqishi uchun davlatning xalqaro nomini kiriting. Masalan: South Korea, China, Germany."
+                      required
+                    />
+                  </Grid>}
+
+                  {international && <Grid item xs={12} md={6}>
+                    <TextField
+                      fullWidth
+                      label="Universitet manzili"
+                      name="address"
+                      value={form.address}
+                      onChange={handleBaseChange}
+                      placeholder="Seoul, Republic of Korea"
+                    />
+                  </Grid>}
+
+                  <Grid item xs={12} md={international ? 6 : 5}>
+                    <TextField
+                      fullWidth
+                      label={international ? 'Rasmiy sayt' : 'Link'}
                       name="link"
                       value={form.link}
                       onChange={handleBaseChange}
@@ -397,7 +437,7 @@ export default function PartnersManagementPage() {
                     />
                   </Grid>
 
-                  <Grid item xs={12} md={1}>
+                  <Grid item xs={12} md={international ? 3 : 1}>
                     <TextField
                       fullWidth
                       type="number"
@@ -409,7 +449,7 @@ export default function PartnersManagementPage() {
                     />
                   </Grid>
 
-                  <Grid item xs={12} md={1}>
+                  <Grid item xs={12} md={international ? 3 : 1}>
                     <Box
                       sx={{
                         height: '100%',
@@ -512,8 +552,14 @@ export default function PartnersManagementPage() {
                         lineHeight: 1.3
                       }}
                     >
-                      {form.title || 'Hamkor nomi'}
+                      {form.title || (international ? 'Universitet nomi' : 'Hamkor nomi')}
                     </Typography>
+
+                    {international && form.countryName && (
+                      <Typography variant="body2" color="text.secondary" sx={{ mt: 0.75 }}>
+                        {form.countryName}{form.address ? ` · ${form.address}` : ''}
+                      </Typography>
+                    )}
 
                     {form.link && (
                       <Button
@@ -553,19 +599,21 @@ export default function PartnersManagementPage() {
 
   return (
     <MainCard
-      title="Xalqaro hamkorlarimiz"
+      title={international ? 'Global ta’lim hamkorlari' : 'Xalqaro hamkorlarimiz'}
       secondary={
         <Button
           variant="contained"
           startIcon={<PlusOutlined />}
           onClick={openCreate}
         >
-          Hamkor qo‘shish
+          {international ? 'Universitet qo‘shish' : 'Hamkor qo‘shish'}
         </Button>
       }
     >
       <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-        Hamkor logosi, title va linklarini boshqarish.
+        {international
+          ? 'Universitetni davlatga bog‘lang. Frontendda davlat bosilganda unga tegishli universitetlar chiqadi.'
+          : 'Hamkor logosi, title va linklarini boshqarish.'}
       </Typography>
 
       <Divider sx={{ mb: 2 }} />
@@ -682,13 +730,15 @@ export default function PartnersManagementPage() {
       </Paper>
 
       <TableContainer component={Paper} variant="outlined">
-        <Table>
+        <Table sx={{ minWidth: international ? 1150 : 800 }}>
           <TableHead>
             <TableRow>
               <TableCell>#</TableCell>
               <TableCell>Logo</TableCell>
-              <TableCell>Title</TableCell>
-              <TableCell>Link</TableCell>
+              <TableCell>{international ? 'Universitet' : 'Title'}</TableCell>
+              {international && <TableCell>Davlat</TableCell>}
+              {international && <TableCell>Manzil</TableCell>}
+              <TableCell>{international ? 'Rasmiy sayt' : 'Link'}</TableCell>
               <TableCell>Tartib</TableCell>
               <TableCell>Status</TableCell>
               <TableCell align="right">Amallar</TableCell>
@@ -741,6 +791,9 @@ export default function PartnersManagementPage() {
                   </Typography>
                 </TableCell>
 
+                {international && <TableCell>{partner.countryName || partner.country || partner.countryCode || '—'}</TableCell>}
+                {international && <TableCell>{partner.address || partner.universityAddress || '—'}</TableCell>}
+
                 <TableCell>
                   <Typography variant="caption" color="text.secondary">
                     {partner.link || '-'}
@@ -780,8 +833,8 @@ export default function PartnersManagementPage() {
 
             {!partners.length && (
               <TableRow>
-                <TableCell colSpan={7} align="center">
-                  Hamkor mavjud emas
+                <TableCell colSpan={international ? 9 : 7} align="center">
+                  {international ? 'Hamkor universitetlar mavjud emas' : 'Hamkor mavjud emas'}
                 </TableCell>
               </TableRow>
             )}

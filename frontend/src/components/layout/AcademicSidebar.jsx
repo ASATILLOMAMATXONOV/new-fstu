@@ -71,7 +71,8 @@ function AcademicSidebar({
   departmentId,
   sectionId,
   leader,
-  leaderTitle
+  leaderTitle,
+  showLeaderProfileLink = true
 }) {
   const { currentLanguageCode } = useLanguage();
   const texts = React.useMemo(
@@ -79,7 +80,7 @@ function AcademicSidebar({
     [currentLanguageCode]
   );
   const [searchValue, setSearchValue] = React.useState('');
-  const supportsLeaderContext = ['faculty', 'department', 'section'].includes(pageType);
+  const supportsLeaderContext = ['faculty', 'department', 'section', 'international'].includes(pageType);
   const shouldResolveLeaderFromList = showLeaderCard && !leader && supportsLeaderContext;
   const { menus = [], loading: menusLoading } = useMenuTree('academic-menus', {
     enabled: showMenuSection
@@ -158,7 +159,7 @@ function AcademicSidebar({
   const leaderCardTitle = leaderTitle || (
     pageType === 'faculty' ? 'Fakultet dekani'
       : pageType === 'department' ? 'Kafedra mudiri'
-        : pageType === 'section' ? 'Bo‘lim boshlig‘i' : ''
+        : pageType === 'section' || pageType === 'international' ? 'Bo‘lim boshlig‘i' : ''
   );
   const leaderName = leadEmployee?.fullName || leaderCardTitle;
   const leaderPosition = getEmployeePosition(leadEmployee) || emptyText;
@@ -199,7 +200,7 @@ function AcademicSidebar({
             <div className="academic-dean-info-row"><span><EmailOutlinedIcon /></span><p title={leaderEmail || emptyText}>{leaderEmail || emptyText}</p></div>
             <div className="academic-dean-info-row"><span><PhoneOutlinedIcon /></span><p title={leaderPhone || emptyText}>{leaderPhone || emptyText}</p></div>
             <div className="academic-dean-info-row"><span><AccessTimeIcon /></span><p title={leaderReception || emptyText}>{leaderReception || emptyText}</p></div>
-            {leadEmployee && (
+            {leadEmployee && showLeaderProfileLink && (
               <NavLink to={buildEmployeeProfilePath(leadEmployee)} className="academic-dean-btn">
                 <LinkIcon />Rahbar haqida <ArrowForwardIosIcon className="academic-action-arrow" />
               </NavLink>

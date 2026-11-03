@@ -41,6 +41,7 @@ const AdmissionPage = React.lazy(() => import('./pages/AdmissionPage'));
 const JournalIssuesPage = React.lazy(() => import('./pages/JournalIssuesPage'));
 const LaboratoriesPage = React.lazy(() => import('./pages/LaboratoriesPage'));
 const LaboratoryDetailPage = React.lazy(() => import('./pages/LaboratoryDetailPage'));
+const InternationalDepartmentPage = React.lazy(() => import('./pages/InternationalDepartmentPage'));
 
 function SiteLayout() {
   const { pathname } = useLocation();
@@ -256,6 +257,14 @@ function App() {
             element={
               <Suspense fallback={<SectionFallback minHeight={960} />}>
                <LeadershipPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/international/:slug?"
+            element={
+              <Suspense fallback={<SectionFallback minHeight={960} />}>
+                <InternationalDepartmentPage />
               </Suspense>
             }
           />

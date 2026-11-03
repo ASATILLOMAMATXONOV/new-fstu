@@ -46,8 +46,11 @@ export default function NavItem({ item, level, isParents = false }) {
     false
   );
 
-  const { pathname } = useLocation();
-  const isSelected = !!matchPath({ path: item?.link ? item.link : item.url, end: false }, pathname);
+  const { pathname, search } = useLocation();
+  const currentLocation = `${pathname}${search}`;
+  const isSelected = item.url?.includes('?')
+    ? currentLocation === item.url
+    : !!matchPath({ path: item?.link ? item.link : item.url, end: false }, pathname);
 
   const textColor = mode === ThemeMode.DARK ? 'grey.400' : 'text.primary';
   const iconSelectedColor = mode === ThemeMode.DARK && drawerOpen ? 'text.primary' : 'primary.main';

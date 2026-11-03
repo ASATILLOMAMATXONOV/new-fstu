@@ -40,3 +40,23 @@ test('laboratories content uses the laboratories admin permission', () => {
   assert.equal(authorizeContent({ role: 'editor', menuAccess: ['laboratories-management'] }, 'laboratories'), undefined);
   assert.equal(authorizeContent({ role: 'editor', menuAccess: ['faculties-management'] }, 'laboratories')?.statusCode, 403);
 });
+
+test('leadership writes require the dedicated management permission', () => {
+  assert.equal(authorizeContent({ role: 'super_admin' }, 'leadership'), undefined);
+  assert.equal(authorizeContent({ role: 'editor', menuAccess: ['leadership-management'] }, 'leadership'), undefined);
+  assert.equal(authorizeContent({ role: 'editor', menuAccess: ['employees-portfolio-management'] }, 'leadership')?.statusCode, 403);
+  assert.equal(authorizeContent(null, 'leadership')?.statusCode, 403);
+});
+
+test('international department writes require their dedicated permission', () => {
+  assert.equal(authorizeContent({ role: 'super_admin' }, 'international-department'), undefined);
+  assert.equal(authorizeContent({ role: 'editor', menuAccess: ['international-department-management'] }, 'international-department'), undefined);
+  assert.equal(authorizeContent({ role: 'editor', menuAccess: ['academic-menu-management'] }, 'international-department')?.statusCode, 403);
+});
+
+test('international universities use a separate permission from homepage partners', () => {
+  assert.equal(authorizeContent({ role: 'super_admin' }, 'international-universities'), undefined);
+  assert.equal(authorizeContent({ role: 'editor', menuAccess: ['international-universities-management'] }, 'international-universities'), undefined);
+  assert.equal(authorizeContent({ role: 'editor', menuAccess: ['partners-management'] }, 'international-universities')?.statusCode, 403);
+  assert.equal(authorizeContent({ role: 'editor', menuAccess: ['international-universities-management'] }, 'partners')?.statusCode, 403);
+});

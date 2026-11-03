@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import '../assets/styles/PartnersPage.css';
-import AcademicSidebar from '../components/layout/AcademicSidebar';
+import InternationalSidebar from '../components/layout/InternationalSidebar';
 import { useLanguage } from '../context/LanguageContext';
 import { useContentList } from '../hooks/useContentList';
 import { getTranslatedField } from '../utils/cms';
@@ -133,7 +133,6 @@ function CountryFocus({feature, countryName, universities, loading, onBack, ui})
       <button type="button" className="pp-back" onClick={onBack}>
         <span aria-hidden="true">←</span>{ui.back}
       </button>
-      <span className="pp-focus__label">FSTU / {ui.details}</span>
     </div>
     <div className="pp-focus__grid">
       <div className="pp-focus__map">
@@ -144,7 +143,7 @@ function CountryFocus({feature, countryName, universities, loading, onBack, ui})
             <path d={data.path} fill="url(#pp-focus-gradient)" stroke="#f9ffff" strokeWidth="1.1" vectorEffect="non-scaling-stroke" strokeLinejoin="round"/>
           </svg> : <span>{ui.loading}</span>}
         </div>
-        <div className="pp-focus__foot"><span className="pp-focus__dot"/>{ui.partner}</div>
+        <div className="pp-focus__foot"><span className="pp-focus__dot"/>{countryName}</div>
       </div>
       <div className="pp-focus__directory">
         <header className="pp-focus__directory-header"><span className="pp-eyebrow">{ui.directory}</span><h2>{ui.universities}</h2><span className="pp-focus__count">{universities.length}</span></header>
@@ -156,7 +155,7 @@ function CountryFocus({feature, countryName, universities, loading, onBack, ui})
 export default function PartnersPage(){
   const {currentLanguageCode}=useLanguage();
   const ui=UI[currentLanguageCode] || UI.uz;
-  const {items:rawPartners=[],loading}=useContentList('partners',{revalidate:true});
+  const {items:rawPartners=[],loading}=useContentList('international-universities',{revalidate:true});
   const [features,setFeatures]=useState([]);
   const [mapStatus,setMapStatus]=useState('loading');
   const [selected,setSelected]=useState('');
@@ -188,7 +187,7 @@ export default function PartnersPage(){
           </section>
         </>}
       </div>
-      <aside className="pp-sidebar"><AcademicSidebar/></aside>
+      <aside className="pp-sidebar"><InternationalSidebar/></aside>
     </div>
   </main>;
 }

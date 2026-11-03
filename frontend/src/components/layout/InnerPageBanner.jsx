@@ -85,6 +85,10 @@ function getBannerBaseContent(pathname, texts) {
     return withBannerImage(texts.leadership);
   }
 
+  if (matchPath('/international/:slug?', pathname)) {
+    return withBannerImage(texts.international);
+  }
+
   if (pathname.startsWith('/news')) {
     return withBannerImage(texts.newsList);
   }

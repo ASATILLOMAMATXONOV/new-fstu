@@ -293,6 +293,7 @@ export default function NewsManagementPage() {
                   </Typography>
                 </Stack>
 
+
                 <input
                   ref={fileInputRef}
                   type="file"

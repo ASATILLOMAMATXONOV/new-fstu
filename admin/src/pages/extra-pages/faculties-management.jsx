@@ -519,6 +519,7 @@ export default function FacultiesManagementPage() {
         </Typography>
       </Stack>
 
+
       <input
         ref={inputRef}
         type="file"

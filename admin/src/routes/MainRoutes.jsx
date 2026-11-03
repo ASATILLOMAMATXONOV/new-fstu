@@ -16,6 +16,14 @@ const AcademicMenuManagementPage = Loadable(
   lazy(() => import('pages/extra-pages/academic-menu-management'))
 );
 
+const InternationalDepartmentManagementPage = Loadable(
+  lazy(() => import('pages/extra-pages/international-department-management'))
+);
+
+const InternationalUniversitiesManagementPage = Loadable(
+  lazy(() => import('pages/extra-pages/international-universities-management'))
+);
+
 const BannerManagementPage = Loadable(
   lazy(() => import('pages/extra-pages/banner-management'))
 );
@@ -58,6 +66,10 @@ const NewPageManagementPage = Loadable(
 
 const EmployeesPortfolioManagementPage = Loadable(
   lazy(() => import('pages/extra-pages/employees-portfolio-management'))
+);
+
+const LeadershipManagementPage = Loadable(
+  lazy(() => import('pages/extra-pages/leadership-management'))
 );
 
 const FacultiesManagementPage = Loadable(
@@ -132,6 +144,14 @@ const MainRoutes = {
       element: <AcademicMenuManagementPage />
     },
     {
+      path: 'international-department-management',
+      element: <InternationalDepartmentManagementPage />
+    },
+    {
+      path: 'international-universities-management',
+      element: <InternationalUniversitiesManagementPage />
+    },
+    {
       path: 'news-management',
       element: <NewsManagementPage />
     },
@@ -158,6 +178,10 @@ const MainRoutes = {
     {
       path: 'employees-portfolio-management',
       element: <EmployeesPortfolioManagementPage />
+    },
+    {
+      path: 'leadership-management',
+      element: <LeadershipManagementPage />
     },
     {
       path: 'faculties-management',

@@ -41,7 +41,8 @@ test.each([
   ['/news', 'Barcha yangiliklar'], ['/announcements', 'Barcha e’lonlar'],
   ['/faculties', 'Barcha fakultetlar'], ['/departments', 'Fakultetlar va kafedralar'],
   ['/sections', 'Barcha bo‘limlar'], ['/students', 'Bizning talabalarimiz'],
-  ['/journals', 'Ilmiy jurnal sonlari'], ['/leadership', 'Rahbariyat']
+  ['/journals', 'Ilmiy jurnal sonlari'], ['/leadership', 'Ma’muriyat'],
+  ['/international/hamkorlik', 'Xalqaro bo‘lim']
 ])('%s shows its page title', (pathname, title) => {
   mockPathname = pathname;
   render(<InnerPageBanner />);

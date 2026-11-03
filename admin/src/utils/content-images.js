@@ -1,4 +1,20 @@
 const IMAGE_POLICIES = Object.freeze({
+  leadership: {
+    label: 'Ma’muriyat rasmi',
+    targetBytes: 700 * 1024,
+    maxWidth: 960,
+    maxHeight: 960,
+    quality: 0.82,
+    mimeType: 'image/webp'
+  },
+  'international-department': {
+    label: 'Xalqaro bo‘lim rahbari rasmi',
+    targetBytes: 700 * 1024,
+    maxWidth: 960,
+    maxHeight: 960,
+    quality: 0.82,
+    mimeType: 'image/webp'
+  },
   banners: {
     label: 'Banner rasmi',
     maxUploadBytes: 2.5 * 1024 * 1024,
@@ -116,9 +132,17 @@ export function getManagedImageHelperText(resource) {
     return '';
   }
 
-  return `${policy.label}: JPG, PNG yoki WEBP. Yuklash limiti ${formatBytes(
-    policy.maxUploadBytes
-  )}, saqlanadigan rasm ${formatBytes(policy.maxStoredBytes)} dan oshmasin.`;
+  const details = [`${policy.label}: JPG, PNG yoki WEBP.`];
+  if (Number.isFinite(policy.maxUploadBytes)) {
+    details.push(`Yuklash limiti ${formatBytes(policy.maxUploadBytes)}.`);
+  }
+  if (Number.isFinite(policy.maxStoredBytes)) {
+    details.push(`Saqlanadigan rasm ${formatBytes(policy.maxStoredBytes)} dan oshmasin.`);
+  }
+  if (!Number.isFinite(policy.maxUploadBytes) && !Number.isFinite(policy.maxStoredBytes)) {
+    details.push('Rasm avtomatik optimallashtiriladi.');
+  }
+  return details.join(' ');
 }
 
 export async function prepareManagedImageUpload(file, resource) {
@@ -136,7 +160,7 @@ export async function prepareManagedImageUpload(file, resource) {
     throw new Error('Faqat JPG, PNG yoki WEBP formatdagi rasmlar ruxsat etiladi.');
   }
 
-  if (file.size > policy.maxUploadBytes) {
+  if (Number.isFinite(policy.maxUploadBytes) && file.size > policy.maxUploadBytes) {
     throw new Error(
       `${policy.label} ${formatBytes(policy.maxUploadBytes)} dan katta bo‘lmasligi kerak.`
     );
@@ -148,13 +172,14 @@ export async function prepareManagedImageUpload(file, resource) {
   let dataUrl = canvasToDataUrl(canvas, policy.mimeType, quality);
   let storedBytes = dataUrlSizeInBytes(dataUrl);
 
-  while (storedBytes > policy.maxStoredBytes && quality > 0.45) {
+  const targetBytes = policy.maxStoredBytes ?? policy.targetBytes ?? Infinity;
+  while (storedBytes > targetBytes && quality > 0.45) {
     quality = Number((quality - 0.08).toFixed(2));
     dataUrl = canvasToDataUrl(canvas, policy.mimeType, quality);
     storedBytes = dataUrlSizeInBytes(dataUrl);
   }
 
-  if (storedBytes > policy.maxStoredBytes) {
+  if (Number.isFinite(policy.maxStoredBytes) && storedBytes > policy.maxStoredBytes) {
     throw new Error(
       `${policy.label} siqilgandan keyin ham ${formatBytes(
         policy.maxStoredBytes
@@ -178,7 +203,8 @@ export async function prepareManagedImageDataUrl(dataUrl, resource) {
 
   const storedBytes = dataUrlSizeInBytes(normalizedDataUrl);
 
-  if (storedBytes <= policy.maxStoredBytes) {
+  const targetBytes = policy.maxStoredBytes ?? policy.targetBytes ?? Infinity;
+  if (storedBytes <= targetBytes) {
     return normalizedDataUrl;
   }
 
@@ -188,13 +214,13 @@ export async function prepareManagedImageDataUrl(dataUrl, resource) {
   let optimizedDataUrl = canvasToDataUrl(canvas, policy.mimeType, quality);
   let optimizedBytes = dataUrlSizeInBytes(optimizedDataUrl);
 
-  while (optimizedBytes > policy.maxStoredBytes && quality > 0.45) {
+  while (optimizedBytes > targetBytes && quality > 0.45) {
     quality = Number((quality - 0.08).toFixed(2));
     optimizedDataUrl = canvasToDataUrl(canvas, policy.mimeType, quality);
     optimizedBytes = dataUrlSizeInBytes(optimizedDataUrl);
   }
 
-  if (optimizedBytes > policy.maxStoredBytes) {
+  if (Number.isFinite(policy.maxStoredBytes) && optimizedBytes > policy.maxStoredBytes) {
     throw new Error(
       `${policy.label} siqilgandan keyin ham ${formatBytes(
         policy.maxStoredBytes

@@ -147,7 +147,8 @@ export default function NavCollapse({ menu, level, parentId, setSelectedItems, s
     }
   }, [selectedItems, level, selected, miniMenuOpened, drawerOpen, selectedLevel]);
 
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
+  const currentLocation = `${pathname}${search}`;
 
   useEffect(() => {
     if (pathname === menu.url) {
@@ -158,7 +159,7 @@ export default function NavCollapse({ menu, level, parentId, setSelectedItems, s
 
   const checkOpenForParent = (child, id) => {
     child.forEach((item) => {
-      if (item.url === pathname) {
+      if (item.url === currentLocation || item.url === pathname) {
         setOpen(true);
         setSelected(id);
       }
@@ -180,7 +181,7 @@ export default function NavCollapse({ menu, level, parentId, setSelectedItems, s
           setOpen(true);
         }
 
-        if (item.url === pathname) {
+        if (item.url === currentLocation || item.url === pathname) {
           setSelected(menu.id);
           setOpen(true);
         }
@@ -188,7 +189,7 @@ export default function NavCollapse({ menu, level, parentId, setSelectedItems, s
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname, menu.children]);
+  }, [pathname, search, menu.children]);
 
   useEffect(() => {
     if (menu.url === pathname) {
