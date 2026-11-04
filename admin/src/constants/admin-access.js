@@ -29,7 +29,10 @@ export const menuAccessGroups = [
   {
     id: 'content',
     title: 'Kontent boshqaruvi',
-    items: [{ key: 'new-page-management', title: 'Yangi sahifa', url: '/new-page-management' }]
+    items: [
+      { key: 'new-page-management', title: 'Yangi sahifa', url: '/new-page-management' },
+      { key: 'publishing-management', title: 'Nashriyot', url: '/publishing-management' }
+    ]
   },
   {
     id: 'university',

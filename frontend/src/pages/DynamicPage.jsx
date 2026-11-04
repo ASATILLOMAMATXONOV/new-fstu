@@ -48,12 +48,6 @@ function DynamicPage() {
     <main className="dynamic-page">
       <div className="dynamic-page-layout">
         <article className="dynamic-page-main">
-          <header className="dynamic-page-main-head">
-            <span className="dynamic-page-label">{texts.label}</span>
-            <h2>{getTranslatedField(currentPage, 'title', currentPage.title)}</h2>
-            <p>{texts.intro}</p>
-          </header>
-
           <div className="dynamic-page-content-wrap">
             <div className="dynamic-page-content-stack">
               <LinkedInfoTable items={currentPage.linkTable} />

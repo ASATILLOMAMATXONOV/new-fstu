@@ -13,6 +13,7 @@ const contentResourceAccessMap = {
   'international-universities': 'international-universities-management',
   partners: 'partners-management',
   laboratories: 'laboratories-management',
+  'journal-issues': 'publishing-management',
   statistics: 'statistics-management',
   pages: 'new-page-management',
   faculties: 'faculties-management',

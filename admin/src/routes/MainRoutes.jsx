@@ -24,6 +24,10 @@ const InternationalUniversitiesManagementPage = Loadable(
   lazy(() => import('pages/extra-pages/international-universities-management'))
 );
 
+const PublishingManagementPage = Loadable(
+  lazy(() => import('pages/extra-pages/publishing-management'))
+);
+
 const BannerManagementPage = Loadable(
   lazy(() => import('pages/extra-pages/banner-management'))
 );
@@ -150,6 +154,10 @@ const MainRoutes = {
     {
       path: 'international-universities-management',
       element: <InternationalUniversitiesManagementPage />
+    },
+    {
+      path: 'publishing-management',
+      element: <PublishingManagementPage />
     },
     {
       path: 'news-management',

@@ -12,6 +12,7 @@ import adminUserRoutes from './modules/admin-users/admin-users.routes.js';
 import contentRoutes from './modules/content/content.routes.js';
 import settingsRoutes from './modules/settings/settings.routes.js';
 import assistantRoutes from './modules/assistant/assistant.routes.js';
+import mediaRoutes from './modules/media/media.routes.js';
 
 function isLocalDevOrigin(origin) {
   if (!origin) {
@@ -67,7 +68,7 @@ export function createApp() {
     })
   );
   app.use(cors(createCorsOptions()));
-  app.use(express.json({ limit: '10mb' }));
+  app.use(express.json({ limit: '100mb' }));
   app.use(express.urlencoded({ extended: false, limit: '1mb' }));
   app.use(morgan(env.nodeEnv === 'production' ? 'combined' : 'dev'));
   app.use('/api', (_req, res, next) => {
@@ -98,6 +99,7 @@ export function createApp() {
   app.use('/api/content', optionalAuth, contentRoutes);
   app.use('/api/settings', optionalAuth, settingsRoutes);
   app.use('/api/assistant', assistantRoutes);
+  app.use('/api/media', mediaRoutes);
   app.use('/api/admin-users', authenticate, authorizeRoles('super_admin'), adminUserRoutes);
 
   app.use(notFoundHandler);

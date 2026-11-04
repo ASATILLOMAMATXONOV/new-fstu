@@ -107,7 +107,7 @@ export default function InternationalDepartmentPage() {
             pageType="international"
             leader={leader}
             leaderTitle="Xalqaro bo‘lim rahbari"
-            showLeaderCard={Boolean(leader)}
+            showLeaderCard={false}
             showLeaderProfileLink={false}
             showAnnouncements={false}
           />

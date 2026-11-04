@@ -46,8 +46,8 @@ import Box from '@mui/material/Box';
 import GlobalStyles from '@mui/material/GlobalStyles';
 import Typography from '@mui/material/Typography';
 import { fileToDataUrl } from '../../utils/file';
+import { apiPost } from '../../utils/fetch';
 
-const INLINE_IMAGE_MAX_BYTES = 2 * 1024 * 1024;
 const INLINE_FILE_ACCEPT =
   '.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip,.rar,.txt,.csv,.rtf,.odt,.ods,.odp';
 
@@ -139,10 +139,21 @@ async function insertLocalImage(editor) {
     return;
   }
 
-  validateLocalFile(file, INLINE_IMAGE_MAX_BYTES, 'Rasm');
-
-  const src = await fileToDataUrl(file);
+  const src = await uploadEditorImage(file);
   editor.insertContent(`<img src="${src}" alt="${escapeHtmlAttribute(file.name)}" />`);
+}
+
+async function uploadEditorImage(file) {
+  validateLocalFile(file, 8 * 1024 * 1024, 'Rasm');
+  const dataUrl = await fileToDataUrl(file);
+  const response = await apiPost('/api/media/images', { dataUrl });
+  const url = String(response?.data?.url || '').trim();
+
+  if (!url) {
+    throw new Error('Rasm manzili qaytmadi.');
+  }
+
+  return url;
 }
 
 async function insertLocalFile(editor) {
@@ -171,8 +182,17 @@ export default function TinyMceField({ label, value, onChange, disabled = false,
       image_title: true,
       automatic_uploads: true,
       allow_html_data_urls: true,
+      // Source Code oynasida kiritilgan standart HTML atributlarini TinyMCE
+      // o'zicha olib tashlamasdan saqlaydi. Xavfsizlik filtri API qatlamida qoladi.
+      valid_elements: '*[*]',
       extended_valid_elements:
-        'a[href|target|rel|title|class|download],img[src|alt|title|width|height|style|loading]',
+        'a[href|target|rel|title|class|download],img[src|alt|title|width|height|style|class|loading|decoding]',
+      element_format: 'xhtml',
+      forced_root_block: false,
+      entity_encoding: 'raw',
+      convert_urls: false,
+      relative_urls: false,
+      remove_script_host: false,
       toolbar_mode: 'wrap',
       toolbar_sticky: false,
       toolbar_sticky_offset: 0,
@@ -233,8 +253,23 @@ export default function TinyMceField({ label, value, onChange, disabled = false,
         'Georgia=georgia,palatino,serif; ' +
         'Courier New=courier new,courier,monospace',
       font_size_formats: '12px 14px 16px 18px 20px 24px 28px 32px 36px',
-      content_style:
-        'body { font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 1.7; margin: 16px; }',
+      content_style: `
+        html { box-sizing: border-box; }
+        *, *::before, *::after { box-sizing: inherit; }
+        body {
+          font-family: Arial, Helvetica, sans-serif;
+          font-size: 14px;
+          line-height: 1.7;
+          margin: 16px;
+          overflow-wrap: anywhere;
+        }
+        img {
+          max-width: 100%;
+          height: auto;
+          box-sizing: border-box;
+        }
+        table { max-width: 100%; }
+      `,
       placeholder: `${label} uchun kontent kiriting...`,
       file_picker_callback: async (callback, _value, meta) => {
         try {
@@ -260,8 +295,7 @@ export default function TinyMceField({ label, value, onChange, disabled = false,
             return;
           }
 
-          validateLocalFile(file, INLINE_IMAGE_MAX_BYTES, 'Rasm');
-          const src = await fileToDataUrl(file);
+          const src = await uploadEditorImage(file);
 
           callback(src, {
             alt: file.name,
@@ -271,7 +305,7 @@ export default function TinyMceField({ label, value, onChange, disabled = false,
           showUploadError(error);
         }
       },
-      images_upload_handler: async (blobInfo) => `data:${blobInfo.blob().type};base64,${blobInfo.base64()}`,
+      images_upload_handler: async (blobInfo) => uploadEditorImage(blobInfo.blob()),
       setup: (editor) => {
         editor.ui.registry.addIcon(
           'localfileicon',

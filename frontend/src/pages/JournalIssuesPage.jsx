@@ -3,6 +3,7 @@ import React, { useMemo, useState } from 'react';
 
 import AcademicSidebar from '../components/layout/AcademicSidebar';
 import '../assets/styles/JournalIssuesPage.css';
+import { useContentList } from '../hooks/useContentList';
 
 const EMPTY_ISSUES = [];
 
@@ -56,7 +57,10 @@ function JournalTableRow({ issue, index }) {
           <div className="jar-journal-details">
             <h3>{getIssueName(issue)}</h3>
             <p>{issue.title}</p>
-            <span>{issue.year}-yil · №{issue.number}</span>
+            <span>
+              {issue.year}-yil · №{issue.number}
+              {Number(issue.quantity) > 0 ? ` · ${issue.quantity} ta nusxa` : ''}
+            </span>
           </div>
         </div>
       </td>
@@ -159,8 +163,10 @@ function JournalYearGroup({ year, issues }) {
 }
 
 export default function JournalIssuesPage({
-  issues = EMPTY_ISSUES
+  issues: suppliedIssues
 }) {
+  const { items: loadedIssues } = useContentList('journal-issues');
+  const issues = suppliedIssues || loadedIssues || EMPTY_ISSUES;
   const [type, setType] = useState('all');
   const [search, setSearch] = useState('');
 
@@ -169,6 +175,7 @@ export default function JournalIssuesPage({
 
     return issues
       .filter((issue) => {
+        if (issue.active === false) return false;
         const matchesType =
           type === 'all' || issue.type === type;
 

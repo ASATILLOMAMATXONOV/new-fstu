@@ -206,7 +206,6 @@
   -webkit-mask: var(--brand-logo-image) left center / contain no-repeat;
   mask: var(--brand-logo-image) left center / contain no-repeat;
   transform-origin: left center;
-  filter: drop-shadow(0 3px 5px rgba(var(--theme-dark-rgb), 0.16));
   transition:
     background 0.24s ease,
     filter 0.35s ease,

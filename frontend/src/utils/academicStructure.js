@@ -130,17 +130,20 @@ export function buildCustomMenuCollection(menu, language = 'uz') {
     .map((card, index) => ({
       id: String(card.id || index),
       kind: 'custom',
-      name: academicText(card.title, language),
+      name: academicText(card.title, language) || `Box ${index + 1}`,
       logo: card.image || '',
       icon: 'book',
-      url: safeHref(card.url)
+      url: (() => {
+        const value = String(card.url || '').trim();
+        return /^(javascript|vbscript|data):/i.test(value) ? '' : value;
+      })()
     }))
-    .filter((card) => card.name);
+    .filter((card) => card.name || card.logo || card.url);
 }
 
 export function getStructureMenus(setting, language, siteMenus = []) {
   if (setting?.active === false) return [];
-  return (Array.isArray(setting?.menus) ? setting.menus : [])
+  const normalizedMenus = (Array.isArray(setting?.menus) ? setting.menus : [])
     .filter((menu) => menu && menu.active !== false && ACADEMIC_SOURCE_LABELS[menu.sourceType])
     .map((menu) => {
       const menuWithoutSubtitle = Object.fromEntries(Object.entries(menu).filter(([key]) => key !== 'subtitle'));
@@ -158,7 +161,22 @@ export function getStructureMenus(setting, language, siteMenus = []) {
             : academicText(menu.title, language) || ACADEMIC_SOURCE_LABELS[menu.sourceType].title
       };
     })
-    .filter((menu) => menu.name)
+    .filter((menu) => menu.name);
+
+  return normalizedMenus.reduce((result, menu) => {
+    const key = menu.sourceType === 'custom' ? `custom:${menu.id}` : `${menu.sourceType}:${menu.menuId || menu.id}`;
+    const existingIndex = result.findIndex((entry) => entry._mergeKey === key);
+    if (existingIndex === -1) return [...result, { ...menu, _mergeKey: key }];
+    const existing = result[existingIndex];
+    const cardIds = new Set((existing.cards || []).map((card) => String(card.id)));
+    result[existingIndex] = {
+      ...existing,
+      cards: [...(existing.cards || []), ...(menu.cards || []).filter((card) => !cardIds.has(String(card.id)))],
+      order: Math.min(Number(existing.order || 0), Number(menu.order || 0))
+    };
+    return result;
+  }, [])
+    .map(({ _mergeKey, ...menu }) => menu)
     .sort((a, b) => Number(a.order || 0) - Number(b.order || 0));
 }
 

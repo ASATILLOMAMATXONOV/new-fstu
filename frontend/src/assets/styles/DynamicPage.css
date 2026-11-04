@@ -85,21 +85,14 @@
 .dynamic-page-body {
   min-width: 0;
   color: var(--dp-text);
+  font-family: Arial, Helvetica, sans-serif;
   font-size: 14px;
-  line-height: 1.9;
+  line-height: 1.7;
   overflow-wrap: anywhere;
 }
 
-.dynamic-page-body > *:first-child {
-  margin-top: 0 !important;
-}
-
-.dynamic-page-body > *:last-child {
-  margin-bottom: 0 !important;
-}
-
 .dynamic-page-body p {
-  margin: 0 0 18px;
+  margin: 1em 0;
   font-size: inherit;
   line-height: inherit;
 }
@@ -110,69 +103,45 @@
 .dynamic-page-body h4,
 .dynamic-page-body h5,
 .dynamic-page-body h6 {
-  margin: 26px 0 12px;
-  color: var(--dp-heading);
-  font-weight: 800;
-  line-height: 1.4;
+  color: inherit;
+  font-weight: bold;
+  line-height: normal;
   overflow-wrap: anywhere;
 }
 
 .dynamic-page-body h1 {
-  font-size: clamp(23px, 2.5vw, 31px);
+  margin: .67em 0;
+  font-size: 2em;
 }
 
 .dynamic-page-body h2 {
-  font-size: 23px;
+  margin: .83em 0;
+  font-size: 1.5em;
 }
 
 .dynamic-page-body h3 {
-  font-size: 19px;
+  margin: 1em 0;
+  font-size: 1.17em;
 }
 
-.dynamic-page-body h4,
-.dynamic-page-body h5,
-.dynamic-page-body h6 {
-  font-size: 16px;
-}
+.dynamic-page-body h4 { margin: 1.33em 0; font-size: 1em; }
+.dynamic-page-body h5 { margin: 1.67em 0; font-size: .83em; }
+.dynamic-page-body h6 { margin: 2.33em 0; font-size: .67em; }
 
 /* LISTS */
 
 .dynamic-page-body ul,
 .dynamic-page-body ol {
-  margin: 0 0 20px;
-  padding-left: 24px;
-}
-
-.dynamic-page-body li {
-  margin-bottom: 8px;
-}
-
-.dynamic-page-body li::marker {
-  color: #2563eb;
+  margin: 1em 0;
+  padding-left: 40px;
 }
 
 /* IMAGES */
 
 .dynamic-page-body img {
-  display: block;
   max-width: 100%;
   height: auto;
-
-  margin: 24px auto;
-
-  border: 1px solid var(--dp-border);
-  border-radius: 6px;
-
-  transition:
-    transform 0.3s ease,
-    border-color 0.3s ease,
-    box-shadow 0.3s ease;
-}
-
-.dynamic-page-body img:hover {
-  transform: scale(1.01);
-  border-color: #2563eb;
-  box-shadow: 0 12px 30px rgba(37, 99, 235, 0.1);
+  box-sizing: border-box;
 }
 
 /* LINKS */

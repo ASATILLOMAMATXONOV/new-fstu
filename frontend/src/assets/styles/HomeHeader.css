@@ -34,7 +34,6 @@
 .fstu-header--home:has(~ .home-page .hero-slider) .brand-logo-wrap::after,
 .fstu-header--home:has(~ .home-page .hero-slider) .brand:hover .brand-logo-wrap::after {
   background: #0d336b;
-  filter: none;
 }
 
 .fstu-header--home:has(~ .home-page .hero-slider) .brand-logo-glow,

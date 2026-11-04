@@ -618,15 +618,15 @@
 .pp-focus {
   border:1px solid #dce9e5;
   background:#fff;
-  border-radius:6px;
+  border-radius:14px;
   overflow:hidden;
   box-shadow:0 16px 48px #143f4010;
   animation:pp-focus-in .46s ease both
 }
 
 .pp-focus__top {
-  min-height:65px;
-  padding:12px 22px;
+  min-height:58px;
+  padding:10px 18px;
   display:flex;
   justify-content:space-between;
   align-items:center;
@@ -642,8 +642,8 @@
   border:1px solid #cfe6dd;
   background:#f4fbf7;
   color:#206f64;
-  padding:11px 15px;
-  border-radius:6px;
+  padding:9px 13px;
+  border-radius:9px;
   font-weight:800;
   font-size:12px;
   cursor:pointer;
@@ -670,16 +670,16 @@
 
 .pp-focus__grid {
   display:grid;
-  grid-template-columns:minmax(0,1fr) minmax(0,.95fr);
-  min-height:560px
+  grid-template-columns:minmax(310px,.78fr) minmax(0,1.22fr);
+  min-height:440px
 }
 
 .pp-focus__map {
   position:relative;
   min-width:0;
   overflow:hidden;
-  padding:36px 28px;
-  background:radial-gradient(ellipse at 48% 56%,#15465b 0%,#0a2537 63%,#081b2b 100%);
+  padding:30px 28px 24px;
+  background:radial-gradient(ellipse at 48% 56%,#155267 0%,#0b3042 58%,#071f30 100%);
   color:#fff
 }
 
@@ -717,7 +717,7 @@
 
 .pp-focus__graphic {
   position:relative;
-  height:365px;
+  height:255px;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -727,7 +727,7 @@
 .pp-focus__graphic svg {
   width:100%;
   height:100%;
-  max-width:100%;
+  max-width:480px;
   max-height:100%;
   overflow:visible;
   filter:drop-shadow(0 0 22px #42d9c744);
@@ -763,7 +763,7 @@
 .pp-focus__directory {
   min-width:0;
   background:linear-gradient(180deg,#fff,#f9fcfa);
-  padding:26px 22px
+  padding:30px 28px
 }
 
 .pp-focus__directory-header {
@@ -783,10 +783,13 @@
   position:absolute;
   right:0;
   top:13px;
-  min-width:36px;
-  padding:7px 9px;
+  min-width:42px;
+  min-height:42px;
+  display:grid;
+  place-items:center;
+  padding:7px 10px;
   text-align:center;
-  border-radius:6px;
+  border-radius:10px;
   background:#e5f7f0;
   color:#138371;
   font-weight:800
@@ -794,8 +797,8 @@
 
 .pp-focus__results {
   display:grid;
-  gap:12px;
-  max-height:650px;
+  gap:14px;
+  max-height:520px;
   overflow:auto;
   padding:2px 4px 10px 1px;
   scrollbar-color:#bdd9d1 transparent;
@@ -808,7 +811,9 @@
 
 .pp-focus__item .pp-university {
   background:#fff;
-  border-radius:6px
+  border-radius:11px;
+  min-height:118px;
+  align-items:center
 }
 
 .pp-focus__item .pp-university:hover {
@@ -818,6 +823,16 @@
 
 .pp-focus__item .pp-university__country,.pp-focus__item .pp-university__links a {
   color:#147e70
+}
+
+.pp-focus__item .pp-university h3 {
+  font-size:16px
+}
+
+.pp-focus__item .pp-university__links a {
+  padding:6px 9px;
+  border-radius:7px;
+  background:#eff9f6
 }
 
 @keyframes pp-focus-in {
@@ -846,17 +861,17 @@
 
 }
 
-@media(max-width:1200px) {
+@media(max-width:900px) {
   .pp-focus__grid {
     grid-template-columns:1fr
   }
 
   .pp-focus__map {
-    min-height:460px
+    min-height:390px
   }
 
   .pp-focus__graphic {
-    height:310px
+    height:270px
   }
 
   .pp-focus__results {
@@ -876,12 +891,12 @@
   }
 
   .pp-focus__map {
-    min-height:400px;
+    min-height:350px;
     padding:24px 17px
   }
 
   .pp-focus__graphic {
-    height:270px
+    height:225px
   }
 
   .pp-focus__directory {

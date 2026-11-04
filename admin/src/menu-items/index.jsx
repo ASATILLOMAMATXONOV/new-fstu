@@ -11,6 +11,7 @@ import facultyPageMenuManagement from './faculty-page-menu-management';
 import adminUsersManagement from './admin-users-management';
 import admissionCtaManagement from './admission-cta-management';
 import seasonalEffectsManagement from './seasonal-effects-management';
+import publishingManagement from './publishing-management';
 
 // ==============================|| MENU ITEMS ||============================== //
 
@@ -21,6 +22,7 @@ const menuItems = {
     admissionCtaManagement,
     seasonalEffectsManagement,
     newPageManagement,
+    publishingManagement,
     facultiesManagement,
     directionsManagement,
     facultyPageMenuManagement,

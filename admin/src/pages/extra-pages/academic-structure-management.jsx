@@ -75,14 +75,30 @@ const normalizeCards = (cards) =>
     image: card.image || '',
     url: card.url || ''
   }));
-const validCardUrl = (value) => {
-  if (/^\/(?!\/)/.test(value) && !/[\\\s]/.test(value)) return true;
-  try {
-    return /^https?:$/.test(new URL(value).protocol);
-  } catch {
-    return false;
-  }
-};
+
+const normalizeMenus = (menus) =>
+  (Array.isArray(menus) ? menus : []).filter(Boolean).map((item, index) => ({
+    id: item.id || uuid(),
+    title: localized(item.title),
+    sourceType: item.sourceType || 'faculty',
+    menuId: item.menuId == null ? '' : String(item.menuId),
+    cards: normalizeCards(item.cards),
+    order: Number(item.order || index + 1),
+    active: item.active !== false
+  })).reduce((result, item) => {
+    const key = item.sourceType === 'custom' ? `custom:${item.id}` : `${item.sourceType}:${item.menuId}`;
+    const existingIndex = result.findIndex((entry) => entry._mergeKey === key);
+    if (existingIndex === -1) return [...result, { ...item, _mergeKey: key }];
+    const existing = result[existingIndex];
+    const cardIds = new Set(existing.cards.map((card) => String(card.id)));
+    result[existingIndex] = {
+      ...existing,
+      cards: [...existing.cards, ...item.cards.filter((card) => !cardIds.has(String(card.id)))],
+      order: Math.min(existing.order, item.order),
+      active: existing.active || item.active
+    };
+    return result;
+  }, []).map(({ _mergeKey, ...item }) => item);
 
 function normalizeSetting(value = {}) {
   return {
@@ -90,15 +106,7 @@ function normalizeSetting(value = {}) {
     active: value.active !== false,
     logo: value.logo || '',
     image: value.image || '',
-    menus: (Array.isArray(value.menus) ? value.menus : []).filter(Boolean).map((item, index) => ({
-      id: item.id || uuid(),
-      title: localized(item.title),
-      sourceType: item.sourceType || 'faculty',
-      menuId: item.menuId == null ? '' : String(item.menuId),
-      cards: normalizeCards(item.cards),
-      order: Number(item.order || index + 1),
-      active: item.active !== false
-    }))
+    menus: normalizeMenus(value.menus)
   };
 }
 
@@ -192,6 +200,21 @@ export default function AcademicStructureManagementPage() {
     );
     setMode('menu');
   };
+  const openBoxMenu = () => {
+    clearFeedback();
+    setLanguage('uz');
+    setEditing(false);
+    setForm({
+      id: uuid(),
+      title: localized(),
+      sourceType: '',
+      menuId: '',
+      cards: [{ id: uuid(), title: localized(), image: '', url: '' }],
+      order: Math.max(0, ...record.menus.map((menu) => menu.order)) + 1,
+      active: true
+    });
+    setMode('box');
+  };
   const openSettings = () => {
     clearFeedback();
     setLanguage('uz');
@@ -237,8 +260,8 @@ export default function AcademicStructureManagementPage() {
   const upload = async (key, file, cardId = null) => {
     if (!file) return;
     clearFeedback();
-    if (!/^image\/(png|jpeg|webp|gif)$/.test(file.type) || file.size > 1024 * 1024) {
-      setError('Rasm JPG, PNG, WEBP yoki GIF formatida va 1 MB dan kichik bo‘lishi kerak.');
+    if (!/^image\/(png|jpeg|webp|gif)$/.test(file.type) || file.size > 20 * 1024 * 1024) {
+      setError('Rasm JPG, PNG, WEBP yoki GIF formatida va 20 MB dan katta bo‘lmasligi kerak.');
       return;
     }
     setUploading(true);
@@ -294,16 +317,6 @@ export default function AcademicStructureManagementPage() {
         setError('Kamida bitta box qo‘shing.');
         return;
       }
-      const invalidIndex = form.cards.findIndex(
-        (card) => !card.title.uz.trim() || !card.image.trim() || (card.url.trim() && !validCardUrl(card.url.trim()))
-      );
-      if (invalidIndex !== -1) {
-        setError(
-          `${invalidIndex + 1}-box uchun o‘zbekcha sarlavha va rasm kiriting. Havola ixtiyoriy; kiritilsa, /, https:// yoki http:// bilan boshlanishi kerak.`
-        );
-        setLanguage('uz');
-        return;
-      }
     }
     const menu = {
       ...form,
@@ -311,8 +324,8 @@ export default function AcademicStructureManagementPage() {
       cards: form.cards.map((card) => ({ ...card, image: card.image.trim(), url: card.url.trim() })),
       order: Math.max(1, Math.trunc(Number(form.order)) || 1)
     };
-    const menus = editing ? record.menus.map((item) => (item.id === menu.id ? menu : item)) : [...record.menus, menu];
-    if (await persist({ ...record, menus }, editing ? 'Menyu yangilandi.' : 'Yangi menyu qo‘shildi.')) {
+    const menus = normalizeMenus(editing ? record.menus.map((item) => (item.id === menu.id ? menu : item)) : [...record.menus, menu]);
+    if (await persist({ ...record, menus }, editing ? 'Menyu yangilandi.' : mode === 'box' ? 'Boxlar menyuga biriktirildi.' : 'Yangi menyu qo‘shildi.')) {
       setSearch('');
       const index = [...menus].sort((a, b) => a.order - b.order).findIndex((item) => item.id === menu.id);
       pagination.handlePageChange(null, Math.floor(index / pagination.rowsPerPage));
@@ -348,7 +361,7 @@ export default function AcademicStructureManagementPage() {
   if (mode !== 'table')
     return (
       <MainCard
-        title={mode === 'settings' ? 'Akademik tuzilma sozlamalari' : editing ? 'Menyuni tahrirlash' : 'Yangi menyu qo‘shish'}
+        title={mode === 'settings' ? 'Akademik tuzilma sozlamalari' : mode === 'box' ? 'Mavjud menyuga box qo‘shish' : editing ? 'Menyuni tahrirlash' : 'Yangi menyu qo‘shish'}
         secondary={
           <Button startIcon={<ArrowLeftOutlined aria-hidden="true" />} disabled={busy} onClick={closeForm}>
             Orqaga
@@ -383,7 +396,7 @@ export default function AcademicStructureManagementPage() {
                     ))
                   ) : (
                     <>
-                      <Grid item xs={12}>
+                      {mode !== 'box' && <Grid item xs={12}>
                         <TextField
                           select
                           fullWidth
@@ -402,7 +415,7 @@ export default function AcademicStructureManagementPage() {
                           <MenuItem value="linked">Mavjud menyuni biriktirish</MenuItem>
                           <MenuItem value="custom">Yangi menyu va boxlar</MenuItem>
                         </TextField>
-                      </Grid>
+                      </Grid>}
                       <Grid item xs={12}>
                         <TextField
                           fullWidth
@@ -456,8 +469,8 @@ export default function AcademicStructureManagementPage() {
                       <Grid item xs={12}>
                         <Alert severity="info">
                           {form.sourceType === 'custom'
-                            ? 'Menyu tanlanganda uning boxlari o‘ng tomonda chiqadi. Har bir boxga rasm va sarlavha kiriting. Bosilganda ochiladigan havola ixtiyoriy.'
-                            : 'Tanlangan menyuning ma’lumotlari saytda o‘ng tomonda ko‘rsatiladi. Menyu nomini alohida yozish shart emas.'}
+                            ? 'Menyu tanlanganda uning boxlari o‘ng tomonda chiqadi. Box sarlavhasi, rasmi va havolasi ixtiyoriy.'
+                            : 'Mavjud menyuga ham boxlar qo‘shish mumkin. Boxlar bo‘lsa, frontendda menyu bosilganda shu boxlar ochiladi.'}
                         </Alert>
                       </Grid>
                     </>
@@ -470,7 +483,7 @@ export default function AcademicStructureManagementPage() {
                   </Grid>
                 </Grid>
               </Paper>
-              {mode === 'menu' && form.sourceType === 'custom' && (
+              {(mode === 'menu' || mode === 'box') && Boolean(form.sourceType) && (
                 <Stack spacing={2}>
                   <Stack direction="row" justifyContent="space-between" alignItems="center">
                     <Typography variant="h5">Boxlar ({form.cards.length})</Typography>
@@ -553,7 +566,7 @@ export default function AcademicStructureManagementPage() {
                           )}
                         </Stack>
                         <Typography variant="caption" color="text.secondary">
-                          JPG, PNG, WEBP yoki GIF. Eng katta hajm: 1 MB.
+                          JPG, PNG, WEBP yoki GIF. Eng katta hajm: 20 MB. Sarlavha, rasm va havola ixtiyoriy.
                         </Typography>
                       </Stack>
                     </Paper>
@@ -605,7 +618,7 @@ export default function AcademicStructureManagementPage() {
                             </Button>
                           )}
                           <Typography variant="caption" color="text.secondary">
-                            JPG, PNG, WEBP yoki GIF. Eng katta hajm: 1 MB.
+                            JPG, PNG, WEBP yoki GIF. Eng katta hajm: 20 MB.
                           </Typography>
                         </Stack>
                       </Paper>
@@ -632,11 +645,14 @@ export default function AcademicStructureManagementPage() {
   return (
     <MainCard
       title="Akademik tuzilma"
-      secondary={
+      secondary={<Stack direction="row" spacing={1}>
+        <Button variant="outlined" startIcon={<PlusOutlined aria-hidden="true" />} onClick={openBoxMenu}>
+          Mavjud menyuga box qo‘shish
+        </Button>
         <Button variant="contained" startIcon={<PlusOutlined aria-hidden="true" />} onClick={() => openMenu()}>
           Menyu qo‘shish
         </Button>
-      }
+      </Stack>}
     >
       <Stack spacing={2.5}>
         <Typography variant="body2" color="text.secondary">

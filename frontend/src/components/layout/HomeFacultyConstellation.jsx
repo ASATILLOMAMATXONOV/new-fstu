@@ -485,6 +485,7 @@ export default function HomeFacultyConstellation() {
 
 function AcademicWorkspace({ setting, currentLanguageCode, menus, selectedMenu, siteMenus, onSelect }) {
   const sourceType = structureSource(selectedMenu);
+  const hasCustomBoxes = Array.isArray(selectedMenu?.cards) && selectedMenu.cards.length > 0;
   const isAcademicSource = ['faculty', 'department', 'section', 'direction'].includes(sourceType);
   const { items: facultyItems, loading: facultiesLoading } = useContentList('faculties', {
     enabled: isAcademicSource,
@@ -501,12 +502,12 @@ function AcademicWorkspace({ setting, currentLanguageCode, menus, selectedMenu, 
   });
   const sourceItems = useMemo(
     () =>
-      sourceType === 'custom'
+      hasCustomBoxes || sourceType === 'custom'
         ? buildCustomMenuCollection(selectedMenu, currentLanguageCode)
         : sourceType === 'menu'
           ? buildLinkedMenuCollection(selectedMenu, siteMenus, currentLanguageCode)
           : buildResourceCollection(sourceType, resourceItems, currentLanguageCode),
-    [sourceType, resourceItems, selectedMenu, siteMenus, currentLanguageCode]
+    [hasCustomBoxes, sourceType, resourceItems, selectedMenu, siteMenus, currentLanguageCode]
   );
   const panelContent =
     sourceType === 'menu' ? getTranslatedField(selectedMenu.node, 'content', '', currentLanguageCode) : '';
@@ -550,10 +551,12 @@ function AcademicWorkspace({ setting, currentLanguageCode, menus, selectedMenu, 
     () =>
       history.length
         ? getChildren(history[history.length - 1])
-        : isAcademicSource
+        : hasCustomBoxes
+          ? sourceItems
+          : isAcademicSource
           ? collections[sourceType] || []
           : sourceItems,
-    [history, collections, sourceType, sourceItems, isAcademicSource]
+    [history, collections, sourceType, sourceItems, isAcademicSource, hasCustomBoxes]
   );
   const filteredItems = useMemo(() => {
     const search = query.trim().toLocaleLowerCase();
