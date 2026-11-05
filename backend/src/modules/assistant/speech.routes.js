@@ -26,16 +26,26 @@ export function createSpeechRouter({ naturalSpeech = synthesizeNaturalSpeech } =
     if (!text || text.length > 4000) return res.status(400).json({ error: 'invalid_speech_text' });
     const key = process.env.AZURE_SPEECH_KEY?.trim();
     const region = process.env.AZURE_SPEECH_REGION?.trim();
+    // When OpenAI is configured the natural voice is used exclusively and its failures
+    // are reported, unless ASSISTANT_SPEECH_FALLBACK=local lets us drop to the offline
+    // eSpeak Uzbek voice (useful when the OpenAI quota is exhausted).
+    const allowLocalFallback = process.env.ASSISTANT_SPEECH_FALLBACK?.trim().toLowerCase() === 'local';
     const controller = new AbortController();
     const onClose = () => { if (!res.writableEnded) controller.abort(); };
     res.on('close', onClose);
     try {
       if (process.env.OPENAI_API_KEY?.trim()) {
-        const audio = await naturalSpeech(text, language, controller.signal);
-        if (controller.signal.aborted || res.destroyed) return;
-        if (!audio.length) throw new Error('natural_speech_empty');
-        res.set('Cache-Control', 'no-store');
-        return res.type('audio/wav').send(audio);
+        try {
+          const audio = await naturalSpeech(text, language, controller.signal);
+          if (controller.signal.aborted || res.destroyed) return;
+          if (!audio.length) throw new Error('natural_speech_empty');
+          res.set('Cache-Control', 'no-store');
+          return res.type('audio/wav').send(audio);
+        } catch (naturalError) {
+          if (controller.signal.aborted || res.destroyed) return;
+          if (!allowLocalFallback) throw naturalError;
+          // Otherwise continue to the local Uzbek voice below.
+        }
       }
       if (controller.signal.aborted || res.destroyed) return;
       if (key && region && /^[a-z0-9-]+$/.test(region)) {

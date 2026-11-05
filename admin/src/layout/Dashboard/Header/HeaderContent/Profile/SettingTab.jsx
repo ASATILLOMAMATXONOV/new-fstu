@@ -21,6 +21,10 @@ export default function SettingTab({ user }) {
   return (
     <List component="nav" sx={{ p: 0, '& .MuiListItemIcon-root': { minWidth: 32 } }}>
       <ListItem divider>
+        <ListItemIcon><LockOutlined /></ListItemIcon>
+        <ListItemText primary="Ikki bosqichli himoya" secondary={user?.mfaEnabled ? 'Autentifikator ulangan' : 'Ulash talab qilinadi'} />
+      </ListItem>
+      <ListItem divider>
         <ListItemIcon>
           <CheckCircleOutlined />
         </ListItemIcon>

@@ -694,6 +694,9 @@ export default function AdminUsersManagementPage() {
                           }
                           sx={{ width: 'fit-content', fontWeight: 800 }}
                         />
+                        <Chip size="small" color={admin.mfaEnabled ? 'success' : 'warning'} variant="outlined"
+                          label={admin.mfaEnabled ? '2FA ulangan' : '2FA ulash talab qilinadi'} sx={{ width: 'fit-content' }} />
+                        {admin.passwordResetRequired && <Typography variant="caption" color="error">Parolni yangilash talab qilinadi</Typography>}
                         <Typography variant="caption" color="text.secondary">
                           Oxirgi kirish: {formatDateTime(admin.lastLoginAt)}
                         </Typography>

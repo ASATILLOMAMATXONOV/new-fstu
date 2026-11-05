@@ -49,16 +49,6 @@ export default defineConfig({
           }
 
           if (
-            id.includes('/react/') ||
-            id.includes('/react-dom/') ||
-            id.includes('/react-router/') ||
-            id.includes('/react-router-dom/') ||
-            id.includes('/react-intl/')
-          ) {
-            return 'react-vendor';
-          }
-
-          if (
             id.includes('/lodash/') ||
             id.includes('/formik/') ||
             id.includes('/yup/') ||

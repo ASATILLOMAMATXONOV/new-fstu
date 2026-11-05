@@ -713,21 +713,13 @@ function Navbar() {
   className="brand"
   aria-label="FSTU bosh sahifa"
 >
-  <div
-    className="brand-logo-wrap"
-    style={{ '--brand-logo-image': `url(${logo})` }}
-  >
-    <span
-      className="brand-logo-glow"
-      aria-hidden="true"
-    />
-
+  <div className="brand-logo-wrap">
     <img
       src={logo}
       alt="FSTU"
       className="brand-logo"
-      width="120"
-      height="120"
+      width="4127"
+      height="1775"
       fetchPriority="high"
       decoding="async"
     />

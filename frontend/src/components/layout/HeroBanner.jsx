@@ -4,6 +4,7 @@ import { useLanguage } from '../../context/LanguageContext';
 import { useContentList } from '../../hooks/useContentList';
 import { getSiteMessages } from '../../locales/site';
 import { getTranslatedField } from '../../utils/cms';
+import { buildSrcSet, withImageWidth } from '../../utils/responsiveImage';
 
 const SLIDE_DURATION = 1600;
 const SLIDE_INTERVAL = 7000;
@@ -12,7 +13,7 @@ const getImageKey = slide => `${slide.desktopImage}|${slide.mobileImage}`;
 function HeroBanner() {
   const { currentLanguageCode } = useLanguage();
   const texts = useMemo(() => getSiteMessages(currentLanguageCode).home.heroBanner, [currentLanguageCode]);
-  const { items } = useContentList('banners', { revalidate: true });
+  const { items, loading } = useContentList('banners', { revalidate: true });
   const [carousel, setCarousel] = useState({ position: 1, moving: false });
   const [readyImages, setReadyImages] = useState(() => new Set());
   const [reducedMotion, setReducedMotion] = useState(false);
@@ -104,7 +105,16 @@ function HeroBanner() {
     return () => window.clearTimeout(timer);
   }, [carousel.moving, finishTransition, reducedMotion]);
 
-  if (!slides.length) return null;
+  if (!slides.length) {
+    // Reserve the banner's space while it loads so content below does not jump.
+    return loading ? (
+      <section className="hero-slider hero-slider--loading" aria-hidden="true">
+        <div className="hero-stage" />
+      </section>
+    ) : null;
+  }
+  const primaryIndex = hasMultipleSlides ? 1 : 0;
+  const primaryLoaded = isReady(slides[0]);
   const previousIndex = (activeSlide - 1 + slides.length) % slides.length;
   const nextIndex = (activeSlide + 1) % slides.length;
   const visiblePosition = hasMultipleSlides ? carousel.position : 0;
@@ -123,17 +133,28 @@ function HeroBanner() {
             const hasButton = Boolean(slide.primaryButtonText && slide.primaryButtonLink);
             const hasContent = Boolean(slide.title || slide.text || hasButton);
             const isVisible = index === visiblePosition;
+            // Secondary slides get their image URL only after the first banner has loaded,
+            // so the LCP image does not share bandwidth with them.
+            const canLoadImage = index === primaryIndex || primaryLoaded;
             return (
               <div className="hero-slide" key={`${index}-${slide.id}`} aria-hidden={!isVisible} inert={!isVisible || undefined}>
                 <div className="hero-media" aria-hidden="true">
                   {slide.desktopImage && (
                     <picture>
-                      {slide.mobileImage && <source media="(max-width: 640px)" srcSet={slide.mobileImage} />}
+                      {canLoadImage && slide.mobileImage && (
+                        <source
+                          media="(max-width: 640px)"
+                          srcSet={buildSrcSet(slide.mobileImage) || slide.mobileImage}
+                          sizes="100vw"
+                        />
+                      )}
                       <img
                         className="hero-slide-image"
-                        src={slide.desktopImage}
+                        src={canLoadImage ? withImageWidth(slide.desktopImage, 1920) : undefined}
+                        srcSet={canLoadImage ? buildSrcSet(slide.desktopImage) : undefined}
+                        sizes="100vw"
                         alt=""
-                        fetchPriority={index === (hasMultipleSlides ? 1 : 0) ? 'high' : 'low'}
+                        fetchPriority={index === primaryIndex ? 'high' : 'low'}
                         loading="eager"
                         decoding="async"
                         onLoad={event => markImageReady(event.currentTarget, slide)}

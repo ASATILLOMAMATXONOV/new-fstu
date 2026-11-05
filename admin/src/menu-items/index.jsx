@@ -12,6 +12,7 @@ import adminUsersManagement from './admin-users-management';
 import admissionCtaManagement from './admission-cta-management';
 import seasonalEffectsManagement from './seasonal-effects-management';
 import publishingManagement from './publishing-management';
+import cybersecurity from './cybersecurity';
 
 // ==============================|| MENU ITEMS ||============================== //
 
@@ -29,7 +30,8 @@ const menuItems = {
     employeesPortfolioManagement,
     adminUsersManagement,
     pages,
-    other
+    other,
+    cybersecurity
   ]
 };
 

@@ -12,6 +12,7 @@ import {
 import { getSiteMessages } from '../../locales/site';
 
 import rektorImg from '../../assets/optimized/rectok.jpg';
+import { responsiveImageProps } from '../../utils/responsiveImage';
 
 function ArrowIcon() {
   return (
@@ -120,7 +121,9 @@ export default function RektorMurojaati() {
           <div className="rektor-image-wrapper">
             <div className="rektor-image-reveal">
               <img
-                src={imageSrc}
+                {...responsiveImageProps(imageSrc, '(max-width: 900px) 90vw, 420px', [320, 480, 640, 768, 960])}
+                width="1189"
+                height="1280"
                 onError={() => { if (!imageFailed) setImageFailed(true); }}
                 alt={rectorName || texts.alt || 'Rektor'}
                 className="rektor-image"

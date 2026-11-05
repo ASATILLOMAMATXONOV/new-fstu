@@ -368,25 +368,30 @@ const siteMessages = {
       }
     },
     footer: {
+      universityName: 'Farg‘ona davlat texnika universiteti',
       brandDescription:
-        'FSTU — O‘zbekiston va Koreya o‘rtasidagi ta’lim ko‘prigi. Zamonaviy ta’lim, xalqaro hamkorlik va kelajak sari ishonchli qadam.',
+        'Farg‘ona davlat texnika universitetining ta’lim, ilm-fan va innovatsiyalarga oid rasmiy axborot maydoni.',
       columns: [
         {
           title: 'Universitet',
-          links: ['Biz haqimizda', 'Ma’muriyat', 'Tuzilma', 'Vakansiyalar']
+          links: [
+            { label: 'Universitet haqida', href: 'https://fstu.uz/view-page/43' },
+            { label: 'Ma’muriyat', href: 'https://fstu.uz/view-page/44' },
+            { label: 'Markazlar va bo‘limlar', href: 'https://fstu.uz/view-page/115' },
+            { label: 'Bo‘sh ish o‘rinlari', href: 'https://fstu.uz/view-page/165' }
+          ]
         }
       ],
       contactTitle: 'Aloqa',
       addressLabel: 'Manzil:',
-      addressValue: 'Farg‘ona shahri, A.Navoiy ko‘chasi 55-B uy',
+      addressValue: '150100, Farg‘ona shahri, Farg‘ona ko‘chasi, 86-uy',
       phoneLabel: 'Telefon:',
-      phoneValue: '+998954019454, +998954019457',
+      phoneValue: '+998 73 241 12 06',
       emailLabel: 'Email:',
       emailValue: 'info@fstu.uz',
-      hoursLabel: 'Ish vaqti:',
-      hoursValue: 'Dushanba - Juma, 8:00 dan 18:00 gacha',
+      websiteLabel: 'Rasmiy sayt:',
       applyButton: 'Onlayn ariza topshirish',
-      copyright: '© 2024 FSTU. Barcha huquqlar himoyalangan.',
+      copyright: '© {year} Farg‘ona davlat texnika universiteti. Barcha huquqlar himoyalangan.',
       privacy: 'Maxfiylik siyosati',
       terms: 'Foydalanish shartlari',
       mapTitle: 'FSTU xaritasi'
@@ -759,25 +764,30 @@ const siteMessages = {
       }
     },
     footer: {
+      universityName: 'Ферганский государственный технический университет',
       brandDescription:
-        'FSTU — образовательный мост между Узбекистаном и Кореей. Современное образование, международное сотрудничество и уверенный шаг в будущее.',
+        'Официальная информация Ферганского государственного технического университета об образовании, науке и инновациях.',
       columns: [
         {
           title: 'Университет',
-          links: ['О нас', 'Администрация', 'Структура', 'Вакансии']
+          links: [
+            { label: 'Об университете', href: 'https://fstu.uz/view-page/43' },
+            { label: 'Администрация', href: 'https://fstu.uz/view-page/44' },
+            { label: 'Центры и отделы', href: 'https://fstu.uz/view-page/115' },
+            { label: 'Вакансии', href: 'https://fstu.uz/view-page/165' }
+          ]
         }
       ],
       contactTitle: 'Контакты',
       addressLabel: 'Адрес:',
-      addressValue: 'г. Фергана, ул. А. Навои, дом 55-Б',
+      addressValue: '150100, г. Фергана, ул. Фергана, дом 86',
       phoneLabel: 'Телефон:',
-      phoneValue: '+998954019454, +998954019457',
+      phoneValue: '+998 73 241 12 06',
       emailLabel: 'Email:',
       emailValue: 'info@fstu.uz',
-      hoursLabel: 'Часы работы:',
-      hoursValue: 'Понедельник - Пятница, с 8:00 до 18:00',
+      websiteLabel: 'Официальный сайт:',
       applyButton: 'Подать онлайн-заявку',
-      copyright: '© 2024 FSTU. Все права защищены.',
+      copyright: '© {year} Ферганский государственный технический университет. Все права защищены.',
       privacy: 'Политика конфиденциальности',
       terms: 'Условия использования',
       mapTitle: 'Карта FSTU'
@@ -1150,25 +1160,30 @@ const siteMessages = {
       }
     },
     footer: {
+      universityName: 'Fergana State Technical University',
       brandDescription:
-        'FSTU is an educational bridge between Uzbekistan and Korea. Modern education, international cooperation, and a confident step toward the future.',
+        'Official information from Fergana State Technical University on education, science, and innovation.',
       columns: [
         {
           title: 'University',
-          links: ['About us', 'Administration', 'Structure', 'Vacancies']
+          links: [
+            { label: 'About the university', href: 'https://fstu.uz/view-page/43' },
+            { label: 'Administration', href: 'https://fstu.uz/view-page/44' },
+            { label: 'Centers and departments', href: 'https://fstu.uz/view-page/115' },
+            { label: 'Vacancies', href: 'https://fstu.uz/view-page/165' }
+          ]
         }
       ],
       contactTitle: 'Contact',
       addressLabel: 'Address:',
-      addressValue: '55-B A. Navoiy Street, Fergana',
+      addressValue: '86 Fergana Street, Fergana, 150100, Uzbekistan',
       phoneLabel: 'Phone:',
-      phoneValue: '+998954019454, +998954019457',
+      phoneValue: '+998 73 241 12 06',
       emailLabel: 'Email:',
       emailValue: 'info@fstu.uz',
-      hoursLabel: 'Working hours:',
-      hoursValue: 'Monday - Friday, 8:00 to 18:00',
+      websiteLabel: 'Official website:',
       applyButton: 'Submit online application',
-      copyright: '© 2024 FSTU. All rights reserved.',
+      copyright: '© {year} Fergana State Technical University. All rights reserved.',
       privacy: 'Privacy policy',
       terms: 'Terms of use',
       mapTitle: 'FSTU map'

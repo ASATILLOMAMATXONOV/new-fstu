@@ -56,13 +56,13 @@ export default function Profile() {
   const theme = useTheme();
   const navigate = useNavigate();
 
-  const { logout, user } = useAuth();
+  const { logout, logoutAll, user } = useAuth();
   const displayName = getAdminDisplayName(user);
   const roleLabel = getAdminRoleLabel(user);
   const initials = getAdminInitials(user);
-  const handleLogout = async () => {
+  const endSession = async (all) => {
     try {
-      await logout();
+      await (all ? logoutAll() : logout());
       navigate(`/login`, {
         state: {
           from: ''
@@ -72,6 +72,8 @@ export default function Profile() {
       console.error(err);
     }
   };
+  const handleLogout = () => endSession(false);
+  const handleLogoutAll = () => endSession(true);
 
   const anchorRef = useRef(null);
   const [open, setOpen] = useState(false);
@@ -196,7 +198,7 @@ export default function Profile() {
                     </Tabs>
                   </Box>
                   <TabPanel value={value} index={0} dir={theme.direction}>
-                    <ProfileTab user={user} handleLogout={handleLogout} />
+                    <ProfileTab user={user} handleLogout={handleLogout} handleLogoutAll={handleLogoutAll} />
                   </TabPanel>
                   <TabPanel value={value} index={1} dir={theme.direction}>
                     <SettingTab user={user} />

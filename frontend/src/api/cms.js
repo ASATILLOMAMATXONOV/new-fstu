@@ -267,6 +267,17 @@ export function isCmsContentLoading() {
   return pendingRequests.size > 0;
 }
 
+const loadingListeners = new Set();
+
+function notifyLoadingListeners() {
+  loadingListeners.forEach((listener) => listener(pendingRequests.size > 0));
+}
+
+export function subscribeToCmsLoading(listener) {
+  loadingListeners.add(listener);
+  return () => loadingListeners.delete(listener);
+}
+
 export function getCachedContentTree(resource, query = {}) {
   const data = readCachedResponse(API_ENDPOINTS.contentTree(resource, query));
   return data?.items || null;
@@ -288,6 +299,14 @@ export function getCachedSetting(key) {
 
   const data = readCachedResponse(API_ENDPOINTS.setting(key));
   return data?.item || null;
+}
+
+// index.html starts some requests (hero banners) before the app bundle loads.
+function takePrefetchedResponse(url) {
+  if (typeof window === 'undefined' || !window.__FSTU_PREFETCH__) return null;
+  const pending = window.__FSTU_PREFETCH__[url];
+  delete window.__FSTU_PREFETCH__[url];
+  return pending ? pending.catch(() => fetch(url, { cache: 'no-store' })) : null;
 }
 
 async function request(path, options = {}) {
@@ -313,9 +332,10 @@ async function request(path, options = {}) {
 
     for (const baseUrl of API_BASE_URL_CANDIDATES) {
       try {
-        const response = await fetch(buildApiUrl(path, baseUrl), {
+        const url = buildApiUrl(path, baseUrl);
+        const response = await (takePrefetchedResponse(url) || fetch(url, {
           cache: 'no-store'
-        });
+        }));
 
         if (!response.ok) {
           const error = new Error(`Request failed: ${response.status}`);
@@ -340,11 +360,13 @@ async function request(path, options = {}) {
   })();
 
   pendingRequests.set(pendingKey, requestPromise);
+  notifyLoadingListeners();
 
   try {
     return await requestPromise;
   } finally {
     pendingRequests.delete(pendingKey);
+    notifyLoadingListeners();
   }
 }
 

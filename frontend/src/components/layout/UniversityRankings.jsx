@@ -8,6 +8,7 @@ import React, {
 
 import '../../assets/styles/UniversityRankings.css';
 import { useSetting } from '../../hooks/useSetting';
+import { responsiveImageProps } from '../../utils/responsiveImage';
 
 /* ============================================
    FSTU — UNIVERSITY RANKINGS
@@ -115,7 +116,9 @@ function RankingLogo({ item }) {
 
   return (
     <img
-      src={item.logo}
+      {...responsiveImageProps(item.logo, '(max-width: 640px) 45vw, 240px', [240, 480])}
+      width="240"
+      height="116"
       alt=""
       loading="lazy"
       decoding="async"

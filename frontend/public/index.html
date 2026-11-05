@@ -56,7 +56,7 @@
     ========================== -->
     <link
       rel="canonical"
-      href="https://fstu.uz/"
+      href="https://new.fstu.uz/"
     />
 
     <!-- =========================
@@ -68,25 +68,13 @@
     <link
       rel="alternate"
       hreflang="uz"
-      href="https://fstu.uz/"
-    />
-
-    <link
-      rel="alternate"
-      hreflang="ru"
-      href="https://fstu.uz/ru/"
-    />
-
-    <link
-      rel="alternate"
-      hreflang="en"
-      href="https://fstu.uz/en/"
+      href="https://new.fstu.uz/"
     />
 
     <link
       rel="alternate"
       hreflang="x-default"
-      href="https://fstu.uz/"
+      href="https://new.fstu.uz/"
     />
 
     <!-- =========================
@@ -94,14 +82,21 @@
     ========================== -->
     <link
       rel="icon"
+      type="image/svg+xml"
+      href="%PUBLIC_URL%/favicon.svg"
+    />
+
+    <link
+      rel="icon"
       type="image/png"
-      href="%PUBLIC_URL%/logo.png"
+      sizes="192x192"
+      href="%PUBLIC_URL%/icon-192.png"
     />
 
     <link
       rel="apple-touch-icon"
       sizes="180x180"
-      href="%PUBLIC_URL%/logo.png"
+      href="%PUBLIC_URL%/icon-180.png"
     />
 
     <link
@@ -136,12 +131,12 @@
 
     <meta
       property="og:url"
-      content="https://fstu.uz/"
+      content="https://new.fstu.uz/"
     />
 
     <meta
       property="og:image"
-      content="https://fstu.uz/og-image.jpg"
+      content="https://new.fstu.uz/og-image.jpg"
     />
 
     <meta
@@ -184,12 +179,67 @@
 
     <meta
       name="twitter:image"
-      content="https://fstu.uz/og-image.jpg"
+      content="https://new.fstu.uz/og-image.jpg"
     />
 
     <!-- =========================
          PERFORMANCE
     ========================== -->
+    <link rel="preconnect" href="https://api.new.fstu.uz" crossorigin />
+    <link rel="preconnect" href="https://api.new.fstu.uz" />
+    <link rel="dns-prefetch" href="https://api.new.fstu.uz" />
+
+    <!-- Home page: request hero banners and preload the first banner image
+         before the app bundle downloads (it is the LCP element). -->
+    <script>
+      (function () {
+        if (location.pathname !== '/' || !window.fetch || !window.matchMedia) return;
+        var configured = '%REACT_APP_API_URL%'.split(',')[0].trim();
+        if (configured.charAt(configured.length - 1) === '/') configured = configured.slice(0, -1);
+        var host = location.hostname;
+        var api = configured || (host === 'new.fstu.uz' || host === 'www.new.fstu.uz' ? 'https://api.new.fstu.uz' : '');
+        if (!api) return;
+        var url = api + '/api/content/banners?activeOnly=true&imageMode=separate&summaryOnly=true';
+        var widths = [320, 480, 640, 768, 960, 1280, 1600, 1920];
+        var withWidth = function (src, width) { return src + (src.indexOf('?') >= 0 ? '&' : '?') + 'w=' + width; };
+        var srcset = function (src) {
+          var path = src.split('?')[0];
+          var optimizable = path.indexOf('/api/media/images/') >= 0 ||
+            (path.indexOf('/api/content/') >= 0 && (path.slice(-6) === '/image' || path.slice(-6) === '/asset')) ||
+            (path.indexOf('/api/settings/') >= 0 && path.slice(-6) === '/asset');
+          if (!optimizable) return '';
+          return widths.map(function (w) { return withWidth(src, w) + ' ' + w + 'w'; }).join(', ');
+        };
+        var preload = function (src, media) {
+          var set = srcset(src);
+          if (!set) return;
+          var link = document.createElement('link');
+          link.rel = 'preload';
+          link.as = 'image';
+          link.setAttribute('imagesrcset', set);
+          link.setAttribute('imagesizes', '100vw');
+          link.setAttribute('fetchpriority', 'high');
+          link.media = media;
+          document.head.appendChild(link);
+        };
+        var request = fetch(url, { cache: 'no-store' });
+        window.__FSTU_PREFETCH__ = window.__FSTU_PREFETCH__ || {};
+        window.__FSTU_PREFETCH__[url] = request;
+        request.then(function (response) {
+          if (!response.ok) return;
+          response.clone().json().then(function (data) {
+            var slides = ((data && data.items) || []).filter(function (item) {
+              return item && item.active !== false && item.image;
+            }).sort(function (a, b) { return (Number(a.order) || 0) - (Number(b.order) || 0); });
+            if (!slides.length) return;
+            var desktop = slides[0].image.indexOf('/api/') === 0 ? api + slides[0].image : slides[0].image;
+            var mobile = slides[0].mobileImage || desktop;
+            preload(mobile, '(max-width: 640px)');
+            preload(desktop, '(min-width: 641px)');
+          }).catch(function () {});
+        }).catch(function () {});
+      })();
+    </script>
 
     <!-- =========================
          STRUCTURED DATA
@@ -201,8 +251,8 @@
         "@type": "CollegeOrUniversity",
         "name": "Farg‘ona Davlat Texnika Universiteti",
         "alternateName": "FSTU",
-        "url": "https://fstu.uz/",
-        "logo": "https://fstu.uz/logo.png",
+        "url": "https://new.fstu.uz/",
+        "logo": "https://new.fstu.uz/logo.png",
         "description": "Farg‘ona Davlat Texnika Universiteti rasmiy veb-sayti.",
         "address": {
           "@type": "PostalAddress",

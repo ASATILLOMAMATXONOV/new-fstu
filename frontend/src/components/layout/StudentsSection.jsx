@@ -18,6 +18,7 @@ import {
   getTranslatedField,
   sortContentByNewest
 } from '../../utils/cms';
+import { responsiveImageProps } from '../../utils/responsiveImage';
 
 const MAX_STUDENTS = 12;
 const AUTO_PLAY_DELAY = 5000;
@@ -178,7 +179,7 @@ function StudentImage({ src, secondSrc, alt }) {
       {hasMain ? (
         <img
           className="st-img-primary"
-          src={src}
+          {...responsiveImageProps(src, '(max-width: 640px) 92vw, 420px', [320, 480, 640, 768, 960])}
           alt={alt}
           loading="lazy"
           decoding="async"
@@ -212,7 +213,7 @@ function StudentImage({ src, secondSrc, alt }) {
       {hasSecond && (
         <img
           className="st-img-secondary"
-          src={secondSrc}
+          {...responsiveImageProps(secondSrc, '(max-width: 640px) 92vw, 420px', [320, 480, 640, 768, 960])}
           alt=""
           loading="lazy"
           decoding="async"

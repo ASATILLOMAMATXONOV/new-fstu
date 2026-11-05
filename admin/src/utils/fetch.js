@@ -2,6 +2,7 @@ const LOCAL_API_URLS = ['http://localhost:8564', 'http://localhost:4000', 'http:
 const CUSTOM_DOMAIN_API_URL = 'https://api.new.fstu.uz';
 const AUTH_TOKEN_KEY = 'serviceToken';
 const AUTH_USER_KEY = 'serviceUser';
+const AUTH_CSRF_KEY = 'serviceCsrf';
 const API_CACHE_KEY = 'fstu_admin_api_cache_v1';
 const DEFAULT_GET_CACHE_TTL_MS = 45 * 1000;
 const LONG_GET_CACHE_TTL_MS = 5 * 60 * 1000;
@@ -31,9 +32,7 @@ function resolveDefaultFallbackApiUrls() {
 
   const hostname = String(window.location.hostname || '').toLowerCase();
 
-  if (
-    ['new.fstu.uz', 'www.new.fstu.uz', 'admin.new.fstu.uz', 'api.new.fstu.uz'].includes(hostname)
-  ) {
+  if (['new.fstu.uz', 'www.new.fstu.uz', 'admin.new.fstu.uz', 'api.new.fstu.uz'].includes(hostname)) {
     return [CUSTOM_DOMAIN_API_URL];
   }
 
@@ -75,21 +74,11 @@ function clearStoredAuth() {
   window.localStorage.removeItem(AUTH_USER_KEY);
   window.sessionStorage.removeItem(AUTH_TOKEN_KEY);
   window.sessionStorage.removeItem(AUTH_USER_KEY);
+  window.localStorage.removeItem(AUTH_CSRF_KEY);
+  window.sessionStorage.removeItem(AUTH_CSRF_KEY);
   responseCache.clear();
   pendingRequests.clear();
   window.sessionStorage.removeItem(API_CACHE_KEY);
-}
-
-function getAuthToken() {
-  if (typeof window === 'undefined') {
-    return '';
-  }
-
-  return (
-    window.localStorage.getItem(AUTH_TOKEN_KEY) ||
-    window.sessionStorage.getItem(AUTH_TOKEN_KEY) ||
-    ''
-  );
 }
 
 function canUseSessionStorage() {
@@ -124,12 +113,7 @@ function ensurePersistedCacheLoaded() {
 
       const [cacheKey, value] = entry;
 
-      if (
-        typeof cacheKey === 'string' &&
-        value &&
-        typeof value === 'object' &&
-        Number.isFinite(value.expiresAt)
-      ) {
+      if (typeof cacheKey === 'string' && value && typeof value === 'object' && Number.isFinite(value.expiresAt)) {
         responseCache.set(cacheKey, value);
       }
     });
@@ -235,14 +219,14 @@ function buildErrorMessage(status, data) {
 
 async function request(path, options = {}) {
   const { method = 'GET', body, headers = {}, signal } = options;
-  const token = getAuthToken();
   const normalizedMethod = String(method || 'GET').toUpperCase();
   const requestHeaders = {
     ...headers
   };
 
-  if (token && !requestHeaders.Authorization) {
-    requestHeaders.Authorization = `Bearer ${token}`;
+  if (!['GET', 'HEAD', 'OPTIONS'].includes(normalizedMethod) && typeof window !== 'undefined') {
+    const csrf = window.sessionStorage.getItem(AUTH_CSRF_KEY);
+    if (csrf) requestHeaders['X-CSRF-Token'] = csrf;
   }
 
   if (body !== undefined && !(body instanceof FormData) && !requestHeaders['Content-Type']) {
@@ -250,10 +234,7 @@ async function request(path, options = {}) {
   }
 
   const cacheKey = `${normalizedMethod}:${path}`;
-  const canUseCache =
-    normalizedMethod === 'GET' &&
-    !path.startsWith('/api/account/') &&
-    options.useCache !== false;
+  const canUseCache = normalizedMethod === 'GET' && !path.startsWith('/api/account/') && !path.startsWith('/api/security/') && options.useCache !== false;
 
   if (canUseCache) {
     const cached = readCachedResponse(cacheKey);
@@ -279,13 +260,9 @@ async function request(path, options = {}) {
           const response = await fetch(buildUrl(path, baseUrl), {
             method: normalizedMethod,
             cache: 'no-store',
+            credentials: 'include',
             headers: requestHeaders,
-            body:
-              body === undefined
-                ? undefined
-                : body instanceof FormData
-                  ? body
-                  : JSON.stringify(body),
+            body: body === undefined ? undefined : body instanceof FormData ? body : JSON.stringify(body),
             signal
           });
 
@@ -296,11 +273,7 @@ async function request(path, options = {}) {
             error.status = response.status;
             error.data = data;
 
-            if (
-              response.status === 401 &&
-              typeof window !== 'undefined' &&
-              !window.location.href.includes('/login')
-            ) {
+            if (response.status === 401 && !path.startsWith('/api/account/login') && options.redirectOnUnauthorized !== false && typeof window !== 'undefined' && !window.location.href.includes('/login')) {
               clearStoredAuth();
               window.location.assign('/login');
             }
@@ -360,6 +333,10 @@ export async function apiPut(path, body, options) {
   return request(path, { ...options, method: 'PUT', body });
 }
 
+export async function apiPatch(path, body, options) {
+  return request(path, { ...options, method: 'PATCH', body });
+}
+
 export async function apiDelete(path, options) {
   return request(path, { ...options, method: 'DELETE' });
 }
@@ -370,4 +347,4 @@ export async function fetcher(args) {
   return response.data;
 }
 
-export { clearStoredAuth, resolveApiBaseUrls, AUTH_TOKEN_KEY, AUTH_USER_KEY };
+export { clearStoredAuth, resolveApiBaseUrls, AUTH_TOKEN_KEY, AUTH_USER_KEY, AUTH_CSRF_KEY };

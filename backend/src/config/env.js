@@ -178,6 +178,13 @@ export const env = {
     4000
   ),
 
+  // Trust only explicitly named reverse proxies/CIDRs, never arbitrary forwarding headers.
+  trustedProxies: toList(process.env.TRUST_PROXY),
+  securityRequestLimit: Math.max(60, toNumber(process.env.SECURITY_REQUEST_LIMIT, 600)),
+  securityWriteLimit: Math.max(10, toNumber(process.env.SECURITY_WRITE_LIMIT, 30)),
+  securityBlockMinutes: Math.min(1440, Math.max(5, toNumber(process.env.SECURITY_BLOCK_MINUTES, 15))),
+  securityRetentionDays: Math.min(365, Math.max(7, toNumber(process.env.SECURITY_RETENTION_DAYS, 30))),
+
   // ----------------------------------------------------
   // POSTGRESQL
   // ----------------------------------------------------
@@ -201,6 +208,14 @@ export const env = {
     process.env.JWT_EXPIRES_IN ||
     '12h',
 
+  mfaEncryptionKey: String(process.env.MFA_ENCRYPTION_KEY || '').trim(),
+  // When false, administrators log in with only their password (plus a forced
+  // password change on first/weak login); the authenticator-app step is skipped.
+  // Default true keeps mandatory two-factor authentication.
+  adminMfaRequired: process.env.ADMIN_MFA_REQUIRED !== 'false',
+  sessionMinutes: Math.min(240, Math.max(15, toNumber(process.env.ADMIN_SESSION_MINUTES, 120))),
+  sessionIdleMinutes: Math.min(60, Math.max(5, toNumber(process.env.ADMIN_SESSION_IDLE_MINUTES, 20))),
+
   jwtIssuer:
     process.env.JWT_ISSUER ||
     'fstu-admin',
@@ -214,7 +229,7 @@ export const env = {
   // ----------------------------------------------------
 
   bcryptRounds: Math.max(
-    10,
+    12,
     toNumber(
       process.env.BCRYPT_ROUNDS,
       12
@@ -223,10 +238,10 @@ export const env = {
 
   authMaxFailedAttempts: Math.max(
     3,
-    toNumber(
+    Math.min(5, toNumber(
       process.env.AUTH_MAX_FAILED_ATTEMPTS,
       5
-    )
+    ))
   ),
 
   authLockMinutes: Math.max(
@@ -254,7 +269,7 @@ export const env = {
   ),
 
   adminPasswordMinLength: Math.max(
-    10,
+    12,
     toNumber(
       process.env.ADMIN_PASSWORD_MIN_LENGTH,
       12

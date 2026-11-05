@@ -15,7 +15,8 @@ before(async () => {
     queries.push({ sql, params });
     return { rows: [{ id: '42', created_at: '2026-10-20T00:00:00Z' }] };
   };
-  server = createApp().listen(0, '127.0.0.1');
+  // Isolate form persistence tests; security middleware has separate HTTP/DB tests.
+  server = createApp({ securityMonitor: { middleware: (_req, _res, next) => next(), state: {} } }).listen(0, '127.0.0.1');
   await new Promise((resolve) => server.once('listening', resolve));
   url = `http://127.0.0.1:${server.address().port}/api/assistant/requests`;
 });

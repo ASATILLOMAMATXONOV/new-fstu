@@ -5,6 +5,7 @@ import "../../assets/styles/LaboratoryPage.css";
 import { useLanguage } from "../../context/LanguageContext";
 import { useContentList } from "../../hooks/useContentList";
 import { getTranslatedField } from "../../utils/cms";
+import { responsiveImageProps } from '../../utils/responsiveImage';
 
 function LabCard({ item, isActive, onHover, onLeave, onFocus, onBlur, onOpen }) {
   return (
@@ -27,7 +28,7 @@ function LabCard({ item, isActive, onHover, onLeave, onFocus, onBlur, onOpen }) 
         aria-label={`${item.title}: batafsil`}
       >
         <span className="laboratory-card__plate" aria-hidden="true">
-          <img src={item.image} alt="" loading="lazy" decoding="async" />
+          <img {...responsiveImageProps(item.image, '(max-width: 640px) 92vw, 420px', [320, 480, 640, 768, 960])} alt="" loading="lazy" decoding="async" />
         </span>
         <span className="laboratory-card__inner">
           <span className="laboratory-card__number">

@@ -1,36 +1,15 @@
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
 
 import { env } from '../../config/env.js';
 import { fetchOne } from '../../db/query.js';
 import { query } from '../../db/pool.js';
 import { HttpError } from '../../utils/http-error.js';
 import { assertStrongPassword, hashPassword } from '../../utils/password-policy.js';
+import { beginMfaLogin } from './mfa.service.js';
+import { serializeAdminUser } from './account-user.js';
+export { serializeAdminUser } from './account-user.js';
 
 const DUMMY_PASSWORD_HASH = '$2a$12$zQW4rM2d9jJmQxVJQ7h0V.wMZu7pA0CbxQ4o7E5fR3A7lP5WnJf3K';
-
-export function serializeAdminUser(row) {
-  if (!row) {
-    return null;
-  }
-
-  return {
-    id: row.id,
-    fullName: row.full_name,
-    login: row.login,
-    email: row.email,
-    role: row.role,
-    active: row.active,
-    menuAccess: Array.isArray(row.menu_access) ? row.menu_access : [],
-    failedLoginAttempts: Number(row.failed_login_attempts || 0),
-    lockedUntil: row.locked_until,
-    lastLoginAt: row.last_login_at,
-    lastLoginIp: row.last_login_ip,
-    passwordChangedAt: row.password_changed_at,
-    createdAt: row.created_at,
-    updatedAt: row.updated_at
-  };
-}
 
 export async function getAdminById(id) {
   return fetchOne('SELECT * FROM admin_users WHERE id = $1 LIMIT 1', [id]);
@@ -62,23 +41,6 @@ async function getAdminByIdentity(identity) {
   );
 }
 
-export function createServiceToken(user) {
-  return jwt.sign(
-    {
-      role: user.role,
-      login: user.login,
-      ver: Number(user.token_version || 1)
-    },
-    env.jwtSecret,
-    {
-      subject: String(user.id),
-      expiresIn: env.jwtExpiresIn,
-      issuer: env.jwtIssuer,
-      audience: env.jwtAudience
-    }
-  );
-}
-
 function normalizeIdentity(payload = {}) {
   return String(payload.identity || payload.email || payload.login || '').trim();
 }
@@ -92,45 +54,21 @@ function isLocked(row) {
 }
 
 async function registerFailedAttempt(user) {
-  const currentAttempts =
-    user?.locked_until && new Date(user.locked_until).getTime() <= Date.now()
-      ? 0
-      : Number(user?.failed_login_attempts || 0);
-  const nextAttempts = currentAttempts + 1;
-  const shouldLock = nextAttempts >= env.authMaxFailedAttempts;
-
   const result = await query(
     `
       UPDATE admin_users
-      SET failed_login_attempts = $2,
+      SET failed_login_attempts = CASE WHEN locked_until <= NOW() THEN 1 ELSE failed_login_attempts + 1 END,
           last_failed_login_at = NOW(),
           locked_until = CASE
-            WHEN $3::boolean THEN NOW() + ($4 * INTERVAL '1 minute')
+            WHEN (CASE WHEN locked_until <= NOW() THEN 1 ELSE failed_login_attempts + 1 END) >= $2
+              THEN NOW() + ($3 * INTERVAL '1 minute')
             ELSE NULL
           END,
           updated_at = NOW()
       WHERE id = $1
       RETURNING *
     `,
-    [user.id, nextAttempts, shouldLock, env.authLockMinutes]
-  );
-
-  return result.rows[0];
-}
-
-async function registerSuccessfulLogin(userId, ipAddress) {
-  const result = await query(
-    `
-      UPDATE admin_users
-      SET failed_login_attempts = 0,
-          locked_until = NULL,
-          last_login_at = NOW(),
-          last_login_ip = $2,
-          updated_at = NOW()
-      WHERE id = $1
-      RETURNING *
-    `,
-    [userId, ipAddress || null]
+    [user.id, env.authMaxFailedAttempts, env.authLockMinutes]
   );
 
   return result.rows[0];
@@ -147,22 +85,24 @@ async function verifyPasswordAgainstDummyHash(password) {
 }
 
 export async function loginAdmin(payload = {}, context = {}) {
+  if (typeof payload.password !== 'string' || typeof (payload.identity ?? payload.email ?? payload.login) !== 'string') {
+    throw new HttpError(400, 'Login va parolni kiriting.');
+  }
   const identity = normalizeIdentity(payload);
   const password = String(payload.password || '');
 
   if (!identity || !password) {
     throw new HttpError(400, 'Login/email and password are required.');
   }
+  if (identity.length > 254 || Buffer.byteLength(password, 'utf8') > 72) {
+    throw new HttpError(400, 'Login or password exceeds the supported length.');
+  }
 
   const user = await getAdminByIdentity(identity);
 
-  if (!user || !user.active) {
+  if (!user || !user.active || isLocked(user)) {
     await verifyPasswordAgainstDummyHash(password);
     throw new HttpError(401, 'Invalid credentials.');
-  }
-
-  if (isLocked(user)) {
-    throw new HttpError(423, 'Hisob vaqtincha bloklangan. Keyinroq qayta urinib ko‘ring.');
   }
 
   const passwordMatches = await bcrypt.compare(password, user.password_hash);
@@ -172,12 +112,7 @@ export async function loginAdmin(payload = {}, context = {}) {
     throw new HttpError(401, 'Invalid credentials.');
   }
 
-  const authenticatedUser = await registerSuccessfulLogin(user.id, context.ipAddress);
-
-  return {
-    serviceToken: createServiceToken(authenticatedUser),
-    user: serializeAdminUser(authenticatedUser)
-  };
+  return beginMfaLogin(user, password, context.request);
 }
 
 export async function getCurrentAdmin(id) {
@@ -238,7 +173,6 @@ export async function registerAdmin({ email, password, firstName, lastName }) {
   );
 
   return {
-    serviceToken: createServiceToken(result.rows[0]),
     user: serializeAdminUser(result.rows[0])
   };
 }

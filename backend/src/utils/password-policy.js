@@ -27,6 +27,15 @@ function containsForbiddenFragment(password, fragments = []) {
 export function validatePasswordStrength(password, options = {}) {
   const value = String(password || '');
   const errors = [];
+  const simplified = value.toLowerCase().replace(/[!@]/g, 'a').replace(/0/g, 'o').replace(/[^a-z0-9]/g, '');
+  if (/^(?:123456|qwerty|password|admin|administrator|letmein|welcome|iloveyou|changeme|fstu|ferpi|tashkent|uzbekistan|abc123|test)[0-9aoilst]*$/i.test(simplified) ||
+      /^(.)\1{7,}$/.test(value)) {
+    errors.push('Bu parol juda oson taxmin qilinadi. Boshqa, noyob parol tanlang.');
+  }
+
+  if (Buffer.byteLength(value, 'utf8') > 72) {
+    errors.push('Parol UTF-8 formatida 72 baytdan oshmasligi kerak.');
+  }
 
   if (value.length < env.adminPasswordMinLength) {
     errors.push(`Kamida ${env.adminPasswordMinLength} ta belgi bo‘lishi kerak.`);

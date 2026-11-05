@@ -31,12 +31,6 @@
   border-bottom: 0;
 }
 
-.fstu-header--home:has(~ .home-page .hero-slider) .brand-logo-wrap::after,
-.fstu-header--home:has(~ .home-page .hero-slider) .brand:hover .brand-logo-wrap::after {
-  background: #0d336b;
-}
-
-.fstu-header--home:has(~ .home-page .hero-slider) .brand-logo-glow,
 .fstu-header--home:has(~ .home-page .hero-slider) .topbar-socials,
 .fstu-header--home:has(~ .home-page .hero-slider) .topbar-left > .topbar-entry:first-child,
 .fstu-header--home:has(~ .home-page .hero-slider) .topbar-left > .topbar-pipe:first-of-type,
@@ -113,16 +107,15 @@
   }
 
   .fstu-header--home:not(.fstu-header--mobile):has(~ .home-page .hero-slider) .brand-logo-wrap {
-    width: 108px;
-    height: 60px;
-    flex-basis: 108px;
+    width: 148px;
+    height: 64px;
+    flex-basis: 148px;
   }
 
-  .fstu-header--home:not(.fstu-header--mobile):has(~ .home-page .hero-slider) .brand-logo,
-  .fstu-header--home:not(.fstu-header--mobile):has(~ .home-page .hero-slider) .brand-logo-wrap::after {
-    width: 104px;
-    height: 60px;
-    flex-basis: 135px;
+  .fstu-header--home:not(.fstu-header--mobile):has(~ .home-page .hero-slider) .brand-logo {
+    width: 144px;
+    height: auto;
+    flex-basis: auto;
   }
 
   .fstu-header--home:not(.fstu-header--mobile):has(~ .home-page .hero-slider) .nav-menu {
@@ -418,11 +411,6 @@
 .fstu-header--scrolled .lang-btn,
 .fstu-header--scrolled:not(.fstu-header--mobile) .nav-menu > .nav-item > .nav-link-group > :is(.nav-link, .nav-caret-btn) {
    color: #0d336b;
-}
-
-.fstu-header--scrolled .brand-logo-wrap::after,
-.fstu-header--scrolled .brand:hover .brand-logo-wrap::after {
-  background: #0d336b;
 }
 
 .fstu-header--scrolled .topbar-pipe {

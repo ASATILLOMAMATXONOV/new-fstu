@@ -4,6 +4,7 @@ import '../../assets/styles/HomeInfoSection.css';
 import AppLink from '../common/AppLink';
 import { useContentList } from '../../hooks/useContentList';
 import { getTranslatedField } from '../../utils/cms';
+import { withImageWidth } from '../../utils/responsiveImage';
 
 const ICON_PROPS = {
   viewBox: '0 0 24 24',
@@ -83,7 +84,7 @@ export default function HomeInfoSection() {
             <>
               <span className="home-info-icon" aria-hidden="true">
                 {item.mediaType === 'image' && item.image ? (
-                  <img src={item.image} alt="" width="80" height="80" loading="lazy" decoding="async" />
+                  <img src={withImageWidth(item.image, 160)} alt="" width="80" height="80" loading="lazy" decoding="async" />
                 ) : <QuickLinkIcon name={item.icon} />}
               </span>
               <span className="home-info-title">{item.title}</span>

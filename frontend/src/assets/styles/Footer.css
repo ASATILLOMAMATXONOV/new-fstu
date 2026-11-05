@@ -132,8 +132,8 @@
 }
 
 .footer-socials a {
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   border: var(--border-width) solid var(--border-on-brand);
   border-radius: var(--box-radius);
   display: inline-flex;
@@ -150,10 +150,22 @@
     transform 0.2s ease;
 }
 
-.footer-socials a:hover {
+.footer-socials svg {
+  width: 19px;
+  height: 19px;
+  flex-shrink: 0;
+}
+
+.footer-socials a:hover,
+.footer-socials a:focus-visible {
   border-color: var(--brand-primary-deep);
   background: var(--brand-primary-deep);
   transform: translateY(-2px);
+}
+
+.footer-socials a:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
 }
 
 /* MENYULAR */
@@ -250,6 +262,18 @@
   font-weight: 500;
   line-height: var(--body-line-height);
   overflow-wrap: anywhere;
+}
+
+.footer-contact li p a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.footer-contact li p a:hover,
+.footer-contact li p a:focus-visible {
+  color: var(--text-on-brand);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .footer-apply-btn {

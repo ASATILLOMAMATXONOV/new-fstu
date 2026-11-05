@@ -1,3 +1,5 @@
+import cleanHtml from 'sanitize-html';
+
 const HTML_FIELD_NAMES = new Set([
   'content',
   'description',
@@ -67,6 +69,8 @@ export function sanitizeUrl(value = '', { allowDataImage = false } = {}) {
     return '';
   }
 
+  if (/[\u0000-\u0020\u007f\\]/.test(normalized) || normalized.startsWith('//')) return '';
+
   if (
     normalized.startsWith('/') ||
     normalized.startsWith('./') ||
@@ -81,24 +85,43 @@ export function sanitizeUrl(value = '', { allowDataImage = false } = {}) {
     return normalized;
   }
 
-  if (/^(javascript|vbscript|data:text\/html|data:application\/javascript)/i.test(normalized)) {
-    return '';
-  }
-
   if (/^(https?:|mailto:|tel:)/i.test(normalized)) {
     return normalized;
   }
-
-  return normalized;
+  // Relative file/page names are allowed; unrecognized URL schemes are rejected.
+  return /^[^:/?#]+:/.test(normalized) ? '' : normalized;
 }
 
 export function sanitizeHtml(value = '') {
-  return String(value || '')
-    .replace(/<\s*(script|style|iframe|object|embed|link|meta|base|form)[^>]*>[\s\S]*?<\s*\/\s*\1\s*>/gi, '')
-    .replace(/<\s*(script|style|iframe|object|embed|link|meta|base|form)\b[^>]*\/?>/gi, '')
-    .replace(/\s+on[a-z-]+\s*=\s*(".*?"|'.*?'|[^\s>]+)/gi, '')
-    .replace(/\s+(href|src|xlink:href|action|formaction|poster)\s*=\s*("javascript:[^"]*"|'javascript:[^']*'|javascript:[^\s>]+)/gi, '')
-    .replace(/\s+srcdoc\s*=\s*(".*?"|'.*?'|[^\s>]+)/gi, '');
+  return cleanHtml(String(value || ''), {
+    allowedTags: [...cleanHtml.defaults.allowedTags, 'img'],
+    allowedAttributes: {
+      '*': ['class', 'style'],
+      a: ['href', 'name', 'target', 'rel', 'title'],
+      img: ['src', 'alt', 'title', 'width', 'height', 'loading'],
+      table: ['border', 'cellpadding', 'cellspacing'],
+      td: ['colspan', 'rowspan'], th: ['colspan', 'rowspan', 'scope'], col: ['span']
+    },
+    allowedSchemes: ['http', 'https', 'mailto', 'tel'],
+    allowedSchemesByTag: { img: ['http', 'https', 'data'] },
+    allowProtocolRelative: false,
+    allowedStyles: { '*': {
+      'text-align': [/^(?:left|right|center|justify|start|end)$/],
+      'font-size': [/^\d+(?:\.\d+)?(?:px|pt|em|rem|%)$/],
+      'font-weight': [/^(?:normal|bold|[1-9]00)$/],
+      'font-style': [/^(?:normal|italic)$/],
+      'text-decoration': [/^(?:none|underline|line-through)$/],
+      'color': [/^#[a-f0-9]{3,8}$/i, /^[a-z]+$/i, /^rgba?\([\d\s,.%]+\)$/],
+      'background-color': [/^#[a-f0-9]{3,8}$/i, /^[a-z]+$/i, /^rgba?\([\d\s,.%]+\)$/],
+      'width': [/^\d+(?:\.\d+)?(?:px|em|rem|%)$/],
+      'height': [/^\d+(?:\.\d+)?(?:px|em|rem|%)$/]
+    } },
+    transformTags: {
+      a: (_tag, attrs) => ({ tagName: 'a', attribs: { ...attrs, href: sanitizeUrl(attrs.href),
+        ...(attrs.target === '_blank' ? { rel: 'noopener noreferrer' } : {}) } }),
+      img: (_tag, attrs) => ({ tagName: 'img', attribs: { ...attrs, src: sanitizeUrl(attrs.src, { allowDataImage: true }) } })
+    }
+  });
 }
 
 export function sanitizeStructuredContent(value, key = '') {
@@ -108,6 +131,7 @@ export function sanitizeStructuredContent(value, key = '') {
 
   if (value && typeof value === 'object') {
     return Object.entries(value).reduce((accumulator, [entryKey, entryValue]) => {
+      if (['__proto__', 'constructor', 'prototype'].includes(entryKey)) return accumulator;
       accumulator[entryKey] = sanitizeStructuredContent(entryValue, entryKey);
       return accumulator;
     }, {});

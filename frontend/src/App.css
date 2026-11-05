@@ -47,3 +47,13 @@
     border-radius: var(--box-radius);
   }
 }
+
+/* Home sections stay hidden (but keep their space) until every section above
+   them has finished loading, so late content never pushes visible content. */
+.reveal-slot--pending {
+  visibility: hidden;
+}
+
+.home-page {
+  min-height: 100vh;
+}

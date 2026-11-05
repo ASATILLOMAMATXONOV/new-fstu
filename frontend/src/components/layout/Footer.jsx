@@ -1,37 +1,83 @@
 import React from 'react';
+import { FaFacebookF, FaInstagram, FaTelegramPlane, FaYoutube } from 'react-icons/fa';
 import '../../assets/styles/Footer.css';
 import { useLanguage } from '../../context/LanguageContext';
 import { getSiteMessages } from '../../locales/site';
 import AppLink from '../common/AppLink';
-import logo from '../../assets/optimized/logo.png';
+import logo from '../../assets/optimized/logo.webp';
 
-const WWW_UZ_COUNTER_ID = '48100';
+const MAP_EMBED_URL = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d48598.631766038416!2d71.76371929999998!3d40.42182005!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38bb82d713bba655%3A0xd9b610b729b574fb!2z0KTQtdGA0LPQsNC90YHQutC40Lkg0LPQvtGB0YPQtNCw0YDRgdGC0LLQtdC90L3Ri9C5INGC0LXRhdC90LjRh9C10YHQutC40Lkg0YPQvdC40LLQtdGA0YHQuNGC0LXRgg!5e0!3m2!1sru!2s!4v1793343126202!5m2!1sru!2s';
+
+// The Google Maps embed is heavy, so it is mounted only when the footer nears the viewport.
+function FooterMap() {
+  const ref = React.useRef(null);
+  const [shouldLoad, setShouldLoad] = React.useState(false);
+
+  React.useEffect(() => {
+    if (typeof IntersectionObserver === 'undefined') {
+      setShouldLoad(true);
+      return undefined;
+    }
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setShouldLoad(true);
+        observer.disconnect();
+      }
+    }, { rootMargin: '200px 0px' });
+    observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div className="footer-map" ref={ref}>
+      {shouldLoad && (
+        <iframe
+          title="Farg‘ona davlat texnika universiteti"
+          src={MAP_EMBED_URL}
+          width="100%"
+          height="100%"
+          style={{ border: 0 }}
+          allowFullScreen
+          loading="lazy"
+          referrerPolicy="strict-origin-when-cross-origin"
+        />
+      )}
+    </div>
+  );
+}
+
+const WWW_UZ_COUNTER_ID = '48101';
 
 const WWW_UZ_COUNTER_LINK =
   `http://www.uz/uz/res/visitor/index?id=${WWW_UZ_COUNTER_ID}`;
 
 const WWW_UZ_COUNTER_FALLBACK_SRC =
   `https://cnt0.www.uz/counter/collect?id=${WWW_UZ_COUNTER_ID}` +
-  '&pg=http%3A//uzinfocom.uz&col=F7AE00&t=ffffff&p=0E418F';
+  '&pg=https%3A%2F%2Ffstu.uz%2F&col=F7AE00&t=ffffff&p=0E418F';
+
+// Official social links published on https://fstu.uz/.
+const footerSocials = [
+  { label: 'Telegram', href: 'https://t.me/ferpolitech', Icon: FaTelegramPlane },
+  { label: 'Instagram', href: 'https://www.instagram.com/farpi_press/', Icon: FaInstagram },
+  { label: 'Facebook', href: 'https://www.facebook.com/Farpi_press-110544218090177/', Icon: FaFacebookF },
+  { label: 'YouTube', href: 'https://www.youtube.com/c/FarpiLive', Icon: FaYoutube }
+];
 
 const transportTranslations = {
   uz: {
     title: 'Transport',
     route: 'yo‘nalish',
-    bus: 'Avtobus',
-    damas: 'Damas'
+    bus: 'Avtobus'
   },
   ru: {
     title: 'Транспорт',
     route: 'маршрут',
-    bus: 'Автобус',
-    damas: 'Дамас'
+    bus: 'Автобус'
   },
   en: {
     title: 'Transport',
     route: 'route',
-    bus: 'Bus',
-    damas: 'Damas'
+    bus: 'Bus'
   }
 };
 
@@ -40,17 +86,6 @@ function BusIcon() {
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <rect x="5" y="3" width="14" height="17" rx="3" />
       <path d="M5 9h14M8 13h2M14 13h2M7 20v1M17 20v1" />
-    </svg>
-  );
-}
-
-function DamasIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M3 16V9a2 2 0 0 1 2-2h9.5a2 2 0 0 1 1.6.8L20 13v3" />
-      <path d="M3 16h17M16 9h-4v4h7M5 10h4v3H5" />
-      <circle cx="6" cy="18" r="2" />
-      <circle cx="17" cy="18" r="2" />
     </svg>
   );
 }
@@ -64,7 +99,6 @@ function Footer() {
   );
 
   const texts = messages.footer;
-  const brand = messages.navbar.brand;
 
   const language = String(currentLanguageCode || 'uz')
     .slice(0, 2)
@@ -77,26 +111,9 @@ function Footer() {
     WWW_UZ_COUNTER_FALLBACK_SRC
   );
 
-  const routes = [
-    {
-      id: 'bus-6',
-      number: 6,
-      name: transport.bus,
-      Icon: BusIcon
-    },
-    {
-      id: 'damas-6',
-      number: 6,
-      name: transport.damas,
-      Icon: DamasIcon
-    },
-    {
-      id: 'bus-9',
-      number: 9,
-      name: transport.bus,
-      Icon: BusIcon
-    }
-  ];
+  const routes = ['8', '8A', '9', '10', '14'].map(number => ({
+    id: `bus-${number}`, number, name: transport.bus, Icon: BusIcon
+  }));
 
   React.useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -168,7 +185,7 @@ function Footer() {
 
             <div className="footer-logo-content">
               <h2>FSTU</h2>
-              <p>{brand.sub}</p>
+              <p>{texts.universityName}</p>
             </div>
           </AppLink>
 
@@ -177,21 +194,11 @@ function Footer() {
           </p>
 
           <div className="footer-socials">
-            <a href="#telegram" aria-label="Telegram">
-              Tg
-            </a>
-
-            <a href="#instagram" aria-label="Instagram">
-              Ig
-            </a>
-
-            <a href="#facebook" aria-label="Facebook">
-              Fb
-            </a>
-
-            <a href="#youtube" aria-label="YouTube">
-              Yt
-            </a>
+            {footerSocials.map(({ label, href, Icon }) => (
+              <a key={label} href={href} aria-label={label} title={label} target="_blank" rel="noopener noreferrer">
+                <Icon aria-hidden="true" focusable="false" />
+              </a>
+            ))}
           </div>
         </div>
 
@@ -204,9 +211,9 @@ function Footer() {
 
               <ul>
                 {column.links.map((link) => (
-                  <li key={link}>
-                    <AppLink href="#link">
-                      {link}
+                  <li key={link.href}>
+                    <AppLink href={link.href}>
+                      {link.label}
                     </AppLink>
                   </li>
                 ))}
@@ -228,17 +235,17 @@ function Footer() {
 
             <li>
               <span>{texts.phoneLabel}</span>
-              <p>{texts.phoneValue}</p>
+              <p><a href="tel:+998732411206">{texts.phoneValue}</a></p>
             </li>
 
             <li>
               <span>{texts.emailLabel}</span>
-              <p>{texts.emailValue}</p>
+              <p><a href="mailto:info@fstu.uz">{texts.emailValue}</a></p>
             </li>
 
             <li>
-              <span>{texts.hoursLabel}</span>
-              <p>{texts.hoursValue}</p>
+              <span>{texts.websiteLabel}</span>
+              <p><a href="https://fstu.uz/" target="_blank" rel="noopener noreferrer">fstu.uz</a></p>
             </li>
           </ul>
         </div>
@@ -286,22 +293,11 @@ function Footer() {
 
         {/* XARITA */}
 
-       <div className="footer-map">
-  <iframe
-    title="Farg‘ona davlat texnika universiteti"
-    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d48598.631766038416!2d71.76371929999998!3d40.42182005!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38bb82d713bba655%3A0xd9b610b729b574fb!2z0KTQtdGA0LPQsNC90YHQutC40Lkg0LPQvtGB0YPQtNCw0YDRgdGC0LLQtdC90L3Ri9C5INGC0LXRhdC90LjRh9C10YHQutC40Lkg0YPQvdC40LLQtdGA0YHQuNGC0LXRgg!5e0!3m2!1sru!2s!4v1793343126202!5m2!1sru!2s"
-    width="100%"
-    height="100%"
-    style={{ border: 0 }}
-    allowFullScreen
-    loading="lazy"
-    referrerPolicy="strict-origin-when-cross-origin"
-  />
-</div>
+        <FooterMap />
       </div>
 
       <div className="footer-bottom">
-        <p>{texts.copyright}</p>
+        <p>{texts.copyright.replace('{year}', new Date().getFullYear())}</p>
 
         <div>
           <AppLink href="#privacy">

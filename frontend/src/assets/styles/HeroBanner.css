@@ -199,21 +199,34 @@
 .slider-dots {
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 0;
 }
 
+/* 24px touch target (WCAG 2.5.8); the visible dot is drawn by ::after. */
 .slider-dots button {
-  width: 6px;
-  height: 6px;
+  position: relative;
+  width: 24px;
+  height: 24px;
   padding: 0;
   border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.slider-dots button::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6px;
+  height: 6px;
   border-radius: var(--box-radius);
   background: #36536b66;
-  cursor: pointer;
+  transform: translate(-50%, -50%);
   transition: width 0.2s ease, background 0.2s ease;
 }
 
-.slider-dots button.active {
+.slider-dots button.active::after {
   width: 20px;
   background: var(--hero-blue);
 }
@@ -256,7 +269,7 @@
   display: none;
 }
 
-:where(.fstu-header--mobile ~ .home-page) .hero-slider + .app-content-shell .home-info-section {
+:where(.fstu-header--mobile ~ .home-page) :is(.hero-slider, .reveal-slot:has(> .hero-slider)) + .app-content-shell .home-info-section {
   margin-top: 18px;
 }
 
@@ -289,7 +302,13 @@
   .hero-track.is-moving,
   .hero-btn.primary,
   .slider-arrow,
-  .slider-dots button {
+  .slider-dots button,
+  .slider-dots button::after {
     transition: none;
   }
+}
+
+/* Placeholder that keeps the banner's space while banner data loads. */
+.hero-slider--loading .hero-stage {
+  aspect-ratio: var(--hero-aspect-ratio);
 }

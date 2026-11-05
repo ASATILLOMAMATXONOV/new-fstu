@@ -3,21 +3,26 @@ export function smallTalkAnswer(message, language = 'uz') {
   if (language === 'ru') {
     if (/^(привет|здравствуйте|добрый (день|вечер|утро))$/.test(value)) return 'Здравствуйте! Я виртуальный помощник университета. Чем могу помочь?';
     if (/^(спасибо|большое спасибо)$/.test(value)) return 'Пожалуйста! Я готов помочь с другими вопросами.';
-    if (/^(кто ты|кто вы|как тебя зовут|как вас зовут)$/.test(value)) return 'Я виртуальный помощник Ферганского государственного технического университета.';
+    if (/(^|\s)(кто ты|кто вы|ты кто|вы кто|кто ты такой|как тебя зовут|как вас зовут|представься)(\s|$)/.test(value)) return 'Я виртуальный помощник Ферганского государственного технического университета. Помогаю найти информацию на сайте, открыть нужную страницу и озвучить её текст.';
     if (/^(пока|до свидания)$/.test(value)) return 'До свидания! Обращайтесь, если понадобится помощь.';
   }
   if (language === 'en') {
     if (/^(hello|hi|good (morning|afternoon|evening))$/.test(value)) return 'Hello! I am the university virtual assistant. How can I help?';
     if (/^(thanks|thank you|many thanks)$/.test(value)) return 'You are welcome! I am ready to help with another question.';
-    if (/^(who are you|what is your name)$/.test(value)) return 'I am the virtual assistant of Fergana State Technical University.';
+    if (/\b(who are you|who r u|who are u|what is your name|introduce yourself)\b/.test(value)) return 'I am the virtual assistant of Fergana State Technical University. I help you find information, open a page you ask for, and read the page aloud.';
     if (/^(bye|goodbye|see you)$/.test(value)) return 'Goodbye! Come back whenever you need help.';
   }
   if (language !== 'uz') return null;
-  if (/^(salom|assalomu alaykum|assalom|salom alaykum|hayrli (kun|tong|kech))$/.test(value)) return 'Va alaykum assalom! Xush kelibsiz. Universitet haqida nimani bilmoqchisiz? Savolingizni bemalol bering.';
-  if (/^(rahmat|katta rahmat|raxmat|tashakkur|rahmat sizga)$/.test(value)) return 'Arzimaydi! Yana savolingiz bo‘lsa, mamnuniyat bilan yordam beraman.';
-  if (/^(kimsan|siz kimsiz|isming nima|ismingiz nima|o‘zingni tanishtir|o'zingni tanishtir)$/.test(value)) return 'Men Farg‘ona davlat texnika universitetining virtual yordamchisiman. Saytdagi ma’lumotlarni topish, sahifalarni ochish va matnlarni o‘qib berishda yordam beraman.';
-  if (/^(qandaysan|yaxshimisan|yaxshimisiz|qalaysiz|ahvollaringiz qanday)$/.test(value)) return 'Rahmat, sizga yordam berishga tayyorman! Bugun qaysi masala bo‘yicha suhbatlashamiz?';
-  if (/^(xayr|hayr|ko‘rishguncha|ko'rishguncha)$/.test(value)) return 'Xayr, yaxshi qoling! Yana yordam kerak bo‘lsa, shu yerdaman.';
+  const identity = 'Men Farg‘ona davlat texnika universitetining virtual yordamchisiman. Saytdagi ma’lumotlarni topish, siz aytgan sahifani ochish va sahifa matnini ovoz chiqarib o‘qib berishda yordam beraman.';
+  const abilities = 'Men bir nechta ishni bajara olaman: saytdagi ma’lumotni topib beraman, siz aytgan sahifani ochaman va sahifadagi matnni ovozli o‘qib beraman. Masalan: «Qabul sahifasini och» yoki «Sahifani o‘qib ber» deng.';
+  if (/^(salom|assalomu? alaykum|assalom|salom alaykum|vaalaykum assalom|hayrli (kun|tong|kech))$/.test(value)) return 'Va alaykum assalom! Xush kelibsiz. Universitet haqida nimani bilmoqchisiz? Savolingizni bemalol bering.';
+  if (/^(rahmat|katta rahmat|raxmat|tashakkur|rahmat sizga|rahmat senga)$/.test(value)) return 'Arzimaydi! Yana savolingiz bo‘lsa, mamnuniyat bilan yordam beraman.';
+  // Identity: matches "kimsan", "sen kimsan", "sen kim", "siz kim", "o‘zing kimsan", "isming nima", "kim bu".
+  if (/\bkimsan\b/.test(value) || /\b(sen|siz|o[‘'ʻ]?zing)\s+kim(san|siz)?\b/.test(value) || /\b(isming|ismingiz|oting|oting)\s+nima\b/.test(value) || /o[‘'ʻ]?zing(ni|izni)?\s+tanishtir/.test(value) || /^kim(ligingni ayt| bu)\b/.test(value)) return identity;
+  // Capabilities: "nima qila olasan", "nima ish qilasan", "nimalarga qodirsan", "qanday yordam bera olasan", "vazifang nima".
+  if (/nima(lar)?\s+(qila olasan|qila olasiz|qilasan|qilasiz|ish qilasan|ish qila olasan)/.test(value) || /nimalarga\s+qodir/.test(value) || /qanday\s+yordam\s+(ber|qila)/.test(value) || /\bvazifang(iz)?\s+nima/.test(value) || /\bnima\s+bilan\s+yordam/.test(value)) return abilities;
+  if (/^(qandaysan|qalaysan|yaxshimisan|yaxshimisiz|qalaysiz|ishlaringiz qanday|ahvollaringiz qanday|yaxshimi ishlar)$/.test(value)) return 'Rahmat, sizga yordam berishga tayyorman! Bugun qaysi masala bo‘yicha suhbatlashamiz?';
+  if (/^(xayr|hayr|ko‘rishguncha|ko'rishguncha|salomat bo‘ling|salomat boling)$/.test(value)) return 'Xayr, yaxshi qoling! Yana yordam kerak bo‘lsa, shu yerdaman.';
   return null;
 }
 

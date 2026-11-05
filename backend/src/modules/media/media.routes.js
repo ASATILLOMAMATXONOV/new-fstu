@@ -8,6 +8,7 @@ import { Router } from 'express';
 import { authenticate } from '../../middleware/authenticate.js';
 import { asyncHandler } from '../../utils/async-handler.js';
 import { HttpError } from '../../utils/http-error.js';
+import { sendOptimizedImage } from '../../utils/image-optimizer.js';
 
 const router = Router();
 const moduleDirectory = path.dirname(fileURLToPath(import.meta.url));
@@ -68,8 +69,11 @@ router.get(
     try {
       const body = await readFile(path.join(imageDirectory, fileName));
       res.set('Cache-Control', 'public, max-age=31536000, immutable');
-      res.type(imageTypes.get(match[1].toLowerCase()) || 'application/octet-stream');
-      res.send(body);
+      await sendOptimizedImage(req, res, {
+        buffer: body,
+        mimeType: imageTypes.get(match[1].toLowerCase()) || 'application/octet-stream',
+        cacheKey: `media:${fileName}`
+      });
     } catch (error) {
       if (error?.code === 'ENOENT') {
         throw new HttpError(404, 'Rasm topilmadi.');

@@ -3,6 +3,15 @@ import { Router } from 'express';
 import { authenticate } from '../../middleware/authenticate.js';
 import { authorizeSettingWrite } from '../../middleware/authorize-menu-access.js';
 import { asyncHandler } from '../../utils/async-handler.js';
+import { HttpError } from '../../utils/http-error.js';
+import { sendOptimizedImage, setImageCacheHeaders } from '../../utils/image-optimizer.js';
+import {
+  buildAssetQuery,
+  externalizeInlineAssets,
+  getRequestOrigin,
+  isPublicRequest,
+  resolveInlineAsset
+} from '../../utils/inline-assets.js';
 import { deleteSetting, getSetting, upsertSetting } from './settings.service.js';
 
 const router = Router();
@@ -15,6 +24,50 @@ function disablePublicCache(res) {
   res.vary('Authorization');
 }
 
+// Replaces embedded base64 media with asset URLs for public visitors.
+// `item` mirrors `data` at its top level, so both share the same paths.
+function externalizeSetting(req, item) {
+  if (!item) return item;
+
+  const origin = getRequestOrigin(req);
+  const version = new Date(item.updatedAt || 0).getTime() || 0;
+  const key = encodeURIComponent(item.key);
+  const data = externalizeInlineAssets(
+    item.data,
+    (pathKey, index) => `${origin}/api/settings/${key}/asset?${buildAssetQuery(pathKey, index, version)}`
+  );
+
+  return {
+    key: item.key,
+    data,
+    ...data,
+    updatedBy: item.updatedBy,
+    updatedAt: item.updatedAt
+  };
+}
+
+router.get(
+  '/:key/asset',
+  asyncHandler(async (req, res) => {
+    const item = await getSetting(req.params.key);
+    const pathKey = String(req.query.path || '');
+    const asset = item ? resolveInlineAsset(item.data, pathKey, req.query.i) : null;
+
+    if (!asset) {
+      throw new HttpError(404, 'Asset not found.');
+    }
+
+    setImageCacheHeaders(req, res);
+    res.vary('Origin');
+
+    await sendOptimizedImage(req, res, {
+      buffer: asset.buffer,
+      mimeType: asset.mimeType,
+      cacheKey: `setting:${item.key}:${new Date(item.updatedAt || 0).getTime()}:${pathKey}:${req.query.i ?? ''}`
+    });
+  })
+);
+
 router.get(
   '/:key',
   asyncHandler(async (req, res) => {
@@ -22,7 +75,7 @@ router.get(
     if (!req.headers.authorization) {
       disablePublicCache(res);
     }
-    res.json({ item });
+    res.json({ item: isPublicRequest(req) ? externalizeSetting(req, item) : item });
   })
 );
 

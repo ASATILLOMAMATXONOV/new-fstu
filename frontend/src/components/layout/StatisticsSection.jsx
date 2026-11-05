@@ -13,6 +13,7 @@ import { useContentList } from '../../hooks/useContentList';
 import { getSiteMessages } from '../../locales/site';
 import { getTranslatedField } from '../../utils/cms';
 import { getIntlLocaleForLanguage } from '../../utils/language';
+import { withImageWidth } from '../../utils/responsiveImage';
 
 /* ==========================================
    ICON BASE
@@ -311,7 +312,7 @@ function StatisticCard({
           <div className="statistics-icon">
             {shouldUseStatisticImage(item) ? (
               <img
-                src={item.image}
+                src={withImageWidth(item.image, 96)}
                 alt=""
                 width="48"
                 height="48"

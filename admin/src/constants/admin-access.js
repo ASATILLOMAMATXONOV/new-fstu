@@ -51,7 +51,9 @@ export const menuAccessGroups = [
     items: [
       { key: 'admission-cta-management', title: 'Qabul 2024', url: '/admission-cta-management' },
       { key: 'seasonal-effects-management', title: 'Fasl effektlari', url: '/seasonal-effects-management' },
-      { key: 'admin-users-management', title: 'Adminlar boshqaruvi', url: '/admin-users-management', superAdminOnly: true }
+      { key: 'admin-users-management', title: 'Adminlar boshqaruvi', url: '/admin-users-management', superAdminOnly: true },
+      { key: 'cybersecurity', title: 'Kiberxavfsizlik', url: '/cybersecurity', superAdminOnly: true },
+      { key: 'honeytokens', title: 'Tuzoq kalitlar', url: '/honeytokens', superAdminOnly: true }
     ]
   }
 ];

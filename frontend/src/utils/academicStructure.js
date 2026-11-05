@@ -133,10 +133,7 @@ export function buildCustomMenuCollection(menu, language = 'uz') {
       name: academicText(card.title, language) || `Box ${index + 1}`,
       logo: card.image || '',
       icon: 'book',
-      url: (() => {
-        const value = String(card.url || '').trim();
-        return /^(javascript|vbscript|data):/i.test(value) ? '' : value;
-      })()
+      url: safeHref(card.url)
     }))
     .filter((card) => card.name || card.logo || card.url);
 }

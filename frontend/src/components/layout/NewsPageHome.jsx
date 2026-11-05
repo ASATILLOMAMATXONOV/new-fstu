@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useContentList } from '../../hooks/useContentList';
 import { formatCmsDate, getHtmlExcerpt, getTranslatedField } from '../../utils/cms';
 import '../../assets/styles/NewsPageHome.css';
+import { responsiveImageProps } from '../../utils/responsiveImage';
 
 const DEFAULT_PAGE_SIZE = 8;
 
@@ -36,7 +37,7 @@ function NewsImage({ src, alt }) {
       {!broken && src ? (
         <img
           key={src}
-          src={src}
+          {...responsiveImageProps(src, '(max-width: 640px) 92vw, (max-width: 1024px) 46vw, 400px', [320, 480, 640, 768, 960])}
           alt={alt}
           loading="lazy"
           onError={() => setBroken(true)}

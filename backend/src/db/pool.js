@@ -6,7 +6,12 @@ const { Pool } = pg;
 
 const pool = new Pool({
   connectionString: env.databaseUrl,
-  ssl: env.databaseSsl ? { rejectUnauthorized: false } : false
+  ssl: env.databaseSsl ? { rejectUnauthorized: true,
+    ...(process.env.DATABASE_SSL_CA ? { ca: process.env.DATABASE_SSL_CA.replace(/\\n/g, '\n') } : {}) } : false,
+  connectionTimeoutMillis: 5000,
+  statement_timeout: 15000,
+  idleTimeoutMillis: 30000,
+  max: 20
 });
 
 export async function query(text, params = []) {

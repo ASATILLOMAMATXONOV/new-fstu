@@ -15,6 +15,7 @@ import {
   structureSource
 } from '../../utils/academicStructure';
 import { createSafeMarkup, getTranslatedField, stripHtml } from '../../utils/cms';
+import { responsiveImageProps, withImageWidth } from '../../utils/responsiveImage';
 
 /* ==========================================
    ICON LIBRARY
@@ -119,7 +120,7 @@ function NodeVisual({ item }) {
   }, [item?.logo]);
 
   if (item?.logo && !failed) {
-    return <img src={item.logo} alt="" loading="lazy" onError={() => setFailed(true)} />;
+    return <img src={withImageWidth(item.logo, 160)} alt="" loading="lazy" onError={() => setFailed(true)} />;
   }
 
   return <Icon name={item?.icon || 'university'} />;
@@ -377,7 +378,7 @@ function AcademicBanner({ current, rootData, title, count }) {
 
   return (
     <div className="ae-banner">
-      {image && !failed && <img className="ae-banner-image" src={image} alt="" onError={() => setFailed(true)} />}
+      {image && !failed && <img className="ae-banner-image" {...responsiveImageProps(image, '(max-width: 900px) 100vw, 60vw')} alt="" loading="lazy" decoding="async" onError={() => setFailed(true)} />}
 
       <div className="ae-banner-grid" aria-hidden="true" />
       <div className="ae-banner-orbit" aria-hidden="true" />

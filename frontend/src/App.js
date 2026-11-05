@@ -17,8 +17,9 @@ import Footer from './components/layout/Footer';
 import InnerPageBanner from './components/layout/InnerPageBanner';
 import SeasonalEffectsOverlay from './components/layout/SeasonalEffectsOverlay';
 import ThemeColorSwitcher from './components/layout/ThemeColorSwitcher';
+// The home page is the main landing page, so it ships in the main bundle.
+import HomePage from './pages/HomePage';
 
-const HomePage = React.lazy(() => import('./pages/HomePage'));
 const RobotAssistant = React.lazy(() => import('./components/assistant/RobotAssistant'));
 
 const LeadershipPage = React.lazy(() => import('./pages/public/LeadershipPage'));

@@ -6,6 +6,9 @@
   "scripts": {
     "dev": "node scripts/dev.js",
     "start": "node src/server.js",
+    "test": "node --test",
+    "security:audit": "node scripts/security-audit.js",
+    "security:accounts": "node scripts/audit-admin-auth.js",
     "db:create": "node src/db/create-database.js",
     "db:migrate": "node src/db/run-migrations.js",
     "db:seed": "node src/db/seed.js",
@@ -14,13 +17,18 @@
   "dependencies": {
     "@echogarden/espeak-ng-emscripten": "0.3.5",
     "bcryptjs": "^2.4.3",
+    "compression": "^1.8.2",
     "cors": "^2.8.6",
     "dotenv": "^16.6.1",
     "express": "^4.22.3",
     "helmet": "^7.1.0",
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
+    "otpauth": "^9.6.0",
     "pg": "^8.12.0",
+    "qrcode": "^1.5.4",
+    "sanitize-html": "^2.18.1",
+    "sharp": "^0.35.5",
     "ws": "^8.22.0"
   }
 }

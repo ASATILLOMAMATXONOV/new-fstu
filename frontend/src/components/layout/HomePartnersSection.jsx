@@ -8,6 +8,7 @@ import { useLanguage } from '../../context/LanguageContext';
 import { useContentList } from '../../hooks/useContentList';
 import { getSiteMessages } from '../../locales/site';
 import { getTranslatedField } from '../../utils/cms';
+import { withImageWidth } from '../../utils/responsiveImage';
 
 const ExternalIcon = () => (
   <svg
@@ -54,7 +55,7 @@ function PartnerCard({ item, texts, isClone = false }) {
         {item.image ? (
           <img
             className="home-partner-logo"
-            src={item.image}
+            src={withImageWidth(item.image, 320)}
             alt={isClone ? '' : `${title} ${texts.logoSuffix}`}
             loading="lazy"
             decoding="async"

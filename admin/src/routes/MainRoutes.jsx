@@ -113,12 +113,17 @@ function DefaultDashboardRedirect() {
   return <Navigate to={getFirstAccessiblePath(user) || '/login'} replace />;
 }
 
+const CybersecurityPage = Loadable(lazy(() => import('pages/extra-pages/cybersecurity')));
+const HoneytokensPage = Loadable(lazy(() => import('pages/extra-pages/honeytokens')));
+
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
   path: '/',
   element: <DashboardLayout />,
   children: [
+    { path: 'cybersecurity', element: <CybersecurityPage /> },
+    { path: 'honeytokens', element: <HoneytokensPage /> },
     {
       path: '/',
       element: <DefaultDashboardRedirect />

@@ -13,7 +13,7 @@ let url;
 
 before(async () => {
   delete process.env.OPENAI_API_KEY;
-  server = createApp().listen(0, '127.0.0.1');
+  server = createApp({ securityMonitor: { middleware: (_req, _res, next) => next(), state: {} } }).listen(0, '127.0.0.1');
   await new Promise((resolve) => server.once('listening', resolve));
   url = `http://127.0.0.1:${server.address().port}/api/assistant`;
 });
@@ -109,6 +109,8 @@ test('concurrent local requests return complete independent audio', async () => 
 test('uses OpenAI consistently and reports failures without substituting another voice', async () => {
   process.env.OPENAI_API_KEY = 'test-only-key';
   delete process.env.AZURE_SPEECH_KEY;
+  const savedFallback = process.env.ASSISTANT_SPEECH_FALLBACK;
+  delete process.env.ASSISTANT_SPEECH_FALLBACK;
   const calls = [];
   const app = express();
   app.use(express.json());
@@ -141,7 +143,33 @@ test('uses OpenAI consistently and reports failures without substituting another
     assert.equal(await recovered.text(), 'natural audio test');
   } finally {
     delete process.env.OPENAI_API_KEY;
+    if (savedFallback === undefined) delete process.env.ASSISTANT_SPEECH_FALLBACK;
+    else process.env.ASSISTANT_SPEECH_FALLBACK = savedFallback;
     await new Promise(resolve => naturalServer.close(resolve));
+  }
+});
+
+test('falls back to the offline Uzbek voice when ASSISTANT_SPEECH_FALLBACK=local and OpenAI fails', async () => {
+  process.env.OPENAI_API_KEY = 'test-only-key';
+  process.env.ASSISTANT_SPEECH_FALLBACK = 'local';
+  delete process.env.AZURE_SPEECH_KEY;
+  const app = express();
+  app.use(express.json());
+  app.use('/speech', createSpeechRouter({ naturalSpeech: async () => { throw new Error('natural_speech_quota_exceeded'); } }));
+  const fallbackServer = app.listen(0, '127.0.0.1');
+  await new Promise((resolve) => fallbackServer.once('listening', resolve));
+  try {
+    const address = `http://127.0.0.1:${fallbackServer.address().port}/speech`;
+    const response = await httpFetch(address, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: 'Salom.', language: 'uz' }) });
+    assert.equal(response.status, 200);
+    assert.match(response.headers.get('content-type'), /^audio\/wav/);
+    const audio = Buffer.from(await response.arrayBuffer());
+    assert.ok(audio.length > 44);
+    assert.equal(audio.toString('ascii', 0, 4), 'RIFF');
+  } finally {
+    delete process.env.OPENAI_API_KEY;
+    delete process.env.ASSISTANT_SPEECH_FALLBACK;
+    await new Promise((resolve) => fallbackServer.close(resolve));
   }
 });
 

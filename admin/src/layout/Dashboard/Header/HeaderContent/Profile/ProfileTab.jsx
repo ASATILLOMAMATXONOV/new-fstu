@@ -18,7 +18,7 @@ import ProfileOutlined from '@ant-design/icons/ProfileOutlined';
 import SafetyOutlined from '@ant-design/icons/SafetyOutlined';
 import UserOutlined from '@ant-design/icons/UserOutlined';
 
-export default function ProfileTab({ user, handleLogout }) {
+export default function ProfileTab({ user, handleLogout, handleLogoutAll }) {
   const displayName = getAdminDisplayName(user);
   const identifier = getAdminIdentifier(user);
   const roleLabel = getAdminRoleLabel(user);
@@ -49,6 +49,10 @@ export default function ProfileTab({ user, handleLogout }) {
         </ListItemIcon>
         <ListItemText primary="Rol" secondary={roleLabel} />
       </ListItem>
+      <ListItemButton onClick={handleLogoutAll}>
+        <ListItemIcon><SafetyOutlined /></ListItemIcon>
+        <ListItemText primary="Barcha qurilmalardan chiqish" secondary="Barcha faol sessiyalarni bekor qilish" />
+      </ListItemButton>
       <ListItemButton onClick={handleLogout}>
         <ListItemIcon>
           <LogoutOutlined />
@@ -62,4 +66,4 @@ export default function ProfileTab({ user, handleLogout }) {
   );
 }
 
-ProfileTab.propTypes = { user: PropTypes.object, handleLogout: PropTypes.func };
+ProfileTab.propTypes = { user: PropTypes.object, handleLogout: PropTypes.func, handleLogoutAll: PropTypes.func };

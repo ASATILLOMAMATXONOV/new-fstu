@@ -38,6 +38,8 @@ function serializeAdmin(row) {
     lastLoginAt: row.last_login_at,
     lastLoginIp: row.last_login_ip,
     passwordChangedAt: row.password_changed_at,
+    mfaEnabled: Boolean(row.mfa_enabled),
+    passwordResetRequired: Boolean(row.password_reset_required),
     createdAt: row.created_at,
     updatedAt: row.updated_at
   };
@@ -109,7 +111,10 @@ function normalizePayload(payload) {
   const menuAccess = normalizeMenuAccess(payload.menuAccess).filter(
     (item) => role === 'super_admin' || item !== 'admin-users-management'
   );
-  const password = normalizeOptionalString(payload.password);
+  if (payload.password !== undefined && payload.password !== null && typeof payload.password !== 'string') {
+    throw new HttpError(400, 'Password must be a string.');
+  }
+  const password = typeof payload.password === 'string' ? payload.password : null;
 
   if (!fullName) {
     throw new HttpError(400, 'Full name is required.');
@@ -245,7 +250,8 @@ export async function updateAdminUser(id, payload, currentUserId) {
           failed_login_attempts = CASE WHEN $9::boolean THEN 0 ELSE failed_login_attempts END,
           locked_until = CASE WHEN $9::boolean THEN NULL ELSE locked_until END,
           password_changed_at = CASE WHEN $9::boolean THEN NOW() ELSE password_changed_at END,
-          token_version = CASE WHEN $9::boolean THEN token_version + 1 ELSE token_version END,
+          password_reset_required = CASE WHEN $9::boolean THEN FALSE ELSE password_reset_required END,
+          token_version = token_version + 1,
           updated_at = NOW()
       WHERE id = $1
       RETURNING *
