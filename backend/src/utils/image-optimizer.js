@@ -56,6 +56,25 @@ async function transform(buffer, mimeType, width, format) {
   return { body: await pipeline.jpeg({ quality: 80, mozjpeg: true }).toBuffer(), mimeType: 'image/jpeg' };
 }
 
+function resolveVariantKey(req, cacheKey) {
+  const width = pickResponsiveWidth(req.query.w);
+  const format = /image\/webp/i.test(req.get('accept') || '') ? 'webp' : 'original';
+  return `${cacheKey}|${width}|${format}`;
+}
+
+/**
+ * Agar shu rasm varianti allaqachon keshda bo'lsa, uni yuboradi va true qaytaradi.
+ * Shunda manba rasmni bazadan o'qish shart bo'lmaydi.
+ */
+export function sendCachedOptimizedImage(req, res, cacheKey) {
+  const result = readCached(resolveVariantKey(req, cacheKey));
+  if (!result) return false;
+  res.vary('Accept');
+  res.type(result.mimeType);
+  res.send(result.body);
+  return true;
+}
+
 /**
  * Sends `buffer` as an optimized image. `cacheKey` must change whenever the
  * source image changes (include the entry's updated timestamp).
@@ -72,7 +91,7 @@ export async function sendOptimizedImage(req, res, { buffer, mimeType, cacheKey 
 
   const width = pickResponsiveWidth(req.query.w);
   const format = /image\/webp/i.test(req.get('accept') || '') ? 'webp' : 'original';
-  const key = `${cacheKey}|${width}|${format}`;
+  const key = resolveVariantKey(req, cacheKey);
 
   let result = readCached(key);
 

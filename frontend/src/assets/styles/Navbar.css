@@ -55,7 +55,7 @@
   width: 100%;
   color: #ffffff;
   font-size: 13px;
-  border-bottom: 1px solid #0d336b;
+  border-bottom: 1px solid var(--brand-primary-deep);
 
 }
 
@@ -2607,7 +2607,7 @@
 .fstu-navbar .mega-content-heading,
 .fstu-navbar .mega-sub-link,
 .fstu-navbar .language-item {
-   color: #0d336b;
+   color: var(--brand-primary-deep);
 }
 
 .fstu-navbar .nav-link:hover,

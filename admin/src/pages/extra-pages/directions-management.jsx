@@ -1,14 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import {
+  Alert,
+  Avatar,
   Box,
   Button,
   Chip,
+  CircularProgress,
   Grid,
   IconButton,
   MenuItem,
   Paper,
   Stack,
+  Snackbar,
   Switch,
   Table,
   TableBody,
@@ -17,24 +21,33 @@ import {
   TableHead,
   TableRow,
   TextField,
+  Tooltip,
   Typography
 } from '@mui/material';
 
 import {
   ArrowLeftOutlined,
+  CheckOutlined,
+  CopyOutlined,
   DeleteOutlined,
   EditOutlined,
-  PlusOutlined
+  ExportOutlined,
+  PictureOutlined,
+  PlusOutlined,
+  UploadOutlined
 } from '@ant-design/icons';
 
 import AdminTablePagination from 'components/AdminTablePagination';
 import MainCard from 'components/MainCard';
 import TinyMceField from 'components/editor/TinyMceField';
 import { useTablePagination } from 'hooks/useTablePagination';
+import { getManagedImageHelperText, prepareManagedImageUpload } from 'utils/content-images';
+import { buildPublicDirectionUrl } from 'utils/public-site';
 import {
   createContentItem,
   deleteContentItem,
   fetchContentList,
+  fetchContentOptions,
   updateContentItem
 } from 'api/cms';
 
@@ -59,6 +72,7 @@ const getEmptyForm = () => ({
   id: null,
   facultyId: '',
   departmentId: '',
+  image: '',
   link: '',
   order: '',
   active: true,
@@ -109,6 +123,7 @@ const normalizeDirectionItem = (item = {}) => ({
   id: item.id || null,
   facultyId: item.facultyId || '',
   departmentId: item.departmentId || '',
+  image: item.image || item.imageUrl || '',
   link: String(item.link || '').trim(),
   order: item.order || item.sortOrder || '',
   active: item.active ?? true,
@@ -137,10 +152,15 @@ const prepareDirectionPayload = (form, orderFallback) => ({
 });
 
 export default function DirectionsManagementPage() {
+  const logoInput = useRef(null);
   const [directions, setDirections] = useState([]);
   const [faculties, setFaculties] = useState([]);
   const [mode, setMode] = useState('table');
   const [form, setForm] = useState(getEmptyForm());
+  const [uploading, setUploading] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
+  const [copiedId, setCopiedId] = useState(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -149,7 +169,7 @@ export default function DirectionsManagementPage() {
       try {
         const [directionItems, facultyItems] = await Promise.all([
           fetchContentList('directions'),
-          fetchContentList('faculties')
+          fetchContentOptions('faculties')
         ]);
 
         if (cancelled) {
@@ -162,6 +182,7 @@ export default function DirectionsManagementPage() {
         );
       } catch (error) {
         console.error('Failed to load directions:', error);
+        if (!cancelled) setError('Yo‘nalishlarni yuklab bo‘lmadi. Sahifani qayta yuklang.');
       }
     };
 
@@ -189,11 +210,13 @@ export default function DirectionsManagementPage() {
   const directionsPagination = useTablePagination(sortedDirections);
 
   const openCreate = () => {
+    setError('');
     setForm(getEmptyForm());
     setMode('form');
   };
 
   const openEdit = (item) => {
+    setError('');
     setForm(normalizeDirectionItem(item));
     setMode('form');
   };
@@ -227,8 +250,28 @@ export default function DirectionsManagementPage() {
     }));
   };
 
+  const handleLogoUpload = async (event) => {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if (!file) return;
+
+    setUploading(true);
+    setError('');
+    try {
+      const { dataUrl } = await prepareManagedImageUpload(file, 'directions');
+      setForm((previous) => ({ ...previous, image: dataUrl }));
+    } catch (uploadError) {
+      setError(uploadError.message || 'Logoni yuklab bo‘lmadi.');
+    } finally {
+      setUploading(false);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (saving || uploading) return;
+    setSaving(true);
+    setError('');
 
     const preparedForm = prepareDirectionPayload(form, directions.length + 1);
 
@@ -249,6 +292,9 @@ export default function DirectionsManagementPage() {
       setMode('table');
     } catch (error) {
       console.error("Failed to save direction:", error);
+      setError(error.message || 'Yo‘nalishni saqlab bo‘lmadi.');
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -291,6 +337,43 @@ export default function DirectionsManagementPage() {
     }
   };
 
+  const handleCopyLink = async (item) => {
+    const url = buildPublicDirectionUrl(item);
+    if (!url) return;
+    setCopiedId(null);
+    setError('');
+    let textarea;
+    const previousFocus = document.activeElement;
+
+    try {
+      let copied = false;
+      if (navigator.clipboard && window.isSecureContext) {
+        try {
+          await navigator.clipboard.writeText(url);
+          copied = true;
+        } catch {
+          // Older browsers and restricted clipboard permissions use the fallback below.
+        }
+      }
+      if (!copied) {
+        textarea = document.createElement('textarea');
+        textarea.value = url;
+        textarea.style.position = 'fixed';
+        textarea.style.left = '-9999px';
+        document.body.appendChild(textarea);
+        textarea.select();
+        copied = document.execCommand('copy');
+      }
+      if (!copied) throw new Error('Havolani nusxalab bo‘lmadi. “Ochish” orqali sahifani ochib, manzilni nusxalang.');
+      setCopiedId(String(item.id));
+    } catch (copyError) {
+      setError(copyError.message || 'Havolani nusxalab bo‘lmadi.');
+    } finally {
+      textarea?.remove();
+      previousFocus?.focus({ preventScroll: true });
+    }
+  };
+
   if (mode === 'form') {
     return (
       <MainCard
@@ -299,14 +382,43 @@ export default function DirectionsManagementPage() {
           <Button
             startIcon={<ArrowLeftOutlined />}
             variant="outlined"
+            disabled={saving || uploading}
             onClick={() => setMode('table')}
           >
             Orqaga
           </Button>
         }
       >
+        {error && <Alert severity="error" sx={{ mb: 2.5 }} onClose={() => setError('')}>{error}</Alert>}
         <form onSubmit={handleSubmit}>
+          <fieldset disabled={saving || uploading} style={{ border: 0, padding: 0, margin: 0, minWidth: 0 }}>
           <Grid container spacing={2.5}>
+            <Grid item xs={12}>
+              <Paper variant="outlined" sx={{ borderRadius: '6px', p: { xs: 2, md: 3 } }}>
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2.5} alignItems={{ xs: 'flex-start', sm: 'center' }}>
+                  <Avatar
+                    variant="rounded"
+                    src={form.image || undefined}
+                    alt="Yo‘nalish logosi"
+                    sx={{ width: 96, height: 96, bgcolor: 'grey.50', color: 'text.secondary', border: '1px solid', borderColor: 'divider', '& img': { objectFit: 'contain', p: 1 } }}
+                  >
+                    <PictureOutlined style={{ fontSize: 30 }} />
+                  </Avatar>
+                  <Stack spacing={1.25}>
+                    <Typography variant="h5" fontWeight={800}>Yo‘nalish logosi</Typography>
+                    <Typography variant="body2" color="text.secondary">Logo saytdagi yo‘nalish kartochkasi va batafsil ma’lumotlarda ko‘rinadi.</Typography>
+                    <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                      <input ref={logoInput} type="file" accept="image/jpeg,image/png,image/webp" hidden onChange={handleLogoUpload} />
+                      <Button variant="outlined" startIcon={uploading ? <CircularProgress size={16} /> : <UploadOutlined />} onClick={() => logoInput.current?.click()}>
+                        {uploading ? 'Logo tayyorlanmoqda…' : form.image ? 'Logoni almashtirish' : 'Logo yuklash'}
+                      </Button>
+                      {form.image && <Button color="error" onClick={() => setForm((previous) => ({ ...previous, image: '' }))}>Logoni olib tashlash</Button>}
+                    </Stack>
+                    <Typography variant="caption" color="text.secondary">{getManagedImageHelperText('directions')}</Typography>
+                  </Stack>
+                </Stack>
+              </Paper>
+            </Grid>
             <Grid item xs={12}>
               <Paper variant="outlined" sx={{ borderRadius: '6px', p: { xs: 2, md: 3 }, bgcolor: '#fafafa' }}>
                 <Stack spacing={0.5} sx={{ mb: 2.5 }}>
@@ -485,11 +597,12 @@ export default function DirectionsManagementPage() {
                   Bekor qilish
                 </Button>
                 <Button type="submit" variant="contained">
-                  Saqlash
+                  {saving ? 'Saqlanmoqda…' : 'Saqlash'}
                 </Button>
               </Stack>
             </Grid>
           </Grid>
+          </fieldset>
         </form>
       </MainCard>
     );
@@ -504,22 +617,31 @@ export default function DirectionsManagementPage() {
         </Button>
       }
     >
+      {error && <Alert severity="error" sx={{ mb: 2.5 }} onClose={() => setError('')}>{error}</Alert>}
       <Stack spacing={1} sx={{ mb: 2.5 }}>
         <Typography variant="body2" color="text.secondary">
-          {"Bu yerda yo'nalishlar 4 tilda yaratiladi, ixtiyoriy link beriladi va kerakli kafedraga biriktiriladi."}
+          Yo‘nalishlar nomi, logosi va biriktirilgan kafedrasini boshqaring.
         </Typography>
       </Stack>
 
-      <TableContainer component={Paper} variant="outlined">
-        <Table>
+      <TableContainer component={Paper} variant="outlined" sx={{ borderRadius: 1.5 }}>
+        <Table sx={{ tableLayout: 'fixed', minWidth: 1040, '& td': { py: 2 }, '& th': { bgcolor: 'grey.50' } }}>
+          <colgroup>
+            <col style={{ width: '25%' }} />
+            <col style={{ width: '30%' }} />
+            <col style={{ width: 180 }} />
+            <col style={{ width: 64 }} />
+            <col style={{ width: 80 }} />
+            <col style={{ width: 144 }} />
+          </colgroup>
           <TableHead>
             <TableRow>
               <TableCell>Nomi</TableCell>
               <TableCell>Biriktirilgan joy</TableCell>
-              <TableCell>Link</TableCell>
-              <TableCell width={100}>Tartib</TableCell>
-              <TableCell width={120}>Holat</TableCell>
-              <TableCell align="right" width={170}>Amallar</TableCell>
+              <TableCell>Saytdagi havola</TableCell>
+              <TableCell align="center">Tartib</TableCell>
+              <TableCell>Holat</TableCell>
+              <TableCell align="right">Amallar</TableCell>
             </TableRow>
           </TableHead>
 
@@ -527,47 +649,61 @@ export default function DirectionsManagementPage() {
             {directionsPagination.paginatedItems.map((item) => {
               const faculty = getFacultyById(item.facultyId);
               const department = getDepartmentById(item.facultyId, item.departmentId);
+              const publicUrl = buildPublicDirectionUrl(item);
 
               return (
                 <TableRow hover key={item.id}>
                   <TableCell>
-                    <Stack spacing={0.6}>
-                      <Typography fontWeight={800}>
+                    <Stack direction="row" spacing={1.5} alignItems="center" sx={{ minWidth: 0 }}>
+                      <Avatar
+                        variant="rounded"
+                        src={item.image || undefined}
+                        alt=""
+                        sx={{ width: 44, height: 44, flexShrink: 0, bgcolor: 'grey.50', color: 'text.secondary', border: '1px solid', borderColor: 'divider', '& img': { objectFit: 'contain', p: 0.5 } }}
+                      >
+                        <PictureOutlined />
+                      </Avatar>
+                      <Tooltip title={getLocalizedTitle(item)} arrow>
+                      <Typography fontWeight={700} sx={{ minWidth: 0, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', overflowWrap: 'anywhere', lineHeight: 1.5 }}>
                         {getLocalizedTitle(item) || '-'}
                       </Typography>
-                      <Stack direction="row" spacing={0.8} flexWrap="wrap">
-                        {langList.map((lang) =>
-                          item?.[lang.key]?.title ? (
-                            <Chip
-                              key={lang.key}
-                              size="small"
-                              variant="outlined"
-                              label={lang.key.toUpperCase()}
-                            />
-                          ) : null
-                        )}
-                      </Stack>
+                      </Tooltip>
                     </Stack>
                   </TableCell>
 
                   <TableCell>
                     <Stack spacing={0.3}>
-                      <Typography fontWeight={700}>
+                      <Tooltip title={getLocalizedTitle(department)} arrow>
+                      <Typography fontWeight={600} sx={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', overflowWrap: 'anywhere', lineHeight: 1.5 }}>
                         {getLocalizedTitle(department) || 'Kafedra tanlanmagan'}
                       </Typography>
-                      <Typography variant="body2" color="text.secondary">
+                      </Tooltip>
+                      <Tooltip title={getLocalizedTitle(faculty)} arrow>
+                      <Typography variant="caption" color="text.secondary" noWrap>
                         {getLocalizedTitle(faculty) || 'Fakultet tanlanmagan'}
                       </Typography>
+                      </Tooltip>
                     </Stack>
                   </TableCell>
 
                   <TableCell>
-                    <Typography variant="body2" color={item.link ? 'primary.main' : 'text.secondary'}>
-                      {item.link || '-'}
-                    </Typography>
+                    {publicUrl ? (
+                      <Stack direction="row" spacing={0.75} alignItems="center">
+                        <Tooltip title={publicUrl} arrow>
+                          <Button component="a" href={publicUrl} target="_blank" rel="noopener noreferrer" size="small" variant="outlined" startIcon={<ExportOutlined />} aria-label={`${getLocalizedTitle(item)} — saytda ochish`}>
+                            Ochish
+                          </Button>
+                        </Tooltip>
+                        <Tooltip title={copiedId === String(item.id) ? 'Nusxa olindi' : 'Havolani nusxalash'} arrow>
+                          <IconButton size="small" color={copiedId === String(item.id) ? 'success' : 'primary'} aria-label={`${getLocalizedTitle(item)} havolasini nusxalash`} onClick={() => handleCopyLink(item)}>
+                            {copiedId === String(item.id) ? <CheckOutlined /> : <CopyOutlined />}
+                          </IconButton>
+                        </Tooltip>
+                      </Stack>
+                    ) : <Typography variant="caption" color="text.secondary">Kafedra tanlanmagan</Typography>}
                   </TableCell>
 
-                  <TableCell>{item.order || 0}</TableCell>
+                  <TableCell align="center">{item.order || 0}</TableCell>
 
                   <TableCell>
                     <Chip
@@ -582,12 +718,13 @@ export default function DirectionsManagementPage() {
                       <Switch
                         size="small"
                         checked={item.active}
+                        inputProps={{ 'aria-label': `${getLocalizedTitle(item)} holatini o‘zgartirish` }}
                         onChange={() => handleActiveChange(item.id)}
                       />
-                      <IconButton color="primary" onClick={() => openEdit(item)}>
+                      <IconButton color="primary" aria-label="Yo‘nalishni tahrirlash" onClick={() => openEdit(item)}>
                         <EditOutlined />
                       </IconButton>
-                      <IconButton color="error" onClick={() => handleDelete(item.id)}>
+                      <IconButton color="error" aria-label="Yo‘nalishni o‘chirish" onClick={() => handleDelete(item.id)}>
                         <DeleteOutlined />
                       </IconButton>
                     </Stack>
@@ -616,6 +753,9 @@ export default function DirectionsManagementPage() {
         onPageChange={directionsPagination.handlePageChange}
         onRowsPerPageChange={directionsPagination.handleRowsPerPageChange}
       />
+      <Snackbar open={copiedId !== null} autoHideDuration={2500} onClose={() => setCopiedId(null)}>
+        <Alert severity="success" variant="filled" onClose={() => setCopiedId(null)}>Havola nusxalandi</Alert>
+      </Snackbar>
     </MainCard>
   );
 }

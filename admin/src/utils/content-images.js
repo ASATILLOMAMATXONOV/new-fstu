@@ -1,4 +1,13 @@
 const IMAGE_POLICIES = Object.freeze({
+  directions: {
+    label: 'Yo‘nalish logosi',
+    maxUploadBytes: 2 * 1024 * 1024,
+    maxStoredBytes: 300 * 1024,
+    maxWidth: 512,
+    maxHeight: 512,
+    quality: 0.88,
+    mimeType: 'image/webp'
+  },
   leadership: {
     label: 'Ma’muriyat rasmi',
     targetBytes: 700 * 1024,

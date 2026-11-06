@@ -12,6 +12,7 @@
     "db:create": "node src/db/create-database.js",
     "db:migrate": "node src/db/run-migrations.js",
     "db:seed": "node src/db/seed.js",
+    "db:seed:admin": "node scripts/seed-admin.js",
     "seed": "npm run db:seed"
   },
   "dependencies": {

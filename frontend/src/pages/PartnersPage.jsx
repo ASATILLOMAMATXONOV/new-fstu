@@ -92,7 +92,7 @@ function InteractiveWorld({features, counts, selected, onSelect, ui}) {
     <div className="pp-map-bar"><span className="pp-eyebrow"><span className="pp-live-dot"/>{ui.explore}</span><span className="pp-map-help">{ui.hint}</span></div>
     <div className="pp-map-canvas">
       <svg className="pp-world-map" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid meet" role="group" aria-label={ui.countries}>
-        <defs><linearGradient id="pp-country-active" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#25c9d2"/><stop offset="1" stopColor="#1376a9"/></linearGradient></defs>
+        <defs><linearGradient id="pp-country-active" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="var(--brand-primary)"/><stop offset="1" stopColor="var(--brand-primary-dark)"/></linearGradient></defs>
         {paths.map(p=> <path key={p.id} d={p.d} className={`pp-map-country ${counts.has(p.key)?'is-partner':''} ${selected===p.key?'is-selected':''}`} fillRule="evenodd" tabIndex={0} role="button" aria-label={`${p.name}, ${counts.get(p.key)?.count || 0} ${ui.universities}`} aria-pressed={selected === p.key} onMouseEnter={()=>setHover(p)} onMouseLeave={()=>setHover(null)} onFocus={()=>setHover(p)} onBlur={()=>setHover(null)} onClick={()=>onSelect(p.key)} onKeyDown={e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();onSelect(p.key);}}}><title>{p.name} — {counts.get(p.key)?.count || 0} {ui.universities}</title></path>)}
       </svg>
     </div>
@@ -139,7 +139,7 @@ function CountryFocus({feature, countryName, universities, loading, onBack, ui})
         <div className="pp-focus__intro"><span className="pp-eyebrow">{ui.select}</span><h2>{countryName}</h2><p>{universities.length} {ui.count}</p></div>
         <div className="pp-focus__graphic">
           {data ? <svg viewBox={data.viewBox} preserveAspectRatio="xMidYMid meet" role="img" aria-label={countryName}>
-            <defs><linearGradient id="pp-focus-gradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0" stopColor="#80ead2"/><stop offset="1" stopColor="#2fb3cb"/></linearGradient></defs>
+            <defs><linearGradient id="pp-focus-gradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0" stopColor="var(--brand-primary-highlight)"/><stop offset="1" stopColor="var(--brand-primary)"/></linearGradient></defs>
             <path d={data.path} fill="url(#pp-focus-gradient)" stroke="#f9ffff" strokeWidth="1.1" vectorEffect="non-scaling-stroke" strokeLinejoin="round"/>
           </svg> : <span>{ui.loading}</span>}
         </div>

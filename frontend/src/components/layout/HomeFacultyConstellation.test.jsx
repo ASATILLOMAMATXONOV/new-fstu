@@ -6,6 +6,9 @@ import { useContentList } from '../../hooks/useContentList';
 
 jest.mock('../../hooks/useSetting', () => ({ useSetting: jest.fn() }));
 jest.mock('../../hooks/useContentList', () => ({ useContentList: jest.fn() }));
+jest.mock('react-router-dom', () => ({
+  Link: ({ to, children, ...props }) => <a href={to} {...props}>{children}</a>
+}), { virtual: true });
 
 const facultyItems = [
   { id: 1, entityType: 'faculty', uz: { title: 'Muhandislik' }, en: { title: 'Engineering' }, departments: [
@@ -188,24 +191,19 @@ test('clicking sections shows sections on the right with their detail links', ()
   expect(screen.getByRole('region', { name: 'Fakultetlar ro‘yxati' })).toBeTruthy();
 });
 
-test('faculty drilldown opens departments, directions and existing detail pages', () => {
+test('faculty and department cards link to their own pages instead of opening nested lists', () => {
   render(<HomeFacultyConstellation />);
-  fireEvent.click(screen.getByRole('button', { name: 'Muhandislik bo‘limini ochish' }));
-  expect(screen.getByRole('region', { name: 'Kafedralar ro‘yxati' })).toBeTruthy();
-  expect(screen.queryByText('Yashirin kafedra')).toBeNull();
-  expect(screen.getByRole('link', { name: 'Batafsil' }).getAttribute('href')).toBe('/faculties/1');
-  fireEvent.click(screen.getByRole('button', { name: 'Mexanika bo‘limini ochish' }));
-  expect(screen.getByRole('region', { name: 'Ta’lim yo‘nalishlari ro‘yxati' })).toBeTruthy();
-  expect(screen.getByRole('link', { name: 'Mashinasozlik sahifasiga o‘tish' }).getAttribute('href')).toBe('/programs/mechanical');
-  selectMenu('Bo‘limlar');
-  expect(screen.getByRole('region', { name: 'Bo‘limlar ro‘yxati' })).toBeTruthy();
-  expect(screen.queryByRole('button', { name: 'Orqaga' })).toBeNull();
+  expect(screen.getByRole('link', { name: 'Muhandislik sahifasiga o‘tish' }).getAttribute('href')).toBe('/faculties/1');
+  expect(screen.queryByRole('button', { name: 'Muhandislik bo‘limini ochish' })).toBeNull();
+  selectMenu('Kafedralar');
+  expect(screen.getByRole('link', { name: 'Mexanika sahifasiga o‘tish' }).getAttribute('href')).toBe('/departments/1/d1');
+  expect(screen.queryByRole('button', { name: 'Mexanika bo‘limini ochish' })).toBeNull();
 });
 
 test('direct department and direction menus work and switching clears search', () => {
   render(<HomeFacultyConstellation />);
   selectMenu('Kafedralar');
-  expect(screen.getByRole('button', { name: 'Mexanika bo‘limini ochish' })).toBeTruthy();
+  expect(screen.getByRole('link', { name: 'Mexanika sahifasiga o‘tish' })).toBeTruthy();
   fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'not found' } });
   expect(screen.getByText('Hech narsa topilmadi')).toBeTruthy();
   selectMenu('Yo‘nalishlar');

@@ -4,7 +4,8 @@ import { authenticate } from '../../middleware/authenticate.js';
 import { authorizeContentWrite } from '../../middleware/authorize-menu-access.js';
 import { asyncHandler } from '../../utils/async-handler.js';
 import { HttpError } from '../../utils/http-error.js';
-import { sendOptimizedImage, setImageCacheHeaders } from '../../utils/image-optimizer.js';
+import { sendCachedOptimizedImage, sendOptimizedImage, setImageCacheHeaders } from '../../utils/image-optimizer.js';
+import { sendPublicJson } from '../../utils/public-response-cache.js';
 import {
   buildAssetQuery,
   externalizeInlineAssets,
@@ -21,9 +22,15 @@ import {
   listEntries,
   updateEntry
 } from './content.service.js';
-import { getPublicSiteRevision } from './public-site-revision.service.js';
+import { getPublicSiteRevision, subscribeToPublicSiteRevision } from './public-site-revision.service.js';
 
 const router = Router();
+const liveResponses = new Set();
+
+export function closePublicContentStreams() {
+  for (const response of liveResponses) response.end();
+  liveResponses.clear();
+}
 
 function disablePublicCache(res) {
   res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
@@ -62,6 +69,36 @@ function preparePublicEntries(req, items) {
 }
 
 router.get(
+  '/__events',
+  asyncHandler(async (req, res) => {
+    const revision = await getPublicSiteRevision();
+    res.set({
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache, no-transform',
+      'X-Accel-Buffering': 'no'
+    });
+    res.flushHeaders();
+    liveResponses.add(res);
+    const send = (value) => {
+      if (!res.destroyed && !res.writableEnded) {
+        res.write(`data: ${JSON.stringify(value)}\n\n`);
+      }
+    };
+    const unsubscribe = subscribeToPublicSiteRevision(send);
+    send(revision);
+    const heartbeat = setInterval(() => {
+      if (!res.destroyed) res.write(': keep-alive\n\n');
+    }, 15000);
+    heartbeat.unref();
+    res.once('close', () => {
+      liveResponses.delete(res);
+      clearInterval(heartbeat);
+      unsubscribe();
+    });
+  })
+);
+
+router.get(
   '/__revision',
   asyncHandler(async (_req, res) => {
     disablePublicCache(res);
@@ -72,22 +109,24 @@ router.get(
 router.get(
   '/:resource',
   asyncHandler(async (req, res) => {
-    const items = await listEntries(req.params.resource, req.query);
     if (!req.headers.authorization) {
       disablePublicCache(res);
     }
-    res.json({ items: preparePublicEntries(req, items) });
+    await sendPublicJson(req, res, async () => ({
+      items: preparePublicEntries(req, await listEntries(req.params.resource, req.query))
+    }));
   })
 );
 
 router.get(
   '/:resource/tree',
   asyncHandler(async (req, res) => {
-    const items = await listEntryTree(req.params.resource, req.query);
     if (!req.headers.authorization) {
       disablePublicCache(res);
     }
-    res.json({ items: preparePublicEntries(req, items) });
+    await sendPublicJson(req, res, async () => ({
+      items: preparePublicEntries(req, await listEntryTree(req.params.resource, req.query))
+    }));
   })
 );
 
@@ -116,8 +155,17 @@ router.get(
 router.get(
   '/:resource/:id/asset',
   asyncHandler(async (req, res) => {
-    const item = await getEntryById(req.params.resource, Number(req.params.id), { imageMode: 'separate' });
     const pathKey = String(req.query.path || '');
+    // URL'dagi v = yozuvning updatedAt vaqti. Shu versiya allaqachon optimallashtirilgan
+    // bo'lsa, katta (base64) qatorni bazadan yuklamasdan keshdan beramiz.
+    if (req.query.v) {
+      setImageCacheHeaders(req, res);
+      res.vary('Origin');
+      const cacheKey = `content-asset:${req.params.resource}:${req.params.id}:${req.query.v}:${pathKey}:${req.query.i ?? ''}`;
+      if (sendCachedOptimizedImage(req, res, cacheKey)) return;
+    }
+
+    const item = await getEntryById(req.params.resource, Number(req.params.id), { imageMode: 'separate' });
     const asset = resolveInlineAsset(item, pathKey, req.query.i);
 
     if (!asset) {
@@ -138,11 +186,13 @@ router.get(
 router.get(
   '/:resource/:id',
   asyncHandler(async (req, res) => {
-    const item = await getEntryById(req.params.resource, Number(req.params.id), req.query);
     if (!req.headers.authorization) {
       disablePublicCache(res);
     }
-    res.json({ item: isPublicRequest(req) ? externalizeEntry(req, item) : item });
+    await sendPublicJson(req, res, async () => {
+      const item = await getEntryById(req.params.resource, Number(req.params.id), req.query);
+      return { item: isPublicRequest(req) ? externalizeEntry(req, item) : item };
+    });
   })
 );
 

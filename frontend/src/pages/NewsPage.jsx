@@ -13,6 +13,7 @@ import AcademicSidebar from '../components/layout/AcademicSidebar';
 import { useLanguage } from '../context/LanguageContext';
 import { useContentList } from '../hooks/useContentList';
 import { getSiteMessages } from '../locales/site';
+import { getCssZoom } from '../utils/cssZoom';
 
 import {
   formatCmsDate,
@@ -384,7 +385,7 @@ function NewsPage() {
       const top =
         contentRef.current.getBoundingClientRect().top +
         window.scrollY -
-        95;
+        95 * getCssZoom(contentRef.current);
 
       window.scrollTo({
         top: Math.max(0, top),

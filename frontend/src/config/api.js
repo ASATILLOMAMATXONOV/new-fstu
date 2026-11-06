@@ -60,6 +60,7 @@ export const API_BASE_URL = API_BASE_URL_CANDIDATES[0] || LOCAL_API_URLS[0];
 
 export const API_ENDPOINTS = Object.freeze({
   contentRevision: () => '/api/content/__revision',
+  contentEvents: () => '/api/content/__events',
   contentList: (resource, query = {}) =>
     `/api/content/${resource}?${buildQueryString({
       activeOnly: true,

@@ -5,9 +5,13 @@
   --brand-primary-deep: #172554;
   --brand-primary-soft: #dbeafe;
   --brand-primary-muted: #eff6ff;
+  --brand-primary-highlight: #93b5f5;
   --theme-primary-rgb: 37, 99, 235;
   --theme-dark-rgb: 29, 78, 216;
   --theme-deep-rgb: 23, 37, 84;
+  --theme-highlight-rgb: 147, 181, 245;
+  --theme-soft-rgb: 219, 234, 254;
+  --theme-muted-rgb: 239, 246, 255;
   --text-primary: #334155;
   --text-secondary: #475569;
   --text-muted: #64748b;
@@ -143,7 +147,7 @@ a {
 .partners-primary-btn *,
 .university-hero-primary,
 .university-hero-primary * {
-  color: #0d336b;
+  color: var(--brand-primary-deep);
 }
 
 .fstu-topbar h1,

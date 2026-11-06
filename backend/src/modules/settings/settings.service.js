@@ -47,11 +47,11 @@ export async function upsertSetting(key, payload, userId = null) {
   );
 
   const item = mapSetting(result.rows[0]);
-  await touchPublicSiteRevision();
+  await touchPublicSiteRevision({ setting: key });
   return item;
 }
 
 export async function deleteSetting(key) {
   await query('DELETE FROM site_settings WHERE key = $1 RETURNING key', [key]);
-  await touchPublicSiteRevision();
+  await touchPublicSiteRevision({ setting: key });
 }

@@ -10,6 +10,8 @@ import {
 
   AccordionSummary,
 
+  Alert,
+
   Box,
 
   Button,
@@ -172,6 +174,10 @@ export default function BannerManagementPage() {
 
   const [form, setForm] = useState(getEmptyForm());
   const [textSectionOpen, setTextSectionOpen] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [saveError, setSaveError] = useState('');
+  const [saved, setSaved] = useState(false);
 
   const bannersPagination = useTablePagination(banners);
 
@@ -276,6 +282,9 @@ export default function BannerManagementPage() {
 
     if (!file) return;
 
+    setUploading(true);
+    setSaveError('');
+
     try {
 
       const { dataUrl } = await prepareManagedImageUpload(file, 'banners');
@@ -295,6 +304,8 @@ export default function BannerManagementPage() {
       window.alert(error.message);
 
     } finally {
+
+      setUploading(false);
 
       e.target.value = '';
 
@@ -321,6 +332,10 @@ export default function BannerManagementPage() {
   const handleSubmit = async (e) => {
 
     e.preventDefault();
+    if (saving || uploading) return;
+    setSaving(true);
+    setSaveError('');
+    setSaved(false);
 
     let normalizedImage = form.image;
 
@@ -331,6 +346,8 @@ export default function BannerManagementPage() {
     } catch (error) {
 
       window.alert(error.message);
+
+      setSaving(false);
 
       return;
 
@@ -383,10 +400,15 @@ export default function BannerManagementPage() {
       setMode('table');
 
       setForm(getEmptyForm());
+      setSaved(true);
 
     } catch (error) {
 
       console.error('Failed to save banner:', error);
+      setSaveError(error.message || 'Bannerni saqlab bo‘lmadi.');
+
+    } finally {
+      setSaving(false);
 
     }
 
@@ -416,6 +438,8 @@ export default function BannerManagementPage() {
 
             variant="outlined"
 
+            disabled={saving || uploading}
+
             onClick={() => setMode('table')}
 
           >
@@ -429,6 +453,7 @@ export default function BannerManagementPage() {
       >
 
         <form onSubmit={handleSubmit}>
+          {saveError && <Alert severity="error" sx={{ mb: 2 }}>{saveError}</Alert>}
 
           <Grid container spacing={2.5}>
 
@@ -973,15 +998,15 @@ export default function BannerManagementPage() {
 
               >
 
-                <Button variant="outlined" onClick={() => setMode('table')}>
+                <Button variant="outlined" disabled={saving || uploading} onClick={() => setMode('table')}>
 
                   Bekor qilish
 
                 </Button>
 
-                <Button type="submit" variant="contained">
+                <Button type="submit" variant="contained" disabled={saving || uploading}>
 
-                  Saqlash
+                  {uploading ? 'Rasm tayyorlanmoqda…' : saving ? 'Saqlanmoqda…' : 'Saqlash'}
 
                 </Button>
 
@@ -1024,6 +1049,7 @@ export default function BannerManagementPage() {
       }
 
     >
+      {saved && <Alert severity="success" sx={{ mb: 2 }} onClose={() => setSaved(false)}>Banner saqlandi. Saytga yangilanish yuborildi.</Alert>}
 
       <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
 

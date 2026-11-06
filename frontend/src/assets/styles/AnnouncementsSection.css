@@ -122,7 +122,7 @@
   border: var(--border-width) solid var(--surface-border);
   border-radius: var(--box-radius);
   background: #fff;
-  box-shadow: 0 8px 24px rgba(var(--theme-dark-rgb, 25, 41, 79), .045);
+  box-shadow: 0 8px 24px rgba(var(--theme-deep-rgb), 0.045);
 }
 
 /* Images fill the card edge to edge, without a blurred or empty surround. */

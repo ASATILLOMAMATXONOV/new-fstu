@@ -221,14 +221,14 @@ async function syncDefaultAdmin(existingUser) {
   return result.rows[0];
 }
 
-export async function ensureDefaultAdmin() {
+export async function ensureDefaultAdmin({ syncExisting = env.syncDefaultAdminOnBoot } = {}) {
   const existingUser = await getAdminByLoginOrEmail(
     env.defaultAdminLogin,
     env.defaultAdminEmail
   );
 
   if (existingUser) {
-    if (env.syncDefaultAdminOnBoot) {
+    if (syncExisting) {
       return syncDefaultAdmin(existingUser);
     }
 

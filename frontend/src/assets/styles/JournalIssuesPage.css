@@ -5,12 +5,12 @@
 ============================================ */
 
 .jar-page {
-  --jar-primary: #173b54;
-  --jar-accent: #087e90;
-  --jar-hover: #00f8ff;
-  --jar-text: #23394b;
+  --jar-primary: var(--brand-primary-deep);
+  --jar-accent: var(--brand-primary-dark);
+  --jar-hover: var(--brand-primary);
+  --jar-text: var(--brand-primary-deep);
   --jar-muted: #7c8b99;
-  --jar-border: #e6ebef;
+  --jar-border: var(--brand-primary-soft);
   --jar-white: #ffffff;
 
   width: 100%;
@@ -140,13 +140,13 @@
 
 .jar-tab:hover {
   color: var(--jar-primary);
-  background: #e9f2f5;
+  background: var(--brand-primary-soft);
 }
 
 .jar-tab.active {
   color: var(--jar-primary);
   background: #ffffff;
-  border-color: #e4eaf0;
+  border-color: var(--brand-primary-soft);
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
 }
 
@@ -173,7 +173,7 @@
 
 .jar-search:focus-within {
   border-color: var(--jar-accent);
-  box-shadow: 0 0 0 3px rgba(8, 126, 144, 0.08);
+  box-shadow: 0 0 0 3px rgba(var(--theme-dark-rgb), 0.08);
 }
 
 .jar-search svg {
@@ -193,7 +193,7 @@
 }
 
 .jar-search input::placeholder {
-  color: #9aa8b3;
+  color: var(--brand-primary-highlight);
 }
 
 /* ============================================
@@ -240,7 +240,7 @@
   height: 1px;
   margin: 32px 0 3px;
   border: none;
-  background: #dfe7ec;
+  background: var(--brand-primary-soft);
 }
 
 /* ============================================
@@ -330,7 +330,7 @@
   overflow: hidden;
 
   background: #f8fafc;
-  border: 1px solid #e4eaee;
+  border: 1px solid var(--brand-primary-soft);
   border-radius: 6px;
 
   transition:
@@ -350,7 +350,7 @@
 
 .jar-table-row:hover .jar-cover {
   transform: translateY(-4px) scale(1.025);
-  box-shadow: 0 9px 22px rgba(20, 50, 70, 0.12);
+  box-shadow: 0 9px 22px rgba(var(--theme-deep-rgb), 0.12);
 }
 
 /* ============================================
@@ -370,8 +370,8 @@
 
   background: linear-gradient(
     150deg,
-    #163f5a,
-    #388496
+    var(--brand-primary-deep),
+    var(--brand-primary-dark)
   );
   color: white;
   text-align: center;
@@ -418,7 +418,7 @@
 }
 
 .jar-journal-details > span {
-  color: #0d336b;
+  color: var(--brand-primary-deep);
   font-size: 11px;
   font-weight: 500;
 }
@@ -442,8 +442,8 @@
 }
 
 .jar-type-regular {
-  background: #edf5f6;
-  color: #427b88;
+  background: var(--brand-primary-muted);
+  color: var(--brand-primary-dark);
 }
 
 .jar-type-special {
@@ -486,21 +486,21 @@
 }
 
 .jar-pdf-open {
-  color: #1a73e8;
+  color: var(--brand-primary);
   background: #f2f6f8;
-  border: 1px solid #e5ecef;
+  border: 1px solid var(--brand-primary-soft);
 }
 
 .jar-pdf-open:hover {
   color: var(--jar-accent);
-  background: #eaf4f6;
+  background: var(--brand-primary-muted);
   border-color: var(--jar-hover);
 }
 
 .jar-pdf-download {
-  color: #1a73e8;
+  color: var(--brand-primary);
   background: #ffffff;
-  border: 1px solid #cbdce7;
+  border: 1px solid var(--brand-primary-soft);
 }
 
 .jar-pdf-download svg {
@@ -510,7 +510,7 @@
 
 .jar-pdf-download:hover {
   color: #ffffff;
-  background: #11536a;
+  background: var(--brand-primary-deep);
   border-color: var(--jar-hover);
   transform: translateY(-2px);
 }
@@ -520,7 +520,7 @@
 }
 
 .jar-pdf-empty {
-  color: #98a5af;
+  color: var(--brand-primary-highlight);
   font-size: 11px;
 }
 
@@ -538,7 +538,7 @@
   overflow-y: auto;
 
   scrollbar-width: thin;
-  scrollbar-color: #dce5eb transparent;
+  scrollbar-color: var(--brand-primary-soft) transparent;
 }
 
 /* ============================================

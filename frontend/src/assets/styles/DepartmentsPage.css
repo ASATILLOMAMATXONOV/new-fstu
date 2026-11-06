@@ -5,11 +5,11 @@
 ========================================== */
 
 .departments-page {
-  --dp-primary: #2462cc;
-  --dp-heading: #182b46;
-  --dp-text: #42536c;
+  --dp-primary: var(--brand-primary);
+  --dp-heading: var(--brand-primary-deep);
+  --dp-text: var(--brand-primary-dark);
   --dp-muted: #8493a7;
-  --dp-border: #e7ebf2;
+  --dp-border: var(--brand-primary-soft);
   --dp-soft: #f6f8fc;
 
   width: 100%;
@@ -60,7 +60,7 @@
   height: 7px;
   border-radius: 50%;
   background: var(--dp-primary);
-  box-shadow: 0 0 0 4px #e5edff;
+  box-shadow: 0 0 0 4px var(--brand-primary-muted);
 }
 
 .dp-header h1 {
@@ -135,7 +135,7 @@
   border-radius: 6px;
   overflow: hidden;
   background: #fff;
-  box-shadow: 0 7px 28px rgba(22, 49, 88, 0.025);
+  box-shadow: 0 7px 28px rgba(var(--theme-deep-rgb), 0.025);
 }
 
 /* LEFT NAVIGATION */
@@ -160,7 +160,7 @@
   gap: 10px;
   margin-bottom: 16px;
   padding: 0 2px;
-  color: #5d7497;
+  color: var(--brand-primary);
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 1.4px;
@@ -174,7 +174,7 @@
   height: 28px;
   padding: 0 10px;
   border-radius: 6px;
-  background: #eaf1ff;
+  background: var(--brand-primary-muted);
   color: var(--dp-primary);
   font-size: 12px;
   font-weight: 800;
@@ -191,18 +191,18 @@
   height: 46px;
   margin-bottom: 16px;
   padding: 0 14px;
-  border: 1px solid #dfe7f1;
+  border: 1px solid var(--brand-primary-soft);
   border-radius: 6px;
   background: #fff;
-  color: #97a6ba;
+  color: var(--brand-primary-highlight);
   transition:
     border-color 0.25s ease,
     box-shadow 0.25s ease;
 }
 
 .dp-search:focus-within {
-  border-color: #b7cbef;
-  box-shadow: 0 0 0 4px rgba(36, 98, 204, 0.06);
+  border-color: var(--brand-primary-soft);
+  box-shadow: 0 0 0 4px rgba(var(--theme-primary-rgb), 0.06);
 }
 
 .dp-search input {
@@ -218,7 +218,7 @@
 }
 
 .dp-search input::placeholder {
-  color: #a7b3c3;
+  color: var(--brand-primary-highlight);
 }
 
 .dp-search input::-webkit-search-cancel-button {
@@ -248,7 +248,7 @@
   overflow-x: hidden;
   overscroll-behavior: contain;
   scrollbar-width: thin;
-  scrollbar-color: #cdd9eb transparent;
+  scrollbar-color: var(--brand-primary-soft) transparent;
 }
 
 .dp-navigation-list::-webkit-scrollbar {
@@ -256,7 +256,7 @@
 }
 
 .dp-navigation-list::-webkit-scrollbar-thumb {
-  background: #d6e0ef;
+  background: var(--brand-primary-soft);
   border-radius: 6px;
 }
 
@@ -272,14 +272,14 @@
   height: auto;
   min-height: 88px;
   padding: 13px;
-  border: 1px solid #dde6f1;
+  border: 1px solid var(--brand-primary-soft);
   border-radius: 6px;
   background: #fff;
   text-align: left;
   font-family: inherit;
   cursor: pointer;
   overflow: hidden;
-  box-shadow: 0 3px 12px rgba(18, 43, 77, 0.025);
+  box-shadow: 0 3px 12px rgba(var(--theme-deep-rgb), 0.025);
   transition:
     transform 0.28s ease,
     box-shadow 0.28s ease,
@@ -289,15 +289,15 @@
 
 .dp-nav-item:hover {
   transform: translateY(-2px);
-  border-color: #b9d0f4;
-  box-shadow: 0 8px 22px rgba(24, 67, 140, 0.08);
+  border-color: var(--brand-primary-soft);
+  box-shadow: 0 8px 22px rgba(var(--theme-dark-rgb), 0.08);
   background: #fbfdff;
 }
 
 .dp-nav-item.active {
-  border-color: #bbd1f3;
-  background: #eef5ff;
-  box-shadow: 0 8px 22px rgba(36, 98, 204, 0.08);
+  border-color: var(--brand-primary-soft);
+  background: var(--brand-primary-muted);
+  box-shadow: 0 8px 22px rgba(var(--theme-primary-rgb), 0.08);
 }
 
 /* ACTIVE INDICATOR */
@@ -331,7 +331,7 @@
   width: 54px;
   height: 54px;
   overflow: hidden;
-  border: 1px solid #e3eaf3;
+  border: 1px solid var(--brand-primary-soft);
   border-radius: 6px;
   background: #fff;
   color: var(--dp-primary);
@@ -350,8 +350,8 @@
 
 .dp-nav-item:hover .dp-nav-logo {
   transform: scale(1.05);
-  border-color: #cad9ef;
-  box-shadow: 0 8px 18px rgba(36, 98, 204, 0.10);
+  border-color: var(--brand-primary-soft);
+  box-shadow: 0 8px 18px rgba(var(--theme-primary-rgb), 0.1);
 }
 
 /* FACULTY TEXT */
@@ -373,7 +373,7 @@
   flex: 1;
   min-width: 0;
   margin: 0;
-  color: #2e4261;
+  color: var(--brand-primary-dark);
   font-size: 12px;
   font-weight: 700;
   line-height: 1.6;
@@ -386,7 +386,7 @@
 
 .dp-nav-item:hover .dp-nav-title,
 .dp-nav-item.active .dp-nav-title {
-  color: #184b9f;
+  color: var(--brand-primary-dark);
 }
 
 /* ARROW */
@@ -399,7 +399,7 @@
   height: 25px;
   margin-left: auto;
   border-radius: 6px;
-  background: #f1f5fb;
+  background: var(--brand-primary-muted);
   color: #8ea1b8;
   transition:
     transform 0.28s ease,
@@ -409,7 +409,7 @@
 
 .dp-nav-item:hover .dp-nav-arrow,
 .dp-nav-item.active .dp-nav-arrow {
-  background: #e2edff;
+  background: var(--brand-primary-muted);
   color: var(--dp-primary);
   transform: translateX(3px);
 }
@@ -455,7 +455,7 @@
   flex-wrap: wrap;
   gap: 10px;
   margin-bottom: 24px;
-  color: #98a5b6;
+  color: var(--brand-primary-highlight);
   font-size: 10px;
   font-weight: 750;
   letter-spacing: 1.1px;
@@ -465,7 +465,7 @@
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  color: #6781a5;
+  color: var(--brand-primary);
   font-size: 10px;
   font-weight: 600;
   letter-spacing: 0;
@@ -475,7 +475,7 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #32b58b;
+  background: var(--brand-primary);
 }
 
 /* FACULTY PROFILE */
@@ -560,7 +560,7 @@
 .dp-section-caption {
   display: block;
   margin-bottom: 8px;
-  color: #a0acbb;
+  color: var(--brand-primary-highlight);
   font-size: 9px;
   font-weight: 800;
   letter-spacing: 1.3px;
@@ -607,8 +607,8 @@
 a.dp-department-item:hover {
   transform: translateX(4px);
   background: #f8fbff;
-  border-color: #b9cfee;
-  box-shadow: 0 5px 18px rgba(30, 75, 140, 0.05);
+  border-color: var(--brand-primary-soft);
+  box-shadow: 0 5px 18px rgba(var(--theme-dark-rgb), 0.05);
 }
 
 .dp-department-index {
@@ -618,7 +618,7 @@ a.dp-department-item:hover {
   width: 33px;
   height: 33px;
   border-radius: 5px;
-  background: #f0f4fb;
+  background: var(--brand-primary-muted);
   color: #7990ae;
   font-size: 11px;
   font-weight: 750;
@@ -631,7 +631,7 @@ a.dp-department-item:hover {
 
 .dp-department-info h4 {
   margin: 0;
-  color: #2f4260;
+  color: var(--brand-primary-dark);
   font-size: 12px;
   font-weight: 700;
   line-height: 1.55;
@@ -640,13 +640,13 @@ a.dp-department-item:hover {
 
 .dp-department-info p {
   margin: 5px 0 0;
-  color: #9ca8b8;
+  color: var(--brand-primary-highlight);
   font-size: 10px;
 }
 
 .dp-department-arrow {
   flex-shrink: 0;
-  color: #9eacbd;
+  color: var(--brand-primary-highlight);
   transition:
     transform 0.2s ease,
     color 0.2s ease;
@@ -666,7 +666,7 @@ a.dp-department-item:hover .dp-department-arrow {
 .dp-empty {
   padding: 55px 20px;
   text-align: center;
-  color: #9cabbd;
+  color: var(--brand-primary-highlight);
 }
 
 .dp-empty h3 {
@@ -692,7 +692,7 @@ a.dp-department-item:hover .dp-department-arrow {
 .dp-nav-item:focus-visible,
 .dp-navigation button:focus-visible,
 .dp-content a:focus-visible {
-  outline: 2px solid #8fb5f6;
+  outline: 2px solid var(--brand-primary-highlight);
   outline-offset: 2px;
 }
 

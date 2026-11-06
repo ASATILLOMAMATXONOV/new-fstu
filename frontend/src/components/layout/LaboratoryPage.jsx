@@ -58,7 +58,7 @@ export default function LaboratoryPage() {
   const activeId = hoveredId ?? focusedId;
 
   const laboratories = useMemo(() => {
-    const colors = ["#f5d51c", "#ed6331", "#34a9c4", "#2569a4"];
+    const colors = ["var(--brand-primary)", "var(--brand-primary-dark)", "var(--brand-primary-highlight)", "var(--brand-primary-deep)"];
     const cmsItems = items
       .filter((item) => item && item.active !== false)
       .sort((left, right) => Number(left.order || 0) - Number(right.order || 0))

@@ -5,6 +5,7 @@ import { createApp } from './app.js';
 import { env } from './config/env.js';
 import { closePool, testConnection } from './db/pool.js';
 import { ensureDefaultAdmin } from './modules/account/account.service.js';
+import { closePublicContentStreams } from './modules/content/content.routes.js';
 import { validateSecurityConfiguration } from './utils/security-config.js';
 import { securityStore } from './modules/security/security.store.js';
 import { runDependencyAudit } from './modules/security/security-audit.js';
@@ -67,6 +68,7 @@ async function startServer() {
     if (shuttingDown) return;
 
     shuttingDown = true;
+    closePublicContentStreams();
     clearInterval(cleanupTimer);
     clearInterval(auditTimer);
 

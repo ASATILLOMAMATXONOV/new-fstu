@@ -10,6 +10,7 @@ import { env } from '../../config/env.js';
 import { decryptSecret, encryptSecret, recoveryCodes, totp } from './auth-crypto.js';
 import { createSession, sessionCookieName } from './session.service.js';
 import { verifyLoginMfa } from './mfa.service.js';
+import { ensureDefaultAdmin } from './account.service.js';
 
 const enabled = process.env.SECURITY_DB_TESTS === '1';
 const integration = (name, action) => test(name, { skip: !enabled }, action);
@@ -80,6 +81,46 @@ after(async () => {
   if (database) await database.end();
   await ownerClient.query(`DROP SCHEMA IF EXISTS ${schema} CASCADE`);
   await ownerClient.end(); await pool.end();
+});
+
+integration('admin seeder explicitly restores env credentials without resetting them on normal startup', async () => {
+  const originalDefaults = {
+    defaultAdminLogin: env.defaultAdminLogin,
+    defaultAdminEmail: env.defaultAdminEmail,
+    defaultAdminFullName: env.defaultAdminFullName,
+    defaultAdminPassword: env.defaultAdminPassword,
+    syncDefaultAdminOnBoot: env.syncDefaultAdminOnBoot
+  };
+  const seedPassword = 'Cobalt!Ocean7-MoonRiver';
+  try {
+    Object.assign(env, {
+      defaultAdminLogin: 'owner', defaultAdminEmail: 'owner@example.test',
+      defaultAdminFullName: 'Test Owner', defaultAdminPassword: seedPassword,
+      syncDefaultAdminOnBoot: false
+    });
+    await database.query(`UPDATE admin_users SET active=FALSE,failed_login_attempts=5,
+      locked_until=NOW()+INTERVAL '15 minutes' WHERE id=1`);
+    await ensureDefaultAdmin();
+    const unchanged = (await database.query('SELECT * FROM admin_users WHERE id=1')).rows[0];
+    assert.equal(await bcrypt.compare(seedPassword, unchanged.password_hash), false);
+    assert.equal(unchanged.active, false);
+
+    await ensureDefaultAdmin({ syncExisting: true });
+    const synced = (await database.query('SELECT * FROM admin_users WHERE id=1')).rows[0];
+    assert.equal(await bcrypt.compare(seedPassword, synced.password_hash), true);
+    assert.equal(synced.email, 'owner@example.test');
+    assert.equal(synced.active, true);
+    assert.equal(synced.failed_login_attempts, 0);
+    assert.equal(synced.locked_until, null);
+    assert.equal(synced.token_version, unchanged.token_version + 1);
+
+    env.defaultAdminPassword = 'Different!Bootstrap9-Silver';
+    await ensureDefaultAdmin();
+    const afterRestart = (await database.query('SELECT password_hash FROM admin_users WHERE id=1')).rows[0];
+    assert.equal(await bcrypt.compare(seedPassword, afterRestart.password_hash), true);
+  } finally {
+    Object.assign(env, originalDefaults);
+  }
 });
 
 integration('with ADMIN_MFA_REQUIRED disabled, a correct password alone grants a session', async () => {

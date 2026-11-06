@@ -62,7 +62,7 @@ export function useSetting(key, options = {}) {
     const unsubscribe = enabled && Boolean(key) && shouldRevalidate
       ? subscribeToCmsChanges(() => {
           load(true);
-        })
+        }, { setting: key })
       : () => {};
 
     return () => {

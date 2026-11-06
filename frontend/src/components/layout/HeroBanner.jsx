@@ -13,18 +13,20 @@ const getImageKey = slide => `${slide.desktopImage}|${slide.mobileImage}`;
 function HeroBanner() {
   const { currentLanguageCode } = useLanguage();
   const texts = useMemo(() => getSiteMessages(currentLanguageCode).home.heroBanner, [currentLanguageCode]);
-  const { items, loading } = useContentList('banners', { revalidate: true });
+  const { items, loading } = useContentList('banners', { revalidate: true, refreshOnMount: true });
   const [carousel, setCarousel] = useState({ position: 1, moving: false });
   const [readyImages, setReadyImages] = useState(() => new Set());
   const [reducedMotion, setReducedMotion] = useState(false);
   const movingRef = useRef(false);
+  const previousSlidesRef = useRef([]);
+  const activeSlideIdRef = useRef(null);
   const slides = useMemo(() => (items || [])
     .filter(item => item?.active !== false)
     .map(item => {
       const field = key => String(item?.[currentLanguageCode]?.[key] || item?.translations?.[currentLanguageCode]?.[key] || getTranslatedField(item, key) || '').trim();
       return {
         id: item.id,
-        desktopImage: item.image || '',
+        desktopImage: item.image || item.mobileImage || '',
         mobileImage: item.mobileImage || item.image || '',
         title: field('title'),
         text: field('subtitle'),
@@ -46,9 +48,18 @@ function HeroBanner() {
     : slides, [slides, hasMultipleSlides]);
 
   useLayoutEffect(() => {
+    const previous = previousSlidesRef.current;
+    const changedIndex = previous.length ? slides.findIndex(slide => {
+      const oldSlide = previous.find(item => item.id === slide.id);
+      return !oldSlide || getImageKey(oldSlide) !== getImageKey(slide);
+    }) : -1;
+    const nextIndex = changedIndex >= 0 ? changedIndex : Math.max(0, slides.findIndex(slide => slide.id === activeSlideIdRef.current));
+    previousSlidesRef.current = slides;
     movingRef.current = false;
-    setCarousel({ position: hasMultipleSlides ? 1 : 0, moving: false });
-  }, [slideKey, hasMultipleSlides]);
+    setCarousel({ position: hasMultipleSlides ? nextIndex + 1 : 0, moving: false });
+  }, [slides, slideKey, hasMultipleSlides]);
+
+  useEffect(() => { activeSlideIdRef.current = slides[activeSlide]?.id ?? null; }, [activeSlide, slides]);
 
   useEffect(() => {
     const media = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -135,7 +146,7 @@ function HeroBanner() {
             const isVisible = index === visiblePosition;
             // Secondary slides get their image URL only after the first banner has loaded,
             // so the LCP image does not share bandwidth with them.
-            const canLoadImage = index === primaryIndex || primaryLoaded;
+            const canLoadImage = isVisible || index === primaryIndex || primaryLoaded;
             return (
               <div className="hero-slide" key={`${index}-${slide.id}`} aria-hidden={!isVisible} inert={!isVisible || undefined}>
                 <div className="hero-media" aria-hidden="true">
@@ -154,7 +165,7 @@ function HeroBanner() {
                         srcSet={canLoadImage ? buildSrcSet(slide.desktopImage) : undefined}
                         sizes="100vw"
                         alt=""
-                        fetchPriority={index === primaryIndex ? 'high' : 'low'}
+                        fetchPriority={isVisible ? 'high' : 'low'}
                         loading="eager"
                         decoding="async"
                         onLoad={event => markImageReady(event.currentTarget, slide)}

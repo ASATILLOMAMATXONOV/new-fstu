@@ -101,3 +101,23 @@ test('reduced motion stops autoplay and lets controls change slides immediately'
   expect(screen.getByRole('heading').textContent).toBe('Banner 2');
   expect(container.querySelector('.hero-track').classList.contains('is-moving')).toBe(false);
 });
+
+test('a newly saved banner is shown immediately even if its order is last', () => {
+  const { container, rerender } = render(<HeroBanner />);
+  useContentList.mockReturnValue({ items: [...banners, {
+    id: 3, image: '/new-banner.jpg', order: 3, uz: { title: 'Yangi banner' }
+  }] });
+  rerender(<HeroBanner />);
+
+  expect(screen.getByRole('heading').textContent).toBe('Yangi banner');
+  const image = container.querySelector('.hero-slide[aria-hidden="false"] img');
+  expect(image.getAttribute('src')).toBe('/new-banner.jpg');
+  expect(image.getAttribute('fetchpriority')).toBe('high');
+});
+
+test('an updated banner image replaces the displayed slide without waiting for autoplay', () => {
+  const { rerender } = render(<HeroBanner />);
+  useContentList.mockReturnValue({ items: [banners[0], { ...banners[1], image: '/updated-banner.jpg' }] });
+  rerender(<HeroBanner />);
+  expect(screen.getByRole('heading').textContent).toBe('Banner 2');
+});

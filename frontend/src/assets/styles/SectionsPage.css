@@ -6,11 +6,11 @@
 
 .sections-page {
   --sp-primary: var(--brand-primary, #176db5);
-  --sp-dark: #1a304d;
-  --sp-text: #405571;
+  --sp-dark: var(--brand-primary-deep);
+  --sp-text: var(--brand-primary-dark);
   --sp-muted: #8292a7;
-  --sp-border: #e1e9f2;
-  --sp-soft: #f3f7fc;
+  --sp-border: var(--brand-primary-soft);
+  --sp-soft: var(--brand-primary-muted);
 
   width: 100%;
   min-height: 100vh;
@@ -66,7 +66,7 @@
 }
 
 .sections-toolbar__label {
-  color: #617894;
+  color: var(--brand-primary);
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 1.1px;
@@ -81,10 +81,10 @@
   width: min(100%, 320px);
   height: 42px;
   padding: 0 12px;
-  border: 1px solid #dfe8f2;
+  border: 1px solid var(--brand-primary-soft);
   border-radius: 6px;
   background: #fafcff;
-  color: #91a4ba;
+  color: var(--brand-primary-highlight);
   transition:
     border-color 0.22s ease,
     box-shadow 0.22s ease,
@@ -92,9 +92,9 @@
 }
 
 .sections-search:focus-within {
-  border-color: #aacbed;
+  border-color: var(--brand-primary-highlight);
   background: #fff;
-  box-shadow: 0 0 0 4px rgba(30, 105, 185, 0.06);
+  box-shadow: 0 0 0 4px rgba(var(--theme-dark-rgb), 0.06);
 }
 
 .sections-search > svg {
@@ -115,7 +115,7 @@
 }
 
 .sections-search input::placeholder {
-  color: #9caabd;
+  color: var(--brand-primary-highlight);
 }
 
 .sections-search input::-webkit-search-cancel-button {
@@ -157,7 +157,7 @@
   background: #fff;
   color: inherit;
   text-decoration: none;
-  box-shadow: 0 4px 16px rgba(25, 62, 105, 0.025);
+  box-shadow: 0 4px 16px rgba(var(--theme-dark-rgb), 0.025);
   animation: sp-card-enter 0.5s ease both;
   transition:
     transform 0.28s ease,
@@ -167,8 +167,8 @@
 
 .sections-card:hover {
   transform: translateY(-4px);
-  border-color: #b8d1ea;
-  box-shadow: 0 14px 30px rgba(22, 69, 120, 0.09);
+  border-color: var(--brand-primary-highlight);
+  box-shadow: 0 14px 30px rgba(var(--theme-dark-rgb), 0.09);
 }
 
 /* IMAGE */
@@ -181,11 +181,11 @@
   min-width: 0;
   min-height: 180px;
   padding: 12px;
-  border-right: 1px solid #e6edf5;
+  border-right: 1px solid var(--brand-primary-soft);
   background: linear-gradient(
     155deg,
     #f6f9fe 0%,
-    #edf4fd 100%
+    var(--brand-primary-muted) 100%
   );
   overflow: hidden;
 }
@@ -209,10 +209,10 @@
   place-items: center;
   width: 65px;
   height: 65px;
-  border: 1px solid #d6e5f6;
+  border: 1px solid var(--brand-primary-soft);
   border-radius: 6px;
-  background: #e7f1fc;
-  color: #5b93c7;
+  background: var(--brand-primary-muted);
+  color: var(--brand-primary);
 }
 
 .sections-card__placeholder svg {
@@ -231,7 +231,7 @@
 
 .sections-card h3 {
   margin: 0;
-  color: #233954;
+  color: var(--brand-primary-deep);
   font-size: 16px;
   font-weight: 750;
   line-height: 1.55;
@@ -265,9 +265,9 @@
   flex-shrink: 0;
   width: 28px;
   height: 28px;
-  border: 1px solid #dce8f6;
+  border: 1px solid var(--brand-primary-soft);
   border-radius: 6px;
-  background: #f0f6fd;
+  background: var(--brand-primary-muted);
   color: var(--sp-primary);
   transition:
     transform 0.25s ease,
@@ -337,10 +337,10 @@
   min-width: 37px;
   height: 37px;
   padding: 0 9px;
-  border: 1px solid #e0e8f2;
+  border: 1px solid var(--brand-primary-soft);
   border-radius: 6px;
   background: #fff;
-  color: #657b98;
+  color: var(--brand-primary);
   font-family: inherit;
   font-size: 12px;
   font-weight: 700;
@@ -354,8 +354,8 @@
 
 .sections-pagination button:hover:not(:disabled) {
   transform: translateY(-2px);
-  border-color: #b7cfea;
-  background: #f0f6fd;
+  border-color: var(--brand-primary-highlight);
+  background: var(--brand-primary-muted);
   color: var(--sp-primary);
 }
 
@@ -394,7 +394,7 @@
   height: 64px;
   margin-bottom: 18px;
   border-radius: 6px;
-  background: #eaf3fe;
+  background: var(--brand-primary-muted);
   color: var(--sp-primary);
 }
 
@@ -415,9 +415,9 @@
 .sections-empty-state button {
   margin-top: 18px;
   padding: 10px 15px;
-  border: 1px solid #c6d9ed;
+  border: 1px solid var(--brand-primary-soft);
   border-radius: 6px;
-  background: #f1f7fd;
+  background: var(--brand-primary-muted);
   color: var(--sp-primary);
   font-weight: 700;
   cursor: pointer;
@@ -433,7 +433,7 @@
 
 .sections-skeleton__image {
   width: 170px;
-  background: #eaf0f7;
+  background: var(--brand-primary-muted);
 }
 
 .sections-skeleton__body {
@@ -450,9 +450,9 @@
   border-radius: 6px;
   background: linear-gradient(
     90deg,
-    #e9eef5 0%,
+    var(--brand-primary-soft) 0%,
     #f7f9fc 50%,
-    #e9eef5 100%
+    var(--brand-primary-soft) 100%
   );
   background-size: 200% 100%;
   animation: sp-skeleton 1.5s linear infinite;

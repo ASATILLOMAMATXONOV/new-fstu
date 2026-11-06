@@ -60,7 +60,7 @@
   overflow: hidden;
 
   box-shadow:
-    0 8px 28px rgba(18, 61, 99, .055);
+    0 8px 28px rgba(var(--theme-deep-rgb), 0.055);
 
   animation: ndEnter .55s ease both;
 }
@@ -86,7 +86,7 @@
   background:
     linear-gradient(
       145deg,
-      #edf4f8,
+      var(--brand-primary-muted),
       #f7fafc
     );
 
@@ -106,7 +106,7 @@
   background:
     radial-gradient(
       circle at 50% 50%,
-      rgba(15, 145, 187, .045),
+      rgba(var(--theme-dark-rgb), 0.045),
       transparent 65%
     );
 
@@ -263,7 +263,7 @@
   border: 1px solid var(--nd-border);
   border-radius: var(--nd-radius);
 
-  background: #eff8fd;
+  background: var(--brand-primary-muted);
   color: var(--nd-primary);
 
   font-size: 12px;
@@ -341,7 +341,7 @@
   border-left: 3px solid var(--nd-primary);
   border-radius: 0 6px 6px 0;
 
-  background: #f3f9fc;
+  background: var(--brand-primary-muted);
 
   color: var(--nd-muted);
 }
@@ -426,9 +426,9 @@
 
   background: linear-gradient(
     100deg,
-    #edf3f8 20%,
+    var(--brand-primary-muted) 20%,
     #f9fbfd 45%,
-    #edf3f8 70%
+    var(--brand-primary-muted) 70%
   );
 
   background-size: 200% 100%;
@@ -444,7 +444,7 @@
 
   border-radius: 4px;
 
-  background: #e7edf3;
+  background: var(--brand-primary-soft);
 }
 
 .news-detail-loading-text.short {

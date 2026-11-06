@@ -9,6 +9,7 @@ import { getSiteMessages } from '../../locales/site';
 import AppLink from '../common/AppLink';
 import { useMenuTree } from '../../hooks/useMenuTree';
 import { getMenuNodeHref, getMenuNodeTitle, sortMenuNodes } from '../../utils/menu';
+import { getCssZoom } from '../../utils/cssZoom';
 
 const topbarSocials = [
   {
@@ -343,7 +344,9 @@ function Navbar() {
       const style = window.getComputedStyle(menu);
       const menuItems = [...menu.children];
       const gap = parseFloat(style.columnGap) || 0;
-      const requiredWidth = menuItems.reduce((width, item) => width + item.getBoundingClientRect().width, 0)
+      // clientWidth/gap menyuning o'z px birligida, getBoundingClientRect esa zoom qilingan.
+      const zoom = getCssZoom(menu);
+      const requiredWidth = menuItems.reduce((width, item) => width + item.getBoundingClientRect().width, 0) / zoom
         + Math.max(0, menuItems.length - 1) * gap;
       const availableWidth = menu.clientWidth
         - (parseFloat(style.paddingLeft) || 0)
@@ -438,7 +441,7 @@ function Navbar() {
         '.stripe-dropdown-content-enter'
       );
 
-      setDropdownHeight(Math.ceil(activeContent?.getBoundingClientRect().height || 0));
+      setDropdownHeight(Math.ceil((activeContent?.getBoundingClientRect().height || 0) / getCssZoom(activeContent)));
     });
   }, []);
 

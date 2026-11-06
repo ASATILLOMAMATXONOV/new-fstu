@@ -67,7 +67,7 @@ export function useMenuTree(resource = 'menus', options = {}) {
     const unsubscribe = enabled && shouldRevalidate
       ? subscribeToCmsChanges(() => {
           load(true);
-        })
+        }, { resource })
       : () => {};
 
     return () => {

@@ -43,6 +43,7 @@ import {
   createContentItem,
   deleteContentItem,
   fetchContentList,
+  fetchContentOptions,
   updateContentItem
 } from 'api/cms';
 import { fileToDataUrl } from 'utils/file';
@@ -352,7 +353,7 @@ export default function EmployeesPortfolioManagementPage() {
       try {
         const [employeeItems, facultyItems] = await Promise.all([
           fetchContentList('employees-portfolios'),
-          fetchContentList('faculties')
+          fetchContentOptions('faculties')
         ]);
 
         if (cancelled) {

@@ -13,6 +13,14 @@ let persistedCacheLoaded = false;
 let currentRevisionSignature = '';
 let revisionPollTimer = null;
 let pendingRevisionRequest = null;
+let revisionStream = null;
+let lastRevisionCheckAt = 0;
+let revisionStopTimer = null;
+// Sahifa almashganda komponentlar unmount/mount bo'ladi: kuzatuvni darhol to'xtatib
+// qayta boshlash har safar yangi __revision so'rovi va SSE ulanishini ochadi.
+const REVISION_STOP_GRACE_MS = 15000;
+const REVISION_MIN_CHECK_GAP_MS = 5000;
+let cacheGeneration = 0;
 const revisionListeners = new Set();
 
 const DEFAULT_CACHE_TTL_MS = 3 * 60 * 1000;
@@ -186,6 +194,7 @@ function readCachedResponse(path) {
 }
 
 export function clearCmsCache() {
+  cacheGeneration += 1;
   if (cachePersistTimer !== null) {
     window.clearTimeout(cachePersistTimer);
     cachePersistTimer = null;
@@ -248,7 +257,7 @@ function normalizeCmsPayload(value, baseUrl) {
   }
 
   return Object.entries(value).reduce((accumulator, [key, itemValue]) => {
-    if ((key === 'image' || key === 'imageUrl') && typeof itemValue === 'string') {
+    if ((key === 'image' || key === 'imageUrl' || key === 'mobileImage') && typeof itemValue === 'string') {
       accumulator[key] = normalizeMediaUrl(itemValue, baseUrl);
       return accumulator;
     }
@@ -311,6 +320,7 @@ function takePrefetchedResponse(url) {
 
 async function request(path, options = {}) {
   const force = options?.force === true;
+  const generation = cacheGeneration;
   const pendingKey = `${force ? 'force' : 'default'}:${path}`;
 
   if (!force) {
@@ -333,7 +343,7 @@ async function request(path, options = {}) {
     for (const baseUrl of API_BASE_URL_CANDIDATES) {
       try {
         const url = buildApiUrl(path, baseUrl);
-        const response = await (takePrefetchedResponse(url) || fetch(url, {
+        const response = await (((!force || options.allowPrefetch) && takePrefetchedResponse(url)) || fetch(url, {
           cache: 'no-store'
         }));
 
@@ -344,7 +354,9 @@ async function request(path, options = {}) {
         }
 
         const data = normalizeCmsPayload(await response.json(), baseUrl);
-        return writeCachedResponse(path, data, getResponseCacheTtl(path, response));
+        return generation === cacheGeneration
+          ? writeCachedResponse(path, data, getResponseCacheTtl(path, response))
+          : data;
       } catch (error) {
         if (error?.status) {
           throw error;
@@ -365,7 +377,7 @@ async function request(path, options = {}) {
   try {
     return await requestPromise;
   } finally {
-    pendingRequests.delete(pendingKey);
+    if (pendingRequests.get(pendingKey) === requestPromise) pendingRequests.delete(pendingKey);
     notifyLoadingListeners();
   }
 }
@@ -400,6 +412,28 @@ async function requestContentRevision() {
   throw networkError;
 }
 
+function acceptContentRevision(revision) {
+  if (!Number.isFinite(Number(revision?.revision)) || Number(revision.revision) < 1) return;
+  const nextSignature = buildRevisionSignature(revision);
+  const previousSignature = currentRevisionSignature || readStoredRevisionSignature();
+  if (previousSignature && Number(revision.revision) < Number(previousSignature.split(':')[0])) return;
+  currentRevisionSignature = nextSignature;
+  writeStoredRevisionSignature(nextSignature);
+  if (previousSignature && previousSignature !== nextSignature) {
+    clearCmsCache();
+    revisionListeners.forEach((listener) => listener(revision));
+  }
+}
+
+function startRevisionStream() {
+  if (revisionStream || typeof window.EventSource !== 'function') return;
+  revisionStream = new window.EventSource(buildApiUrl(API_ENDPOINTS.contentEvents()));
+  revisionStream.onmessage = (event) => {
+    try { acceptContentRevision(JSON.parse(event.data)); } catch { /* Ignore malformed stream messages. */ }
+  };
+  revisionStream.onerror = () => { void pollContentRevision(); };
+}
+
 async function pollContentRevision() {
   if (!canUseDom()) {
     return null;
@@ -410,18 +444,10 @@ async function pollContentRevision() {
   }
 
   pendingRevisionRequest = (async () => {
+    lastRevisionCheckAt = Date.now();
     try {
       const revision = await requestContentRevision();
-      const nextSignature = buildRevisionSignature(revision);
-      const previousSignature = currentRevisionSignature || readStoredRevisionSignature();
-
-      currentRevisionSignature = nextSignature;
-      writeStoredRevisionSignature(nextSignature);
-
-      if (previousSignature && previousSignature !== nextSignature) {
-        clearCmsCache();
-        revisionListeners.forEach((listener) => listener(revision));
-      }
+      acceptContentRevision(revision);
 
       return revision;
     } catch (error) {
@@ -442,43 +468,76 @@ function handleRevisionVisibilityChange() {
 }
 
 function startRevisionPolling() {
+  if (canUseDom() && revisionStopTimer !== null) {
+    window.clearTimeout(revisionStopTimer);
+    revisionStopTimer = null;
+  }
+
   if (!canUseDom() || revisionPollTimer || !revisionListeners.size) {
     return;
   }
 
   window.addEventListener('focus', handleRevisionVisibilityChange);
   document.addEventListener('visibilitychange', handleRevisionVisibilityChange);
+  startRevisionStream();
 
   revisionPollTimer = window.setInterval(() => {
-    if (document.visibilityState === 'visible') {
+    if (revisionStream?.readyState === 2) {
+      revisionStream.close();
+      revisionStream = null;
+    }
+    if (document.visibilityState === 'visible') startRevisionStream();
+    const streamConnected = revisionStream?.readyState === 1;
+    if (document.visibilityState === 'visible' && (!streamConnected || Date.now() - lastRevisionCheckAt >= REVISION_POLL_INTERVAL_MS)) {
       void pollContentRevision();
     }
-  }, REVISION_POLL_INTERVAL_MS);
+  }, 5000);
 
-  void pollContentRevision();
+  if (Date.now() - lastRevisionCheckAt >= REVISION_MIN_CHECK_GAP_MS) {
+    void pollContentRevision();
+  }
 }
 
 function stopRevisionPolling() {
-  if (!canUseDom() || revisionListeners.size || !revisionPollTimer) {
+  if (!canUseDom() || revisionListeners.size || !revisionPollTimer || revisionStopTimer !== null) {
+    return;
+  }
+
+  revisionStopTimer = window.setTimeout(() => {
+    revisionStopTimer = null;
+    stopRevisionPollingNow();
+  }, REVISION_STOP_GRACE_MS);
+}
+
+function stopRevisionPollingNow() {
+  if (revisionListeners.size || !revisionPollTimer) {
     return;
   }
 
   window.clearInterval(revisionPollTimer);
   revisionPollTimer = null;
+  revisionStream?.close();
+  revisionStream = null;
   window.removeEventListener('focus', handleRevisionVisibilityChange);
   document.removeEventListener('visibilitychange', handleRevisionVisibilityChange);
 }
 
-export function subscribeToCmsChanges(listener) {
+export function subscribeToCmsChanges(listener, scope = {}) {
   if (typeof listener !== 'function' || !canUseDom()) {
     return () => {};
   }
 
-  revisionListeners.add(listener);
+  const normalizeResource = (value) => value === 'academic-menus' ? 'menus' : value;
+  const scopedListener = (revision) => {
+    if ((!scope.resource && !scope.setting) || (!revision.resource && !revision.setting) ||
+      (scope.resource && normalizeResource(scope.resource) === normalizeResource(revision.resource)) ||
+      (scope.setting && scope.setting === revision.setting)) listener(revision);
+  };
+  revisionListeners.add(scopedListener);
   startRevisionPolling();
 
   return () => {
-    revisionListeners.delete(listener);
+    revisionListeners.delete(scopedListener);
     stopRevisionPolling();
   };
 }

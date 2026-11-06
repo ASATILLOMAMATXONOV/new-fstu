@@ -73,3 +73,23 @@ test.each([
   expect(cms.fetchContentTree).not.toHaveBeenCalled();
   expect(cms.subscribeToCmsChanges).not.toHaveBeenCalled();
 });
+
+test('banners refresh cached data on mount and scope live changes to banners', async () => {
+  cms.getCachedContentList.mockReturnValue([{ id: 'cached' }]);
+  cms.fetchContentList.mockResolvedValue([{ id: 'fresh' }]);
+  const { result } = renderHook(() => useContentList('banners', { refreshOnMount: true }));
+  await waitFor(() => expect(result.current.items).toEqual([{ id: 'fresh' }]));
+  expect(cms.fetchContentList).toHaveBeenCalledWith('banners', {}, { force: true, allowPrefetch: true });
+  expect(cms.subscribeToCmsChanges.mock.calls[0][1]).toEqual({ resource: 'banners' });
+});
+
+test('a slow initial response cannot overwrite a live banner update', async () => {
+  let resolveOld;
+  cms.getCachedContentList.mockReturnValue(null);
+  cms.fetchContentList.mockReturnValueOnce(new Promise(resolve => { resolveOld = resolve; }));
+  const { result } = renderHook(() => useContentList('banners'));
+  cms.fetchContentList.mockResolvedValueOnce([{ id: 'new-banner' }]);
+  await act(async () => cms.subscribeToCmsChanges.mock.calls[0][0]());
+  await act(async () => resolveOld([{ id: 'old-banner' }]));
+  expect(result.current.items).toEqual([{ id: 'new-banner' }]);
+});

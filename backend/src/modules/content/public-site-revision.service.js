@@ -4,6 +4,12 @@ import { query } from '../../db/pool.js';
 const PUBLIC_SITE_REVISION_KEY = 'site';
 let revisionTableReady = false;
 let revisionTablePromise = null;
+const revisionSubscribers = new Set();
+
+export function subscribeToPublicSiteRevision(listener) {
+  revisionSubscribers.add(listener);
+  return () => revisionSubscribers.delete(listener);
+}
 
 async function createRevisionTableIfNeeded() {
   await query(`
@@ -75,7 +81,7 @@ export async function getPublicSiteRevision() {
   return mapRevision(result.rows[0]);
 }
 
-export async function touchPublicSiteRevision() {
+export async function touchPublicSiteRevision(change = {}) {
   await ensureRevisionTable();
 
   const result = await query(
@@ -91,5 +97,9 @@ export async function touchPublicSiteRevision() {
     [PUBLIC_SITE_REVISION_KEY]
   );
 
-  return mapRevision(result.rows[0]);
+  const revision = { ...mapRevision(result.rows[0]), ...change };
+  for (const listener of revisionSubscribers) {
+    try { listener(revision); } catch { /* A disconnected visitor must not interrupt a saved CMS change. */ }
+  }
+  return revision;
 }

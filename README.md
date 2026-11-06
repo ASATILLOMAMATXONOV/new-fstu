@@ -43,6 +43,17 @@ npm run start
 
 ## Ma’muriyat
 
+Admin login yoki paroli `backend/.env`dagi qiymatlarga mos kelmasa, faqat admin hisobini tiklash uchun:
+
+```bash
+cd backend
+npm run db:seed:admin
+```
+
+Bu buyruq `DEFAULT_ADMIN_LOGIN`, `DEFAULT_ADMIN_EMAIL`, `DEFAULT_ADMIN_PASSWORD` bilan hisobni yaratadi yoki yangilaydi va vaqtinchalik hisob blokini tozalaydi. Sayt kontentiga tegmaydi. Qisqa yoki kuchsiz boshlang‘ich parol bilan kirganda yangi parol o‘rnatish talab qilinadi.
+
+`SYNC_DEFAULT_ADMIN_ON_BOOT=false` qoldiring: seederdan keyin o‘rnatgan yangi parolingiz server qayta ishga tushganda almashtirilmaydi. `.env` qiymatlariga qaytarish zarur bo‘lsa, yuqoridagi admin seederini qayta bajaring.
+
 - Admin: `/leadership-management` — “Hodimlar boshqaruvi → Ma’muriyat”.
 - Frontend: `/leadership` — rasm chapda, ma’lumotlar o‘ngda; kartochka bosilganda ixtiyoriy matnlar pastida ochiladi.
 - Ism, familiya, lavozim va qabul vaqti o‘zbek, rus va ingliz tillarida kiritiladi. Email, telefon, ijtimoiy havolalar, ko‘rinish tartibi va faollik alohida sozlanadi.

@@ -1,5 +1,5 @@
 import React from 'react';
-import { FiClock, FiExternalLink, FiInstagram, FiMail, FiPhone, FiSend } from 'react-icons/fi';
+import { FiArrowLeft, FiArrowRight, FiClock, FiExternalLink, FiInstagram, FiMail, FiPhone, FiSend } from 'react-icons/fi';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import '../assets/styles/AcademicEntityPage.css';
@@ -317,8 +317,14 @@ function DirectionIcon() {
   );
 }
 
-function isExternalHref(value = '') {
-  return /^(https?:|mailto:|tel:)/i.test(String(value || '').trim());
+function DirectionLogo({ image = '' }) {
+  const [failedImage, setFailedImage] = React.useState(null);
+
+  return image && failedImage !== image ? (
+    <img src={image} alt="" onError={() => setFailedImage(image)} />
+  ) : (
+    <DirectionIcon />
+  );
 }
 
 function AcademicEntityPage({ pageType = 'faculty' }) {
@@ -421,7 +427,40 @@ function AcademicEntityPage({ pageType = 'faculty' }) {
     () => sortByOrder(directionItems || []),
     [directionItems]
   );
-  const [activeDirectionItemId, setActiveDirectionItemId] = React.useState('');
+  const requestedDirectionId = React.useMemo(
+    () => new URLSearchParams(location.search).get('direction') || '',
+    [location.search]
+  );
+  const [activeDirectionItemId, setActiveDirectionItemId] = React.useState(requestedDirectionId);
+  const directionViewRef = React.useRef(null);
+  const directionFocusRequested = React.useRef(false);
+
+  React.useEffect(() => {
+    setActiveDirectionItemId(requestedDirectionId);
+  }, [contextFacultyId, contextDepartmentId, requestedDirectionId]);
+
+  React.useEffect(() => {
+    if (directionFocusRequested.current) {
+      directionViewRef.current?.focus({ preventScroll: true });
+      directionFocusRequested.current = false;
+    }
+  }, [activeDirectionItemId]);
+
+  const selectDirection = (id) => {
+    directionFocusRequested.current = true;
+    setActiveDirectionItemId(id);
+    const searchParams = new URLSearchParams(location.search);
+    if (id) {
+      searchParams.set('direction', id);
+    } else {
+      searchParams.delete('direction');
+    }
+    navigate({
+      pathname: location.pathname,
+      search: searchParams.toString() ? `?${searchParams}` : '',
+      hash: '#attached-directions'
+    }, { preventScrollReset: true });
+  };
   const needsSectionsList =
     pageType === 'faculty' && configuredPanels.some((panel) => panel.variant === 'sections');
   const { items: sections } = useContentList('faculties', {
@@ -501,25 +540,15 @@ function AcademicEntityPage({ pageType = 'faculty' }) {
   }, [activePanelKey, panelItems]);
 
   React.useEffect(() => {
-    if (!attachedDirections.length) {
-      if (activeDirectionItemId) {
-        setActiveDirectionItemId('');
-      }
-
-      return;
+    if (pageType !== 'department' || !departmentDirectionsPanel) return;
+    if (requestedDirectionId || activePanelKeyFromHash === 'attached-directions') {
+      setActivePanelKey(departmentDirectionsPanel.key);
     }
-
-    const hasActiveDirection = attachedDirections.some(
-      (item) => String(item.id) === String(activeDirectionItemId)
-    );
-
-    if (!hasActiveDirection) {
-      setActiveDirectionItemId(String(attachedDirections[0].id));
-    }
-  }, [activeDirectionItemId, attachedDirections]);
+  }, [activePanelKeyFromHash, departmentDirectionsPanel, pageType, requestedDirectionId]);
 
   const hasLegacyPanelHash =
     Boolean(location.hash) &&
+    activePanelKeyFromHash !== 'attached-directions' &&
     Boolean(activePanelKeyFromHash) &&
     (activePanelKeyFromHash === 'overview' ||
       activePanelKeyFromHash === fallbackOverviewPanel.key ||
@@ -542,24 +571,6 @@ function AcademicEntityPage({ pageType = 'faculty' }) {
   const handlePanelSelect = (panelKey) => {
     setActivePanelKey(panelKey);
   };
-
-  const openDirectionTarget = React.useCallback(
-    (item) => {
-      const href = String(item?.link || '').trim();
-
-      if (!href) {
-        return;
-      }
-
-      if (isExternalHref(href)) {
-        window.location.href = href;
-        return;
-      }
-
-      navigate(href);
-    },
-    [navigate]
-  );
 
   const panelNavigationItems = panelItems.map((panel) => ({
     key: panel.key,
@@ -651,7 +662,7 @@ function AcademicEntityPage({ pageType = 'faculty' }) {
 
     return (
       attachedDirections.find((item) => String(item.id) === String(activeDirectionItemId)) ||
-      attachedDirections[0]
+      null
     );
   }, [activeDirectionItemId, attachedDirections]);
   const attachedMenuCount = configuredPanels.length;
@@ -782,67 +793,71 @@ const renderDepartmentGrid = () => {
       return <div className="academic-entity-empty-state">{texts.emptyDirections}</div>;
     }
 
-    const activeItem = activeDirectionItem || attachedDirections[0];
+    const activeItem = activeDirectionItem;
     const activeTitle = getTranslatedField(activeItem, 'title', activeItem?.title);
     const activeContent = getTranslatedField(activeItem, 'content') || '';
     const activeHref = String(activeItem?.link || '').trim();
-    const showDirectionSelector = attachedDirections.length > 1;
 
     return (
       <div className="academic-direction-browser">
-        {showDirectionSelector ? (
-          <div className="academic-direction-list" role="tablist" aria-label={texts.directionsPanelTitle}>
-            {attachedDirections.map((item) => {
-              const title = getTranslatedField(item, 'title', item.title);
-              const isActive = String(item.id) === String(activeItem?.id);
-              const content = getTranslatedField(item, 'content') || '';
-              const hasContent = Boolean(stripHtml(content));
-              const hasLink = Boolean(String(item.link || '').trim());
+        {!activeItem ? (
+          <>
+            <p className="academic-direction-intro" ref={directionViewRef} tabIndex={-1}>
+              {texts.directionSelectHint}
+              <span className="academic-direction-count">{attachedDirections.length}</span>
+            </p>
+            <div className="academic-direction-list" role="group" aria-label={texts.directionsPanelTitle}>
+              {attachedDirections.map((item, index) => {
+                const title = getTranslatedField(item, 'title', item.title);
 
-              return (
-                <button
-                  key={item.id}
-                  type="button"
-                  className={`academic-direction-item${isActive ? ' is-active' : ''}`}
-                  aria-pressed={isActive}
-                  onClick={() => {
-                    if (hasContent) {
-                      setActiveDirectionItemId(String(item.id));
-                      return;
-                    }
+                return (
+                  <button
+                    key={item.id}
+                    type="button"
+                    className="academic-direction-item"
+                    title={title}
+                    onClick={() => selectDirection(String(item.id))}
+                  >
+                    <span className="academic-direction-item-icon">
+                      <DirectionLogo image={item.image || item.imageUrl} />
+                    </span>
+                    <span className="academic-direction-item-copy">
+                      <span className="academic-direction-item-number">
+                        {texts.directionBadge} / {String(index + 1).padStart(2, '0')}
+                      </span>
+                      <span className="academic-direction-item-label">{title || texts.directionBadge}</span>
+                    </span>
+                    <FiArrowRight className="academic-direction-item-arrow" aria-hidden="true" />
+                  </button>
+                );
+              })}
+            </div>
+          </>
+        ) : (
+          <>
+            <button type="button" className="academic-direction-back" onClick={() => selectDirection('')}>
+              <FiArrowLeft aria-hidden="true" />
+              {texts.directionBackToList}
+            </button>
+            <section className="academic-direction-detail academic-entity-content-surface academic-entity-content-surface--prose" aria-labelledby="academic-direction-title">
+              <div className="academic-entity-overview-head academic-entity-overview-head--compact">
+                <span className="academic-direction-detail-icon">
+                  <DirectionLogo image={activeItem.image || activeItem.imageUrl} />
+                </span>
+                <h3 id="academic-direction-title" ref={directionViewRef} tabIndex={-1}>{activeTitle || texts.directionsPanelTitle}</h3>
+              </div>
 
-                    if (hasLink) {
-                      openDirectionTarget(item);
-                      return;
-                    }
+              {renderRichText(activeContent, texts.directionEmptyContent)}
 
-                    setActiveDirectionItemId(String(item.id));
-                  }}
-                >
-                  <span className="academic-direction-item-icon">
-                    <DirectionIcon />
-                  </span>
-                  <span className="academic-direction-item-label">{title}</span>
-                </button>
-              );
-            })}
-          </div>
-        ) : null}
-
-        <section className="academic-direction-detail academic-entity-content-surface academic-entity-content-surface--prose">
-          <div className="academic-entity-overview-head academic-entity-overview-head--compact">
-            <h3>{activeTitle || texts.directionsPanelTitle}</h3>
-          </div>
-
-          {renderRichText(activeContent, texts.directionEmptyContent)}
-
-          {activeHref ? (
-            <AppLink href={activeHref} className="academic-direction-detail-link">
-              <FiExternalLink />
-              {texts.directionLinkLabel}
-            </AppLink>
-          ) : null}
-        </section>
+              {activeHref ? (
+                <AppLink href={activeHref} className="academic-direction-detail-link">
+                  <FiExternalLink />
+                  {texts.directionLinkLabel}
+                </AppLink>
+              ) : null}
+            </section>
+          </>
+        )}
       </div>
     );
   };
@@ -1356,43 +1371,37 @@ const renderSidebarStack = () => (
           >
             <header className="academic-entity-information-header">
               <nav className="faculty-breadcrumb" aria-label="Sahifa navigatsiyasi">
-                <Link className="faculty-breadcrumb-link" to="/faculties">
-                  {texts.meta?.faculty?.backLabel || 'Fakultetlar'}
-                </Link>
-                <span className="faculty-breadcrumb-separator" aria-hidden="true">›</span>
-
-                {!isFaculty ? (
-                  <>
-                    <Link
-                      className="faculty-breadcrumb-link"
-                      to={`/faculties/${contextFacultyId}`}
-                    >
-                      {parentFacultyName}
+                <ol className="faculty-breadcrumb-list">
+                  <li className="faculty-breadcrumb-item faculty-breadcrumb-root">
+                    <Link className="faculty-breadcrumb-link" to="/faculties" title={texts.meta?.faculty?.backLabel}>
+                      {texts.meta?.faculty?.backLabel || 'Fakultetlar'}
                     </Link>
-                    <span className="faculty-breadcrumb-separator" aria-hidden="true">›</span>
-                    <span className="faculty-breadcrumb-link faculty-breadcrumb-entity">
-                      {getTranslatedField(entity, 'title', entity?.title)}
+                  </li>
+                  {!isFaculty ? (
+                    <li className="faculty-breadcrumb-item faculty-breadcrumb-parent">
+                      <Link className="faculty-breadcrumb-link" to={`/faculties/${contextFacultyId}`} title={parentFacultyName}>
+                        {parentFacultyName}
+                      </Link>
+                    </li>
+                  ) : null}
+                  {!isFaculty || !showingAbout ? (
+                    <li className="faculty-breadcrumb-item faculty-breadcrumb-entity">
+                      <button
+                        type="button"
+                        className="faculty-breadcrumb-link"
+                        title={overviewTitle}
+                        onClick={() => setActivePanelKey(aboutKey)}
+                      >
+                        {overviewTitle}
+                      </button>
+                    </li>
+                  ) : null}
+                  <li className="faculty-breadcrumb-item faculty-breadcrumb-active">
+                    <span className="faculty-breadcrumb-current" aria-current="page" title={displayedTitle}>
+                      {displayedTitle}
                     </span>
-                    <span className="faculty-breadcrumb-separator" aria-hidden="true">›</span>
-                  </>
-                ) : null}
-
-                {!showingAbout ? (
-                  <>
-                    <button
-                      type="button"
-                      className="faculty-breadcrumb-link"
-                      onClick={() => setActivePanelKey(aboutKey)}
-                    >
-                      {aboutTitle}
-                    </button>
-                    <span className="faculty-breadcrumb-separator" aria-hidden="true">›</span>
-                  </>
-                ) : null}
-
-                <span className="faculty-breadcrumb-current" aria-current="page">
-                  {displayedTitle}
-                </span>
+                  </li>
+                </ol>
               </nav>
 
               <div className="faculty-heading-row">

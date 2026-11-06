@@ -47,7 +47,7 @@
   background:
     radial-gradient(
       ellipse at 10% 0%,
-      rgba(8, 126, 174, 0.055),
+      rgba(var(--theme-dark-rgb), 0.055),
       transparent 45%
     ),
     linear-gradient(
@@ -61,7 +61,7 @@
 
   overflow: hidden;
 
-  box-shadow: 0 8px 26px rgba(24, 67, 101, 0.04);
+  box-shadow: 0 8px 26px rgba(var(--theme-deep-rgb), 0.04);
 }
 
 .home-partners-panel::before {
@@ -77,7 +77,7 @@
     90deg,
     transparent,
     var(--hp-primary),
-    #5ed2f3,
+    var(--brand-primary-highlight),
     transparent
   );
 }
@@ -109,13 +109,13 @@
   height: 46px;
 
   color: var(--hp-primary);
-  border: 1px solid #d7eaf5;
+  border: 1px solid var(--brand-primary-soft);
   border-radius: var(--hp-radius);
 
   background: linear-gradient(
     145deg,
-    #eef8fd,
-    #dff1fb
+    var(--brand-primary-muted),
+    var(--brand-primary-soft)
   );
 
   transition: transform 0.3s ease;
@@ -199,7 +199,7 @@
   transform: translateY(-2px);
 
   box-shadow:
-    0 9px 24px rgba(8, 126, 174, 0.17);
+    0 9px 24px rgba(var(--theme-dark-rgb), 0.17);
 }
 
 .home-partners-link:hover svg {
@@ -213,7 +213,7 @@
   background: linear-gradient(
     90deg,
     var(--hp-border),
-    rgba(225, 232, 240, 0.3),
+    rgba(var(--theme-soft-rgb), 0.3),
     transparent
   );
 }
@@ -314,7 +314,7 @@
   padding: 14px 13px 11px;
 
   background: #ffffff;
-  border: 1px solid #dfe8f0;
+  border: 1px solid var(--brand-primary-soft);
   border-radius: var(--hp-radius);
 
   color: var(--hp-ink);
@@ -325,7 +325,7 @@
   cursor: default;
 
   box-shadow:
-    0 3px 10px rgba(31, 71, 101, 0.045);
+    0 3px 10px rgba(var(--theme-dark-rgb), 0.045);
 
   transition:
     transform 0.35s cubic-bezier(.2,.8,.2,1),
@@ -347,7 +347,7 @@
 
   background: radial-gradient(
     circle at 50% 0%,
-    rgba(8, 126, 174, 0.12),
+    rgba(var(--theme-dark-rgb), 0.12),
     transparent 70%
   );
 
@@ -369,7 +369,7 @@
   background: linear-gradient(
     90deg,
     var(--hp-primary),
-    #4dcaee
+    var(--brand-primary)
   );
 
   transform: scaleX(0);
@@ -382,11 +382,11 @@
 .home-partner-item:focus-visible {
   transform: translateY(-6px);
 
-  border-color: rgba(8, 126, 174, 0.42);
+  border-color: rgba(var(--theme-dark-rgb), 0.42);
 
   box-shadow:
-    0 17px 35px rgba(27, 99, 151, 0.13),
-    0 0 0 1px rgba(8, 126, 174, 0.03);
+    0 17px 35px rgba(var(--theme-dark-rgb), 0.13),
+    0 0 0 1px rgba(var(--theme-dark-rgb), 0.03);
 }
 
 .home-partner-item:hover::before,
@@ -410,7 +410,7 @@
   height: 170px;
 
   border-radius: 50%;
-  background: rgba(65, 177, 237, 0.1);
+  background: rgba(var(--theme-primary-rgb), 0.1);
 
   filter: blur(42px);
   transform: translateX(-50%);
@@ -452,7 +452,7 @@
   background: linear-gradient(
     145deg,
     #ffffff,
-    #f5faff
+    var(--brand-primary-muted)
   );
 
   overflow: hidden;
@@ -494,7 +494,7 @@
 .home-partner-item:hover
 .home-partner-logo-wrap {
   transform: translateY(-2px);
-  background: #f1f9fe;
+  background: var(--brand-primary-muted);
 }
 
 .home-partner-item:hover
@@ -502,7 +502,7 @@
   transform: scale(1.045);
 
   filter: drop-shadow(
-    0 5px 8px rgba(0, 74, 120, 0.11)
+    0 5px 8px rgba(var(--theme-deep-rgb), 0.11)
   );
 }
 
@@ -570,7 +570,7 @@
   margin-top: auto;
   padding-top: 8px;
 
-  border-top: 1px solid #eaf0f5;
+  border-top: 1px solid var(--brand-primary-soft);
 
   color: var(--hp-muted);
 }
@@ -581,7 +581,7 @@
   width: 6px;
   height: 6px;
 
-  background: #26b891;
+  background: var(--brand-primary-dark);
   border-radius: 50%;
 }
 
@@ -640,10 +640,10 @@
   height: 7px;
 
   border-radius: 50%;
-  background: #1db993;
+  background: var(--brand-primary-dark);
 
   box-shadow:
-    0 0 0 4px rgba(29, 185, 147, 0.09);
+    0 0 0 4px rgba(var(--theme-dark-rgb), 0.09);
 
   animation: hp-pulse 2.5s ease-in-out infinite;
 }
@@ -653,7 +653,7 @@
   flex: 1;
 
   height: 2px;
-  background: #e9eff4;
+  background: var(--brand-primary-soft);
   overflow: hidden;
 }
 
@@ -669,7 +669,7 @@
     90deg,
     transparent,
     var(--hp-primary),
-    #6cd7f3
+    var(--brand-primary-highlight)
   );
 
   animation: hp-progress 6s linear infinite;

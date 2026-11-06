@@ -5,6 +5,14 @@ export async function fetchContentList(resource) {
   return response.data?.items || [];
 }
 
+// Faqat tanlash ro'yxatlari (select) uchun: rasmlarsiz yengil ro'yxat.
+// Masalan fakultetlar to'liq holda ~4 MB, rasmlarsiz ~30 KB. Tahrirlash uchun ishlatmang —
+// rasm maydonlari to'liq ma'lumot o'rniga havola bo'lib keladi.
+export async function fetchContentOptions(resource) {
+  const response = await apiGet(`/api/content/${resource}?imageMode=separate`);
+  return response.data?.items || [];
+}
+
 export async function fetchContentItem(resource, id) {
   const response = await apiGet(`/api/content/${resource}/${id}`);
   return response.data?.item || null;

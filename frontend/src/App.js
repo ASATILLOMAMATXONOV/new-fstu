@@ -50,8 +50,14 @@ function SiteLayout() {
     <>
       <ScrollManager />
       <Navbar />
-      {pathname !== '/' && <InnerPageBanner />}
-      <Outlet />
+      {pathname === '/' ? (
+        <Outlet />
+      ) : (
+        <div className="site-page-scale">
+          <InnerPageBanner />
+          <Outlet />
+        </div>
+      )}
       <Footer />
     </>
   );

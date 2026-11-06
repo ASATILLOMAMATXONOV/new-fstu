@@ -10,6 +10,8 @@ import pool from '../../db/pool.js';
 import { createSession, sessionCookieName } from '../account/session.service.js';
 import { encryptSecret, newTotpSecret } from '../account/auth-crypto.js';
 import { createSecurityStore } from './security.store.js';
+import { listEntries } from '../content/content.service.js';
+import { closePublicContentStreams } from '../content/content.routes.js';
 
 // Opt-in tests use an isolated schema and never change real accounts or their logs.
 const enabled = process.env.SECURITY_DB_TESTS === '1';
@@ -67,6 +69,68 @@ after(async () => {
   await client.query(`DROP SCHEMA IF EXISTS ${schema} CASCADE`);
   await client.end();
   await pool.end();
+});
+
+integration('banner saves stream their revision immediately and keep versioned image URLs fresh', async () => {
+  const controller = new AbortController();
+  const deadline = setTimeout(() => controller.abort(), 7000);
+  let reader;
+  try {
+    const stream = await request('/api/content/__events', { signal: controller.signal });
+    assert.equal(stream.status, 200);
+    assert.match(stream.headers.get('content-type'), /text\/event-stream/);
+    reader = stream.body.getReader();
+    let pending = '';
+    const decoder = new TextDecoder();
+    const nextEvent = async () => {
+      while (true) {
+        const boundary = pending.indexOf('\n\n');
+        if (boundary >= 0) {
+          const frame = pending.slice(0, boundary);
+          pending = pending.slice(boundary + 2);
+          const data = frame.split('\n').find(line => line.startsWith('data: '));
+          if (data) return JSON.parse(data.slice(6));
+        } else {
+          const chunk = await reader.read();
+          assert.equal(chunk.done, false);
+          pending += decoder.decode(chunk.value, { stream: true });
+        }
+      }
+    };
+    const initial = await nextEvent();
+    const image = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jVloAAAAASUVORK5CYII=';
+    const created = await request('/api/content/banners', json({ image, active: true, uz: { title: 'Live banner' } }, superToken));
+    assert.equal(created.status, 201);
+    const saved = (await created.json()).item;
+    const createEvent = await nextEvent();
+    assert.equal(createEvent.resource, 'banners');
+    assert.ok(createEvent.revision > initial.revision);
+
+    const list = await (await request('/api/content/banners?imageMode=separate&activeOnly=true')).json();
+    const firstImageUrl = list.items.find(item => item.id === saved.id).image;
+    assert.match(firstImageUrl, /\/image\?v=\d+/);
+    const inline = await listEntries('banners');
+    assert.equal(inline.find(item => item.id === saved.id).image, image);
+
+    const updated = await request(`/api/content/banners/${saved.id}`, {
+      ...json({ uz: { title: 'Updated live banner' } }, superToken), method: 'PUT'
+    });
+    assert.equal(updated.status, 200);
+    const updateEvent = await nextEvent();
+    assert.ok(updateEvent.revision > createEvent.revision);
+    const nextList = await (await request('/api/content/banners?imageMode=separate')).json();
+    assert.notEqual(nextList.items.find(item => item.id === saved.id).image, firstImageUrl);
+
+    const removed = await request(`/api/content/banners/${saved.id}`, { method: 'DELETE', headers: authHeaders(superToken) });
+    assert.equal(removed.status, 204);
+    assert.ok((await nextEvent()).revision > updateEvent.revision);
+    closePublicContentStreams();
+    assert.equal((await reader.read()).done, true);
+  } finally {
+    clearTimeout(deadline);
+    controller.abort();
+    await reader?.cancel().catch(() => {});
+  }
 });
 
 integration('counter increments are atomic, expire correctly and survive store recreation', async () => {

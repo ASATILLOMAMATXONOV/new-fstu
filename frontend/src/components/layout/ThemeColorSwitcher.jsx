@@ -104,32 +104,56 @@ const THEMES = [
   }
 ];
 
-function normalizeRgbValue(value, fallback) {
-  if (!value) {
-    return fallback;
-  }
+function normalizeColor(value, fallback) {
+  const color = String(value || '').trim();
+  if (/^#[\da-f]{6}$/i.test(color)) return color;
+  if (/^#[\da-f]{3}$/i.test(color)) return `#${[...color.slice(1)].map((digit) => digit + digit).join('')}`;
+  return fallback;
+}
 
-  return String(value).replace(/[^\d,\s]/g, '').trim() || fallback;
+function colorChannels(color) {
+  return [1, 3, 5].map((start) => parseInt(color.slice(start, start + 2), 16));
+}
+
+function mixColor(color, target, amount) {
+  const targetChannels = colorChannels(target);
+  return `#${colorChannels(color).map((channel, index) =>
+    Math.round(channel * (1 - amount) + targetChannels[index] * amount).toString(16).padStart(2, '0')
+  ).join('')}`;
+}
+
+function getSavedThemeId() {
+  try {
+    return window.localStorage.getItem(STORAGE_KEY) || '';
+  } catch {
+    return '';
+  }
 }
 
 function normalizeTheme(theme = {}, fallback = THEMES[0]) {
   const source = theme.palette || theme;
+  const preset = THEMES.find((item) => item.id === theme.id) || fallback;
+  const primary = normalizeColor(source.primary, preset.primary);
+  const isPresetColor = primary.toLowerCase() === preset.primary.toLowerCase();
+  const dark = normalizeColor(source.dark || source.primaryDark, isPresetColor ? preset.dark : mixColor(primary, '#000000', 0.3));
+  const deep = normalizeColor(source.deep || source.primaryDeep, isPresetColor ? preset.deep : mixColor(primary, '#000000', 0.65));
 
   return {
     id: String(theme.id || source.id || fallback.id),
     label: String(theme.label || source.label || fallback.label),
-    primary: source.primary || fallback.primary,
-    dark: source.dark || source.primaryDark || fallback.dark,
-    deep: source.deep || source.primaryDeep || fallback.deep,
-    soft: source.soft || source.primarySoft || fallback.soft,
-    muted: source.muted || source.primaryMuted || fallback.muted,
-    rgb: normalizeRgbValue(source.rgb || source.primaryRgb, fallback.rgb),
-    darkRgb: normalizeRgbValue(source.darkRgb || source.primaryDarkRgb, fallback.darkRgb),
-    deepRgb: normalizeRgbValue(source.deepRgb || source.primaryDeepRgb, fallback.deepRgb)
+    primary,
+    dark,
+    deep,
+    soft: normalizeColor(source.soft || source.primarySoft, isPresetColor ? preset.soft : mixColor(primary, '#ffffff', 0.86)),
+    muted: normalizeColor(source.muted || source.primaryMuted, isPresetColor ? preset.muted : mixColor(primary, '#ffffff', 0.96)),
+    rgb: colorChannels(primary).join(', '),
+    darkRgb: colorChannels(dark).join(', '),
+    deepRgb: colorChannels(deep).join(', ')
   };
 }
 
 function buildThemeList(setting) {
+  setting = setting?.data || setting;
   const configuredThemes = Array.isArray(setting?.themes) ? setting.themes : [];
   const customTheme = setting?.palette || setting?.primary ? [setting] : [];
   const list = configuredThemes.length ? configuredThemes : customTheme;
@@ -143,22 +167,31 @@ function buildThemeList(setting) {
 
 function applyTheme(theme) {
   const root = document.documentElement;
+  const highlight = mixColor(theme.primary, '#ffffff', 0.5);
 
   root.style.setProperty('--brand-primary', theme.primary);
   root.style.setProperty('--brand-primary-dark', theme.dark);
   root.style.setProperty('--brand-primary-deep', theme.deep);
   root.style.setProperty('--brand-primary-soft', theme.soft);
   root.style.setProperty('--brand-primary-muted', theme.muted);
+  root.style.setProperty('--brand-primary-highlight', highlight);
   root.style.setProperty('--theme-primary-rgb', theme.rgb);
   root.style.setProperty('--theme-dark-rgb', theme.darkRgb);
   root.style.setProperty('--theme-deep-rgb', theme.deepRgb);
+  root.style.setProperty('--theme-highlight-rgb', colorChannels(highlight).join(', '));
+  root.style.setProperty('--theme-soft-rgb', colorChannels(theme.soft).join(', '));
+  root.style.setProperty('--theme-muted-rgb', colorChannels(theme.muted).join(', '));
   root.style.setProperty('--text-on-brand', '#ffffff');
   root.style.setProperty('--heading-color', theme.deep);
   root.style.setProperty('--link-color', theme.dark);
   root.style.setProperty('--hover-color', theme.deep);
   root.style.setProperty('--surface', '#ffffff');
   root.style.setProperty('--surface-tint', theme.muted);
+  root.style.setProperty('--surface-soft', mixColor(theme.primary, '#ffffff', 0.98));
+  root.style.setProperty('--surface-border', mixColor(theme.primary, '#ffffff', 0.84));
+  root.style.setProperty('--surface-border-strong', mixColor(theme.primary, '#ffffff', 0.5));
   root.style.setProperty('--page-bg-start', '#ffffff');
+  root.style.setProperty('--page-bg-end', theme.muted);
   root.style.setProperty('--shadow-brand', `rgba(${theme.rgb}, 0.14)`);
   root.style.setProperty('--color-primary', theme.primary);
   root.style.setProperty('--color-primary-dark', theme.dark);
@@ -168,6 +201,7 @@ function applyTheme(theme) {
   root.style.setProperty('--color-text-light', 'var(--text-secondary)');
   root.style.setProperty('--color-border', 'var(--surface-border)');
   root.dataset.themeColor = theme.id;
+  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme.primary);
 }
 
 function getInitialTheme() {
@@ -175,7 +209,7 @@ function getInitialTheme() {
     return THEMES[0];
   }
 
-  const savedTheme = window.localStorage.getItem(STORAGE_KEY);
+  const savedTheme = getSavedThemeId();
   return THEMES.find((theme) => theme.id === savedTheme) || THEMES[0];
 }
 
@@ -188,12 +222,12 @@ export default function ThemeColorSwitcher() {
   const [isVisible, setIsVisible] = React.useState(false);
   const [isExpanded, setIsExpanded] = React.useState(true);
   const hasAutoShownRef = React.useRef(false);
+  const userSelectedThemeId = React.useRef('');
 
   React.useEffect(() => {
-    const savedTheme = typeof window !== 'undefined'
-      ? window.localStorage.getItem(STORAGE_KEY)
-      : '';
-    const defaultThemeId = themeSetting?.defaultTheme || themeSetting?.themeId || themeSetting?.activeTheme;
+    const savedTheme = userSelectedThemeId.current || getSavedThemeId();
+    const themeConfig = themeSetting?.data || themeSetting;
+    const defaultThemeId = themeConfig?.defaultTheme || themeConfig?.themeId || themeConfig?.activeTheme;
     const nextTheme =
       themes.find((theme) => theme.id === savedTheme) ||
       themes.find((theme) => theme.id === defaultThemeId) ||
@@ -242,8 +276,13 @@ export default function ThemeColorSwitcher() {
   }, [isVisible, isExpanded, selectedTheme.id]);
 
   const handleThemeSelect = (theme) => {
+    userSelectedThemeId.current = theme.id;
     setSelectedTheme(theme);
-    window.localStorage.setItem(STORAGE_KEY, theme.id);
+    try {
+      window.localStorage.setItem(STORAGE_KEY, theme.id);
+    } catch {
+      // The selected palette still applies when browser storage is unavailable.
+    }
   };
 
   return (
@@ -263,6 +302,7 @@ export default function ThemeColorSwitcher() {
             }`}
             style={{ '--swatch-color': theme.primary, '--swatch-dark': theme.dark }}
             aria-label={theme.label}
+            aria-pressed={selectedTheme.id === theme.id}
             title={theme.label}
             onClick={() => handleThemeSelect(theme)}
           />

@@ -1,7 +1,7 @@
 .linked-info-table-wrap {
   overflow: hidden;
   border: var(--border-width) solid var(--surface-border);
-  background: linear-gradient(180deg, var(--surface-soft) 0%, #f2fffe 100%);
+  background: linear-gradient(180deg, var(--surface-soft) 0%, var(--brand-primary-muted) 100%);
   box-shadow: 0 16px 32px rgba(var(--theme-primary-rgb), 0.07);
 }
 

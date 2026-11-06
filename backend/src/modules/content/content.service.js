@@ -71,6 +71,10 @@ const reservedKeys = new Set([
   'updatedAt'
 ]);
 const managedImagePolicies = Object.freeze({
+  directions: {
+    label: 'Yo‘nalish logosi',
+    maxStoredBytes: 300 * 1024
+  },
   leadership: {
     label: 'Ma’muriyat rasmi'
   },
@@ -490,10 +494,17 @@ async function fetchRowsByResource(resource, queryParams = {}) {
   const orderClause =
     orderBy === 'recent' ? 'created_at DESC, id DESC' : 'sort_order ASC, id DESC';
   const limitClause = limit > 0 ? `LIMIT ${limit}` : '';
+  // Separate-image lists only need to know whether an image exists. Keep the
+  // base64 payload in PostgreSQL until its versioned image URL is requested.
+  const columns = normalizeImageMode(queryParams.imageMode) === 'separate'
+    ? `id, resource, slug, title, sort_order, active, translations, metadata,
+       created_by, updated_by, created_at, updated_at,
+       CASE WHEN image_url IS NOT NULL AND image_url <> '' THEN 'present' ELSE NULL END AS image_url`
+    : '*';
 
   return fetchMany(
     `
-      SELECT *
+      SELECT ${columns}
       FROM content_entries
       WHERE ${conditions.join(' AND ')}
       ORDER BY ${orderClause}
@@ -667,7 +678,7 @@ export async function createEntry(resource, payload, userId = null) {
   );
 
   const item = mapEntry(result.rows[0]);
-  await touchPublicSiteRevision();
+  await touchPublicSiteRevision({ resource: normalizedResource });
   return item;
 }
 
@@ -728,7 +739,7 @@ export async function updateEntry(resource, id, payload, userId = null) {
   );
 
   const item = mapEntry(result.rows[0]);
-  await touchPublicSiteRevision();
+  await touchPublicSiteRevision({ resource: normalizedResource });
   return item;
 }
 
@@ -753,5 +764,5 @@ export async function deleteEntry(resource, id) {
     throw new HttpError(404, 'Content item not found.');
   }
 
-  await touchPublicSiteRevision();
+  await touchPublicSiteRevision({ resource: normalizedResource });
 }

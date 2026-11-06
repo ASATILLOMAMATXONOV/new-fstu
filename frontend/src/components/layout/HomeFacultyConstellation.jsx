@@ -16,6 +16,8 @@ import {
 } from '../../utils/academicStructure';
 import { createSafeMarkup, getTranslatedField, stripHtml } from '../../utils/cms';
 import { responsiveImageProps, withImageWidth } from '../../utils/responsiveImage';
+import { getCssZoom } from '../../utils/cssZoom';
+import AppLink from '../common/AppLink';
 
 /* ==========================================
    ICON LIBRARY
@@ -141,7 +143,9 @@ function getChildren(item) {
 
 function AcademicCard({ item, index, onOpen }) {
   const children = getChildren(item);
-  const isLink = children.length === 0 && Boolean(item.url);
+  // Sahifasi bor element (fakultet, kafedra, yo'nalish) bosilganda o'z sahifasiga o'tadi;
+  // ichki ro'yxat faqat sahifa manzili bo'lmagan holda ochiladi.
+  const isLink = Boolean(item.url);
   const interactive = children.length > 0 || isLink;
   const longTitle = String(item?.name || '').length > 48;
 
@@ -202,9 +206,9 @@ function AcademicCard({ item, index, onOpen }) {
 
   if (isLink) {
     return (
-      <a href={item.url} className={className} style={style} aria-label={`${item.name} sahifasiga o‘tish`}>
+      <AppLink href={item.url} className={className} style={style} aria-label={`${item.name} sahifasiga o‘tish`}>
         {cardContent}
-      </a>
+      </AppLink>
     );
   }
 
@@ -290,17 +294,18 @@ function AcademicSidebar({ menus, selectedId, text, loading, onSelect }) {
       const first = visibleItems[0].getBoundingClientRect();
       const last = visibleItems[4].getBoundingClientRect();
       const styles = window.getComputedStyle(navigation);
-      navigation.style.maxHeight = `${last.bottom - first.top + parseFloat(styles.paddingTop) + parseFloat(styles.paddingBottom)}px`;
+      navigation.style.maxHeight = `${(last.bottom - first.top) / getCssZoom(navigation) + parseFloat(styles.paddingTop) + parseFloat(styles.paddingBottom)}px`;
     };
     updateHeight();
     const selectedItem = navigation.querySelector('[aria-current="step"]');
     if (selectedItem) {
+      const zoom = getCssZoom(navigation);
       const selectedBounds = selectedItem.getBoundingClientRect();
       const navigationBounds = navigation.getBoundingClientRect();
       if (selectedBounds.bottom > navigationBounds.bottom) {
-        navigation.scrollTop += selectedBounds.bottom - navigationBounds.bottom + 3;
+        navigation.scrollTop += (selectedBounds.bottom - navigationBounds.bottom) / zoom + 3;
       } else if (selectedBounds.top < navigationBounds.top) {
-        navigation.scrollTop -= navigationBounds.top - selectedBounds.top + 3;
+        navigation.scrollTop -= (navigationBounds.top - selectedBounds.top) / zoom + 3;
       }
     }
     const observer = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(updateHeight) : null;

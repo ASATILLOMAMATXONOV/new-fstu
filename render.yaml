@@ -75,6 +75,8 @@ services:
     envVars:
       - key: VITE_APP_API_URL
         value: https://api.new.fstu.uz
+      - key: VITE_APP_SITE_URL
+        value: https://new.fstu.uz
       - key: VITE_APP_BASE_NAME
         value: /
     routes:

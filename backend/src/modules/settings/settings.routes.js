@@ -4,7 +4,8 @@ import { authenticate } from '../../middleware/authenticate.js';
 import { authorizeSettingWrite } from '../../middleware/authorize-menu-access.js';
 import { asyncHandler } from '../../utils/async-handler.js';
 import { HttpError } from '../../utils/http-error.js';
-import { sendOptimizedImage, setImageCacheHeaders } from '../../utils/image-optimizer.js';
+import { sendCachedOptimizedImage, sendOptimizedImage, setImageCacheHeaders } from '../../utils/image-optimizer.js';
+import { sendPublicJson } from '../../utils/public-response-cache.js';
 import {
   buildAssetQuery,
   externalizeInlineAssets,
@@ -49,8 +50,16 @@ function externalizeSetting(req, item) {
 router.get(
   '/:key/asset',
   asyncHandler(async (req, res) => {
-    const item = await getSetting(req.params.key);
     const pathKey = String(req.query.path || '');
+    // v = sozlamaning updatedAt vaqti; keshda bo'lsa bazadan o'qimaymiz.
+    if (req.query.v) {
+      setImageCacheHeaders(req, res);
+      res.vary('Origin');
+      const cacheKey = `setting:${req.params.key}:${req.query.v}:${pathKey}:${req.query.i ?? ''}`;
+      if (sendCachedOptimizedImage(req, res, cacheKey)) return;
+    }
+
+    const item = await getSetting(req.params.key);
     const asset = item ? resolveInlineAsset(item.data, pathKey, req.query.i) : null;
 
     if (!asset) {
@@ -71,11 +80,13 @@ router.get(
 router.get(
   '/:key',
   asyncHandler(async (req, res) => {
-    const item = await getSetting(req.params.key);
     if (!req.headers.authorization) {
       disablePublicCache(res);
     }
-    res.json({ item: isPublicRequest(req) ? externalizeSetting(req, item) : item });
+    await sendPublicJson(req, res, async () => {
+      const item = await getSetting(req.params.key);
+      return { item: isPublicRequest(req) ? externalizeSetting(req, item) : item };
+    });
   })
 );
 

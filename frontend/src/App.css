@@ -10,6 +10,29 @@
   max-width: none;
 }
 
+/*
+ * Katta ekranlar: bo'limlar ichidagi kontent (kartalar, matn, rasmlar) px bilan
+ * o'lchangan, shuning uchun 1920px dan keng ekranda shell kengaysa ham boxlar
+ * kichik qolib ketadi. Har bir bo'limni ekran kengligiga mos zoom qilamiz
+ * (asos — 1920px). Zoom shell'ning o'ziga emas, bolalariga beriladi: ular
+ * width:auto bo'lgani uchun shell kengligini to'liq egallaydi.
+ */
+.app-content-shell > *,
+.nav-shell,
+.site-footer > *,
+.site-page-scale {
+  zoom: var(--content-scale, 1);
+}
+
+@media (min-width: 2240px) { :root { --content-scale: 1.2; } }
+@media (min-width: 2560px) { :root { --content-scale: 1.333; } }
+@media (min-width: 3000px) { :root { --content-scale: 1.6; } }
+@media (min-width: 3440px) { :root { --content-scale: 1.8; } }
+@media (min-width: 3840px) { :root { --content-scale: 2; } }
+@media (min-width: 4800px) { :root { --content-scale: 2.5; } }
+@media (min-width: 5760px) { :root { --content-scale: 3; } }
+@media (min-width: 7680px) { :root { --content-scale: 4; } }
+
 .section-fallback {
   width: 100%;
   border-radius: var(--box-radius);

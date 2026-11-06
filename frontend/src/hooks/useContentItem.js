@@ -62,7 +62,7 @@ export function useContentItem(resource, id, options = {}) {
     const unsubscribe = enabled && Boolean(id) && shouldRevalidate
       ? subscribeToCmsChanges(() => {
           load(true);
-        })
+        }, { resource })
       : () => {};
 
     return () => {

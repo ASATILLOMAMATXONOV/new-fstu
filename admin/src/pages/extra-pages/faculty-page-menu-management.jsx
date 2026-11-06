@@ -41,6 +41,7 @@ import {
   createContentItem,
   deleteContentItem,
   fetchContentList,
+  fetchContentOptions,
   updateContentItem
 } from 'api/cms';
 
@@ -196,7 +197,7 @@ export default function FacultyPageMenuManagementPage() {
       try {
         const [menuItems, facultyItems] = await Promise.all([
           fetchContentList('faculty-page-menus'),
-          fetchContentList('faculties')
+          fetchContentOptions('faculties')
         ]);
 
         if (cancelled) {
